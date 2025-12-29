@@ -193,12 +193,25 @@ export function HomeClient() {
         let errorMessage =
           'Sorry, there was an error processing your message. Please try again.'
         try {
-          const errorData = await response.json()
-          if (errorData.message) {
-            errorMessage = errorData.message
-          } else if (response.status === 429) {
-            errorMessage =
-              'You have exceeded your maximum number of messages for the day. Please try again later.'
+          const contentType = response.headers.get('content-type')
+          if (contentType && contentType.includes('application/json')) {
+            const errorData = await response.json()
+            if (errorData.error) {
+              errorMessage = errorData.error
+            } else if (errorData.message) {
+              errorMessage = errorData.message
+            } else if (errorData.details) {
+              errorMessage = errorData.details
+            } else if (response.status === 429) {
+              errorMessage =
+                'You have exceeded your maximum number of messages for the day. Please try again later.'
+            }
+          } else {
+            // Try to get text response
+            const text = await response.text()
+            if (text) {
+              errorMessage = text.substring(0, 200) // Limit length
+            }
           }
         } catch (parseError) {
           console.error('Error parsing error response:', parseError)
@@ -364,12 +377,28 @@ export function HomeClient() {
         let errorMessage =
           'Sorry, there was an error processing your message. Please try again.'
         try {
-          const errorData = await response.json()
-          if (errorData.message) {
-            errorMessage = errorData.message
-          } else if (response.status === 429) {
-            errorMessage =
-              'You have exceeded your maximum number of messages for the day. Please try again later.'
+          const contentType = response.headers.get('content-type')
+          if (contentType && contentType.includes('application/json')) {
+            const errorData = await response.json()
+            console.error('API Error Response:', errorData)
+            // Prioritize error messages in order: details > error > message
+            if (errorData.details) {
+              errorMessage = errorData.details
+            } else if (errorData.error) {
+              errorMessage = errorData.error
+            } else if (errorData.message) {
+              errorMessage = errorData.message
+            } else if (response.status === 429) {
+              errorMessage =
+                'You have exceeded your maximum number of messages for the day. Please try again later.'
+            }
+          } else {
+            // Try to get text response
+            const text = await response.text()
+            console.error('Non-JSON error response:', text)
+            if (text) {
+              errorMessage = text.substring(0, 200) // Limit length
+            }
           }
         } catch (parseError) {
           console.error('Error parsing error response:', parseError)

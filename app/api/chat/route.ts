@@ -14,6 +14,7 @@ import {
 import { ChatSDKError } from '@/lib/errors'
 
 // Create v0 client with custom baseUrl if V0_API_URL is set
+// API key is automatically read from V0_API_KEY environment variable by v0-sdk
 const v0 = createClient(
   process.env.V0_API_URL ? { baseUrl: process.env.V0_API_URL } : {},
 )
@@ -99,22 +100,33 @@ export async function POST(request: NextRequest) {
           message,
           responseMode: 'experimental_stream',
         })
-        chat = await v0.chats.sendMessage({
-          chatId: chatId,
-          message,
-          responseMode: 'experimental_stream',
-          ...(attachments && attachments.length > 0 && { attachments }),
-        })
-        console.log('Streaming message sent to existing chat successfully')
+        try {
+          chat = await v0.chats.sendMessage({
+            chatId: chatId,
+            message,
+            responseMode: 'experimental_stream',
+            ...(attachments && attachments.length > 0 && { attachments }),
+          })
+          console.log('Streaming message sent to existing chat successfully')
 
-        // Return the stream directly
-        return new Response(chat as ReadableStream<Uint8Array>, {
-          headers: {
-            'Content-Type': 'text/event-stream',
-            'Cache-Control': 'no-cache',
-            Connection: 'keep-alive',
-          },
-        })
+          // Verify we got a stream
+          if (!(chat instanceof ReadableStream)) {
+            throw new Error('Expected streaming response but got non-stream')
+          }
+
+          // Return the stream directly
+          return new Response(chat as ReadableStream<Uint8Array>, {
+            headers: {
+              'Content-Type': 'text/event-stream',
+              'Cache-Control': 'no-cache',
+              Connection: 'keep-alive',
+            },
+          })
+        } catch (streamError) {
+          console.error('Error in streaming response:', streamError)
+          // If streaming fails, throw to be caught by outer catch block
+          throw streamError
+        }
       } else {
         // Non-streaming response for existing chat
         chat = await v0.chats.sendMessage({
@@ -131,21 +143,32 @@ export async function POST(request: NextRequest) {
           message,
           responseMode: 'experimental_stream',
         })
-        chat = await v0.chats.create({
-          message,
-          responseMode: 'experimental_stream',
-          ...(attachments && attachments.length > 0 && { attachments }),
-        })
-        console.log('Streaming chat created successfully')
+        try {
+          chat = await v0.chats.create({
+            message,
+            responseMode: 'experimental_stream',
+            ...(attachments && attachments.length > 0 && { attachments }),
+          })
+          console.log('Streaming chat created successfully')
 
-        // Return the stream directly
-        return new Response(chat as ReadableStream<Uint8Array>, {
-          headers: {
-            'Content-Type': 'text/event-stream',
-            'Cache-Control': 'no-cache',
-            Connection: 'keep-alive',
-          },
-        })
+          // Verify we got a stream
+          if (!(chat instanceof ReadableStream)) {
+            throw new Error('Expected streaming response but got non-stream')
+          }
+
+          // Return the stream directly
+          return new Response(chat as ReadableStream<Uint8Array>, {
+            headers: {
+              'Content-Type': 'text/event-stream',
+              'Cache-Control': 'no-cache',
+              Connection: 'keep-alive',
+            },
+          })
+        } catch (streamError) {
+          console.error('Error in streaming response:', streamError)
+          // If streaming fails, throw to be caught by outer catch block
+          throw streamError
+        }
       } else {
         // Use sync mode
         console.log('Creating sync chat with params:', {
@@ -208,12 +231,33 @@ export async function POST(request: NextRequest) {
     if (error instanceof Error) {
       console.error('Error message:', error.message)
       console.error('Error stack:', error.stack)
+      
+      // Log the full error object if available
+      if ('cause' in error) {
+        console.error('Error cause:', error.cause)
+      }
+    }
+
+    // Extract more detailed error information
+    let errorMessage = 'Failed to process request'
+    let errorDetails = 'Unknown error'
+    
+    if (error instanceof Error) {
+      errorMessage = error.message || errorMessage
+      errorDetails = error.message
+      
+      // Check if it's a v0 SDK error
+      if ('response' in error || 'status' in error) {
+        console.error('API Error Response:', (error as any).response)
+        console.error('API Error Status:', (error as any).status)
+      }
     }
 
     return NextResponse.json(
       {
-        error: 'Failed to process request',
-        details: error instanceof Error ? error.message : 'Unknown error',
+        error: errorMessage,
+        message: errorMessage,
+        details: errorDetails,
       },
       { status: 500 },
     )
