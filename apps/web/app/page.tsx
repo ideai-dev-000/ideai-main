@@ -13,9 +13,11 @@
  * @todo Add actual application content and features
  */
 
+import styles from "./page.module.css";
+
 export default function Home() {
   return (
-    <main>
+    <main className={styles.main}>
       <h1>IDEAI</h1>
       <p>Welcome to IDEAI</p>
     </main>
