@@ -1,0 +1,44 @@
+/**
+ * @fileoverview IdeaI custom CSS layer for finesse and polish
+ * 
+ * @module IdeAICustomStyles
+ * @description
+ * Custom IdeaI-specific styles that add finesse and polish.
+ * This layer sits on top of the base Tailwind styles.
+ * 
+ * All IdeaI apps import this after globals.css for consistent branding.
+ * 
+ * CRITICAL: All shared styles go here. Apps use these via CSS modules.
+ * 
+ * @example
+ * ```css
+ * @import "@repo/ui/styles/globals.css";
+ * @import "@repo/ui/styles/ideai.css";
+ * ```
+ * 
+ * Then in CSS modules:
+ * ```css
+ * .button { @apply border-slate-300 dark:border-slate-700; }
+ * ```
+ */
+
+/* Import shared component styles */
+@import "./ideai-components.css";
+
+/**
+ * IdeaI Design Tokens
+ * CSS variables for consistent theming across all apps
+ */
+:root {
+  --ideai-gray-rgb: 0, 0, 0;
+  --ideai-gray-alpha-200: rgba(var(--ideai-gray-rgb), 0.08);
+  --ideai-gray-alpha-100: rgba(var(--ideai-gray-rgb), 0.05);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ideai-gray-rgb: 255, 255, 255;
+    --ideai-gray-alpha-200: rgba(var(--ideai-gray-rgb), 0.145);
+    --ideai-gray-alpha-100: rgba(var(--ideai-gray-rgb), 0.06);
+  }
+}

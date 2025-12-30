@@ -1,9 +1,10 @@
 /**
  * @fileoverview Styles for the main landing page
  * 
- * @module WebAppPageStyles
+ * @module DocsAppPageStyles
  * @description
  * CSS module for the home page component.
+ * IDENTICAL to web app except for .docsContent section.
  * Uses centralized IdeaI CSS from @repo/ui/styles/ideai.css.
  * All shared styles use standard Tailwind classes for perfect consistency.
  */
@@ -72,6 +73,8 @@
 }
 
 /* Button styles now in centralized ideai-button-secondary class */
+
+/* App-specific: docs content area - now using shared IdeAIContent component */
 
 .footer {
   font-family: var(--font-geist-sans);

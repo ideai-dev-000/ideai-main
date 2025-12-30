@@ -4,7 +4,10 @@
   "private": true,
   "exports": {
     "./*": "./src/*.tsx",
+    "./components/*": "./src/components/*.tsx",
+    "./components/*.module.css": "./src/components/*.module.css",
     "./styles/globals.css": "./src/styles/globals.css",
+    "./styles/ideai.css": "./src/styles/ideai.css",
     "./lib/utils": "./src/lib/utils.ts"
   },
   "scripts": {

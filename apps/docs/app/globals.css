@@ -3,20 +3,41 @@
  * 
  * @module DocsGlobalStyles
  * @description
- * Imports shared IdeaI design system styles and adds app-specific overrides.
- * All design tokens come from the centralized @repo/ui package.
+ * Global styles for the docs app. Imports centralized IdeaI design system.
+ * NO custom CSS - all styles come from @repo/ui.
  */
 
-/* Import shared IdeaI design system styles */
+/* Import centralized IdeaI design system */
 @import "../../../packages/ui/src/styles/globals.css";
+@import "../../../packages/ui/src/styles/ideai.css";
 
-/* App-specific overrides */
+:root {
+  --gray-rgb: 0, 0, 0;
+  --gray-alpha-200: rgba(var(--gray-rgb), 0.08);
+  --gray-alpha-100: rgba(var(--gray-rgb), 0.05);
+  --button-primary-hover: #383838;
+  --button-secondary-hover: #f2f2f2;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --gray-rgb: 255, 255, 255;
+    --gray-alpha-200: rgba(var(--gray-rgb), 0.145);
+    --gray-alpha-100: rgba(var(--gray-rgb), 0.06);
+    --button-primary-hover: #ccc;
+    --button-secondary-hover: #1a1a1a;
+  }
+}
+
 html,
 body {
   max-width: 100vw;
   overflow-x: hidden;
   font-synthesis: none;
+  /* Text color explicitly set in globals.css - no overrides here */
 }
+
+/* Body styles handled by Tailwind in globals.css */
 
 * {
   box-sizing: border-box;

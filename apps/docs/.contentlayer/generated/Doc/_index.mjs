@@ -8,12 +8,12 @@ import deployment__commitSigningCiMdx from './deployment__commit-signing-ci.mdx.
 import deployment__overviewMdx from './deployment__overview.mdx.json' assert { type: 'json' }
 import deployment__troubleshootingMdx from './deployment__troubleshooting.mdx.json' assert { type: 'json' }
 import deployment__vercelMdx from './deployment__vercel.mdx.json' assert { type: 'json' }
+import development__gettingStartedMdx from './development__getting-started.mdx.json' assert { type: 'json' }
 import setup__commitSigningMdx from './setup__commit-signing.mdx.json' assert { type: 'json' }
 import setup__githubSecretsMdx from './setup__github-secrets.mdx.json' assert { type: 'json' }
 import setup__vercelChecklistMdx from './setup__vercel-checklist.mdx.json' assert { type: 'json' }
-import development__gettingStartedMdx from './development__getting-started.mdx.json' assert { type: 'json' }
+import tasks__codeContextIntegrationMdx from './tasks__code-context-integration.mdx.json' assert { type: 'json' }
 import tools__codeContextMdx from './tools__code-context.mdx.json' assert { type: 'json' }
 import tools__contentlayerMdx from './tools__contentlayer.mdx.json' assert { type: 'json' }
-import tasks__codeContextIntegrationMdx from './tasks__code-context-integration.mdx.json' assert { type: 'json' }
 
-export const allDocs = [contributingMdx, indexMdx, projectSummaryMdx, deployment__ciCdMdx, deployment__commitSigningCiMdx, deployment__overviewMdx, deployment__troubleshootingMdx, deployment__vercelMdx, setup__commitSigningMdx, setup__githubSecretsMdx, setup__vercelChecklistMdx, development__gettingStartedMdx, tools__codeContextMdx, tools__contentlayerMdx, tasks__codeContextIntegrationMdx]
+export const allDocs = [contributingMdx, indexMdx, projectSummaryMdx, deployment__ciCdMdx, deployment__commitSigningCiMdx, deployment__overviewMdx, deployment__troubleshootingMdx, deployment__vercelMdx, development__gettingStartedMdx, setup__commitSigningMdx, setup__githubSecretsMdx, setup__vercelChecklistMdx, tasks__codeContextIntegrationMdx, tools__codeContextMdx, tools__contentlayerMdx]

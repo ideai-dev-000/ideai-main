@@ -1,22 +1,6 @@
-/**
- * @fileoverview Contentlayer configuration for IdeaI documentation
- * 
- * @module ContentlayerConfig
- * @description
- * Defines the document types and content structure for the IdeaI docs site.
- * Provides type-safe content access with automatic SEO metadata generation.
- * 
- * @see https://contentlayer.dev/docs
- */
-
+// contentlayer.config.ts
 import { defineDocumentType, makeSource } from "contentlayer/source-files";
-import { writeFileSync } from "fs";
-import { join } from "path";
-
-/**
- * Document type for IdeaI documentation pages
- */
-const Doc = defineDocumentType(() => ({
+var Doc = defineDocumentType(() => ({
   name: "Doc",
   filePathPattern: "**/*.mdx",
   contentType: "mdx",
@@ -24,48 +8,47 @@ const Doc = defineDocumentType(() => ({
     title: {
       type: "string",
       description: "The title of the documentation page",
-      required: true,
+      required: true
     },
     description: {
       type: "string",
       description: "SEO description for the page",
-      required: false,
+      required: false
     },
     published: {
       type: "boolean",
       description: "Whether the page is published",
-      default: true,
-    },
+      default: true
+    }
   },
   computedFields: {
     url: {
       type: "string",
       resolve: (doc) => {
-        // Remove .mdx extension and create URL path
         const path = doc._raw.flattenedPath;
-        // Handle index file - should be at /docs/ not /docs/index
         if (path === "index") {
           return "/docs";
         }
         return `/docs/${path}`;
-      },
+      }
     },
     slug: {
       type: "string",
       resolve: (doc) => {
-        // For index file, use empty string as slug
         if (doc._raw.flattenedPath === "index") {
           return "";
         }
         return doc._raw.flattenedPath;
-      },
-    },
-  },
+      }
+    }
+  }
 }));
-
-export default makeSource({
+var contentlayer_config_default = makeSource({
   contentDirPath: "content",
   documentTypes: [Doc],
-  disableImportAliasWarning: true,
+  disableImportAliasWarning: true
 });
-
+export {
+  contentlayer_config_default as default
+};
+//# sourceMappingURL=compiled-contentlayer-config-AL7K56XH.mjs.map

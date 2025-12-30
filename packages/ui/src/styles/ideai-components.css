@@ -1,0 +1,509 @@
+/**
+ * @fileoverview IdeaI shared component styles
+ * 
+ * @module IdeAISharedComponentStyles
+ * @description
+ * CSS for shared IdeaI components (header, footer, etc.).
+ * These styles are used across all IdeaI applications.
+ * 
+ * All apps import this via @repo/ui/styles/ideai.css
+ * 
+ * COMPREHENSIVE UI TEST SUITE:
+ * Footer contains all element types from pages with same classes
+ * to verify perfect consistency across both apps.
+ */
+
+/**
+ * IdeaI Logo Styles
+ * Shared logo/branding styles for all apps
+ * Includes semantic HTML for SEO
+ */
+.ideai-logo {
+  @apply flex items-center justify-center;
+  width: 100%;
+}
+
+.ideai-logo__text {
+  font-family: var(--font-geist-sans);
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  @apply m-0;
+  text-align: center;
+  color: rgb(15 23 42); /* slate-900 - explicit */
+}
+
+.ideai-logo__brand {
+  color: rgb(15 23 42); /* slate-900 */
+}
+
+.ideai-logo__site {
+  color: rgb(100 116 139); /* slate-500 */
+  font-weight: 400;
+  font-size: 0.6em;
+  vertical-align: middle;
+}
+
+/**
+ * IdeaI Header Styles
+ * Shared header/branding styles for all apps
+ * CRITICAL: All styles here - NO app-specific CSS
+ */
+.ideai-header {
+  @apply flex flex-col gap-8 items-center text-center;
+  width: 100%;
+}
+
+.ideai-header__subtitle {
+  font-family: var(--font-geist-sans);
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  line-height: 1.6;
+  opacity: 0.7;
+  @apply m-0;
+  text-align: center;
+  color: rgb(15 23 42); /* slate-900 - explicit */
+}
+
+.ideai-header__actions {
+  @apply flex items-center justify-center;
+  width: 100%;
+}
+
+/**
+ * IdeaI Footer Styles
+ * Shared footer styles for all apps
+ * COMPREHENSIVE UI ELEMENT TEST SUITE
+ * All elements use same classes as pages for consistency testing
+ */
+.ideai-footer {
+  @apply flex items-center justify-center;
+  grid-row-start: 3;
+  width: 100%;
+  padding: 20px 0;
+  margin-top: auto;
+}
+
+.ideai-footer__content {
+  @apply flex flex-wrap items-center justify-center gap-4;
+  @apply max-w-[600px] w-full;
+  @apply px-4;
+  @apply text-center;
+}
+
+/* ============================================ */
+/* ELEMENT STYLES - SAME AS PAGES */
+/* ============================================ */
+
+/* 1. Text element (p) - from .main p */
+.ideai-footer__text {
+  font-family: var(--font-geist-sans);
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  line-height: 1.6;
+  opacity: 0.7;
+  @apply m-0;
+  color: rgb(15 23 42); /* slate-900 - explicit */
+}
+
+/* 2. Link element */
+.ideai-footer__link {
+  font-family: var(--font-geist-sans);
+  font-size: 14px;
+  @apply underline underline-offset-4;
+  @apply transition-colors duration-200;
+  text-decoration: none;
+  color: rgb(15 23 42); /* slate-900 - explicit */
+}
+
+.ideai-footer__link:hover {
+  color: rgb(51 65 85); /* slate-700 */
+}
+
+/**
+ * IdeaI Button Styles
+ * CRITICAL: Centralized button styles - used by IdeaIButton component
+ * NO app-specific CSS classes - guaranteed identical
+ */
+.ideai-button-secondary {
+  @apply border-slate-300;
+  @apply bg-transparent;
+  @apply transition-all duration-200;
+  @apply min-w-[180px] rounded-[128px] h-12 px-5;
+  @apply font-medium text-base leading-5;
+  @apply flex items-center justify-center cursor-pointer;
+  border: 1px solid;
+  appearance: none;
+  font-family: var(--font-geist-sans);
+  text-align: center;
+  color: rgb(15 23 42); /* slate-900 - explicit */
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .ideai-button-secondary:hover {
+    @apply bg-slate-100;
+    border-color: transparent;
+  }
+}
+
+/* 3. Button element - from .secondary / button.secondary */
+.ideai-footer__button {
+  @apply border-slate-300;
+  @apply bg-transparent;
+  @apply transition-all duration-200;
+  @apply min-w-[180px] rounded-[128px] h-12 px-5;
+  @apply font-medium text-base leading-5;
+  @apply flex items-center justify-center cursor-pointer;
+  border: 1px solid;
+  appearance: none;
+  font-family: var(--font-geist-sans);
+  text-align: center;
+  color: rgb(15 23 42); /* slate-900 - explicit */
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .ideai-footer__button:hover {
+    @apply bg-slate-100;
+    border-color: transparent;
+  }
+}
+
+/* 4. Span/Badge element */
+.ideai-footer__badge {
+  font-family: var(--font-geist-mono);
+  font-size: 12px;
+  @apply px-2 py-1;
+  @apply bg-slate-100;
+  @apply rounded;
+  color: rgb(51 65 85); /* slate-700 - explicit */
+}
+
+/* 5. Div element */
+.ideai-footer__div {
+  font-family: var(--font-geist-sans);
+  font-size: 14px;
+  color: rgb(71 85 105); /* slate-600 - explicit */
+}
+
+/* 6. Strong element */
+.ideai-footer__strong {
+  font-family: var(--font-geist-sans);
+  font-size: 14px;
+  font-weight: 700;
+  color: rgb(15 23 42); /* slate-900 - explicit */
+}
+
+/* 7. Small element */
+.ideai-footer__small {
+  font-family: var(--font-geist-sans);
+  font-size: 12px;
+  color: rgb(100 116 139); /* slate-500 - explicit */
+}
+
+/* 8. List elements (ul/li) */
+.ideai-footer__list {
+  @apply flex gap-4;
+  @apply list-none;
+  @apply m-0 p-0;
+  font-family: var(--font-geist-sans);
+}
+
+.ideai-footer__list-item {
+  font-family: var(--font-geist-sans);
+  font-size: 14px;
+  @apply cursor-pointer;
+  @apply transition-colors duration-200;
+  color: rgb(71 85 105); /* slate-600 - explicit */
+}
+
+.ideai-footer__list-item:hover {
+  color: rgb(15 23 42); /* slate-900 */
+}
+
+/* 9. Code element - from .main code */
+.ideai-footer__code {
+  font-family: var(--font-geist-mono);
+  background: rgba(0, 0, 0, 0.05);
+  padding: 2px 4px;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 12px;
+  color: rgb(15 23 42); /* slate-900 - explicit */
+}
+
+/* 10. Heading element (h3) */
+.ideai-footer__heading {
+  font-family: var(--font-geist-sans);
+  font-size: 16px;
+  font-weight: 600;
+  @apply m-0;
+  color: rgb(15 23 42); /* slate-900 - explicit */
+}
+
+/* 11. Heading h1 - from .main h1 / .ideai-header__title */
+.ideai-footer__h1 {
+  font-family: var(--font-geist-sans);
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  @apply m-0;
+  color: rgb(15 23 42); /* slate-900 - explicit */
+}
+
+/* 12. Ordered list (ol) - from .main ol */
+.ideai-footer__ol {
+  font-family: var(--font-geist-mono);
+  padding-left: 0;
+  margin: 0;
+  font-size: 14px;
+  line-height: 24px;
+  letter-spacing: -0.01em;
+  list-style-position: inside;
+  color: rgb(15 23 42); /* slate-900 - explicit */
+}
+
+.ideai-footer__ol-item {
+  font-family: var(--font-geist-mono);
+  margin-bottom: 8px;
+  color: rgb(15 23 42); /* slate-900 - explicit */
+}
+
+/* 13. List item (li) - from .main li */
+.ideai-footer__li {
+  font-family: var(--font-geist-mono);
+  font-size: 14px;
+  list-style: none;
+  color: rgb(15 23 42); /* slate-900 - explicit */
+}
+
+/* 14. Em element */
+.ideai-footer__em {
+  font-family: var(--font-geist-sans);
+  font-size: 14px;
+  font-style: italic;
+  color: rgb(51 65 85); /* slate-700 - explicit */
+}
+
+/* 15. Mark element */
+.ideai-footer__mark {
+  font-family: var(--font-geist-sans);
+  font-size: 14px;
+  @apply bg-yellow-200;
+  padding: 2px 4px;
+  border-radius: 2px;
+  color: rgb(15 23 42); /* slate-900 - explicit */
+}
+
+/* 16. Blockquote element */
+.ideai-footer__blockquote {
+  font-family: var(--font-geist-sans);
+  font-size: 14px;
+  @apply border-l-4 border-slate-300;
+  @apply pl-4 italic;
+  @apply m-0;
+  color: rgb(51 65 85); /* slate-700 - explicit */
+}
+
+/* 17. Pre element */
+.ideai-footer__pre {
+  font-family: var(--font-geist-mono);
+  font-size: 12px;
+  @apply bg-slate-100;
+  @apply p-2 rounded;
+  @apply overflow-x-auto;
+  @apply m-0;
+  color: rgb(15 23 42); /* slate-900 - explicit */
+}
+
+/* 18. Kbd element */
+.ideai-footer__kbd {
+  font-family: var(--font-geist-mono);
+  font-size: 12px;
+  @apply px-2 py-1;
+  @apply bg-slate-200;
+  @apply border border-slate-300;
+  @apply rounded shadow-sm;
+  color: rgb(15 23 42); /* slate-900 - explicit */
+}
+
+/* 19. Abbr element */
+.ideai-footer__abbr {
+  font-family: var(--font-geist-sans);
+  font-size: 14px;
+  @apply underline decoration-dotted cursor-help;
+  color: rgb(15 23 42); /* slate-900 - explicit */
+}
+
+/* 20. Time element */
+.ideai-footer__time {
+  font-family: var(--font-geist-sans);
+  font-size: 14px;
+  color: rgb(71 85 105); /* slate-600 - explicit */
+}
+
+/**
+ * IdeaI Content Styles
+ * Shared content area styles for all apps
+ * Same styles as docs app for perfect consistency
+ */
+.ideai-content {
+  margin-top: 48px;
+  text-align: left;
+  width: 100%;
+  max-width: 100%; /* Ensure consistent width */
+}
+
+.ideai-content__prose {
+  max-width: 100%;
+  width: 100%; /* Explicit width for consistency */
+  font-family: var(--font-geist-sans);
+  /* Explicit colors - no dark mode classes that could cause inconsistencies */
+  color: rgb(15 23 42); /* slate-900 */
+}
+
+.ideai-content__prose h1,
+.ideai-content__prose h2,
+.ideai-content__prose h3 {
+  font-family: var(--font-geist-sans);
+  color: rgb(15 23 42); /* slate-900 - explicit */
+  font-weight: 700;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+.ideai-content__prose h1 {
+  font-size: 2rem;
+  line-height: 1.2;
+}
+
+.ideai-content__prose h2 {
+  font-size: 1.5rem;
+  line-height: 1.3;
+}
+
+.ideai-content__prose h3 {
+  font-size: 1.25rem;
+  line-height: 1.4;
+}
+
+.ideai-content__prose p {
+  font-family: var(--font-geist-sans);
+  color: rgb(15 23 42); /* slate-900 - explicit */
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+
+.ideai-content__prose ul,
+.ideai-content__prose ol {
+  font-family: var(--font-geist-sans);
+  color: rgb(15 23 42); /* slate-900 - explicit */
+  margin-bottom: 1rem;
+  padding-left: 1.5rem;
+}
+
+.ideai-content__prose li {
+  font-family: var(--font-geist-sans);
+  color: rgb(15 23 42); /* slate-900 - explicit */
+  margin-bottom: 0.5rem;
+  line-height: 1.6;
+}
+
+.ideai-content__prose code {
+  font-family: var(--font-geist-mono);
+  background: rgba(0, 0, 0, 0.05);
+  padding: 2px 4px;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 0.875em;
+  color: rgb(15 23 42); /* slate-900 - explicit */
+}
+
+.ideai-content__prose strong {
+  font-weight: 700;
+  color: rgb(15 23 42); /* slate-900 - explicit */
+}
+
+.ideai-content__link {
+  color: rgb(15 23 42); /* slate-900 - explicit */
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  transition: color 200ms;
+}
+
+.ideai-content__link:hover {
+  color: rgb(51 65 85); /* slate-700 */
+}
+
+.ideai-content__prose a:not(.ideai-content__link) {
+  color: rgb(15 23 42); /* slate-900 - explicit */
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  transition: color 200ms;
+}
+
+.ideai-content__prose a:not(.ideai-content__link):hover {
+  color: rgb(51 65 85); /* slate-700 */
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  .ideai-header__title {
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
+  }
+  
+  .ideai-header__subtitle {
+    font-size: clamp(0.875rem, 2vw, 1rem);
+  }
+  
+  .ideai-button-secondary {
+    @apply min-w-0 text-sm h-10 px-4;
+  }
+  
+  .ideai-footer {
+    padding: 16px 0;
+  }
+  
+  .ideai-footer__content {
+    @apply gap-2;
+    @apply px-2;
+  }
+  
+  .ideai-footer__button {
+    @apply min-w-0 text-sm h-10 px-4;
+  }
+  
+  .ideai-footer__h1 {
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
+  }
+  
+  .ideai-footer__text,
+  .ideai-footer__link,
+  .ideai-footer__div,
+  .ideai-footer__strong,
+  .ideai-footer__small,
+  .ideai-footer__list-item,
+  .ideai-footer__code,
+  .ideai-footer__heading,
+  .ideai-footer__ol-item,
+  .ideai-footer__li,
+  .ideai-footer__em,
+  .ideai-footer__time {
+    font-size: 12px;
+  }
+  
+  .ideai-content {
+    margin-top: 32px;
+  }
+  
+  .ideai-content__prose h1 {
+    font-size: 1.5rem;
+  }
+  
+  .ideai-content__prose h2 {
+    font-size: 1.25rem;
+  }
+  
+  .ideai-content__prose h3 {
+    font-size: 1.125rem;
+  }
+}

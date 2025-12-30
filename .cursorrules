@@ -112,12 +112,135 @@ Before committing:
 
 Never skip CI checks. All PRs must pass CI before merge.
 
+## UI Consistency Standards
+
+### CRITICAL: Centralized CSS Architecture
+
+**ALL IdeaI apps MUST use centralized CSS from @repo/ui. NO custom CSS in apps.**
+
+#### Centralized CSS Architecture
+
+1. **Two-Layer System**:
+   - **Base Layer**: `@repo/ui/src/styles/globals.css` - Tailwind base + standard utilities
+   - **IdeaI Layer**: `@repo/ui/src/styles/ideai.css` - Custom IdeaI finesse and polish
+   - **Both imported in every app's globals.css**
+
+2. **Import Pattern** (MANDATORY for all apps):
+   ```css
+   /* In apps/*/app/globals.css */
+   @import "../../../packages/ui/src/styles/globals.css";
+   @import "../../../packages/ui/src/styles/ideai.css";
+   ```
+
+3. **NO Custom CSS in Apps**:
+   - ❌ NO custom button styles in app CSS modules
+   - ❌ NO custom hover states in app CSS modules
+   - ❌ NO custom typography in app CSS modules
+   - ❌ NO custom colors in app CSS modules
+   - ✅ ONLY use standard Tailwind classes + CSS variables from `ideai.css`
+   - ✅ CSS modules should be minimal - only app-specific layout adjustments
+
+4. **CSS Modules Usage**:
+   - CSS modules ONLY for app-specific layout adjustments
+   - Use standard Tailwind classes directly (not custom ideai-* classes)
+   - Use CSS variables from `ideai.css` for shared values
+   - Example: `.button { @apply border-slate-300 dark:border-slate-700; }`
+
+5. **Adding New IdeaI Styles**:
+   - Add CSS variables to `packages/ui/src/styles/ideai.css` (NOT app CSS)
+   - Use `@layer utilities` for reusable utility classes
+   - All apps automatically get the new styles via imports
+   - Document new utilities in `docs/architecture/ui-consistency.md`
+
+6. **Before Committing UI Changes**:
+   - [ ] All shared styles added to centralized `ideai.css` (not app CSS)
+   - [ ] All apps use identical Tailwind classes
+   - [ ] CSS modules are minimal (only app-specific adjustments)
+   - [ ] No duplicate CSS between apps
+   - [ ] Test in all apps side-by-side to verify perfect consistency
+   - [ ] Update documentation if adding new IdeaI utilities
+
+7. **Documentation**:
+   - See `docs/architecture/ui-consistency.md` for full standards
+   - All IdeaI classes documented in `ideai.css` file header
+
+## Debugging and DOM Inspection Standards
+
+### CRITICAL: Always Check the DOM, Not Just Code
+
+**Many issues are only visible in the rendered DOM, not in source code.**
+
+#### DOM Inspection Workflow (MANDATORY for UI debugging)
+
+1. **Before Making Changes**:
+   - Navigate to both pages in browser (use `mcp_cursor-ide-browser_browser_navigate`)
+   - Take full-page screenshots of both pages (use `browser_take_screenshot` with `fullPage: true`)
+   - Capture DOM snapshots (use `browser_snapshot`)
+   - Compare visually side-by-side
+
+2. **During Debugging**:
+   - Extract and compare HTML from both pages:
+     ```bash
+     curl -s http://localhost:3000 | grep -o 'class="[^"]*"' | sort | uniq > /tmp/web-classes.txt
+     curl -s http://localhost:3001 | grep -o 'class="[^"]*"' | sort | uniq > /tmp/docs-classes.txt
+     comm -23 /tmp/web-classes.txt /tmp/docs-classes.txt  # Classes in web but not docs
+     comm -13 /tmp/web-classes.txt /tmp/docs-classes.txt  # Classes in docs but not web
+     ```
+   - Check rendered CSS by inspecting specific elements:
+     ```bash
+     curl -s http://localhost:3000 | grep -A 50 'class="ideai-footer'  # Footer HTML
+     curl -s http://localhost:3001 | grep -A 50 'class="ideai-footer'  # Footer HTML
+     ```
+   - Compare CSS files loaded:
+     ```bash
+     curl -s http://localhost:3000 | grep -o 'href="[^"]*\.css[^"]*"'
+     curl -s http://localhost:3001 | grep -o 'href="[^"]*\.css[^"]*"'
+     ```
+
+3. **After Making Changes**:
+   - **ALWAYS** take new screenshots to verify visual consistency
+   - **ALWAYS** check the DOM again to ensure classes match
+   - **ALWAYS** verify rendered CSS is identical
+   - Compare before/after screenshots
+
+4. **Visual Testing Checklist**:
+   - [ ] Both pages render identically
+   - [ ] All classes match (except CSS module hashes)
+   - [ ] All CSS files loaded are from same source
+   - [ ] Footer renders identically
+   - [ ] Header renders identically
+   - [ ] Content renders identically
+   - [ ] Button hover states match
+   - [ ] Text colors match
+   - [ ] Spacing/padding matches
+   - [ ] Font sizes match
+
+5. **Common Issues Found Only in DOM**:
+   - CSS module hash differences (expected, but verify styles are same)
+   - Browser-specific CSS differences
+   - Dark mode auto-detection differences
+   - CSS specificity conflicts
+   - Missing or duplicate CSS imports
+   - Incorrect CSS class names in rendered HTML
+   - Browser default styles interfering
+
+6. **Tools to Use**:
+   - `mcp_cursor-ide-browser_browser_navigate` - Navigate to pages
+   - `mcp_cursor-ide-browser_browser_snapshot` - Get DOM structure
+   - `mcp_cursor-ide-browser_browser_take_screenshot` - Visual comparison
+   - `curl` commands - Extract HTML/CSS for comparison
+   - Browser DevTools - Inspect computed styles
+
+**NEVER assume code is correct without checking the rendered DOM.**
+
 ## Workflow
 
 1. Make changes
-2. Run checks: `pnpm lint && pnpm check-types && pnpm build`
-3. Update documentation if code changed (ensure OCD accuracy)
-4. Write detailed commit message
-5. If in non-interactive environment, disable auto-sign, commit, re-enable
-6. Push and verify CI passes
+2. **ALWAYS check DOM** - Navigate, screenshot, compare HTML/CSS
+3. **Verify UI consistency** - Check both apps side-by-side visually
+4. Run checks: `pnpm lint && pnpm check-types && pnpm build`
+5. Update documentation if code changed (ensure OCD accuracy)
+6. Write detailed commit message
+7. If in non-interactive environment, disable auto-sign, commit, re-enable
+8. Push and verify CI passes
 

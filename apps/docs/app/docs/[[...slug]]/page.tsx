@@ -16,6 +16,7 @@ import { notFound } from "next/navigation";
 import { allDocs, type Doc } from "contentlayer/generated";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import { MarkdownLink } from "../../../components/markdown-links";
 
 interface PageProps {
   params: Promise<{ slug?: string[] }>;
@@ -103,7 +104,12 @@ export default async function DocsPage({ params }: PageProps) {
           fontFamily: 'var(--font-geist-sans)',
           color: 'var(--foreground)'
         }}>
-          <ReactMarkdown remarkPlugins={[remarkGfm]}>
+          <ReactMarkdown
+            remarkPlugins={[remarkGfm]}
+            components={{
+              a: MarkdownLink,
+            }}
+          >
             {doc.body.raw}
           </ReactMarkdown>
         </article>
