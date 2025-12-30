@@ -1,3 +1,29 @@
+/**
+ * @fileoverview Card component from the shared UI library
+ * 
+ * @module Card
+ * @description
+ * A reusable card component that renders as a link with title and content.
+ * This component is part of the shared UI package and can be used
+ * across all applications in the monorepo.
+ * 
+ * @example
+ * ```tsx
+ * import { Card } from "@repo/ui/card";
+ * 
+ * <Card
+ *   title="Card Title"
+ *   href="https://example.com"
+ *   className="my-card"
+ * >
+ *   Card content here
+ * </Card>
+ * ```
+ * 
+ * @see {@link ../button.tsx} - Button component
+ * @see {@link ../code.tsx} - Code component
+ */
+
 import { type JSX } from "react";
 
 export function Card({

@@ -57,6 +57,14 @@ Welcome to the IDEAI monorepo documentation. This directory contains comprehensi
   - Development workflow
   - Project structure
 
+### Tools
+
+- **[Code Context Integration](./tools/code-context.md)**
+  - Codebase analysis tool
+  - Header generation and validation
+  - Dependency visualization
+  - Local development only (not in production)
+
 ## 🚀 Quick Links
 
 ### Setup

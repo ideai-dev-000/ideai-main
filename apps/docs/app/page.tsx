@@ -1,3 +1,19 @@
+/**
+ * @fileoverview Main landing page for the IDEAI docs application
+ * 
+ * @module DocsAppPage
+ * @description
+ * The home page component for the IDEAI documentation site.
+ * This page serves as the entry point for the docs application.
+ * 
+ * @example
+ * This page is automatically rendered at the root route (/)
+ * 
+ * @see {@link ../layout.tsx} - Root layout component
+ * @see {@link @repo/ui/button} - Shared Button component
+ * @todo Clean up boilerplate content and add actual documentation
+ */
+
 import Image, { type ImageProps } from "next/image";
 import { Button } from "@repo/ui/button";
 import styles from "./page.module.css";
