@@ -1,4 +1,6 @@
-# Vercel Setup Checklist for Turborepo
+# Vercel Setup Checklist
+
+Quick reference for configuring Vercel for this Turborepo monorepo.
 
 ## ✅ Required Settings in Vercel Dashboard
 

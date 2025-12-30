@@ -32,17 +32,15 @@ See [Vercel's Build Configuration Documentation](https://vercel.com/docs/builds/
 
 ### Build Configuration
 
-Each app has its own `vercel.json` configuration:
+Vercel automatically detects and configures Next.js applications. No `vercel.json` files are required when using the standard Turborepo + Vercel approach.
 
-- **`apps/web/vercel.json`** - Web app configuration
-- **`apps/docs/vercel.json`** - Docs app configuration
+**Automatic Configuration:**
+- Framework detection: Next.js (auto-detected from `package.json`)
+- Build command: Auto-detected from `package.json` scripts
+- Install command: Auto-detected from package manager (pnpm)
+- Output directory: `.next` (Next.js default)
 
-Configuration includes:
-- Build command (runs from monorepo root)
-- Development command
-- Install command
-- Framework detection (Next.js)
-- Output directory
+The Root Directory setting (`apps/web`) tells Vercel where to find the app, and Vercel handles the rest automatically.
 
 ## Vercel CLI
 
@@ -91,28 +89,28 @@ vercel env pull .env.local
 
 ## Monorepo Configuration
 
-### Build Commands
+### Standard Turborepo + Vercel Approach
 
-Vercel is configured to run builds from the monorepo root:
+This project uses the **standard Vercel boilerplate approach** for Turborepo monorepos:
 
-```json
-{
-  "buildCommand": "cd ../.. && pnpm build --filter=web",
-  "installCommand": "cd ../.. && pnpm install"
-}
-```
+1. **Root Directory** set in Vercel dashboard: `apps/web`
+2. **Include files outside root** enabled (required for monorepos)
+3. **Deploy from repo root** (no `working-directory` in workflows)
+4. **Vercel auto-detects** Next.js and builds automatically
 
-This ensures:
-- Shared packages are built correctly
-- Dependencies are installed from root
-- Turborepo orchestration works properly
+**How it works:**
+- Vercel uses the Root Directory setting to find the app
+- "Include files outside root" allows access to monorepo root files
+- Vercel automatically detects Next.js from `package.json`
+- Build commands run from the monorepo root context
+- Shared packages in `packages/` are accessible during build
 
 ### Framework Detection
 
-Vercel automatically detects Next.js framework when:
+Vercel automatically detects Next.js when:
+- Root Directory is set correctly (`apps/web`)
 - `package.json` contains `next` dependency
-- Root directory is correctly configured
-- `vercel.json` specifies `"framework": "nextjs"`
+- "Include files outside root directory" is enabled
 
 ## Deployment Process
 
@@ -137,18 +135,6 @@ Check deployment status:
 - Vercel CLI: `vercel inspect`
 
 ## Configuration Files
-
-### vercel.json Structure
-
-```json
-{
-  "buildCommand": "cd ../.. && pnpm build --filter=web",
-  "devCommand": "cd ../.. && pnpm dev --filter=web",
-  "installCommand": "cd ../.. && pnpm install",
-  "framework": "nextjs",
-  "outputDirectory": ".next"
-}
-```
 
 ### .vercel/project.json
 
@@ -188,21 +174,28 @@ Without the "Include files outside the root directory" setting, Vercel can't acc
 
 **Solution**: 
 1. Ensure "Include files outside the root directory in the Build Step" is enabled
-2. Verify `installCommand` runs from monorepo root
-3. Check workspace dependencies are properly configured
+2. Verify Root Directory is set to `apps/web`
+3. Check workspace dependencies are properly configured in `package.json`
 
 ### Deployment Fails: "Root Directory" error
 
-**Solution**: Verify Root Directory setting matches app location (`apps/web`).
+**Solution**: Verify Root Directory setting matches app location (`apps/web`) in Vercel dashboard.
+
+### Deployment Canceled: "Unverified commit"
+
+**Solution**: This is Vercel's deployment protection. Options:
+1. **Disable verification requirement** (for preview): Go to Project Settings → Deployment Protection → Disable "Require Verified Commits"
+2. **Set up commit signing** (recommended): Configure GPG signing for commits (see [Commit Signing Setup](../setup/commit-signing.md))
 
 ## Best Practices
 
 - ✅ Set Root Directory to `apps/web` in Vercel dashboard
 - ✅ **Enable "Include files outside the root directory in the Build Step"** (required for monorepos)
-- ✅ Let Vercel auto-detect Next.js framework
+- ✅ Deploy from repo root in GitHub Actions (no `working-directory` parameter)
+- ✅ Let Vercel auto-detect Next.js framework (no `vercel.json` needed)
 - ✅ Use environment variables for secrets
 - ✅ Test deployments on preview before production
-- ✅ Use standard Turborepo + Vercel approach (no pre-building needed)
+- ✅ Use standard Turborepo + Vercel boilerplate approach
 
 ## Related Documentation
 

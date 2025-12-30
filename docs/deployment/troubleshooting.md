@@ -101,17 +101,18 @@ See [Vercel Build Configuration](https://vercel.com/docs/builds/configure-a-buil
 
 ### Vercel CLI Not Working
 
-**Symptoms**: `vercel` command fails
+**Symptoms**: `vercel` command fails locally
 
 **Solutions**:
 ```bash
 # Re-authenticate
 vercel login
 
-# Re-link project
-cd apps/web
+# Re-link project (from repo root)
 vercel link
 ```
+
+**Note**: For standard deployments, use GitHub Actions workflows. Vercel CLI is mainly for local testing.
 
 ### Environment Variables Missing
 
@@ -140,11 +141,20 @@ lsof -ti:3000 | xargs kill -9
 
 ### "Project not found"
 
-**Solution**: Verify project is linked:
+**Solution**: Verify project is linked (from repo root):
 ```bash
-cd apps/web
 vercel link
 ```
+
+### Deployment Canceled: "Unverified commit"
+
+**Symptoms**: Deployment is canceled with message about unverified commit
+
+**Solutions**:
+1. **Quick fix** (for preview environments): Disable verification requirement in Vercel dashboard:
+   - Go to: Project Settings → Deployment Protection
+   - Disable "Require Verified Commits"
+2. **Recommended**: Set up commit signing (see [Commit Signing Setup](../setup/commit-signing.md))
 
 ## Getting Help
 

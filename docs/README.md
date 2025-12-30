@@ -2,6 +2,12 @@
 
 Welcome to the IDEAI monorepo documentation. This directory contains comprehensive documentation for development, deployment, and setup.
 
+## 📋 Quick Reference
+
+- **[Project Summary](./PROJECT-SUMMARY.md)** - High-level overview of the project
+- **[Getting Started](./development/getting-started.md)** - Start here for development
+- **[Deployment Overview](./deployment/overview.md)** - Deployment architecture
+
 ## 📚 Documentation Structure
 
 ### Setup Guides
@@ -10,6 +16,16 @@ Welcome to the IDEAI monorepo documentation. This directory contains comprehensi
   - Configure GitHub secrets for CI/CD
   - Automated setup script documentation
   - Manual configuration options
+
+- **[Vercel Setup Checklist](./setup/vercel-checklist.md)**
+  - Quick reference for Vercel configuration
+  - Required dashboard settings
+  - Monorepo-specific requirements
+
+- **[Commit Signing Setup](./setup/commit-signing.md)**
+  - Configure GPG signing for verified commits
+  - Required for Vercel deployment protection
+  - Security best practices
 
 ### Deployment
 
