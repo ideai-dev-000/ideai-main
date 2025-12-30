@@ -70,6 +70,12 @@ Welcome to the IdeaI monorepo documentation. This directory contains comprehensi
   - Dependency visualization
   - Local development only (not in production)
 
+- **[Contentlayer Integration](./tools/contentlayer.md)**
+  - Type-safe content access for docs site
+  - SEO metadata generation
+  - Sitemap generation
+  - Semantic URLs
+
 ## 🚀 Quick Links
 
 ### Setup

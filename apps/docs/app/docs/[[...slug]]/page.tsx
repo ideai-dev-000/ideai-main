@@ -14,7 +14,8 @@
 
 import { notFound } from "next/navigation";
 import { allDocs, type Doc } from "contentlayer/generated";
-import { MDXContent } from "./mdx-content";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 interface PageProps {
   params: Promise<{ slug?: string[] }>;
@@ -102,7 +103,9 @@ export default async function DocsPage({ params }: PageProps) {
           fontFamily: 'var(--font-geist-sans)',
           color: 'var(--foreground)'
         }}>
-          <MDXContent code={doc.body.code} />
+          <ReactMarkdown remarkPlugins={[remarkGfm]}>
+            {doc.body.raw}
+          </ReactMarkdown>
         </article>
       </main>
     </div>
