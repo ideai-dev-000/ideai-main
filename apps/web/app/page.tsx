@@ -10,9 +10,11 @@
  * This page is automatically rendered at the root route (/)
  * 
  * @see {@link ../layout.tsx} - Root layout component
+ * @see {@link @repo/ui/button} - Shared Button component
  * @todo Add actual application content and features
  */
 
+import { Button } from "@repo/ui/button";
 import styles from "./page.module.css";
 
 export default function Home() {
@@ -20,6 +22,9 @@ export default function Home() {
     <main className={styles.main}>
       <h1>IDEAI</h1>
       <p>Welcome to IDEAI</p>
+      <Button appName="web" className={styles.button}>
+        Open alert
+      </Button>
     </main>
   );
 }
