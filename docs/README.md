@@ -23,7 +23,8 @@ Welcome to the IDEAI monorepo documentation. This directory contains comprehensi
   - Monorepo-specific requirements
 
 - **[Commit Signing Setup](./setup/commit-signing.md)**
-  - Configure GPG signing for verified commits
+  - ✅ GPG signing configured and working
+  - Verified commits show "Verified" badge on GitHub
   - Required for Vercel deployment protection
   - Security best practices
 

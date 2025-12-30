@@ -64,7 +64,7 @@ See [Vercel Build Configuration](https://vercel.com/docs/builds/configure-a-buil
    - Set Root Directory to: `apps/web`
    - **Enable** "Include files outside the root directory in the Build Step"
 2. Verify `package.json` contains `next` dependency
-3. Check `vercel.json` has correct framework setting
+3. Ensure Root Directory is set correctly in Vercel dashboard
 
 ### Build Fails: "Cannot find module"
 

@@ -80,6 +80,12 @@ ideai-main/
   - Vercel uses Root Directory setting from dashboard
   - Auto-detects Next.js framework
   - No pre-building required
+  - No `vercel.json` files needed
+
+- **Commit Signing**:
+  - GPG key configured and working
+  - Commits automatically signed
+  - Verified commits accepted by Vercel
 
 - **Monorepo Support**:
   - Root Directory: `apps/web`
@@ -163,9 +169,11 @@ pnpm build
 - **DO** enable "Include files outside root directory"
 
 ### Commit Signing
-- Required for Vercel deployments when "Require Verified Commits" is enabled
-- See [Commit Signing Setup](./setup/commit-signing.md) for configuration
-- Can be disabled in Vercel dashboard for preview environments
+- ✅ GPG commit signing configured and working
+- Commits automatically signed with GPG key
+- Verified commits show "Verified" badge on GitHub
+- Vercel accepts verified commits for deployments
+- See [Commit Signing Setup](./setup/commit-signing.md) for details
 
 ## Related Documentation
 

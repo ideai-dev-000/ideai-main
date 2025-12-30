@@ -169,10 +169,16 @@ See [Deployment Documentation](./docs/deployment/overview.md) for details.
 Use the provided script to configure GitHub secrets for CI/CD:
 
 ```bash
-./setup-secrets.sh
+./scripts/setup-secrets.sh
 ```
 
 See [GitHub Secrets Setup Guide](./docs/setup/github-secrets.md) for details.
+
+### Commit Signing
+
+✅ **Commit signing is configured and working!**
+
+All commits are automatically signed with GPG. See [Commit Signing Setup](./docs/setup/commit-signing.md) for details.
 
 ## Useful Links
 
