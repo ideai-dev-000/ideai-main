@@ -1,0 +1,13 @@
+/**
+ * @fileoverview Global styles for IdeaI landing page
+ */
+
+/* MVP.css - Minimalist stylesheet for semantic HTML (~10KB) */
+@import "../../../packages/ui/src/styles/mvp.css";
+
+/* Tailwind CSS base, components, utilities */
+@import "../../../packages/ui/src/styles/globals.css";
+
+/* IdeaI custom layer */
+@import "../../../packages/ui/src/styles/ideai.css";
+
