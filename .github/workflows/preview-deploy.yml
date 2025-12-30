@@ -47,13 +47,13 @@ jobs:
 
       - name: Deploy to Vercel
         id: deploy
-        uses: vercel/action@v1
+        uses: amondnet/vercel-action@v25
         with:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
           vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
           vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          vercel-args: '--prod=false'
           working-directory: ./apps/web
+          scope: ${{ secrets.VERCEL_ORG_ID }}
 
       - name: Comment Preview URL
         if: github.event_name == 'pull_request'
