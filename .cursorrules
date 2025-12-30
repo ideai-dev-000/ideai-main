@@ -1,5 +1,32 @@
 # Cursor AI Rules for IDEAI Monorepo
 
+## Brand and Naming Standards
+
+### Brand Name: IDEAI
+**CRITICAL**: The product/brand name must ALWAYS be written as **IDEAI** (all uppercase):
+- ✅ Correct: `IDEAI`, `IDEAI web app`, `Welcome to IDEAI`
+- ❌ Incorrect: `IdeaI`, `Ideai`, `ideai`, `IDEAi`, `Idea I`, or any other variation
+
+**When to use IDEAI:**
+- Product/brand name in UI text
+- Documentation references to the product
+- Code comments mentioning the brand
+- User-facing content
+
+**Note**: Repository names, GitHub orgs, and technical identifiers may use lowercase (e.g., `ideai-main`, `ideai-dev-000`) for technical reasons, but the **brand name itself is always IDEAI**.
+
+### Semantic File Naming
+**CRITICAL**: Semantic, descriptive file names are essential:
+- ✅ Good: `user-profile-card.tsx`, `api-auth-handler.ts`, `deployment-checklist.md`
+- ❌ Bad: `component1.tsx`, `utils.ts`, `file.md`, `temp.js`
+
+**File naming principles:**
+- Use kebab-case for file names
+- Be descriptive and specific
+- Include the purpose/type in the name
+- Avoid abbreviations unless widely understood
+- Group related files with consistent prefixes
+
 ## Code Standards
 
 ### Code Headers
