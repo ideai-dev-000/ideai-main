@@ -7,7 +7,7 @@
  * Provides styling for the main landing page layout.
  */
 
-main {
+.main {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -17,13 +17,13 @@ main {
   gap: 1rem;
 }
 
-h1 {
+.main h1 {
   font-size: 2.5rem;
   font-weight: 700;
   margin: 0;
 }
 
-p {
+.main p {
   font-size: 1.125rem;
   color: var(--foreground);
   opacity: 0.8;
