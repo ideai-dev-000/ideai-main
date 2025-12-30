@@ -25,11 +25,33 @@ export interface RoutingConfig {
 }
 
 /**
+ * Detect if we're in production
+ * In production, we use subdomains because each app is a separate Vercel project
+ */
+function isProduction(): boolean {
+  if (typeof window === "undefined") {
+    // Server-side: check environment
+    return process.env.NODE_ENV === "production" || 
+           process.env.VERCEL === "1" ||
+           !!process.env.VERCEL_URL;
+  }
+  // Client-side: check hostname
+  const hostname = window.location.hostname;
+  return hostname !== "localhost" && 
+         hostname !== "127.0.0.1" &&
+         !hostname.includes("localhost");
+}
+
+/**
  * Default routing configuration
  * Can be overridden via environment variables or runtime API
+ * 
+ * IMPORTANT: In production, we use subdomains because each app is a separate Vercel project.
+ * Folder-based routing only works in development or with a single project.
  */
 export const defaultRoutingConfig: RoutingConfig = {
-  mode: (process.env.ROUTING_MODE as RoutingMode) || "folders",
+  mode: (process.env.ROUTING_MODE as RoutingMode) || 
+        (isProduction() ? "subdomains" : "folders"),
   baseUrl: process.env.NEXT_PUBLIC_BASE_URL || 
     (typeof window !== "undefined" ? window.location.origin : "http://localhost:3000"),
   apps: [
@@ -107,7 +129,13 @@ export function getAppUrl(app: AppConfig, config: RoutingConfig): string {
 }
 
 /**
- * Get app URL for iframe/popup (always uses current origin in production)
+ * Get app URL for iframe/popup
+ * 
+ * IMPORTANT: In production, each app is a separate Vercel project with its own URL.
+ * We need to use subdomains or the actual Vercel deployment URL.
+ * 
+ * For now, we'll use subdomains in production (requires DNS setup).
+ * If subdomains aren't configured, we'll need to use the actual Vercel URLs.
  */
 export function getAppIframeUrl(app: AppConfig, config: RoutingConfig): string {
   // Check if we're in development (client-side check)
@@ -120,7 +148,14 @@ export function getAppIframeUrl(app: AppConfig, config: RoutingConfig): string {
     return `http://localhost:${app.port}/`;
   }
   
-  // In production, use folder or subdomain based on config
+  // In production, use subdomains (each app is a separate Vercel project)
+  // TODO: For apps that don't have subdomains configured yet, we may need to
+  // use the actual Vercel deployment URLs temporarily
+  if (config.mode === "subdomains" && app.subdomain) {
+    return getAppUrl(app, config);
+  }
+  
+  // Fallback: use folder-based routing (won't work with separate projects)
   return getAppUrl(app, config);
 }
 
