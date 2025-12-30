@@ -4,7 +4,7 @@ Welcome to the IDEAI monorepo! This guide will help you get started with develop
 
 ## Prerequisites
 
-- **Node.js**: >= 18
+- **Node.js**: >= 20 (required for Next.js 16)
 - **pnpm**: 9.0.0 (installed automatically)
 - **Git**: For version control
 
@@ -190,7 +190,7 @@ pnpm check-types
 
 - [Deployment Guide](../deployment/overview.md)
 - [CI/CD Documentation](../deployment/ci-cd.md)
-- [Contributing Guidelines](./contributing.md)
+- [Contributing Guidelines](./CONTRIBUTING.md)
 
 ## Getting Help
 

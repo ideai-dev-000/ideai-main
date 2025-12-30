@@ -41,11 +41,12 @@ Deployments happen automatically via GitHub Actions when:
 Deployments can be triggered manually using Vercel CLI:
 
 ```bash
-# From app directory
-cd apps/web
+# From repository root (Vercel uses Root Directory setting)
 vercel deploy        # Preview
 vercel deploy --prod # Production
 ```
+
+**Note**: Vercel uses the Root Directory setting (`apps/web`) from the dashboard, so deploy from the repo root.
 
 ## Quick Links
 

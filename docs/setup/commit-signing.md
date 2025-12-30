@@ -2,6 +2,8 @@
 
 This guide explains how to set up GPG commit signing for verified commits, which is required for Vercel deployments when "Require Verified Commits" is enabled.
 
+**Status**: ✅ Commit signing is configured and working in this project.
+
 ## Why Sign Commits?
 
 - **Security**: Verifies that commits are from you

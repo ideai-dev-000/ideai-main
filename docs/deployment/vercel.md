@@ -61,31 +61,37 @@ vercel login
 Projects are linked via `.vercel/` directory:
 
 ```bash
-cd apps/web
+# From repository root (Vercel uses Root Directory setting)
 vercel link
 ```
 
 This creates `.vercel/project.json` with project configuration.
 
+**Note**: Vercel uses the Root Directory setting (`apps/web`) from the dashboard, so link from the repo root.
+
 ### Manual Deployment
 
 ```bash
+# From repository root
 # Preview deployment
-cd apps/web
 vercel deploy
 
 # Production deployment
 vercel deploy --prod
 ```
 
+**Note**: Deploy from repo root. Vercel automatically uses the Root Directory setting (`apps/web`) from the dashboard.
+
 ### Environment Variables
 
 Pull environment variables locally:
 
 ```bash
-cd apps/web
+# From repository root
 vercel env pull .env.local
 ```
+
+The `.env.local` file will be created in the current directory. Vercel uses the Root Directory setting to determine which app's environment variables to pull.
 
 ## Monorepo Configuration
 

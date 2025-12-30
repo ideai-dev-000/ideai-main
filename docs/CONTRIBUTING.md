@@ -9,15 +9,19 @@ Documentation is organized semantically in the `docs/` directory:
 ```
 docs/
 ├── README.md                    # Documentation index
+├── PROJECT-SUMMARY.md          # Project overview
 ├── setup/                       # Setup and configuration guides
-│   └── github-secrets.md
+│   ├── github-secrets.md       # GitHub secrets setup
+│   ├── vercel-checklist.md     # Vercel setup checklist
+│   └── commit-signing.md       # GPG commit signing setup
 ├── deployment/                  # Deployment documentation
-│   ├── overview.md
-│   ├── ci-cd.md
-│   ├── vercel.md
-│   └── troubleshooting.md
-└── development/                # Development guides
-    └── getting-started.md
+│   ├── overview.md             # Deployment architecture
+│   ├── ci-cd.md                # CI/CD workflows
+│   ├── vercel.md               # Vercel configuration
+│   └── troubleshooting.md      # Common issues
+└── development/              # Development guides
+    ├── getting-started.md      # Development setup
+    └── CONTRIBUTING.md         # This file
 ```
 
 ## Naming Conventions

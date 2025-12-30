@@ -26,4 +26,4 @@ For standard Turborepo + Vercel deployments:
 ## Reference
 
 - [Vercel Build Configuration Docs](https://vercel.com/docs/builds/configure-a-build#root-directory)
-- [Project Documentation](./docs/deployment/vercel.md)
+- [Project Documentation](../deployment/vercel.md)
