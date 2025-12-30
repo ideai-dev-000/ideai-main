@@ -1,6 +1,15 @@
-# Turborepo starter
+# IDEAI Monorepo
 
-This Turborepo starter is maintained by the Turborepo core team.
+A Turborepo monorepo containing Next.js applications and shared packages.
+
+## 📚 Documentation
+
+Comprehensive documentation is available in the [`docs/`](./docs/) directory:
+
+- **[Documentation Index](./docs/README.md)** - Start here for all documentation
+- **[Getting Started](./docs/development/getting-started.md)** - Development setup
+- **[Deployment Guide](./docs/deployment/overview.md)** - Deployment documentation
+- **[Setup Guide](./docs/setup/github-secrets.md)** - CI/CD configuration
 
 ## Using this example
 
@@ -123,13 +132,50 @@ yarn exec turbo link
 pnpm exec turbo link
 ```
 
+## Quick Start
+
+```bash
+# Install dependencies
+pnpm install
+
+# Start development servers
+pnpm dev
+
+# Build all applications
+pnpm build
+```
+
+## Project Structure
+
+- `apps/web` - Main web application (Next.js)
+- `apps/docs` - Documentation site (Next.js)
+- `packages/ui` - Shared UI components
+- `packages/eslint-config` - Shared ESLint configuration
+- `packages/typescript-config` - Shared TypeScript configuration
+
+## CI/CD
+
+This project uses GitHub Actions for CI/CD and Vercel for deployments.
+
+- **Preview deployments**: Automatic on push to `preview` branch
+- **Production deployments**: Automatic on push to `main` branch
+
+See [Deployment Documentation](./docs/deployment/overview.md) for details.
+
+## Setup Scripts
+
+### GitHub Secrets Setup
+
+Use the provided script to configure GitHub secrets for CI/CD:
+
+```bash
+./setup-secrets.sh
+```
+
+See [GitHub Secrets Setup Guide](./docs/setup/github-secrets.md) for details.
+
 ## Useful Links
 
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turborepo.com/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.com/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.com/docs/reference/configuration)
-- [CLI Usage](https://turborepo.com/docs/reference/command-line-reference)
+- [Documentation](./docs/README.md) - Complete documentation index
+- [Turborepo Docs](https://turbo.build/repo/docs) - Turborepo documentation
+- [Next.js Docs](https://nextjs.org/docs) - Next.js documentation
