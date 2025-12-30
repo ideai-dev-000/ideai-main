@@ -10,6 +10,7 @@
  * Automatically wraps all page components in the app directory
  * 
  * @see {@link ./page.tsx} - Home page component
+ * @see {@link ./docs/[[...slug]]/page.tsx} - Documentation pages
  */
 
 import type { Metadata } from "next";
@@ -26,7 +27,10 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "IdeaI Docs",
+  title: {
+    default: "IdeaI Docs",
+    template: "%s – IdeaI Docs",
+  },
   description: "IdeaI documentation site",
 };
 
@@ -36,7 +40,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         {children}
       </body>

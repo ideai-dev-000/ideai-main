@@ -1,0 +1,48 @@
+{
+  "index": "Documentation Index",
+  "project-summary": "Project Summary",
+  "contributing": "Contributing",
+  "getting-started": "Getting Started",
+  "deployment": {
+    "title": "Deployment",
+    "type": "page",
+    "children": {
+      "overview": "Overview",
+      "ci-cd": "CI/CD Workflows",
+      "vercel": "Vercel Configuration",
+      "troubleshooting": "Troubleshooting",
+      "commit-signing-ci": "Commit Signing in CI"
+    }
+  },
+  "setup": {
+    "title": "Setup",
+    "type": "page",
+    "children": {
+      "github-secrets": "GitHub Secrets",
+      "vercel-checklist": "Vercel Checklist",
+      "commit-signing": "Commit Signing"
+    }
+  },
+  "development": {
+    "title": "Development",
+    "type": "page",
+    "children": {
+      "getting-started": "Getting Started"
+    }
+  },
+  "tools": {
+    "title": "Tools",
+    "type": "page",
+    "children": {
+      "code-context": "Code Context"
+    }
+  },
+  "tasks": {
+    "title": "Tasks",
+    "type": "page",
+    "children": {
+      "code-context-integration": "Code Context Integration"
+    }
+  }
+}
+

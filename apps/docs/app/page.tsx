@@ -1,32 +1,20 @@
 /**
- * @fileoverview Main landing page for the IdeaI docs application
+ * @fileoverview Home page for the IdeaI docs application
  * 
- * @module DocsAppPage
+ * @module DocsHomePage
  * @description
  * The home page component for the IdeaI documentation site.
- * This page serves as the entry point for the docs application.
+ * Renders the documentation index directly.
  * 
  * @example
  * This page is automatically rendered at the root route (/)
  * 
- * @see {@link ../layout.tsx} - Root layout component
- * @see {@link @repo/ui/button} - Shared Button component
- * @todo Add actual documentation content
+ * @see {@link ./layout.tsx} - Root layout component
+ * @see {@link ./docs/[[...slug]]/page.tsx} - Documentation pages
  */
 
-import { Button } from "@repo/ui/button";
-import styles from "./page.module.css";
+import { redirect } from "next/navigation";
 
 export default function Home() {
-  return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <h1>IdeaI Docs</h1>
-        <p>Welcome to IdeaI</p>
-        <Button appName="docs" className={styles.secondary}>
-          Open alert
-        </Button>
-      </main>
-    </div>
-  );
+  redirect("/docs");
 }
