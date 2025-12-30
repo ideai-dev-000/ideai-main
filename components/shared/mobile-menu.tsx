@@ -9,6 +9,8 @@ import { Button } from '@/components/ui/button'
 import { GitHubIcon, VercelIcon } from '@/components/ui/icons'
 import { DEPLOY_URL } from '@/lib/constants'
 import { ChatSelector } from './chat-selector'
+import { useStreaming } from '@/contexts/streaming-context'
+import { Zap, ZapOff } from 'lucide-react'
 import {
   Dialog,
   DialogContent,
@@ -27,6 +29,7 @@ export function MobileMenu({ onInfoDialogOpen }: MobileMenuProps) {
   const pathname = usePathname()
   const { data: session } = useSession()
   const isHomepage = pathname === '/'
+  const { isStreamingEnabled, toggleStreaming } = useStreaming()
 
   const handleLogoClick = (e: React.MouseEvent) => {
     if (isHomepage) {
@@ -129,6 +132,32 @@ export function MobileMenu({ onInfoDialogOpen }: MobileMenuProps) {
 
                 {/* Menu items */}
                 <div className="space-y-2">
+                  <Button
+                    variant="ghost"
+                    className="w-full justify-start h-auto p-3 text-left"
+                    onClick={() => {
+                      toggleStreaming()
+                    }}
+                  >
+                    <div className="flex items-center gap-3 w-full">
+                      {isStreamingEnabled ? (
+                        <Zap className="h-4 w-4 flex-shrink-0 text-yellow-500" />
+                      ) : (
+                        <ZapOff className="h-4 w-4 flex-shrink-0" />
+                      )}
+                      <div className="flex-1">
+                        <div className="font-medium">
+                          {isStreamingEnabled ? 'Streaming' : 'Sync Mode'}
+                        </div>
+                        <div className="text-sm text-muted-foreground">
+                          {isStreamingEnabled
+                            ? 'Real-time responses'
+                            : 'Complete response'}
+                        </div>
+                      </div>
+                    </div>
+                  </Button>
+
                   <Button
                     variant="ghost"
                     className="w-full justify-start h-auto p-3 text-left"

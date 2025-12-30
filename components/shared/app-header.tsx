@@ -10,7 +10,13 @@ import { UserNav } from '@/components/user-nav'
 import { Button } from '@/components/ui/button'
 import { VercelIcon, GitHubIcon } from '@/components/ui/icons'
 import { DEPLOY_URL } from '@/lib/constants'
-import { Info } from 'lucide-react'
+import { Info, Zap, ZapOff } from 'lucide-react'
+import { useStreaming } from '@/contexts/streaming-context'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/components/ui/tooltip'
 import {
   Dialog,
   DialogContent,
@@ -51,6 +57,7 @@ export function AppHeader({ className = '' }: AppHeaderProps) {
   const { data: session } = useSession()
   const isHomepage = pathname === '/'
   const [isInfoDialogOpen, setIsInfoDialogOpen] = useState(false)
+  const { isStreamingEnabled, toggleStreaming } = useStreaming()
 
   // Handle logo click - reset UI if on homepage, otherwise navigate to homepage
   const handleLogoClick = (e: React.MouseEvent) => {
@@ -88,8 +95,38 @@ export function AppHeader({ className = '' }: AppHeaderProps) {
             </div>
           </div>
 
-          {/* Desktop right side - What's This, GitHub, Deploy, and User */}
+          {/* Desktop right side - Streaming Toggle, What's This, GitHub, Deploy, and User */}
           <div className="hidden lg:flex items-center gap-4">
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="outline"
+                  className="py-1.5 px-2 h-fit text-sm"
+                  onClick={toggleStreaming}
+                  aria-label={
+                    isStreamingEnabled
+                      ? 'Disable streaming'
+                      : 'Enable streaming'
+                  }
+                >
+                  {isStreamingEnabled ? (
+                    <Zap size={16} className="text-yellow-500" />
+                  ) : (
+                    <ZapOff size={16} />
+                  )}
+                  <span className="ml-1.5">
+                    {isStreamingEnabled ? 'Streaming' : 'Sync'}
+                  </span>
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>
+                  {isStreamingEnabled
+                    ? 'Streaming enabled: See responses in real-time'
+                    : 'Streaming disabled: Wait for complete response'}
+                </p>
+              </TooltipContent>
+            </Tooltip>
             <Button
               variant="outline"
               className="py-1.5 px-2 h-fit text-sm"

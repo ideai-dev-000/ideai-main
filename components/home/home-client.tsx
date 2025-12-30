@@ -26,6 +26,7 @@ import { ChatInput } from '@/components/chat/chat-input'
 import { PreviewPanel } from '@/components/chat/preview-panel'
 import { ResizableLayout } from '@/components/shared/resizable-layout'
 import { BottomToolbar } from '@/components/shared/bottom-toolbar'
+import { useStreaming } from '@/contexts/streaming-context'
 
 // Component that uses useSearchParams - needs to be wrapped in Suspense
 function SearchParamsHandler({ onReset }: { onReset: () => void }) {
@@ -71,6 +72,7 @@ export function HomeClient() {
   const [activePanel, setActivePanel] = useState<'chat' | 'preview'>('chat')
   const router = useRouter()
   const textareaRef = useRef<HTMLTextAreaElement>(null)
+  const { isStreamingEnabled } = useStreaming()
 
   const handleReset = () => {
     // Reset all chat-related state
@@ -183,7 +185,7 @@ export function HomeClient() {
         },
         body: JSON.stringify({
           message: userMessage,
-          streaming: true,
+          streaming: isStreamingEnabled,
           attachments: currentAttachments.map((att) => ({ url: att.dataUrl })),
         }),
       })
@@ -196,12 +198,14 @@ export function HomeClient() {
           const contentType = response.headers.get('content-type')
           if (contentType && contentType.includes('application/json')) {
             const errorData = await response.json()
-            if (errorData.error) {
+            console.error('API Error Response:', errorData)
+            // Prioritize error messages in order: details > error > message
+            if (errorData.details) {
+              errorMessage = errorData.details
+            } else if (errorData.error) {
               errorMessage = errorData.error
             } else if (errorData.message) {
               errorMessage = errorData.message
-            } else if (errorData.details) {
-              errorMessage = errorData.details
             } else if (response.status === 429) {
               errorMessage =
                 'You have exceeded your maximum number of messages for the day. Please try again later.'
@@ -209,6 +213,7 @@ export function HomeClient() {
           } else {
             // Try to get text response
             const text = await response.text()
+            console.error('Non-JSON error response:', text)
             if (text) {
               errorMessage = text.substring(0, 200) // Limit length
             }
@@ -223,22 +228,62 @@ export function HomeClient() {
         throw new Error(errorMessage)
       }
 
-      if (!response.body) {
-        throw new Error('No response body for streaming')
+      // Handle streaming vs non-streaming responses
+      if (isStreamingEnabled) {
+        // Streaming mode
+        if (!response.body) {
+          throw new Error('No response body for streaming')
+        }
+
+        setIsLoading(false)
+
+        // Add streaming assistant response
+        setChatHistory((prev) => [
+          ...prev,
+          {
+            type: 'assistant',
+            content: [],
+            isStreaming: true,
+            stream: response.body,
+          },
+        ])
+      } else {
+        // Non-streaming mode - get complete response
+        const chatData = await response.json()
+        setIsLoading(false)
+
+        // Handle chat data
+        if (chatData.id) {
+          setCurrentChatId(chatData.id)
+          setCurrentChat({ id: chatData.id, demo: chatData.demo })
+
+          // Update URL without triggering Next.js routing
+          window.history.pushState(null, '', `/chats/${chatData.id}`)
+        }
+
+        // Add complete assistant response
+        if (chatData.messages && chatData.messages.length > 0) {
+          const lastMessage = chatData.messages[chatData.messages.length - 1]
+          setChatHistory((prev) => [
+            ...prev,
+            {
+              type: 'assistant',
+              content: lastMessage.content || lastMessage.experimental_content || [],
+              isStreaming: false,
+            },
+          ])
+        }
+
+        // Update preview if demo URL is available
+        if (chatData.demo) {
+          setCurrentChat((prev) =>
+            prev ? { ...prev, demo: chatData.demo } : { id: chatData.id, demo: chatData.demo },
+          )
+          if (window.innerWidth < 768) {
+            setActivePanel('preview')
+          }
+        }
       }
-
-      setIsLoading(false)
-
-      // Add streaming assistant response
-      setChatHistory((prev) => [
-        ...prev,
-        {
-          type: 'assistant',
-          content: [],
-          isStreaming: true,
-          stream: response.body,
-        },
-      ])
     } catch (error) {
       console.error('Error creating chat:', error)
       setIsLoading(false)
@@ -368,7 +413,7 @@ export function HomeClient() {
         body: JSON.stringify({
           message: userMessage,
           chatId: currentChatId,
-          streaming: true,
+          streaming: isStreamingEnabled,
         }),
       })
 
@@ -410,22 +455,53 @@ export function HomeClient() {
         throw new Error(errorMessage)
       }
 
-      if (!response.body) {
-        throw new Error('No response body for streaming')
+      // Handle streaming vs non-streaming responses
+      if (isStreamingEnabled) {
+        // Streaming mode
+        if (!response.body) {
+          throw new Error('No response body for streaming')
+        }
+
+        setIsLoading(false)
+
+        // Add streaming response
+        setChatHistory((prev) => [
+          ...prev,
+          {
+            type: 'assistant',
+            content: [],
+            isStreaming: true,
+            stream: response.body,
+          },
+        ])
+      } else {
+        // Non-streaming mode - get complete response
+        const chatData = await response.json()
+        setIsLoading(false)
+
+        // Add complete assistant response
+        if (chatData.messages && chatData.messages.length > 0) {
+          const lastMessage = chatData.messages[chatData.messages.length - 1]
+          setChatHistory((prev) => [
+            ...prev,
+            {
+              type: 'assistant',
+              content: lastMessage.content || lastMessage.experimental_content || [],
+              isStreaming: false,
+            },
+          ])
+        }
+
+        // Update preview if demo URL is available
+        if (chatData.demo) {
+          setCurrentChat((prev) =>
+            prev ? { ...prev, demo: chatData.demo } : { id: chatData.id, demo: chatData.demo },
+          )
+          if (window.innerWidth < 768) {
+            setActivePanel('preview')
+          }
+        }
       }
-
-      setIsLoading(false)
-
-      // Add streaming response
-      setChatHistory((prev) => [
-        ...prev,
-        {
-          type: 'assistant',
-          content: [],
-          isStreaming: true,
-          stream: response.body,
-        },
-      ])
     } catch (error) {
       console.error('Error:', error)
 

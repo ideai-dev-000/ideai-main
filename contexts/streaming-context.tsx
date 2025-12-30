@@ -1,6 +1,6 @@
 'use client'
 
-import { createContext, useContext, useState, ReactNode } from 'react'
+import { createContext, useContext, useState, ReactNode, useEffect } from 'react'
 
 interface StreamingHandoff {
   chatId: string | null
@@ -16,6 +16,9 @@ interface StreamingContextType {
     userMessage: string,
   ) => void
   clearHandoff: () => void
+  // Streaming toggle state
+  isStreamingEnabled: boolean
+  toggleStreaming: () => void
 }
 
 const StreamingContext = createContext<StreamingContextType | null>(null)
@@ -39,6 +42,21 @@ export function StreamingProvider({ children }: StreamingProviderProps) {
     userMessage: null,
   })
 
+  // Streaming toggle state - default to true, persist in localStorage
+  const [isStreamingEnabled, setIsStreamingEnabled] = useState<boolean>(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('streamingEnabled')
+      return saved !== null ? saved === 'true' : true
+    }
+    return true
+  })
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('streamingEnabled', String(isStreamingEnabled))
+    }
+  }, [isStreamingEnabled])
+
   const startHandoff = (
     chatId: string,
     stream: ReadableStream<Uint8Array>,
@@ -51,12 +69,18 @@ export function StreamingProvider({ children }: StreamingProviderProps) {
     setHandoff({ chatId: null, stream: null, userMessage: null })
   }
 
+  const toggleStreaming = () => {
+    setIsStreamingEnabled((prev) => !prev)
+  }
+
   return (
     <StreamingContext.Provider
       value={{
         handoff,
         startHandoff,
         clearHandoff,
+        isStreamingEnabled,
+        toggleStreaming,
       }}
     >
       {children}
