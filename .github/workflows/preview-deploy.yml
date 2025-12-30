@@ -45,38 +45,14 @@ jobs:
           TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
           TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
 
-      - name: Install Vercel CLI
-        run: npm install --global vercel@latest
-
-      - name: Link Vercel Project
-        working-directory: ./apps/web
-        run: |
-          mkdir -p .vercel
-          cat > .vercel/project.json << EOF
-          {
-            "projectId": "${{ secrets.VERCEL_PROJECT_ID }}",
-            "orgId": "${{ secrets.VERCEL_ORG_ID }}",
-            "projectName": "web"
-          }
-          EOF
-        env:
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-
-      - name: Deploy to Vercel Preview
-        id: deploy
-        working-directory: ./apps/web
-        run: |
-          vercel deploy --token=${{ secrets.VERCEL_TOKEN }} --yes --force 2>&1 | tee deploy.log
-          URL=$(grep -oE 'https://[a-zA-Z0-9-]+\.vercel\.app' deploy.log | head -1)
-          if [ -z "$URL" ]; then
-            URL=$(grep -o 'https://[^ ]*' deploy.log | head -1)
-          fi
-          echo "url=$URL" >> $GITHUB_OUTPUT
-          echo "Deployment URL: $URL"
-        env:
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+      - name: Deploy to Vercel
+        uses: vercel/action@v1
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          vercel-args: '--prod=false'
+          working-directory: ./apps/web
 
       - name: Comment Preview URL
         if: github.event_name == 'pull_request'
