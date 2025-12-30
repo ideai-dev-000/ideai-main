@@ -1,0 +1,16 @@
+/**
+ * @fileoverview MVP.css + Tailwind CSS - Complete styling
+ * 
+ * This app uses both MVP.css and Tailwind CSS for complete styling.
+ * MVP.css provides semantic HTML styling, Tailwind provides utilities.
+ */
+
+/* MVP.css - Minimalist stylesheet for semantic HTML (~10KB) */
+@import "../../../packages/ui/src/styles/mvp.css";
+
+/* Tailwind CSS base, components, utilities */
+@import "../../../packages/ui/src/styles/globals.css";
+
+/* IdeaI custom layer */
+@import "../../../packages/ui/src/styles/ideai.css";
+

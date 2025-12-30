@@ -75,6 +75,12 @@ Welcome to the IdeaI monorepo documentation. This directory contains comprehensi
   - Visual testing procedures
   - All apps consistency (`/web`, `/docs`, `/all`)
 
+- **[CSS Showcase and Best Practices](./architecture/css-showcase.md)**
+  - CSS approach comparison (No CSS, MVP.css, Tailwind, Combined)
+  - Best practice configurations
+  - Hot reload support
+  - Showcase apps (`/nocss`, `/mvp`, `/tailwind`, `/allcss`)
+
 ### Tools
 
 - **[Code Context Integration](./tools/code-context.md)**
