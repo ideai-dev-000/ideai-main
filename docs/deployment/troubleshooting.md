@@ -36,6 +36,24 @@ Common issues and solutions for deployment problems.
 
 ## Vercel Deployment Issues
 
+### "Unexpected error" During Deployment
+
+**Symptoms**: Deployment queues successfully but fails with "Unexpected error" or generic build failures
+
+**Solutions**:
+1. **Enable "Include files outside the root directory in the Build Step"**:
+   - Go to: [Project Settings → Build & Development Settings](https://vercel.com/idea-i/web/settings/general)
+   - Find "Root Directory" section
+   - **Check the box**: "Include files outside the root directory in the Build Step"
+   - Save changes
+2. Verify Root Directory is set to `apps/web`
+3. This setting is **required** for Turborepo monorepos to access:
+   - Root `package.json`, `pnpm-workspace.yaml`, `turbo.json`
+   - Shared packages in `packages/` directory
+   - Workspace dependencies
+
+See [Vercel Build Configuration](https://vercel.com/docs/builds/configure-a-build#root-directory) for details.
+
 ### "No Next.js version detected"
 
 **Symptoms**: Vercel can't detect Next.js framework
@@ -44,18 +62,20 @@ Common issues and solutions for deployment problems.
 1. Set Root Directory in Vercel dashboard:
    - Go to: [Project Settings](https://vercel.com/idea-i/web/settings/general)
    - Set Root Directory to: `apps/web`
+   - **Enable** "Include files outside the root directory in the Build Step"
 2. Verify `package.json` contains `next` dependency
 3. Check `vercel.json` has correct framework setting
 
 ### Build Fails: "Cannot find module"
 
-**Symptoms**: Module resolution errors during build
+**Symptoms**: Module resolution errors during build (e.g., can't find `@repo/ui`)
 
 **Solutions**:
-- Verify `installCommand` runs from monorepo root
-- Check workspace dependencies are properly linked
-- Ensure `pnpm install` runs before build
-- Verify package.json workspace configuration
+1. **Enable "Include files outside the root directory in the Build Step"** (most common fix)
+2. Verify `installCommand` runs from monorepo root
+3. Check workspace dependencies are properly linked
+4. Ensure `pnpm install` runs before build
+5. Verify `package.json` workspace configuration is correct
 
 ### Deployment Fails: Authentication Error
 
