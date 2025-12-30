@@ -1,0 +1,6 @@
+{
+  "buildCommand": "pnpm --filter @repo/landing build",
+  "installCommand": "pnpm install",
+  "framework": "nextjs"
+}
+
