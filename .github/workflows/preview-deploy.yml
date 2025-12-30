@@ -51,7 +51,14 @@ jobs:
       - name: Link Vercel Project
         working-directory: ./apps/web
         run: |
-          echo '{"projectId":"${{ secrets.VERCEL_PROJECT_ID }}","orgId":"${{ secrets.VERCEL_ORG_ID }}","projectName":"web"}' > .vercel/project.json
+          mkdir -p .vercel
+          cat > .vercel/project.json << EOF
+          {
+            "projectId": "${{ secrets.VERCEL_PROJECT_ID }}",
+            "orgId": "${{ secrets.VERCEL_ORG_ID }}",
+            "projectName": "web"
+          }
+          EOF
         env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
