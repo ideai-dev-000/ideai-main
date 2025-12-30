@@ -21,16 +21,19 @@ interface PageProps {
 }
 
 async function getDocContent(slug: string[]) {
+  // process.cwd() is already /path/to/apps/docs when running from that directory
+  const basePath = join(process.cwd(), "content");
   const filePath = slug.length === 0 
-    ? join(process.cwd(), "content", "index.mdx")
-    : join(process.cwd(), "content", ...slug) + ".mdx";
+    ? join(basePath, "index.mdx")
+    : join(basePath, ...slug) + ".mdx";
   
   try {
     const source = await readFile(filePath, "utf-8");
     // Remove frontmatter if present
     const content = source.replace(/^---[\s\S]*?---\n/, "");
     return content;
-  } catch {
+  } catch (error) {
+    console.error("Error reading doc file:", filePath, error);
     return null;
   }
 }
