@@ -62,6 +62,19 @@ Welcome to the IdeaI monorepo documentation. This directory contains comprehensi
   - Development workflow
   - Project structure
 
+### Architecture
+
+- **[Design System Architecture](./architecture/design-system.md)**
+  - Centralized component library
+  - Shared UI components
+  - Design tokens and CSS architecture
+
+- **[UI Consistency Standards](./architecture/ui-consistency.md)**
+  - Explicit color approach (RGB values)
+  - DOM inspection workflow
+  - Visual testing procedures
+  - All apps consistency (`/web`, `/docs`, `/all`)
+
 ### Tools
 
 - **[Code Context Integration](./tools/code-context.md)**

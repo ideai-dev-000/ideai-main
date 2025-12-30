@@ -153,13 +153,44 @@ When adding new shared styles:
 
 ### Color Standards
 
-All colors must use **standard Tailwind colors only**:
-- Backgrounds: `bg-white` / `bg-slate-950` (dark)
-- Text: `text-slate-900` / `text-slate-50` (dark)
-- Borders: `border-slate-300` / `border-slate-700` (dark)
-- Hover: `bg-slate-100` / `bg-slate-800` (dark)
+**CRITICAL**: All colors use **explicit RGB values** to prevent dark mode auto-application and ensure perfect consistency.
 
-**NO custom colors** - only standard Tailwind palette.
+#### Explicit Color Approach
+
+All shared component styles use explicit `rgb()` color values instead of relying on Tailwind's `dark:` classes. This ensures:
+- Identical rendering regardless of browser dark mode settings
+- No unexpected color changes from `prefers-color-scheme` media queries
+- Perfect consistency across all apps
+
+**Color Values Used**:
+- **Text (light)**: `rgb(15 23 42)` - slate-900
+- **Text (dark)**: `rgb(248 250 252)` - slate-50
+- **Background (light)**: `rgb(255 255 255)` - white
+- **Background (dark)**: `rgb(2 6 23)` - slate-950
+- **Borders (light)**: `rgb(203 213 225)` - slate-300
+- **Borders (dark)**: `rgb(51 65 85)` - slate-700
+- **Hover (light)**: `rgb(241 245 249)` - slate-100
+- **Hover (dark)**: `rgb(30 41 59)` - slate-800
+
+**Example from `ideai-components.css`**:
+```css
+.ideai-header__title {
+  color: rgb(15 23 42); /* slate-900 - explicit */
+}
+
+.ideai-footer__button:hover {
+  background-color: rgb(241 245 249); /* slate-100 - explicit */
+  border-color: transparent;
+}
+```
+
+**Why Explicit Colors?**
+- Prevents browser dark mode from auto-applying colors
+- Ensures identical rendering across all apps
+- No dependency on `prefers-color-scheme` media queries
+- Consistent text colors regardless of system settings
+
+**In CSS Modules**: Apps can still use Tailwind classes, but shared component CSS uses explicit RGB values.
 
 ### Typography
 
@@ -182,10 +213,12 @@ All spacing must be identical:
 Before committing any UI changes:
 
 - [ ] **Centralized CSS** - All shared styles in `ideai.css` (not app CSS)
+- [ ] **Explicit colors** - Shared components use explicit RGB values
 - [ ] **No duplicate CSS** - No custom styles in app CSS modules
-- [ ] **Using IdeaI classes** - Apps use `@apply ideai-*` classes
-- [ ] **Both layers imported** - `globals.css` and `ideai.css` imported
-- [ ] **Tested in all apps** - Verify styles work identically
+- [ ] **Both layers imported** - `globals.css` and `ideai.css` imported in all apps
+- [ ] **DOM inspection** - Checked rendered HTML/CSS in browser
+- [ ] **Visual testing** - Screenshots taken, compared side-by-side
+- [ ] **Tested in all apps** - Verified in `/web`, `/docs`, and `/all` (3000, 3001, 3002)
 - [ ] **Documented** - New IdeaI classes documented in `ideai.css`
 
 ## CSS Module Guidelines
@@ -220,18 +253,31 @@ When creating/updating CSS modules:
 ## Shared Components
 
 All shared components in `@repo/ui` must:
-- Use **only** standard Tailwind classes
+- Use **explicit RGB color values** in CSS (not `dark:` classes)
 - Have **identical** styling across all apps
-- Support dark mode with **identical** dark mode colors
 - Have **identical** hover and focus states
+- Use standard Tailwind classes in JSX where appropriate
+- Be tested in all three apps (`/web`, `/docs`, `/all`)
+
+### Current Shared Components:
+- `IdeaIHeader` - Header with site name support (`siteName` prop)
+- `IdeAIFooter` - Footer with consistent styling
+- `IdeAIButton` - Button component with consistent styling
+- `IdeAIContent` - Documentation index content
+- `IdeAILogo` - Logo component with SEO metadata
+- `IdeAIHTMLTest` - Comprehensive HTML5 test page component
 
 ## Dark Mode Consistency
 
-Dark mode must be **identical** across all apps:
+**Note**: Current implementation uses explicit RGB colors to prevent dark mode auto-application. This ensures consistent rendering regardless of system dark mode settings.
+
+If dark mode is needed in the future:
+- Dark mode must be **identical** across all apps
 - Same color palette (slate-950, slate-50, slate-800, etc.)
 - Same hover states
 - Same transitions
 - Same opacity values
+- Use explicit RGB values (not `dark:` classes) for consistency
 
 ## Responsive Design Consistency
 
@@ -242,22 +288,89 @@ All responsive breakpoints must be **identical**:
 
 ## Testing UI Consistency
 
-### Visual Comparison
+### DOM Inspection Workflow (MANDATORY)
 
-1. Open both apps side-by-side
+**CRITICAL**: Always check the rendered DOM, not just source code. Many issues are only visible in the rendered HTML.
+
+#### Before Making Changes
+
+1. **Navigate to all apps in browser**:
+   - `http://localhost:3000` (web)
+   - `http://localhost:3001` (docs)
+   - `http://localhost:3002` (all)
+
+2. **Take full-page screenshots**:
+   - Compare side-by-side visually
+   - Use browser DevTools to inspect elements
+
+3. **Capture DOM snapshots**:
+   - Inspect HTML structure
+   - Check computed CSS values
+   - Verify classes match
+
+#### During Debugging
+
+1. **Extract and compare HTML**:
+   ```bash
+   # Get all classes from each app
+   curl -s http://localhost:3000 | grep -o 'class="[^"]*"' | sort | uniq > /tmp/web-classes.txt
+   curl -s http://localhost:3001 | grep -o 'class="[^"]*"' | sort | uniq > /tmp/docs-classes.txt
+   curl -s http://localhost:3002 | grep -o 'class="[^"]*"' | sort | uniq > /tmp/all-classes.txt
+   
+   # Compare differences
+   comm -23 /tmp/web-classes.txt /tmp/docs-classes.txt  # Classes in web but not docs
+   comm -13 /tmp/web-classes.txt /tmp/docs-classes.txt  # Classes in docs but not web
+   ```
+
+2. **Check rendered CSS**:
+   ```bash
+   # Inspect specific elements
+   curl -s http://localhost:3000 | grep -A 50 'class="ideai-footer'
+   curl -s http://localhost:3001 | grep -A 50 'class="ideai-footer'
+   ```
+
+3. **Compare CSS files loaded**:
+   ```bash
+   curl -s http://localhost:3000 | grep -o 'href="[^"]*\.css[^"]*"'
+   curl -s http://localhost:3001 | grep -o 'href="[^"]*\.css[^"]*"'
+   ```
+
+#### After Making Changes
+
+- **ALWAYS** take new screenshots to verify visual consistency
+- **ALWAYS** check the DOM again to ensure classes match
+- **ALWAYS** verify rendered CSS is identical
+- Compare before/after screenshots
+
+### Visual Comparison Checklist
+
+1. Open all three apps side-by-side (3000, 3001, 3002)
 2. Compare:
-   - Button hover colors
-   - Text colors
-   - Spacing
-   - Typography
-   - Borders
-   - Transitions
+   - [ ] Text colors (must be identical)
+   - [ ] Background colors (must be identical)
+   - [ ] Button hover states (must be identical)
+   - [ ] Spacing/padding (must be identical)
+   - [ ] Typography (font sizes, weights, line heights)
+   - [ ] Borders (colors, widths, radius)
+   - [ ] Transitions (duration, easing)
+   - [ ] Footer rendering (identical HTML structure)
+   - [ ] Header rendering (identical HTML structure)
+
+### Using the `/all` App for Testing
+
+The `/all` app (`apps/all`) serves as a comprehensive UI test page:
+- Contains all HTML5 elements (forms, tables, lists, media)
+- Includes documentation index (same as `/docs`)
+- Perfect for side-by-side visual comparison
+- Use to verify all elements render identically
 
 ### Automated Checks
 
 - Use browser DevTools to inspect computed styles
 - Compare CSS values side-by-side
 - Verify Tailwind classes are identical
+- Check that explicit RGB values match
+- Verify no unexpected inherited styles
 
 ## Common Issues
 

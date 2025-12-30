@@ -6,11 +6,18 @@
  * Standard Tailwind CSS setup with minimal custom CSS.
  * Uses only standard Tailwind colors and utilities.
  * 
+ * Includes MVP.css (v1.17.2, ~10KB) for semantic HTML styling.
+ * MVP.css provides clean, minimal styling for HTML elements without
+ * requiring class names - just semantic HTML.
+ * 
  * @example
  * ```css
  * @import "@repo/ui/styles/globals.css";
  * ```
+ * 
+ * @see {@link https://andybrewer.github.io/mvp/} - MVP.css documentation
  */
+
 
 @tailwind base;
 @tailwind components;

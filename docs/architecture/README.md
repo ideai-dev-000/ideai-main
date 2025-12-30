@@ -5,6 +5,7 @@ This directory contains architecture documentation for the IdeaI monorepo.
 ## Contents
 
 - **[Design System](./design-system.md)** - Centralized component library and design system architecture
+- **[UI Consistency Standards](./ui-consistency.md)** - Strict UI consistency rules and DOM inspection workflow
 - **[Monorepo Structure](../PROJECT-SUMMARY.md)** - Overall project structure and organization
 
 ## Key Architectural Decisions
@@ -20,9 +21,18 @@ All UI components and design tokens are centralized in `packages/ui`:
 ### Shared Components
 
 Components are shared via the `@repo/ui` package:
-- Both `apps/web` and `apps/docs` use the same components
+- All three apps (`apps/web`, `apps/docs`, `apps/all`) use the same components
 - Consistent branding and behavior across all apps
+- Site name support via `siteName` prop (e.g., "IdeaI /web", "IdeaI /docs", "IdeaI /all")
 - Easy to maintain and update
+
+### UI Consistency
+
+Perfect UI consistency is enforced through:
+- **Explicit RGB colors** - No dark mode auto-application
+- **Centralized CSS** - All styles in `@repo/ui/src/styles/`
+- **DOM inspection workflow** - Mandatory visual testing
+- **Three-app testing** - `/web`, `/docs`, and `/all` must render identically
 
 ### Documentation Sync
 

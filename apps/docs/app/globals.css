@@ -7,6 +7,9 @@
  * NO custom CSS - all styles come from @repo/ui.
  */
 
+/* MVP.css - Minimalist stylesheet for semantic HTML (~10KB) */
+@import "../../../packages/ui/src/styles/mvp.css";
+
 /* Import centralized IdeaI design system */
 @import "../../../packages/ui/src/styles/globals.css";
 @import "../../../packages/ui/src/styles/ideai.css";

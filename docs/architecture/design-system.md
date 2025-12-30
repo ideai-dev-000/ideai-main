@@ -18,26 +18,57 @@ packages/ui/                    # Centralized design system
 ├── src/
 │   ├── components/
 │   │   ├── ui/                # shadcn/ui components
-│   │   └── ...                # Custom IdeaI components
+│   │   │   └── button.tsx    # shadcn Button component
+│   │   ├── ideai-button.tsx  # IdeaI custom button
+│   │   ├── ideai-header.tsx  # Header with site name support
+│   │   ├── ideai-footer.tsx  # Footer component
+│   │   ├── ideai-content.tsx # Documentation index content
+│   │   ├── ideai-logo.tsx    # Logo with SEO metadata
+│   │   └── ideai-html-test.tsx # HTML5 test page component
 │   ├── lib/
 │   │   └── utils.ts           # Shared utilities (cn, etc.)
 │   ├── hooks/                 # Shared React hooks
 │   └── styles/
-│       └── globals.css        # Design tokens & CSS variables
+│       ├── globals.css        # Normalize.css + Tailwind base + explicit colors
+│       ├── ideai.css          # IdeaI custom layer (imports ideai-components.css)
+│       └── ideai-components.css # Shared component styles (explicit RGB)
 ├── components.json            # shadcn configuration
 ├── tailwind.config.ts         # Shared Tailwind config
-└── package.json
+└── package.json               # Includes normalize.css dependency
 ```
 
 ## Design Tokens
 
-All design tokens are centralized in `packages/ui/src/styles/globals.css`:
+All design tokens are centralized in `packages/ui/src/styles/`:
 
-- **Colors**: HSL-based color system with dark mode support
-- **Spacing**: Consistent spacing scale
-- **Typography**: Font families and sizes
-- **Border Radius**: Unified radius values
-- **Brand Colors**: IdeaI-specific color palette
+### Base Stylesheet (MVP.css)
+
+**MVP.css v1.17.2** is included as the base stylesheet for all IdeaI applications:
+- **File Size**: ~10KB (unminified), ~3KB (gzipped)
+- **Purpose**: Provides clean, minimal styling for semantic HTML elements without requiring class names
+- **Location**: Imported in each app's `globals.css` before centralized IdeaI CSS
+- **Reference**: [MVP.css Documentation](https://andybrewer.github.io/mvp/)
+
+MVP.css is a minimalist stylesheet that styles root HTML elements, so you don't need to learn a new CSS framework or naming conventions. It works with semantic HTML only - no class names required. Perfect for rapid prototyping and MVPs.
+
+### Color System
+
+**CRITICAL**: Colors use **explicit RGB values** to ensure perfect consistency and prevent dark mode auto-application.
+
+- **Base Layer** (`globals.css`): Tailwind base with explicit RGB colors for `body` and `html`
+- **Component Layer** (`ideai-components.css`): All shared component styles use explicit RGB values
+- **Color Values**: 
+  - Text: `rgb(15 23 42)` (slate-900)
+  - Background: `rgb(255 255 255)` (white)
+  - Borders: `rgb(203 213 225)` (slate-300)
+  - Hover: `rgb(241 245 249)` (slate-100)
+
+### Other Tokens
+
+- **Spacing**: Consistent spacing scale (80px desktop, 32px mobile)
+- **Typography**: Font families (`var(--font-geist-sans)`, `var(--font-geist-mono)`)
+- **Border Radius**: Unified radius values (128px for buttons)
+- **Brand Colors**: IdeaI-specific color palette (explicit RGB values)
 
 ## Component Structure
 
@@ -61,43 +92,61 @@ import { Button } from "@repo/ui/components/ui/button";
 
 Custom components live in `packages/ui/src/components/`:
 
+**Current Components**:
+- `IdeaIHeader` - Header component with `siteName` prop support
+  - Displays "IdeaI {siteName}" (e.g., "IdeaI /web", "IdeaI /docs", "IdeaI /all")
+  - Accepts `subtitle` and `children` props
+- `IdeAIFooter` - Footer component with consistent styling
+- `IdeAIButton` - Button component with app-specific alert messages
+- `IdeAIContent` - Documentation index content (same as `/docs` page)
+- `IdeAILogo` - Logo component with SEO metadata and structured data
+- `IdeAIHTMLTest` - Comprehensive HTML5 test page component
+  - Includes all HTML5 elements (forms, tables, lists, media)
+  - Includes documentation index section
+  - Used in `/all` app for UI testing
+
+**Usage**:
 ```tsx
-// packages/ui/src/components/ideai-header.tsx
-export const IdeaIHeader = () => { ... }
+import { IdeaIHeader, IdeAIFooter, IdeAIButton } from "@repo/ui";
+
+<IdeaIHeader siteName="/web" subtitle="Welcome to IdeaI">
+  <IdeAIButton appName="web">Open alert</IdeAIButton>
+</IdeaIHeader>
 ```
 
 ## Usage in Apps
 
-### Web App (CSS Modules)
+### All Apps (Centralized CSS)
 
-The web app uses CSS modules with shared design tokens:
-
-```css
-/* apps/web/app/globals.css */
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-  /* ... shared tokens ... */
-}
-```
-
-### Docs App (Tailwind)
-
-The docs app uses Tailwind with the shared design system:
+All apps use the same centralized CSS architecture:
 
 ```css
-/* apps/docs/app/globals.css */
+/* apps/*/app/globals.css */
 @import "../../../packages/ui/src/styles/globals.css";
+@import "../../../packages/ui/src/styles/ideai.css";
 ```
+
+**Key Points**:
+- Both `globals.css` and `ideai.css` are imported in every app
+- `globals.css` provides Tailwind base + explicit RGB colors
+- `ideai.css` provides IdeaI custom layer (imports `ideai-components.css`)
+- CSS modules are minimal - only app-specific layout adjustments
+- NO custom CSS in app `globals.css` files
 
 ### Using Shared Components
 
-Both apps can use shared components:
+All apps use shared components:
 
 ```tsx
-import { Button } from "@repo/ui/components/ui/button";
+// From @repo/ui package exports
+import { IdeaIHeader, IdeAIFooter, IdeAIButton, IdeAIContent, IdeAILogo, IdeAIHTMLTest } from "@repo/ui";
+
+// Or direct imports
 import { IdeaIHeader } from "@repo/ui/components/ideai-header";
+import { Button } from "@repo/ui/components/ui/button"; // shadcn component
 ```
+
+**All three apps** (`/web`, `/docs`, `/all`) use the same shared components for perfect consistency.
 
 ### Using Shared Utilities
 
@@ -184,11 +233,13 @@ When you update a component in `packages/ui`:
 ## Migration Path
 
 ### Current State
-- ✅ shadcn/ui in `packages/ui`
-- ✅ Shared styles in `packages/ui/src/styles/globals.css`
-- ✅ Both apps import from shared package
-- ✅ Web app: CSS modules with shared tokens
-- ✅ Docs app: Tailwind with shared design system
+- ✅ shadcn/ui in `packages/ui` (Button component)
+- ✅ Shared styles in `packages/ui/src/styles/` (globals.css, ideai.css, ideai-components.css)
+- ✅ All three apps (`/web`, `/docs`, `/all`) import from shared package
+- ✅ Explicit RGB colors for perfect consistency
+- ✅ Centralized CSS architecture (no app-specific styling)
+- ✅ Shared components: Header, Footer, Button, Content, Logo, HTMLTest
+- ✅ Site name support via `siteName` prop
 
 ### Future Enhancements
 - 🔮 Extract design tokens to separate package
