@@ -48,15 +48,22 @@ jobs:
       - name: Install Vercel CLI
         run: npm install --global vercel@latest
 
+      - name: Link Vercel Project
+        working-directory: ./apps/web
+        run: |
+          echo '{"projectId":"${{ secrets.VERCEL_PROJECT_ID }}","orgId":"${{ secrets.VERCEL_ORG_ID }}","projectName":"web"}' > .vercel/project.json
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
       - name: Deploy to Vercel Preview
         id: deploy
         working-directory: ./apps/web
         run: |
-          OUTPUT=$(vercel deploy --token=${{ secrets.VERCEL_TOKEN }} --yes 2>&1)
-          echo "$OUTPUT"
-          URL=$(echo "$OUTPUT" | grep -oE 'https://[a-zA-Z0-9-]+\.vercel\.app' | head -1)
+          vercel deploy --token=${{ secrets.VERCEL_TOKEN }} --yes --force 2>&1 | tee deploy.log
+          URL=$(grep -oE 'https://[a-zA-Z0-9-]+\.vercel\.app' deploy.log | head -1)
           if [ -z "$URL" ]; then
-            URL=$(echo "$OUTPUT" | grep -o 'https://[^ ]*' | head -1)
+            URL=$(grep -o 'https://[^ ]*' deploy.log | head -1)
           fi
           echo "url=$URL" >> $GITHUB_OUTPUT
           echo "Deployment URL: $URL"
