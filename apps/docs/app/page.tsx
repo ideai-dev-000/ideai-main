@@ -1,9 +1,9 @@
 /**
- * @fileoverview Main landing page for the IDEAI docs application
+ * @fileoverview Main landing page for the IdeaI docs application
  * 
  * @module DocsAppPage
  * @description
- * The home page component for the IDEAI documentation site.
+ * The home page component for the IdeaI documentation site.
  * This page serves as the entry point for the docs application.
  * 
  * @example

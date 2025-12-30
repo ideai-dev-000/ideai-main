@@ -1,19 +1,28 @@
-# Cursor AI Rules for IDEAI Monorepo
+# Cursor AI Rules for IdeaI Monorepo
 
 ## Brand and Naming Standards
 
-### Brand Name: IDEAI
-**CRITICAL**: The product/brand name must ALWAYS be written as **IDEAI** (all uppercase):
-- ✅ Correct: `IDEAI`, `IDEAI web app`, `Welcome to IDEAI`
-- ❌ Incorrect: `IdeaI`, `Ideai`, `ideai`, `IDEAi`, `Idea I`, or any other variation
+### Brand Name: IdeaI
+**CRITICAL**: The product/brand name must ALWAYS be written as **IdeaI** (exact capitalization: capital I, lowercase dea, capital I):
+- ✅ Correct: `IdeaI`, `IdeaI web app`, `Welcome to IdeaI`, `IdeaI.Space`
+- ❌ Incorrect: `IDEAI`, `Ideai`, `ideai`, `IDEAi`, `Idea I`, or any other variation
 
-**When to use IDEAI:**
+**Why this capitalization matters:**
+- "Idea" (the word)
+- "Ide" (part of idea)
+- "An AI Ide" (an AI idea)
+- "an ai idea engine"
+- Also visually resembles "ideal" which is excellent for branding
+- The URL `IdeaI.Space` works perfectly and looks sublime as text
+
+**When to use IdeaI:**
 - Product/brand name in UI text
 - Documentation references to the product
 - Code comments mentioning the brand
 - User-facing content
+- URLs and domain references
 
-**Note**: Repository names, GitHub orgs, and technical identifiers may use lowercase (e.g., `ideai-main`, `ideai-dev-000`) for technical reasons, but the **brand name itself is always IDEAI**.
+**Note**: Repository names, GitHub orgs, and technical identifiers may use lowercase (e.g., `ideai-main`, `ideai-dev-000`) for technical reasons, but the **brand name itself is always IdeaI** (exact capitalization).
 
 ### Semantic File Naming
 **CRITICAL**: Semantic, descriptive file names are essential:

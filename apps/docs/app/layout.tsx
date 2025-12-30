@@ -1,5 +1,5 @@
 /**
- * @fileoverview Root layout component for the IDEAI docs application
+ * @fileoverview Root layout component for the IdeaI docs application
  * 
  * @module DocsRootLayout
  * @description
@@ -26,8 +26,8 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "IDEAI Docs",
-  description: "IDEAI documentation site",
+  title: "IdeaI Docs",
+  description: "IdeaI documentation site",
 };
 
 export default function RootLayout({

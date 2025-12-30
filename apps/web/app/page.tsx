@@ -1,9 +1,9 @@
 /**
- * @fileoverview Main landing page for the IDEAI web application
+ * @fileoverview Main landing page for the IdeaI web application
  * 
  * @module WebAppPage
  * @description
- * The home page component for the IDEAI web application.
+ * The home page component for the IdeaI web application.
  * This is a clean starting point for building out the application.
  * 
  * @example
@@ -21,8 +21,8 @@ export default function Home() {
   return (
     <div className={styles.page}>
       <main className={styles.main}>
-        <h1>IDEAI</h1>
-        <p>Welcome to IDEAI</p>
+        <h1>IdeaI</h1>
+        <p>Welcome to IdeaI</p>
         <Button appName="web" className={styles.secondary}>
           Open alert
         </Button>
