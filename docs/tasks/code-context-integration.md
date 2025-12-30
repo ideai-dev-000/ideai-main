@@ -1,6 +1,6 @@
 # Code Context Integration Task List
 
-Centralized task list for integrating Code Context into the IDEAI monorepo.
+Centralized task list for integrating Code Context into the IdeaI monorepo.
 
 ## Phase 1: Initial Setup ✅
 

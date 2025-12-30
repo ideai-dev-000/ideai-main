@@ -1,6 +1,6 @@
 # Documentation Index
 
-Welcome to the IDEAI monorepo documentation. This directory contains comprehensive documentation for development, deployment, and setup.
+Welcome to the IdeaI monorepo documentation. This directory contains comprehensive documentation for development, deployment, and setup.
 
 ## 📋 Quick Reference
 

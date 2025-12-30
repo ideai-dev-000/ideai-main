@@ -1,10 +1,10 @@
 # Project Summary
 
-This document provides a high-level overview of the IDEAI monorepo project, its architecture, and current state.
+This document provides a high-level overview of the IdeaI monorepo project, its architecture, and current state.
 
 ## Project Overview
 
-**IDEAI Monorepo** is a Turborepo-based monorepo containing Next.js applications and shared packages, configured for automated CI/CD with GitHub Actions and Vercel deployments.
+**IdeaI Monorepo** is a Turborepo-based monorepo containing Next.js applications and shared packages, configured for automated CI/CD with GitHub Actions and Vercel deployments.
 
 ## Architecture
 
@@ -57,8 +57,10 @@ ideai-main/
 ### Vercel Project
 - **Organization**: `idea-i`
 - **Organization ID**: `team_vhjzlMi6CfNow0IfBXnv2Yn2`
-- **Project Name**: `web`
-- **Project ID**: `prj_rOeGwbNZwaO6sJ2J685Y3g9TV2cw`
+- **Project Name**: `ideai-main` (deploys `apps/web`)
+- **Project ID**: `prj_Se4sFOjdH4fRzSOsK8YDiNVFssHx`
+- **Production URL**: https://www.myui.space
+- **Preview URL**: https://preview.myui.space
 
 ### GitHub Repository
 - **Repository**: `ideai-dev-000/ideai-main`
@@ -99,6 +101,28 @@ ideai-main/
   - Production deployments on main branch
   - Linting and type checking before deployment
 
+## Applications
+
+### Web App (`apps/web`)
+- **Purpose**: Main IdeaI web application
+- **Port**: 3000 (development)
+- **Production**: https://www.myui.space
+- **Landing Page**: Clean design with "IdeaI" heading
+- **Features**: Shared Button component from `@repo/ui`
+
+### Docs App (`apps/docs`)
+- **Purpose**: IdeaI documentation site
+- **Port**: 3001 (development)
+- **Status**: Not deployed (local development only)
+- **Landing Page**: Same design as web, with "IdeaI Docs" heading
+- **Features**: Shared Button component from `@repo/ui`
+
+Both apps share:
+- Same landing page design and styling
+- Shared UI components from `@repo/ui`
+- Consistent branding (IdeaI)
+- Same development workflow
+
 ## Key Features
 
 ### Development
@@ -107,6 +131,7 @@ ideai-main/
 - ESLint linting
 - Prettier code formatting
 - Turborepo task orchestration
+- Shared component library
 
 ### Deployment
 - Automatic preview deployments
@@ -120,6 +145,7 @@ ideai-main/
 - ESLint with Next.js rules
 - Prettier formatting
 - Pre-commit checks (via CI/CD)
+- Rich code headers with JSDoc
 
 ## Documentation Structure
 

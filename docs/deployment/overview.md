@@ -13,10 +13,16 @@ This project uses:
 
 The monorepo contains two Next.js applications:
 
-- **`apps/web`** - Main web application
-- **`apps/docs`** - Documentation site
+- **`apps/web`** - Main IdeaI web application
+  - Production: https://www.myui.space
+  - Preview: https://preview.myui.space
+  - Landing page: "IdeaI" heading
+- **`apps/docs`** - IdeaI documentation site
+  - Status: Local development only (not deployed)
+  - Landing page: "IdeaI Docs" heading
+  - Same design as web app
 
-Each application can be deployed independently to Vercel.
+Both apps share the same landing page design and use shared components from `@repo/ui`.
 
 ## Deployment Environments
 

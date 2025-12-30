@@ -1,6 +1,6 @@
 # Code Context Integration
 
-This document describes the Code Context tool integration and usage within the IDEAI monorepo.
+This document describes the Code Context tool integration and usage within the IdeaI monorepo.
 
 ## Overview
 

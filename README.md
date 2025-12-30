@@ -1,6 +1,6 @@
-# IDEAI Monorepo
+# IdeaI Monorepo
 
-A Turborepo monorepo containing Next.js applications and shared packages.
+A Turborepo monorepo containing Next.js applications and shared packages for IdeaI.
 
 ## 📚 Documentation
 

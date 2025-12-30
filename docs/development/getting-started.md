@@ -1,6 +1,6 @@
 # Getting Started
 
-Welcome to the IDEAI monorepo! This guide will help you get started with development.
+Welcome to the IdeaI monorepo! This guide will help you get started with development.
 
 ## Prerequisites
 
@@ -37,7 +37,14 @@ pnpm dev --filter=docs
 ### 4. Access Applications
 
 - **Web App**: http://localhost:3000
+  - Landing page with "IdeaI" heading
+  - Shared Button component
 - **Docs App**: http://localhost:3001
+  - Landing page with "IdeaI Docs" heading
+  - Same design as web app
+  - Shared Button component
+
+Both apps share the same clean landing page design, with the only difference being the H1 heading.
 
 ## Project Structure
 

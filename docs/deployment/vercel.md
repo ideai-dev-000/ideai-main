@@ -6,8 +6,10 @@ This document describes the Vercel deployment configuration for this monorepo.
 
 - **Organization**: `idea-i`
 - **Organization ID**: `team_vhjzlMi6CfNow0IfBXnv2Yn2`
-- **Project Name**: `web`
-- **Project ID**: `prj_rOeGwbNZwaO6sJ2J685Y3g9TV2cw`
+- **Project Name**: `ideai-main` (deploys `apps/web`)
+- **Project ID**: `prj_Se4sFOjdH4fRzSOsK8YDiNVFssHx`
+- **Production URL**: https://www.myui.space
+- **Preview URL**: https://preview.myui.space
 
 ## Project Settings
 
@@ -15,7 +17,7 @@ This document describes the Vercel deployment configuration for this monorepo.
 
 **Critical for Monorepos**: The Vercel project must be configured with the correct root directory and build settings.
 
-1. Navigate to [Project Settings → Build & Development Settings](https://vercel.com/idea-i/web/settings/general)
+1. Navigate to [Project Settings → Build & Development Settings](https://vercel.com/idea-i/ideai-main/settings/general)
 2. Find **Root Directory** setting
 3. Set to: `apps/web`
 4. **Enable** "Include files outside the root directory in the Build Step" checkbox
