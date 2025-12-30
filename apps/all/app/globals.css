@@ -1,0 +1,13 @@
+/**
+ * @fileoverview Global styles for the IdeaI /all demo application
+ * 
+ * @module AllAppGlobalStyles
+ * @description
+ * Imports centralized IdeaI CSS for consistent styling.
+ * All apps use the same base styles from @repo/ui.
+ */
+
+/* Import centralized IdeaI CSS */
+@import "../../../packages/ui/src/styles/globals.css";
+@import "../../../packages/ui/src/styles/ideai.css";
+
