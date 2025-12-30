@@ -1,189 +1,332 @@
-# Contributing to Documentation
+# Contributing Guidelines
 
-This document outlines best practices for maintaining and contributing to project documentation.
+This document outlines the standards and practices for contributing to this project.
 
-## Documentation Structure
+## Code Standards
 
-Documentation is organized semantically in the `docs/` directory:
+### Code Headers
+
+**All code files must include rich, descriptive headers:**
+
+```typescript
+/**
+ * @fileoverview Brief description of what this file does
+ * 
+ * @module ModuleName
+ * @author Your Name
+ * @created YYYY-MM-DD
+ * @lastModified YYYY-MM-DD
+ * 
+ * @description
+ * Detailed explanation of the file's purpose, key functionality,
+ * and any important implementation details.
+ * 
+ * @example
+ * // Usage example
+ * import { functionName } from './file';
+ * functionName();
+ * 
+ * @see Related files or documentation
+ * @todo Any known issues or future improvements
+ */
+```
+
+**Required for:**
+- All TypeScript/JavaScript files
+- Configuration files with complex logic
+- Utility functions
+- API routes
+- Components with non-trivial logic
+
+### Code Quality
+
+- ✅ TypeScript strict mode enabled
+- ✅ ESLint rules must pass
+- ✅ All functions must be typed
+- ✅ Error handling for async operations
+- ✅ Comments for complex logic
+- ✅ No `any` types (use `unknown` if needed)
+
+## Commit Standards
+
+### Commit Messages
+
+**All commits must be detailed and descriptive:**
 
 ```
-docs/
-├── README.md                    # Documentation index
-├── PROJECT-SUMMARY.md          # Project overview
-├── setup/                       # Setup and configuration guides
-│   ├── github-secrets.md       # GitHub secrets setup
-│   ├── vercel-checklist.md     # Vercel setup checklist
-│   └── commit-signing.md       # GPG commit signing setup
-├── deployment/                  # Deployment documentation
-│   ├── overview.md             # Deployment architecture
-│   ├── ci-cd.md                # CI/CD workflows
-│   ├── vercel.md               # Vercel configuration
-│   └── troubleshooting.md      # Common issues
-└── development/              # Development guides
-    ├── getting-started.md      # Development setup
-    └── CONTRIBUTING.md         # This file
+type(scope): detailed subject line
+
+Detailed explanation of what changed and why.
+
+- Specific change 1
+- Specific change 2
+- Specific change 3
+
+Fixes #issue-number
+Related to #issue-number
 ```
 
-## Naming Conventions
+**Commit Types:**
+- `feat`: New feature
+- `fix`: Bug fix
+- `docs`: Documentation changes
+- `style`: Code style changes (formatting)
+- `refactor`: Code refactoring
+- `test`: Adding/updating tests
+- `chore`: Maintenance tasks
+- `perf`: Performance improvements
+- `ci`: CI/CD changes
 
-### File Names
-- Use lowercase with hyphens: `github-secrets.md`
-- Be descriptive: `ci-cd.md` not `workflows.md`
-- Group by purpose: `setup/`, `deployment/`, `development/`
+**Examples:**
 
-### Section Organization
-- Start with overview/README
-- Group related topics together
-- Use clear hierarchy (H1 → H2 → H3)
+```
+feat(web): add user authentication flow
+
+Implemented complete authentication system with:
+- Login page with email/password
+- JWT token management
+- Protected route middleware
+- User session persistence
+
+Fixes #123
+```
+
+```
+docs(deployment): update Vercel configuration guide
+
+- Fixed broken relative paths in vercel-checklist.md
+- Updated deployment commands to reflect root deployment
+- Corrected Node.js version requirement (20, not 18)
+- Added commit signing status information
+
+All documentation now accurately reflects current setup.
+```
+
+### Commit Signing
+
+**Important**: In non-interactive environments (like Cursor/AI tools), auto-sign must be temporarily disabled:
+
+```bash
+# Before committing in non-interactive environment
+git config --global --unset commit.gpgsign
+
+# Make commit
+git commit -m "message"
+
+# Re-enable auto-sign
+git config --global commit.gpgsign true
+```
+
+**In interactive terminals**, auto-sign works normally - commits will be automatically signed.
 
 ## Documentation Standards
 
-### Content Guidelines
+### Documentation Must Be OCD Accurate
 
-1. **Clear Structure**
-   - Start with overview/introduction
-   - Use consistent headings
-   - Include practical examples
-   - Add troubleshooting sections
+**Every commit that touches documentation must ensure:**
 
-2. **Code Examples**
-   - Use syntax highlighting
-   - Include complete, working examples
-   - Show expected output
-   - Explain what commands do
+1. **Accuracy**: All information must be 100% accurate and current
+2. **Consistency**: Terminology, formatting, and style must be consistent
+3. **Completeness**: All examples must work, all links must be valid
+4. **Alignment**: Documentation must match actual implementation
+5. **Verification**: Before committing, verify:
+   - All code examples work
+   - All file paths are correct
+   - All version numbers are current
+   - All configuration matches reality
+   - All links work
+   - All cross-references are correct
 
-3. **Cross-References**
-   - Link to related documentation
-   - Use relative paths: `[Link](./other-doc.md)`
-   - Update index when adding new docs
+**Documentation Review Checklist:**
 
-4. **Practical Focus**
-   - Include step-by-step instructions
-   - Show real commands and configurations
-   - Provide troubleshooting for common issues
+- [ ] All code examples tested and working
+- [ ] All file paths verified (relative paths correct)
+- [ ] All version numbers current
+- [ ] All links tested and working
+- [ ] All cross-references updated
+- [ ] Terminology consistent across all docs
+- [ ] No outdated information
+- [ ] No broken references
+- [ ] Status information accurate (e.g., "working", "configured")
+- [ ] Instructions match current setup
 
-### Formatting Standards
+**Before committing documentation changes:**
+
+```bash
+# Verify all links
+grep -r "\[.*\](.*)" docs/ | while read line; do
+  # Check if link works
+done
+
+# Check for broken references
+grep -r "cd apps/web" docs/  # Should be minimal/contextual
+grep -r "working-directory" docs/  # Should not exist
+grep -r "vercel.json" docs/  # Should only mention it's not needed
+
+# Verify code examples
+# Test all commands shown in documentation
+```
+
+## CI/CD Standards
+
+### All CI/CD Must Be Respected
+
+**Workflow Requirements:**
+
+1. **Linting**: All code must pass ESLint
+   ```bash
+   pnpm lint
+   ```
+
+2. **Type Checking**: All TypeScript must type-check
+   ```bash
+   pnpm check-types
+   ```
+
+3. **Build**: All apps must build successfully
+   ```bash
+   pnpm build
+   ```
+
+4. **Tests**: All tests must pass (when tests exist)
+   ```bash
+   pnpm test
+   ```
+
+**Pre-Commit Checklist:**
+
+- [ ] `pnpm lint` passes
+- [ ] `pnpm check-types` passes
+- [ ] `pnpm build` succeeds
+- [ ] All tests pass (if applicable)
+- [ ] No console errors or warnings
+- [ ] Documentation updated if code changed
+
+**CI/CD Workflow Rules:**
+
+- ✅ Never skip CI checks
+- ✅ Never force push to protected branches
+- ✅ All PRs must pass CI before merge
+- ✅ Fix CI failures before requesting review
+- ✅ Keep workflows up to date
+- ✅ Document any workflow changes
+
+## Development Workflow
+
+### Before Starting Work
+
+1. Ensure you're on latest `main` or `preview` branch
+2. Create feature branch: `git checkout -b feat/feature-name`
+3. Verify local environment works: `pnpm install && pnpm build`
+
+### During Development
+
+1. Make incremental commits with detailed messages
+2. Run linting/type-checking frequently
+3. Update documentation as you code
+4. Test changes locally
+
+### Before Committing
+
+1. Run full check suite:
+   ```bash
+   pnpm lint
+   pnpm check-types
+   pnpm build
+   ```
+
+2. Review your changes:
+   ```bash
+   git diff
+   git status
+   ```
+
+3. Ensure documentation is accurate (if changed)
+
+4. Write detailed commit message
+
+### After Committing
+
+1. Push to remote
+2. Create PR if ready
+3. Monitor CI status
+2. Address any CI failures immediately
+
+## Pull Request Standards
+
+### PR Requirements
+
+- ✅ Clear, descriptive title
+- ✅ Detailed description of changes
+- ✅ Link to related issues
+- ✅ Screenshots (for UI changes)
+- ✅ All CI checks passing
+- ✅ Documentation updated
+- ✅ No merge conflicts
+
+### PR Description Template
 
 ```markdown
-# Main Title (H1)
+## Description
+Brief overview of what this PR does.
 
-Brief introduction paragraph.
+## Changes
+- Specific change 1
+- Specific change 2
+- Specific change 3
 
-## Section (H2)
+## Testing
+How to test these changes:
+1. Step 1
+2. Step 2
 
-Content with clear explanations.
+## Documentation
+- [ ] Updated relevant documentation
+- [ ] Added new documentation if needed
+- [ ] Verified all links work
+- [ ] Checked examples are accurate
 
-### Subsection (H3)
+## Checklist
+- [ ] Code follows style guidelines
+- [ ] Self-review completed
+- [ ] Comments added for complex code
+- [ ] Documentation updated
+- [ ] No new warnings
+- [ ] Tests added/updated
+- [ ] All tests pass
+- [ ] CI checks pass
+```
 
-- Use lists for steps
-- Include code blocks
-- Add examples
+## File Organization
+
+### Naming Conventions
+
+- **Files**: `kebab-case.ts` or `PascalCase.tsx` (components)
+- **Directories**: `kebab-case`
+- **Constants**: `UPPER_SNAKE_CASE`
+- **Variables/Functions**: `camelCase`
+- **Types/Interfaces**: `PascalCase`
+
+### File Structure
+
+```
+apps/web/
+├── app/              # Next.js app directory
+├── components/       # React components
+├── lib/              # Utility functions
+├── types/            # TypeScript types
+└── hooks/            # React hooks
+```
 
 ## Related Documentation
 
-- [Link to related doc](./other.md)
-```
-
-## Adding New Documentation
-
-### Process
-
-1. **Determine Location**
-   - Setup guides → `docs/setup/`
-   - Deployment → `docs/deployment/`
-   - Development → `docs/development/`
-
-2. **Create File**
-   - Use semantic naming
-   - Follow existing structure
-   - Include front matter if needed
-
-3. **Write Content**
-   - Start with overview
-   - Include examples
-   - Add troubleshooting
-   - Cross-reference related docs
-
-4. **Update Index**
-   - Add to `docs/README.md`
-   - Update relevant section READMEs
-   - Add cross-references
-
-5. **Review**
-   - Check links work
-   - Verify examples are current
-   - Ensure consistency
-
-## Updating Existing Documentation
-
-When updating:
-
-1. **Keep Structure**
-   - Maintain existing organization
-   - Don't break existing links
-   - Update cross-references
-
-2. **Version Changes**
-   - Note breaking changes
-   - Update examples
-   - Keep troubleshooting current
-
-3. **Test Examples**
-   - Verify commands work
-   - Check links are valid
-   - Ensure accuracy
-
-## Script Documentation
-
-Scripts in `scripts/` should:
-
-1. Include header comments
-2. Document prerequisites
-3. Show usage examples
-4. List what the script does
-5. Reference in `scripts/README.md`
-
-## Best Practices
-
-### Do's ✅
-
-- Use clear, descriptive titles
-- Include practical examples
-- Add troubleshooting sections
-- Keep documentation current
-- Cross-reference related topics
-- Use consistent formatting
-- Include code examples
-- Document edge cases
-
-### Don'ts ❌
-
-- Don't duplicate information
-- Don't use vague titles
-- Don't skip examples
-- Don't forget to update links
-- Don't use absolute paths
-- Don't assume prior knowledge
-- Don't skip troubleshooting
-
-## Review Checklist
-
-Before submitting documentation:
-
-- [ ] File is in correct directory
-- [ ] Name follows conventions
-- [ ] Content is clear and accurate
-- [ ] Examples are tested and work
-- [ ] Links are valid
-- [ ] Cross-references added
-- [ ] Index updated
-- [ ] Formatting is consistent
-- [ ] Troubleshooting included (if applicable)
+- [Getting Started](./development/getting-started.md)
+- [Commit Signing Setup](./setup/commit-signing.md)
+- [CI/CD Workflows](../deployment/ci-cd.md)
 
 ## Questions?
 
-- Check existing documentation structure
-- Review similar documentation files
-- Follow established patterns
-- Ask for review if unsure
-
+- Review existing code for examples
+- Check documentation for patterns
+- Ask in PR comments
+- Follow established conventions
