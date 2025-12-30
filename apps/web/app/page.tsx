@@ -19,12 +19,14 @@ import styles from "./page.module.css";
 
 export default function Home() {
   return (
-    <main className={styles.main}>
-      <h1>IDEAI</h1>
-      <p>Welcome to IDEAI</p>
-      <Button appName="web" className={styles.button}>
-        Open alert
-      </Button>
-    </main>
+    <div className={styles.page}>
+      <main className={styles.main}>
+        <h1>IDEAI</h1>
+        <p>Welcome to IDEAI</p>
+        <Button appName="web" className={styles.secondary}>
+          Open alert
+        </Button>
+      </main>
+    </div>
   );
 }
