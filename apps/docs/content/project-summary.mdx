@@ -1,3 +1,7 @@
+---
+title: Project Summary
+description: High-level overview of the IdeaI monorepo project, including architecture, tech stack, and deployment status.
+---
 # Project Summary
 
 This document provides a high-level overview of the IdeaI monorepo project, its architecture, and current state.

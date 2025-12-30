@@ -1,3 +1,7 @@
+---
+title: GitHub Secrets Configuration
+description: Guide to configuring GitHub secrets required for CI/CD deployments to Vercel, including automated setup scripts.
+---
 # GitHub Secrets Configuration
 
 This guide explains how to configure GitHub secrets required for CI/CD deployments to Vercel.

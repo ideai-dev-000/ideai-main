@@ -1,3 +1,8 @@
+---
+title: Deployment Overview
+description: Overview of the deployment architecture and processes for the IdeaI monorepo, including CI/CD, Vercel configuration, and deployment environments.
+---
+
 # Deployment Overview
 
 This document provides an overview of the deployment architecture and processes for this monorepo.
@@ -21,6 +26,7 @@ The monorepo contains two Next.js applications:
   - Status: Local development only (not deployed)
   - Landing page: "IdeaI Docs" heading
   - Same design as web app
+  - Documentation auto-syncs from `docs/` directory on build
 
 Both apps share the same landing page design and use shared components from `@repo/ui`.
 

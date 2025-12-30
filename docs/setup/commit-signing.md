@@ -1,3 +1,7 @@
+---
+title: Commit Signing Setup
+description: Guide to setting up GPG commit signing for verified commits, required for Vercel deployments with verified commit protection.
+---
 # Commit Signing Setup
 
 This guide explains how to set up GPG commit signing for verified commits, which is required for Vercel deployments when "Require Verified Commits" is enabled.

@@ -1,3 +1,7 @@
+---
+title: Contributing Guidelines
+description: Standards and practices for contributing to the IdeaI monorepo, including code standards, commit guidelines, and documentation requirements.
+---
 # Contributing Guidelines
 
 This document outlines the standards and practices for contributing to this project.

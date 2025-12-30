@@ -1,58 +1,110 @@
 /**
- * @fileoverview Dynamic documentation page handler
+ * @fileoverview Dynamic documentation page handler with Contentlayer
  * 
  * @module DocsDynamicPage
  * @description
- * Handles all documentation routes dynamically.
- * Reads markdown files from content/ directory and renders them.
+ * Handles all documentation routes dynamically using Contentlayer.
+ * Provides type-safe content access, SEO metadata, and semantic URLs.
  * 
  * @example
  * Routes like /docs/getting-started, /docs/deployment/overview
+ * 
+ * @see https://contentlayer.dev/docs
  */
 
 import { notFound } from "next/navigation";
-import { readFile } from "fs/promises";
-import { join } from "path";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
+import { allDocs, type Doc } from "contentlayer/generated";
+import { MDXContent } from "./mdx-content";
 
 interface PageProps {
   params: Promise<{ slug?: string[] }>;
 }
 
-async function getDocContent(slug: string[]) {
-  // process.cwd() is already /path/to/apps/docs when running from that directory
-  const basePath = join(process.cwd(), "content");
-  const filePath = slug.length === 0 
-    ? join(basePath, "index.mdx")
-    : join(basePath, ...slug) + ".mdx";
-  
-  try {
-    const source = await readFile(filePath, "utf-8");
-    // Remove frontmatter if present
-    const content = source.replace(/^---[\s\S]*?---\n/, "");
-    return content;
-  } catch (error) {
-    console.error("Error reading doc file:", filePath, error);
-    return null;
-  }
+/**
+ * Get document by slug path
+ */
+function getDocFromSlug(slug: string[]): Doc | undefined {
+  const slugPath = slug.join("/");
+  return allDocs.find((doc: Doc) => doc.slug === slugPath);
 }
 
+/**
+ * Generate metadata for SEO
+ */
+export async function generateMetadata({ params }: PageProps) {
+  const { slug = [] } = await params;
+  const doc = getDocFromSlug(slug);
+
+  if (!doc) {
+    return {
+      title: "Page Not Found | IdeaI Docs",
+      description: "The requested documentation page could not be found.",
+    };
+  }
+
+  return {
+    title: `${doc.title} | IdeaI Docs`,
+    description: doc.description || `Documentation for ${doc.title}`,
+    openGraph: {
+      title: `${doc.title} | IdeaI Docs`,
+      description: doc.description || `Documentation for ${doc.title}`,
+      type: "article",
+      url: `https://docs.ideai.studio${doc.url}`,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${doc.title} | IdeaI Docs`,
+      description: doc.description || `Documentation for ${doc.title}`,
+    },
+  };
+}
+
+/**
+ * Generate static params for all docs (for static generation)
+ */
+export async function generateStaticParams() {
+  return allDocs
+    .filter((doc: Doc) => doc.published !== false)
+    .map((doc: Doc) => ({
+      slug: doc.slug.split("/").filter(Boolean),
+    }));
+}
+
+/**
+ * Documentation page component
+ */
 export default async function DocsPage({ params }: PageProps) {
   const { slug = [] } = await params;
-  const content = await getDocContent(slug);
-  
-  if (!content) {
+  const doc = getDocFromSlug(slug);
+
+  if (!doc || doc.published === false) {
     notFound();
   }
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8">
-      <article className="prose prose-lg dark:prose-invert max-w-none">
-        <ReactMarkdown remarkPlugins={[remarkGfm]}>
-          {content}
-        </ReactMarkdown>
-      </article>
+    <div className="min-h-screen" style={{ 
+      display: 'grid',
+      gridTemplateRows: '20px 1fr 20px',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: '80px',
+      gap: '64px'
+    }}>
+      <main style={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '32px',
+        gridRowStart: 2,
+        maxWidth: '900px',
+        width: '100%'
+      }}>
+        <article className="prose prose-lg dark:prose-invert max-w-none" style={{
+          fontFamily: 'var(--font-geist-sans)',
+          color: 'var(--foreground)'
+        }}>
+          <MDXContent code={doc.body.code} />
+        </article>
+      </main>
     </div>
   );
 }

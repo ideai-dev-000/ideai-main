@@ -1,3 +1,7 @@
+---
+title: Vercel Configuration
+description: Vercel deployment configuration for the IdeaI monorepo, including project setup, monorepo configuration, and deployment processes.
+---
 # Vercel Configuration
 
 This document describes the Vercel deployment configuration for this monorepo.

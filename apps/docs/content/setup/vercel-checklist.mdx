@@ -1,3 +1,7 @@
+---
+title: Vercel Setup Checklist
+description: Quick reference checklist for configuring Vercel for this Turborepo monorepo, including required dashboard settings.
+---
 # Vercel Setup Checklist
 
 Quick reference for configuring Vercel for this Turborepo monorepo.

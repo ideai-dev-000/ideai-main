@@ -1,3 +1,7 @@
+---
+title: Code Context Integration
+description: Documentation for the Code Context tool integration, including setup, usage, and features for codebase analysis and header generation.
+---
 # Code Context Integration
 
 This document describes the Code Context tool integration and usage within the IdeaI monorepo.

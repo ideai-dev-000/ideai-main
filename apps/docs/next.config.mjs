@@ -3,11 +3,19 @@
  * 
  * @module DocsNextConfig
  * @description
- * Next.js configuration for documentation site.
- * Simple, lightweight setup for 2026 best practices.
+ * Next.js configuration for documentation site with Contentlayer integration.
+ * Provides type-safe content access and SEO optimization.
+ * 
+ * @see https://contentlayer.dev/docs
  */
 
-/** @type {import('next').NextConfig} */
-const nextConfig = {};
+import { withContentlayer } from "next-contentlayer";
 
-export default nextConfig;
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  // Contentlayer handles content processing
+  // Turbopack config to avoid webpack conflict
+  turbopack: {},
+};
+
+export default withContentlayer(nextConfig);

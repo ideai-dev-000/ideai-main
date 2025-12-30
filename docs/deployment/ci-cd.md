@@ -1,3 +1,7 @@
+---
+title: CI/CD Workflows
+description: Detailed documentation of GitHub Actions workflows for CI/CD, including build, test, preview, and production deployments.
+---
 # CI/CD Workflows
 
 This document describes the GitHub Actions workflows configured for this project.

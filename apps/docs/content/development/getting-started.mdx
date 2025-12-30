@@ -1,3 +1,8 @@
+---
+title: Getting Started
+description: Quick start guide for the IdeaI monorepo, including setup instructions, project structure, and development workflow.
+---
+
 # Getting Started
 
 Welcome to the IdeaI monorepo! This guide will help you get started with development.

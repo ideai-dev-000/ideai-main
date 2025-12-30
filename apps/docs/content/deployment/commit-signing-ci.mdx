@@ -1,3 +1,7 @@
+---
+title: Commit Signing in CI/CD
+description: Guide to commit signing in GitHub Actions and Vercel deployments, including handling non-interactive environments.
+---
 # Commit Signing in CI/CD
 
 This document explains how commit signing works in GitHub Actions and Vercel deployments.

@@ -1,3 +1,8 @@
+---
+title: IdeaI Documentation
+description: Comprehensive documentation for the IdeaI monorepo, including setup guides, deployment instructions, and development workflows.
+---
+
 # Documentation Index
 
 Welcome to the IdeaI monorepo documentation. This directory contains comprehensive documentation for development, deployment, and setup.

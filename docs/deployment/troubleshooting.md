@@ -1,3 +1,7 @@
+---
+title: Deployment Troubleshooting
+description: Common deployment issues and solutions for the IdeaI monorepo, including GitHub Actions and Vercel troubleshooting.
+---
 # Deployment Troubleshooting
 
 Common issues and solutions for deployment problems.

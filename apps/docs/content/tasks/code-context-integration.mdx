@@ -1,3 +1,7 @@
+---
+title: Code Context Integration Task List
+description: Centralized task list for integrating Code Context into the IdeaI monorepo, including setup phases and future enhancements.
+---
 # Code Context Integration Task List
 
 Centralized task list for integrating Code Context into the IdeaI monorepo.
