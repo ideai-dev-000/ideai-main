@@ -1,3 +1,12 @@
+/**
+ * @fileoverview Styles for the main landing page
+ * 
+ * @module DocsAppPageStyles
+ * @description
+ * CSS module for the home page component.
+ * Provides styling for the main landing page layout.
+ */
+
 .page {
   --gray-rgb: 0, 0, 0;
   --gray-alpha-200: rgba(var(--gray-rgb), 0.08);
@@ -32,6 +41,28 @@
   flex-direction: column;
   gap: 32px;
   grid-row-start: 2;
+  align-items: center;
+  text-align: center;
+  max-width: 600px;
+}
+
+.main h1 {
+  font-family: var(--font-geist-sans);
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin: 0;
+  color: var(--foreground);
+}
+
+.main p {
+  font-family: var(--font-geist-sans);
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  line-height: 1.6;
+  opacity: 0.7;
+  margin: 0;
+  color: var(--foreground);
 }
 
 .main ol {
@@ -84,9 +115,11 @@ a.primary {
   gap: 8px;
 }
 
-a.secondary {
+.secondary {
   border-color: var(--gray-alpha-200);
   min-width: 180px;
+  background: transparent;
+  color: var(--foreground);
 }
 
 button.secondary {
@@ -133,7 +166,7 @@ button.secondary {
     border-color: transparent;
   }
 
-  a.secondary:hover {
+  .secondary:hover {
     background: var(--button-secondary-hover);
     border-color: transparent;
   }
@@ -168,7 +201,7 @@ button.secondary {
     padding: 0 16px;
   }
 
-  a.secondary {
+  .secondary {
     min-width: auto;
   }
 
