@@ -178,9 +178,29 @@ gpg --export-secret-keys YOUR_KEY_ID > my-gpg-key-backup.asc
 gpg --import my-gpg-key-backup.asc
 ```
 
+## Non-Interactive Environments (Cursor/AI Tools)
+
+**Important**: In non-interactive environments where you cannot enter a passphrase (like Cursor AI tools), you must temporarily disable auto-sign:
+
+```bash
+# Disable auto-sign before committing
+git config --global --unset commit.gpgsign
+
+# Make your commit
+git commit -m "Your commit message"
+
+# Re-enable auto-sign immediately after
+git config --global commit.gpgsign true
+```
+
+**Why?** GPG signing requires passphrase entry, which isn't possible in non-interactive environments. Disabling auto-sign allows commits to proceed, then re-enabling ensures future commits in your terminal will be signed.
+
+**In your interactive terminal**, auto-sign works normally - you'll be prompted for your passphrase once, then it's cached for future commits.
+
 ## Related Documentation
 
 - [GitHub: Signing Commits](https://docs.github.com/en/authentication/managing-commit-signature-verification)
 - [Vercel Configuration](../deployment/vercel.md)
 - [Deployment Troubleshooting](../deployment/troubleshooting.md)
+- [Contributing Guidelines](../CONTRIBUTING.md)
 
