@@ -19,6 +19,7 @@
 import { readdir, readFile } from 'fs/promises';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
+import { spawn } from 'child_process';
 import { exec } from 'child_process';
 import { promisify } from 'util';
 
@@ -111,15 +112,18 @@ async function startApp(app) {
   }
   
   try {
-    const command = `cd ${app.path} && pnpm dev > /dev/null 2>&1 &`;
-    exec(command, (error) => {
-      if (error && !error.message.includes('background')) {
-        console.error(`Error starting ${app.id}:`, error.message);
-      }
+    // Use spawn with detached process for proper background execution
+    const child = spawn('pnpm', ['dev'], {
+      cwd: app.path,
+      detached: true,
+      stdio: 'ignore',
     });
     
-    // Wait a bit to check if it started
-    await new Promise(resolve => setTimeout(resolve, 3000));
+    // Unref so parent process can exit
+    child.unref();
+    
+    // Give it a moment to start
+    await new Promise(resolve => setTimeout(resolve, 2000));
     const running = await isAppRunning(app);
     
     return {
@@ -262,7 +266,13 @@ Examples:
     const statuses = await getStatus();
     displayStatus(statuses);
   }
+  
+  // Exit immediately - processes run in background
+  process.exit(0);
 }
 
-main().catch(console.error);
+main().catch((error) => {
+  console.error('❌ Error:', error.message);
+  process.exit(1);
+});
 
