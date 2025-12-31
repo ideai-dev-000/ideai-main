@@ -17,10 +17,30 @@
  * IdeaI Logo Styles
  * Shared logo/branding styles for all apps
  * Includes semantic HTML for SEO
+ * Logo displays icon to left of text
  */
 .ideai-logo {
   @apply flex items-center justify-center;
   width: 100%;
+}
+
+.ideai-logo__container {
+  @apply flex items-center gap-4;
+  width: 100%;
+  justify-content: center;
+}
+
+.ideai-logo__icon {
+  flex-shrink: 0;
+  /* Logo icon has explicit colors (yellow background, white gear) */
+  /* Ensure icon is visible in both light and dark modes */
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+@media (prefers-color-scheme: dark) {
+  .ideai-logo__icon {
+    filter: drop-shadow(0 2px 4px rgba(255, 255, 255, 0.1));
+  }
 }
 
 .ideai-logo__text {

@@ -4,6 +4,7 @@
 
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import { getIdeAIFaviconMetadata } from "@repo/ui/lib/favicon-metadata";
 import "./globals.css";
 
 const geistSans = localFont({
@@ -18,6 +19,7 @@ const geistMono = localFont({
 export const metadata: Metadata = {
   title: "IdeaI /mvp",
   description: "IdeaI app with MVP.css only - semantic HTML styling",
+  ...getIdeAIFaviconMetadata(),
 };
 
 export default function RootLayout({

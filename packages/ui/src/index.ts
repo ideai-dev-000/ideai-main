@@ -25,3 +25,6 @@ export { Button as ShadcnButton } from "./components/ui/button";
 export { Separator } from "./components/ui/separator";
 export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from "./components/ui/tooltip";
 
+// Utilities
+export { getIdeAIFaviconMetadata } from "./lib/favicon-metadata";
+

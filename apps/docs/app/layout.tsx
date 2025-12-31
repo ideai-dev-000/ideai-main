@@ -15,6 +15,7 @@
 
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import { getIdeAIFaviconMetadata } from "@repo/ui/lib/favicon-metadata";
 import "./globals.css";
 
 const geistSans = localFont({
@@ -32,6 +33,7 @@ export const metadata: Metadata = {
     template: "%s – IdeaI Docs",
   },
   description: "IdeaI documentation site",
+  ...getIdeAIFaviconMetadata(),
 };
 
 export default function RootLayout({
