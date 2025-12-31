@@ -5,15 +5,23 @@ description: Current status, completed work, and pending tasks for IdeaI monorep
 
 # IdeaI Monorepo - Project Status
 
-**Last Updated**: December 31, 2025
+**Last Updated**: January 1, 2026
 
 ## ✅ Completed
 
 ### UI Consistency & Templates
 - ✅ **Shared Page Template**: `IdeAIPageTemplate` component created
 - ✅ **Universal Header/Footer**: All pages (home, 404, docs) use template
-- ✅ **Consistent Structure**: 8 apps all have identical page structure
+- ✅ **Consistent Structure**: 10 apps all have identical page structure
 - ✅ **Module Type Fixes**: All apps configured with `"type": "module"`
+
+### Brand Assets & Favicons
+- ✅ **Central Brand Assets**: `packages/ui/public/` directory for all brand assets
+- ✅ **SVG Favicon**: All 10 apps have consistent favicon configuration
+- ✅ **Logo Icon Component**: `IdeAILogoIcon` component with inline SVG
+- ✅ **Logo Integration**: Logo icon + text in header across all apps
+- ✅ **Favicon Metadata Utility**: `getIdeAIFaviconMetadata()` for Next.js
+- ✅ **Removed Old Favicons**: Cleaned up Vercel default favicons
 
 ### Development Tools
 - ✅ **Dev Server Manager**: `dev-manager.mjs` script for managing all local servers
@@ -35,14 +43,18 @@ description: Current status, completed work, and pending tasks for IdeaI monorep
 
 ### Components
 - ✅ **IdeAISiteCard**: Created with shadcn styling
-- ✅ **shadcn Components**: Card, Badge, Separator added
+- ✅ **shadcn Components**: Card, Badge, Separator, Tooltip, Button added
 - ✅ **Component Exports**: All components exported from `@repo/ui`
+
+### New Apps
+- ✅ **UnoCSS App**: `apps/unocss` (port 3008) - UnoCSS integration demo
+- ✅ **Shadcn Showcase**: `apps/shadcn` (port 3009) - All shadcn components showcase
 
 ## ⏳ In Progress
 
 ### Phase 1: Site Card Integration (Current Priority)
 - [ ] Create status API endpoints (`/api/status/local`, `/api/status/vercel`)
-- [ ] Integrate `IdeAISiteCard` into landing page
+- [ ] Create status dashboard page
 - [ ] Replace `AppCard` with enhanced site card
 - [ ] Test with real status data
 
@@ -64,9 +76,16 @@ description: Current status, completed work, and pending tasks for IdeaI monorep
 - [ ] Create workflow for branch-based deployments
 - [ ] Trigger on branch push
 - [ ] Deploy to correct Vercel project
-- [ ] Update status in landing page
+- [ ] Update status dashboard
 
-### Phase 5: Enhanced Dashboard
+### Phase 5: Documentation Cleanup
+- ✅ **Consolidated Vercel Docs**: Merged `vercel.md` and `vercel-setup.md`
+- ✅ **Consolidated Deployment Docs**: Merged multi-app and robust deployment guides
+- ✅ **Removed Duplicates**: Deleted redundant documentation files
+- ✅ **Updated Cross-References**: All links point to consolidated docs
+- ✅ **Updated App Count**: Documentation reflects 10 apps (not 8)
+
+### Phase 6: Enhanced Dashboard (Future)
 - [ ] Deployment history per site
 - [ ] Build logs integration
 - [ ] Performance metrics
@@ -74,7 +93,7 @@ description: Current status, completed work, and pending tasks for IdeaI monorep
 
 ## 🗂️ Project Structure
 
-### Apps (8 total)
+### Apps (9 total)
 - `web` - Main IdeaI app (port 3000)
 - `docs` - Documentation site (port 3001)
 - `all` - Component showcase (port 3002)
@@ -82,7 +101,8 @@ description: Current status, completed work, and pending tasks for IdeaI monorep
 - `mvp` - MVP.css demo (port 3004)
 - `tailwind` - Tailwind CSS demo (port 3005)
 - `allcss` - All CSS demo (port 3006)
-- `landing` - Monorepo landing page (port 3007)
+- `unocss` - UnoCSS demo (port 3008)
+- `shadcn` - Shadcn Components Showcase (port 3009)
 
 ### Packages
 - `@repo/ui` - Shared UI components and styles
@@ -104,7 +124,7 @@ docs/
 │   └── deployment-architecture.md   # Deployment architecture
 ├── deployment/
 │   ├── overview.md              # Deployment overview
-│   ├── vercel-setup.md          # Vercel configuration
+│   ├── vercel.md                # Vercel configuration
 │   ├── git-integration.md       # Git integration guide
 │   └── unified-deployment.md    # Deployment script guide
 ├── development/
@@ -121,7 +141,7 @@ docs/
 
 1. **Complete Phase 1**: Site card integration
    - Create status API endpoints
-   - Integrate into landing page
+   - Create status dashboard
    - Test and refine
 
 2. **Phase 2**: Status APIs
@@ -138,7 +158,8 @@ docs/
    - Automate branch deployments
    - Status updates
 
-5. **Phase 5**: Enhanced features
+5. **Phase 5**: Documentation cleanup - ✅ **COMPLETED**
+6. **Phase 6**: Enhanced features (future)
    - Deployment history
    - Performance metrics
    - Error tracking
@@ -147,7 +168,6 @@ docs/
 
 - **Main App**: http://localhost:3000
 - **Documentation**: http://localhost:3001
-- **Landing Page**: http://localhost:3007
 - **Vercel Dashboard**: https://vercel.com/idea-i
 - **GitHub Repo**: https://github.com/ideai-dev-000/ideai-main
 
@@ -155,9 +175,11 @@ docs/
 
 - All apps use centralized CSS from `@repo/ui`
 - All pages use `IdeAIPageTemplate` for consistency
+- All apps have consistent favicon and logo branding
 - Dev manager script auto-discovers all apps
-- Deployment script handles all 8 apps
+- Deployment script handles all 9 apps
 - Branch-per-site strategy ready for implementation
+- Documentation consolidated and cross-references updated
 
 
 

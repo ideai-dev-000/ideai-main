@@ -23,7 +23,6 @@ The monorepo contains multiple Next.js applications:
   - Serves sub-apps at `/apps/{name}` via catch-all route
 - **`apps/docs`** - IdeaI documentation site
   - Deployed as standalone Vercel project
-- **`apps/landing`** - App showcase/landing page
   - Deployed as standalone Vercel project
 - **`apps/all`, `apps/nocss`, `apps/mvp`, `apps/tailwind`, `apps/allcss`** - CSS showcase apps
   - Ready for deployment
@@ -59,7 +58,7 @@ Deployments can be triggered manually using the unified deployment script:
 ./deploy.sh --prod
 
 # Deploy specific apps
-./deploy.sh --prod docs landing
+./deploy.sh --prod docs web
 
 # Preview deployment
 ./deploy.sh
@@ -71,7 +70,7 @@ See [Unified Deployment Guide](./unified-deployment.md) for complete instruction
 
 - [Unified Deployment Guide](./unified-deployment.md) - **Start here** for deployment
 - [Deployment Architecture](../architecture/deployment-architecture.md) - Architecture overview
-- [Vercel Setup](./vercel-setup.md) - Dashboard configuration
+- [Vercel Configuration](./vercel.md) - Dashboard configuration
 - [CI/CD Workflows](./ci-cd.md) - Automated deployment workflows
 
 ## Related Documentation

@@ -35,12 +35,13 @@ Sub-apps can be accessed via:
 
 **Available Sub-Apps**:
 - `docs` - Documentation site
-- `landing` - App showcase/landing page
 - `all` - Component showcase
 - `nocss` - No CSS demo
 - `mvp` - MVP.css demo
 - `tailwind` - Tailwind CSS demo
 - `allcss` - All CSS demo
+- `unocss` - UnoCSS demo
+- `shadcn` - Shadcn Components Showcase
 
 ## Deployment Modes
 
@@ -62,7 +63,6 @@ Sub-apps can be accessed via:
 **Configuration**:
 - Set environment variables in main app:
   - `NEXT_PUBLIC_DOCS_URL` - Standalone docs URL (optional)
-  - `NEXT_PUBLIC_LANDING_URL` - Standalone landing URL (optional)
   - etc.
 
 ### Mode 2: Standalone Apps
@@ -97,7 +97,7 @@ Use the unified deployment script to deploy all apps:
 ./deploy.sh --prod
 
 # Deploy specific apps (production)
-./deploy.sh --prod docs landing
+./deploy.sh --prod docs web
 ```
 
 ### Manual Deployment
@@ -129,11 +129,6 @@ vercel deploy --prod --yes --cwd apps/docs
 - **Status**: ✅ Deployed as standalone
 - **Root Directory**: `apps/docs`
 
-#### Landing
-- **Project**: `landing`
-- **URL**: `landing-*.vercel.app` (or custom domain)
-- **Status**: ✅ Deployed as standalone
-- **Root Directory**: `apps/landing`
 
 ## Configuration
 
@@ -143,7 +138,6 @@ vercel deploy --prod --yes --cwd apps/docs
 ```env
 # Optional: Standalone app URLs for redirects
 NEXT_PUBLIC_DOCS_URL=https://docs-xxx.vercel.app
-NEXT_PUBLIC_LANDING_URL=https://landing-xxx.vercel.app
 NEXT_PUBLIC_ALL_URL=https://all-xxx.vercel.app
 # ... etc
 ```
@@ -188,6 +182,55 @@ Most settings are auto-detected. Configure in Vercel dashboard:
 - **Sub-apps**: 
   - Via main: `myui.space/apps/{name}`
   - Standalone: `{app}-xxx.vercel.app` or custom domain
+
+## Deployment Strategy Options
+
+### Option 1: Separate Projects + Subdomains (Recommended)
+
+**How it works:**
+- Each app gets its own Vercel project
+- Each app gets its own subdomain
+- Landing page acts as hub, links to all apps
+
+**URLs:**
+- `www.myui.space` (existing - web app)
+- `docs.ideai.space` (docs app)
+- `all.ideai.space` (all components app)
+- etc.
+
+**Pros:**
+- ✅ Independent deployments
+- ✅ Separate scaling
+- ✅ Clean URLs
+- ✅ Works with separate projects
+- ✅ Future-proof
+
+**Cons:**
+- ❌ Requires DNS configuration
+- ❌ More projects to manage
+
+### Option 2: Single Project with Rewrites
+
+**How it works:**
+- One Vercel project handles all apps
+- Rewrites route `/web` → `apps/web`, `/docs` → `apps/docs`, etc.
+
+**URLs:**
+- `ideai.space/web`
+- `ideai.space/docs`
+- `ideai.space/all`
+- etc.
+
+**Pros:**
+- ✅ Folder-based routing works
+- ✅ Single project to manage
+- ✅ No DNS configuration needed
+
+**Cons:**
+- ❌ All apps deploy together
+- ❌ Complex rewrite configuration
+- ❌ Harder to scale independently
+- ❌ One failure affects all
 
 ## Future Enhancements
 

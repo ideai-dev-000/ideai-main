@@ -29,11 +29,6 @@ const SUB_APPS = {
     // In production, this could be a standalone URL or served directly
     standaloneUrl: process.env.NEXT_PUBLIC_DOCS_URL,
   },
-  landing: {
-    name: "Landing Page",
-    description: "Monorepo landing page with app showcase",
-    standaloneUrl: process.env.NEXT_PUBLIC_LANDING_URL,
-  },
   all: {
     name: "All Components",
     description: "Complete HTML5 test page and component showcase",

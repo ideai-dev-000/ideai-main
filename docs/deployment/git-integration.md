@@ -3,7 +3,7 @@
 ## Problem: Multiple Projects Deploying from Same Repo
 
 When multiple Vercel projects are connected to the same Git repository, all projects can trigger deployments on every commit. This can cause:
-- Wrong project deploying (e.g., landing deploying when web should)
+- Wrong project deploying (e.g., docs deploying when web should)
 - Unnecessary builds
 - Confusion about which project is deploying
 
@@ -49,37 +49,16 @@ Each Vercel project must have a **unique Root Directory** setting that tells Ver
      - Returns exit code 0 (no changes) = Skip build
      - Returns exit code 1 (changes found) = Proceed with build
 
-#### For `landing` Project
-
-**Vercel Dashboard**: https://vercel.com/idea-i/landing/settings/general
-
-1. **Root Directory**: `apps/landing`
-   - ⚠️ **CRITICAL**: Must be exactly `apps/landing`
-   - This tells Vercel to build `apps/landing` for this project
-
-2. **Git Integration**: Connected to `ideai-dev-000/ideai-main`
-   - Production Branch: `main`
-   - Preview Branches: All branches
-
-3. **Ignore Build Step**: (Recommended)
-   - **Location**: Settings → Git → Ignored Build Step
-   - **Type**: Bash/Shell command (enter directly in Vercel dashboard)
-   - **Command**: `git diff HEAD^ HEAD --quiet apps/landing packages/`
-   - **⚠️ Important**: Enter the command directly (don't use script file path)
-   - **How it works**: 
-     - If no changes in `apps/landing` or `packages/` → Skip build (exit 0)
-     - If changes found → Build (exit 1)
-
 ## Verification
 
 ### Check Project Settings
 
 1. Go to each project's settings:
    - `web`: https://vercel.com/idea-i/web/settings/general
-   - `landing`: https://vercel.com/idea-i/landing/settings/general
+   - `docs`: https://vercel.com/idea-i/docs/settings/general
 
 2. Verify:
-   - ✅ Root Directory is set correctly (`apps/web` or `apps/landing`)
+   - ✅ Root Directory is set correctly (`apps/web` or `apps/docs`)
    - ✅ Git Integration shows correct repository
    - ✅ Production branch is correct
 
@@ -96,7 +75,7 @@ git push
 
 # Check Vercel dashboard:
 # - web project should deploy
-# - landing project should NOT deploy (unless landing files also changed)
+# - docs project should NOT deploy (unless docs files also changed)
 ```
 
 ## Troubleshooting
@@ -150,9 +129,9 @@ If Vercel allows direct commands, enter these in the "Ignored Build Step" field:
 git diff HEAD^ HEAD --quiet apps/web packages/
 ```
 
-**For `landing` Project:**
+**For `docs` Project:**
 ```
-git diff HEAD^ HEAD --quiet apps/landing packages/
+git diff HEAD^ HEAD --quiet apps/docs packages/
 ```
 
 ### Option B: Script File (If Required)
@@ -165,21 +144,21 @@ If Vercel dashboard shows "bash your-script-name.sh" format, use script files wi
 1. Script file: `scripts/ignore-build-web.sh` (already created)
 2. Enter in dashboard: `bash ../../scripts/ignore-build-web.sh`
 
-**For `landing` Project:**
-1. Script file: `scripts/ignore-build-landing.sh` (already created)
-2. Enter in dashboard: `bash ../../scripts/ignore-build-landing.sh`
+**For `docs` Project:**
+1. Script file: `scripts/ignore-build-docs.sh` (if needed)
+2. Enter in dashboard: `bash ../../scripts/ignore-build-docs.sh`
 
 **Alternative (Recommended)**: Use the direct command instead of script file:
 - For `web`: `git diff HEAD^ HEAD --quiet apps/web packages/`
-- For `landing`: `git diff HEAD^ HEAD --quiet apps/landing packages/`
+- For `docs`: `git diff HEAD^ HEAD --quiet apps/docs packages/`
 
 ### Script Files Created
 
 Script files are available at:
 - `scripts/ignore-build-web.sh` - For web project
-- `scripts/ignore-build-landing.sh` - For landing project
+- `scripts/ignore-build-docs.sh` - For docs project (if needed)
 
-Both scripts are executable and ready to use.
+Scripts are executable and ready to use.
 
 ### How It Works
 

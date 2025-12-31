@@ -12,7 +12,7 @@ This strategy enables each IdeaI app to have its own Git branch, with each commi
 - **Independent deployments** - Each app deploys only when its code changes
 - **Clear separation** - Each branch maps to one Vercel project
 - **Monorepo benefits** - Shared code still works, but deployments are isolated
-- **Visual status** - Landing page shows real-time status of all sites
+- **Visual status** - Status dashboard shows real-time status of all sites
 
 ## Architecture
 
@@ -22,7 +22,6 @@ This strategy enables each IdeaI app to have its own Git branch, with each commi
 main                    → ideai-main project (web app at myui.space)
 ├── branch/web          → web project (if separate deployment needed)
 ├── branch/docs         → docs project (docs.ideai.space or standalone)
-├── branch/landing      → landing project (landing.ideai.space)
 ├── branch/all          → all project (all.ideai.space)
 └── branch/{app-name}   → {app-name} project
 ```
@@ -32,7 +31,6 @@ main                    → ideai-main project (web app at myui.space)
 | Branch | Vercel Project | Domain | Root Directory |
 |--------|---------------|--------|----------------|
 | `main` | `ideai-main` | `myui.space` | `apps/web` |
-| `branch/landing` | `landing` | `landing.ideai.space` | `apps/landing` |
 | `branch/docs` | `docs` | `docs.ideai.space` | `apps/docs` |
 | `branch/all` | `all` | `all.ideai.space` | `apps/all` |
 
@@ -49,7 +47,7 @@ main                    → ideai-main project (web app at myui.space)
    - Ignored Build Step configured for branch
 
 3. **Status monitoring**:
-   - Landing page fetches status from:
+   - Status dashboard fetches status from:
      - Local dev servers (via dev-manager API)
      - Vercel API (deployment status)
      - GitHub API (branch status)
@@ -58,13 +56,13 @@ main                    → ideai-main project (web app at myui.space)
 
 ### Phase 1: Site Card Component ✅ (Current)
 
-**Goal**: Create visual status card component for landing page
+**Goal**: Create visual status card component for status dashboard
 
 - [x] Create `IdeAISiteCard` component with shadcn styling
 - [x] Display local dev server status (running/stopped)
 - [x] Display Vercel deployment status (deployed/building/failed)
 - [x] Add quick links (Vercel dashboard, GitHub branch, local URL)
-- [x] Integrate into landing page
+- [x] Integrate into status dashboard
 
 **Components**:
 - `packages/ui/src/components/ideai-site-card.tsx`
@@ -86,9 +84,9 @@ main                    → ideai-main project (web app at myui.space)
   - Returns last commit, branch protection, etc.
 
 **Files**:
-- `apps/landing/app/api/status/local/route.ts`
-- `apps/landing/app/api/status/vercel/route.ts`
-- `apps/landing/app/api/status/github/route.ts`
+- `apps/web/app/api/status/local/route.ts`
+- `apps/web/app/api/status/vercel/route.ts`
+- `apps/web/app/api/status/github/route.ts`
 
 ### Phase 3: Branch Workflow Setup
 
@@ -100,7 +98,7 @@ main                    → ideai-main project (web app at myui.space)
 - [ ] Document branch workflow
 
 **Configuration**:
-- Update `apps/landing/app/config/routing.ts` with branch info
+- Update routing config with branch info (if needed)
 - Create `docs/deployment/branch-workflow.md`
 
 ### Phase 4: GitHub Actions Integration
@@ -110,7 +108,7 @@ main                    → ideai-main project (web app at myui.space)
 - [ ] Create GitHub Actions workflow
 - [ ] Trigger on branch push
 - [ ] Deploy to correct Vercel project
-- [ ] Update status in landing page
+- [ ] Update status in dashboard
 
 **Files**:
 - `.github/workflows/deploy-branch.yml`
@@ -163,14 +161,14 @@ interface IdeAISiteCardProps {
 
 1. **Independent Deployments**: Each app deploys only when its branch changes
 2. **Clear Ownership**: Each branch clearly maps to one Vercel project
-3. **Visual Status**: Landing page shows real-time status of all sites
+3. **Visual Status**: Status dashboard shows real-time status of all sites
 4. **Quick Access**: Direct links to Vercel, GitHub, local dev
 5. **Scalable**: Easy to add new apps/sites
 
 ## Migration Path
 
 1. **Start with main branch**: All apps deploy from `main` (current state)
-2. **Create branch for landing**: Test branch-per-site with `branch/landing`
+2. **Create branch for test app**: Test branch-per-site with a test app branch
 3. **Gradually migrate**: Move other apps to branches as needed
 4. **Keep main for shared**: Use `main` for shared package changes
 
@@ -178,7 +176,7 @@ interface IdeAISiteCardProps {
 
 - [Deployment Architecture](./deployment-architecture.md)
 - [Git Integration](../deployment/git-integration.md)
-- [Vercel Setup](../deployment/vercel-setup.md)
+- [Vercel Configuration](../deployment/vercel.md)
 
 
 

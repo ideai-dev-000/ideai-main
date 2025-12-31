@@ -9,7 +9,7 @@
 # Examples:
 #   ./deploy.sh                    # Deploy all apps (preview)
 #   ./deploy.sh --prod             # Deploy all apps (production)
-#   ./deploy.sh --prod docs landing # Deploy only docs and landing (production)
+#   ./deploy.sh --prod docs web # Deploy only docs and web (production)
 
 set -e
 
@@ -32,7 +32,7 @@ APPS_TO_DEPLOY=("$@")
 
 # If no apps specified, deploy all
 if [ ${#APPS_TO_DEPLOY[@]} -eq 0 ]; then
-  APPS_TO_DEPLOY=("web" "docs" "landing" "all" "nocss" "mvp" "tailwind" "allcss")
+  APPS_TO_DEPLOY=("web" "docs" "all" "nocss" "mvp" "tailwind" "allcss" "unocss" "shadcn")
 fi
 
 echo -e "${BLUE}=== IdeaI Monorepo Deployment ===${NC}"
