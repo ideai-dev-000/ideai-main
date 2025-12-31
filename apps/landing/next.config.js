@@ -12,6 +12,8 @@ const apps = {
   mvp: { port: 3004, path: "/mvp" },
   tailwind: { port: 3005, path: "/tailwind" },
   allcss: { port: 3006, path: "/allcss" },
+  unocss: { port: 3008, path: "/unocss" },
+  shadcn: { port: 3009, path: "/shadcn" },
 };
 
 // Generate rewrites for folder-based routing

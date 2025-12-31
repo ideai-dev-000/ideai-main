@@ -119,6 +119,22 @@ export const defaultRoutingConfig: RoutingConfig = {
       port: 3006,
       subdomain: "allcss",
     },
+    {
+      id: "unocss",
+      name: "UnoCSS",
+      path: "/apps/unocss",
+      description: "UnoCSS only - atomic CSS styling",
+      port: 3008,
+      subdomain: "unocss",
+    },
+    {
+      id: "shadcn",
+      name: "Shadcn Components",
+      path: "/apps/shadcn",
+      description: "Shadcn/UI components showcase with design tokens",
+      port: 3009,
+      subdomain: "shadcn",
+    },
   ],
 };
 
