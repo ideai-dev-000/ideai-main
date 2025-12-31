@@ -27,12 +27,12 @@ This document describes the GitHub Actions workflows configured for this project
 
 #### Deploy Preview
 - **Condition**: Runs on `preview` branch or pull requests
-- Deploys to Vercel preview environment
-- Comments preview URL on pull requests
+- Uses `deploy.sh` script to deploy all apps to Vercel preview
+- Comments preview URLs on pull requests
 
 #### Deploy Production
 - **Condition**: Runs on `main` branch only
-- Deploys to Vercel production environment
+- Uses `deploy.sh --prod` script to deploy all apps to Vercel production
 
 ### 2. Preview Deployment
 
@@ -50,18 +50,19 @@ This document describes the GitHub Actions workflows configured for this project
 3. Install dependencies
 4. Run linting
 5. Run type checking
-6. Build applications
-7. Deploy to Vercel preview
-8. Comment preview URL on PRs
+6. Install Vercel CLI
+7. Authenticate with Vercel
+8. Deploy all apps using `deploy.sh` script
+9. Comment preview URLs on PRs
 
 ## Workflow Configuration
 
 ### Required Secrets
 
 All workflows require these GitHub secrets:
-- `VERCEL_TOKEN` - Vercel authentication token
-- `VERCEL_ORG_ID` - Vercel organization ID
-- `VERCEL_PROJECT_ID` - Vercel project ID
+- `VERCEL_TOKEN` - Vercel authentication token (required)
+- `VERCEL_ORG_ID` - Vercel organization ID (required)
+- `VERCEL_PROJECT_ID` - Optional (not needed when using deploy.sh script)
 
 See [GitHub Secrets Setup](../setup/github-secrets.md) for configuration.
 
@@ -109,16 +110,30 @@ jobs:
       # Add your steps here
 ```
 
-### Environment-Specific Deployments
+### Deployment Process
 
-To deploy to different environments:
+The workflows use the unified `deploy.sh` script which:
+1. Automatically discovers all apps
+2. Deploys each app to its corresponding Vercel project
+3. Uses Root Directory settings from Vercel dashboard
+4. Handles monorepo complexity automatically
 
+**Preview Deployment**:
 ```yaml
-- name: Deploy
-  run: vercel deploy --token=${{ secrets.VERCEL_TOKEN }}
+- name: Deploy all apps to Preview
+  run: ./deploy.sh
   env:
+    VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
     VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-    VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+```
+
+**Production Deployment**:
+```yaml
+- name: Deploy all apps to Production
+  run: ./deploy.sh --prod
+  env:
+    VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+    VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
 ```
 
 ## Best Practices

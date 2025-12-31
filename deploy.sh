@@ -78,19 +78,37 @@ for app in "${APPS_TO_DEPLOY[@]}"; do
   # Vercel will find .vercel, use the project, and apply Root Directory from dashboard
   # Root Directory (apps/web) is relative to repo root, so it works correctly
   if [ "$PROD_FLAG" == "--prod" ]; then
-    vercel deploy --prod --yes || {
-      rm -f ".vercel"
-      echo -e "${RED}❌ ${app} deployment failed${NC}"
-      echo -e "${YELLOW}⚠️  Verify Root Directory in dashboard is: apps/${app}${NC}"
-      echo -e "${YELLOW}⚠️  Enable: Include files outside root directory${NC}"
-      exit 1
-    }
+    if [ -n "$VERCEL_TOKEN" ]; then
+      vercel deploy --prod --yes --token="$VERCEL_TOKEN" || {
+        rm -f ".vercel"
+        echo -e "${RED}❌ ${app} deployment failed${NC}"
+        echo -e "${YELLOW}⚠️  Verify Root Directory in dashboard is: apps/${app}${NC}"
+        echo -e "${YELLOW}⚠️  Enable: Include files outside root directory${NC}"
+        exit 1
+      }
+    else
+      vercel deploy --prod --yes || {
+        rm -f ".vercel"
+        echo -e "${RED}❌ ${app} deployment failed${NC}"
+        echo -e "${YELLOW}⚠️  Verify Root Directory in dashboard is: apps/${app}${NC}"
+        echo -e "${YELLOW}⚠️  Enable: Include files outside root directory${NC}"
+        exit 1
+      }
+    fi
   else
-    vercel deploy --yes || {
-      rm -f ".vercel"
-      echo -e "${RED}❌ ${app} deployment failed${NC}"
-      exit 1
-    }
+    if [ -n "$VERCEL_TOKEN" ]; then
+      vercel deploy --yes --token="$VERCEL_TOKEN" || {
+        rm -f ".vercel"
+        echo -e "${RED}❌ ${app} deployment failed${NC}"
+        exit 1
+      }
+    else
+      vercel deploy --yes || {
+        rm -f ".vercel"
+        echo -e "${RED}❌ ${app} deployment failed${NC}"
+        exit 1
+      }
+    fi
   fi
   
   # Remove temporary symlink
