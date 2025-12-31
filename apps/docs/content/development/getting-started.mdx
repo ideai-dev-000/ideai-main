@@ -31,33 +31,42 @@ pnpm install
 ### 3. Start Development Server
 
 ```bash
-# Start all apps
+# Start all apps (web: 3000, docs: 3001, all: 3002)
 pnpm dev
 
 # Start specific app
 pnpm dev --filter=web
 pnpm dev --filter=docs
+pnpm dev --filter=@repo/all
 ```
 
 ### 4. Access Applications
 
 - **Web App**: http://localhost:3000
-  - Landing page with "IdeaI" heading
-  - Shared Button component
+  - Landing page with "IdeaI /web" heading
+  - Shared components (Header, Footer, Button, Content)
 - **Docs App**: http://localhost:3001
-  - Landing page with "IdeaI Docs" heading
+  - Landing page with "IdeaI /docs" heading
   - Same design as web app
-  - Shared Button component
+  - Documentation index content
+  - Shared components (Header, Footer, Button, Content)
+- **All App**: http://localhost:3002
+  - Landing page with "IdeaI /all" heading
+  - Comprehensive HTML5 test page
+  - Documentation index section
+  - UI showcase for testing consistency
+  - Shared components (Header, Footer, Button, HTMLTest)
 
-Both apps share the same clean landing page design, with the only difference being the H1 heading.
+All three apps share identical design and styling, with site names displayed in headers (`/web`, `/docs`, `/all`).
 
 ## Project Structure
 
 ```
 ideai-main/
 ├── apps/
-│   ├── web/          # Main web application
-│   └── docs/         # Documentation site
+│   ├── web/          # Main web application (port 3000)
+│   ├── docs/         # Documentation site (port 3001)
+│   └── all/           # UI showcase/test page (port 3002)
 ├── packages/
 │   ├── ui/           # Shared UI components
 │   ├── eslint-config/ # Shared ESLint config
@@ -179,8 +188,13 @@ Builds are optimized for production:
 ### Port Already in Use
 
 ```bash
-# Find and kill process
-lsof -ti:3000 | xargs kill -9
+# Find and kill processes on all ports
+lsof -ti:3000,3001,3002 | xargs kill -9
+
+# Or kill specific port
+lsof -ti:3000 | xargs kill -9  # web
+lsof -ti:3001 | xargs kill -9  # docs
+lsof -ti:3002 | xargs kill -9  # all
 ```
 
 ### Dependency Issues

@@ -15,4 +15,13 @@ export { IdeaIButton } from "./components/ideai-button";
 export { IdeAILogo } from "./components/ideai-logo";
 export { IdeAIHTMLTest } from "./components/ideai-html-test";
 export { IdeAIPageTemplate } from "./components/ideai-page-template";
+export { IdeAISiteCard } from "./components/ideai-site-card";
+export type { IdeAISiteCardProps, SiteStatus } from "./components/ideai-site-card";
+
+// shadcn/ui components
+export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent } from "./components/ui/card";
+export { Badge } from "./components/ui/badge";
+export { Button as ShadcnButton } from "./components/ui/button";
+export { Separator } from "./components/ui/separator";
+export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from "./components/ui/tooltip";
 

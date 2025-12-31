@@ -18,7 +18,8 @@ This document provides a high-level overview of the IdeaI monorepo project, its 
 ideai-main/
 ├── apps/
 │   ├── web/          # Main Next.js web application
-│   └── docs/         # Documentation Next.js app
+│   ├── docs/         # Documentation Next.js app
+│   └── all/          # UI showcase/test page (HTML5 test page)
 ├── packages/
 │   ├── ui/           # Shared React component library
 │   ├── eslint-config/    # Shared ESLint configurations
@@ -111,21 +112,35 @@ ideai-main/
 - **Purpose**: Main IdeaI web application
 - **Port**: 3000 (development)
 - **Production**: https://www.myui.space
-- **Landing Page**: Clean design with "IdeaI" heading
-- **Features**: Shared Button component from `@repo/ui`
+- **Landing Page**: Clean design with "IdeaI /web" heading
+- **Features**: Shared components from `@repo/ui` (Header, Footer, Button, Content)
 
 ### Docs App (`apps/docs`)
 - **Purpose**: IdeaI documentation site
 - **Port**: 3001 (development)
 - **Status**: Not deployed (local development only)
-- **Landing Page**: Same design as web, with "IdeaI Docs" heading
-- **Features**: Shared Button component from `@repo/ui`
+- **Landing Page**: Same design as web, with "IdeaI /docs" heading
+- **Features**: Shared components from `@repo/ui` (Header, Footer, Button, Content)
+- **Content**: Documentation index rendered via `IdeAIContent` component
 
-Both apps share:
-- Same landing page design and styling
+### All App (`apps/all`)
+- **Purpose**: UI showcase and comprehensive HTML5 test page
+- **Port**: 3002 (development)
+- **Status**: Local development only (testing/validation tool)
+- **Landing Page**: "IdeaI /all" heading with comprehensive HTML5 element showcase
+- **Features**: 
+  - Shared components from `@repo/ui` (Header, Footer, Button)
+  - `IdeAIHTMLTest` component with all HTML5 elements
+  - Documentation index section (same as `/docs` page)
+  - Complete element testing (forms, tables, lists, media, etc.)
+- **Use Case**: Visual consistency testing across all IdeaI apps
+
+All apps share:
+- Identical landing page design and styling
 - Shared UI components from `@repo/ui`
-- Consistent branding (IdeaI)
+- Consistent branding (IdeaI with site name: `/web`, `/docs`, `/all`)
 - Same development workflow
+- Centralized CSS architecture (no app-specific styling)
 
 ## Key Features
 
@@ -178,8 +193,13 @@ docs/
 # Install dependencies
 pnpm install
 
-# Start development servers
+# Start all development servers (web: 3000, docs: 3001, all: 3002)
 pnpm dev
+
+# Start individual apps
+pnpm --filter web dev    # Port 3000
+pnpm --filter docs dev   # Port 3001
+pnpm --filter @repo/all dev  # Port 3002
 
 # Build all applications
 pnpm build

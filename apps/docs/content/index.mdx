@@ -9,25 +9,25 @@ Welcome to the IdeaI monorepo documentation. This directory contains comprehensi
 
 ## 📋 Quick Reference
 
-- **[Project Summary](/docs/project-summary)** - High-level overview of the project
-- **[Getting Started](/docs/development/getting-started)** - Start here for development
-- **[Deployment Overview](/docs/deployment/overview)** - Deployment architecture
+- **[Project Summary](./PROJECT-SUMMARY.md)** - High-level overview of the project
+- **[Getting Started](./development/getting-started.md)** - Start here for development
+- **[Deployment Overview](./deployment/overview.md)** - Deployment architecture
 
 ## 📚 Documentation Structure
 
 ### Setup Guides
 
-- **[GitHub Secrets Setup](/docs/setup/github-secrets)**
+- **[GitHub Secrets Setup](./setup/github-secrets.md)**
   - Configure GitHub secrets for CI/CD
   - Automated setup script documentation
   - Manual configuration options
 
-- **[Vercel Setup Checklist](/docs/setup/vercel-checklist)**
+- **[Vercel Setup Checklist](./setup/vercel-checklist.md)**
   - Quick reference for Vercel configuration
   - Required dashboard settings
   - Monorepo-specific requirements
 
-- **[Commit Signing Setup](/docs/setup/commit-signing)**
+- **[Commit Signing Setup](./setup/commit-signing.md)**
   - ✅ GPG signing configured and working
   - Verified commits show "Verified" badge on GitHub
   - Required for Vercel deployment protection
@@ -35,42 +35,71 @@ Welcome to the IdeaI monorepo documentation. This directory contains comprehensi
 
 ### Deployment
 
-- **[Deployment Overview](/docs/deployment/overview)**
+- **[Unified Deployment Guide](./deployment/unified-deployment.md)** ⭐ **Start here**
+  - Deploy all apps with single command: `./deploy.sh --prod`
+  - Complete deployment instructions
+  - Troubleshooting guide
+
+- **[Deployment Overview](./deployment/overview.md)**
   - Architecture and deployment process
   - Environment descriptions
   - Quick reference
 
-- **[CI/CD Workflows](/docs/deployment/ci-cd)**
+- **[Deployment Architecture](./architecture/deployment-architecture.md)**
+  - Main site with sub-apps
+  - Standalone deployment mode
+  - Routing configuration
+
+- **[CI/CD Workflows](./deployment/ci-cd.md)**
   - GitHub Actions workflow details
   - Workflow configuration
   - Customization guide
 
-- **[Vercel Configuration](/docs/deployment/vercel)**
+- **[Vercel Configuration](./deployment/vercel.md)**
   - Vercel project setup
   - Monorepo configuration
   - Deployment process
 
-- **[Troubleshooting](/docs/deployment/troubleshooting)**
+- **[Troubleshooting](./deployment/troubleshooting.md)**
   - Common issues and solutions
   - Error message reference
   - Debugging tips
 
 ### Development
 
-- **[Getting Started](/docs/development/getting-started)**
+- **[Getting Started](./development/getting-started.md)**
   - Initial setup instructions
   - Development workflow
   - Project structure
 
+### Architecture
+
+- **[Design System Architecture](./architecture/design-system.md)**
+  - Centralized component library
+  - Shared UI components
+  - Design tokens and CSS architecture
+
+- **[UI Consistency Standards](./architecture/ui-consistency.md)**
+  - Explicit color approach (RGB values)
+  - DOM inspection workflow
+  - Visual testing procedures
+  - All apps consistency (`/web`, `/docs`, `/all`)
+
+- **[CSS Showcase and Best Practices](./architecture/css-showcase.md)**
+  - CSS approach comparison (No CSS, MVP.css, Tailwind, Combined)
+  - Best practice configurations
+  - Hot reload support
+  - Showcase apps (`/nocss`, `/mvp`, `/tailwind`, `/allcss`)
+
 ### Tools
 
-- **[Code Context Integration](/docs/tools/code-context)**
+- **[Code Context Integration](./tools/code-context.md)**
   - Codebase analysis tool
   - Header generation and validation
   - Dependency visualization
   - Local development only (not in production)
 
-- **[Contentlayer Integration](/docs/tools/contentlayer)**
+- **[Contentlayer Integration](./tools/contentlayer.md)**
   - Type-safe content access for docs site
   - SEO metadata generation
   - Sitemap generation
@@ -79,15 +108,17 @@ Welcome to the IdeaI monorepo documentation. This directory contains comprehensi
 ## 🚀 Quick Links
 
 ### Setup
-1. [Configure GitHub Secrets](/docs/setup/github-secrets) - **Start here for CI/CD setup**
+1. [Configure GitHub Secrets](./setup/github-secrets.md) - **Start here for CI/CD setup**
 
 ### Deployment
-- [Deployment Overview](/docs/deployment/overview)
-- [CI/CD Workflows](/docs/deployment/ci-cd)
-- [Vercel Configuration](/docs/deployment/vercel)
+- [Unified Deployment Guide](./deployment/unified-deployment.md) ⭐ **Start here**
+- [Deployment Overview](./deployment/overview.md)
+- [Deployment Architecture](./architecture/deployment-architecture.md)
+- [CI/CD Workflows](./deployment/ci-cd.md)
+- [Vercel Configuration](./deployment/vercel.md)
 
 ### Development
-- [Getting Started](/docs/development/getting-started)
+- [Getting Started](./development/getting-started.md)
 
 ## 📖 Documentation Best Practices
 
@@ -130,7 +161,7 @@ To improve documentation:
 ## 📧 Support
 
 For questions or issues:
-- Check [Troubleshooting](/docs/deployment/troubleshooting)
+- Check [Troubleshooting](./deployment/troubleshooting.md)
 - Review relevant documentation section
 - Open an issue on GitHub
 

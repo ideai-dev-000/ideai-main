@@ -4,7 +4,7 @@
 
 import { IdeAIPageTemplate } from "@repo/ui/components/ideai-page-template";
 import { IdeaIButton } from "@repo/ui/components/ideai-button";
-import { AppCard } from "./app-card";
+import { SiteCardWrapper } from "./site-card-wrapper";
 import { AppModal } from "./app-modal";
 import { defaultRoutingConfig } from "./config/routing";
 import styles from "./page.module.css";
@@ -37,7 +37,7 @@ export default function Home() {
               
               <div className={styles.appsGrid}>
                 {apps.map((app) => (
-                  <AppCard key={app.id} app={app} />
+                  <SiteCardWrapper key={app.id} app={app} />
                 ))}
               </div>
             </section>
