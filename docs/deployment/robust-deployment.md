@@ -3,26 +3,26 @@
 ## Problem: Path Confusion
 
 Vercel can get confused about root directories when deploying from monorepos, especially when:
-- Using `--cwd` flag
 - Root Directory setting in dashboard doesn't match deployment context
 - Paths get duplicated (e.g., `apps/web/apps/web`)
 
-## Solution: Deploy from App Directory
+## Solution: Deploy from Repo Root with Symlink
 
-### Current Approach
+### Current Approach (Final Solution)
 
-The deployment script now:
-1. **Changes into the app directory** (`cd apps/$app`)
-2. **Deploys from there** (`vercel deploy`)
-3. **Vercel reads `.vercel/project.json`** which contains project info
-4. **Vercel uses Root Directory from dashboard** (should be `apps/$app`)
+The deployment script (`deploy.sh`):
+1. **Creates temporary symlink**: `.vercel` → `apps/{app}/.vercel`
+2. **Deploys from repo root** (`vercel deploy`)
+3. **Vercel finds `.vercel` symlink** and uses project config
+4. **Vercel uses Root Directory from dashboard** (`apps/{app}` relative to repo root)
+5. **Removes symlink** after deployment
 
 ### Why This Works
 
-- ✅ No path confusion - we're in the app directory
-- ✅ Vercel reads project config from `.vercel/project.json`
-- ✅ Root Directory setting is relative to repo root (as set in dashboard)
-- ✅ Clear separation - each app deploys independently
+- ✅ Deploys from repo root (Root Directory is relative to repo root)
+- ✅ No path duplication (avoids `apps/web/apps/web` issue)
+- ✅ Respects Vercel dashboard settings
+- ✅ Each app deploys independently
 
 ## Vercel Dashboard Settings
 

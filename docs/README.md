@@ -35,10 +35,20 @@ Welcome to the IdeaI monorepo documentation. This directory contains comprehensi
 
 ### Deployment
 
+- **[Unified Deployment Guide](./deployment/unified-deployment.md)** ⭐ **Start here**
+  - Deploy all apps with single command: `./deploy.sh --prod`
+  - Complete deployment instructions
+  - Troubleshooting guide
+
 - **[Deployment Overview](./deployment/overview.md)**
   - Architecture and deployment process
   - Environment descriptions
   - Quick reference
+
+- **[Deployment Architecture](./architecture/deployment-architecture.md)**
+  - Main site with sub-apps
+  - Standalone deployment mode
+  - Routing configuration
 
 - **[CI/CD Workflows](./deployment/ci-cd.md)**
   - GitHub Actions workflow details
@@ -101,7 +111,9 @@ Welcome to the IdeaI monorepo documentation. This directory contains comprehensi
 1. [Configure GitHub Secrets](./setup/github-secrets.md) - **Start here for CI/CD setup**
 
 ### Deployment
+- [Unified Deployment Guide](./deployment/unified-deployment.md) ⭐ **Start here**
 - [Deployment Overview](./deployment/overview.md)
+- [Deployment Architecture](./architecture/deployment-architecture.md)
 - [CI/CD Workflows](./deployment/ci-cd.md)
 - [Vercel Configuration](./deployment/vercel.md)
 

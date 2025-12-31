@@ -1,58 +1,52 @@
-# Deployment Notes
+# Deployment Status
 
-## Current Deployment Status
+## Current Deployments
 
-### Original Project (`ideai-main` → `web`)
-- **Vercel Project**: `web` (was `ideai-main`)
+### Main Web App
+- **Vercel Project**: `web`
 - **Root Directory**: `apps/web`
-- **Production Domain**: `myui.space` (needs verification)
-- **Status**: ⚠️ May need domain reassignment
+- **Production Domain**: `myui.space`
+- **Status**: ✅ Deployed and working
 
-### Landing Project
-- **Vercel Project**: `landing`
-- **Root Directory**: `apps/landing`
-- **Production URL**: `landing-gules-tau.vercel.app`
-- **Desired Domain**: `myui.space` (root)
-- **Status**: ✅ Deployed
+### Standalone Apps
+- **docs**: ✅ Deployed as standalone
+- **landing**: ✅ Deployed as standalone
+- **all, nocss, mvp, tailwind, allcss**: Ready for deployment
 
-## Folder-Based Routing Strategy
+## Deployment Solution
 
-### Current Setup
-- **Landing**: Root domain (`myui.space`)
-- **Other Apps**: `/apps/{name}` (e.g., `/apps/web`, `/apps/docs`)
+### Unified Deployment Script
 
-### Important Limitation
-⚠️ **Folder-based routing in production requires ONE of the following:
+All apps deploy using `./deploy.sh --prod` from repo root.
 
-1. **Single Vercel Project with Rewrites** (Recommended for folder routing)
-   - All apps served from one project
-   - Next.js rewrites proxy to different apps
-   - Requires all apps to be built together
+**How it works:**
+1. Creates temporary symlink: `.vercel` → `apps/{app}/.vercel`
+2. Deploys from repo root
+3. Vercel uses Root Directory from dashboard (`apps/{app}`)
+4. Removes symlink after deployment
 
-2. **Separate Projects with Custom Domain Setup**
-   - Each app is a separate Vercel project
-   - Requires DNS configuration for subdomains or paths
-   - More complex but allows independent deployments
+**Why this works:**
+- Deploys from repo root (Root Directory is relative to repo root)
+- No path duplication (avoids `apps/web/apps/web` issue)
+- Respects Vercel dashboard settings
 
-### Current Approach
-We're using **separate Vercel projects** but want **folder-based routing**. This requires:
-- Either: Configure DNS/rewrites to route `/apps/{name}` to separate projects
-- Or: Switch to a single project with rewrites
+See [Unified Deployment Guide](../deployment/unified-deployment.md) for details.
+
+## Architecture
+
+### Main Site with Sub-Apps
+- **Main app** (`web`) at root: `myui.space/`
+- **Sub-apps** at: `myui.space/apps/{name}`
+- **Catch-all route**: `apps/web/app/apps/[app]/[[...path]]/page.tsx`
+
+### Standalone Apps
+Each app can also be deployed independently as a separate Vercel project.
 
 ## Vercel Project Name in Header
 
-All apps now display their Vercel project name in the header with a clickable link to the Vercel dashboard.
+All apps display their Vercel project name in the header with a clickable link.
 
 **Environment Variable**: `NEXT_PUBLIC_VERCEL_PROJECT_NAME`
 - Set in Vercel dashboard for each project
 - Falls back to app name if not set
-- Link format: `https://vercel.com/{orgId}/{projectName}`
-
-## Next Steps
-
-1. ✅ Add Vercel project name to header (completed)
-2. ✅ Update routing to `/apps/{name}` paths (completed)
-3. ⚠️ Fix `ideai-main` project deployment to `myui.space`
-4. ⚠️ Configure landing app to use `myui.space` domain
-5. ⚠️ Set up folder-based routing in production (requires DNS or single project)
 

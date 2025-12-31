@@ -157,5 +157,5 @@ Each project in Vercel dashboard:
 
 ## Next Steps
 
-See TODO list for detailed implementation steps.
+See [Unified Deployment Guide](../deployment/unified-deployment.md) for deployment instructions.
 

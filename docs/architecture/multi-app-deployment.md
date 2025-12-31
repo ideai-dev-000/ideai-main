@@ -209,7 +209,7 @@ Each app can have its own `vercel.json`:
 
 ## Next Steps
 
-See TODO list for detailed implementation steps.
+See [Unified Deployment Guide](../deployment/unified-deployment.md) for complete deployment instructions.
 
 ## Related Documentation
 

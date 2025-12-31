@@ -4,6 +4,7 @@ This directory contains architecture documentation for the IdeaI monorepo.
 
 ## Contents
 
+- **[Deployment Architecture](./deployment-architecture.md)** - Main site with sub-apps, standalone deployments, routing
 - **[Design System](./design-system.md)** - Centralized component library and design system architecture
 - **[UI Consistency Standards](./ui-consistency.md)** - Strict UI consistency rules and DOM inspection workflow
 - **[Monorepo Structure](../PROJECT-SUMMARY.md)** - Overall project structure and organization

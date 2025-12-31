@@ -1,5 +1,7 @@
 # Vercel Setup for IdeaI Monorepo
 
+> **Note**: For deployment instructions, see [Unified Deployment Guide](./unified-deployment.md)
+
 ## Required Dashboard Settings
 
 For each app deployed as a standalone project, configure in Vercel dashboard:

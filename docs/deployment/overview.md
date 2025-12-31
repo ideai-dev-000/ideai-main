@@ -16,19 +16,21 @@ This project uses:
 
 ## Applications
 
-The monorepo contains two Next.js applications:
+The monorepo contains multiple Next.js applications:
 
 - **`apps/web`** - Main IdeaI web application
   - Production: https://www.myui.space
-  - Preview: https://preview.myui.space
-  - Landing page: "IdeaI" heading
+  - Serves sub-apps at `/apps/{name}` via catch-all route
 - **`apps/docs`** - IdeaI documentation site
-  - Status: Local development only (not deployed)
-  - Landing page: "IdeaI Docs" heading
-  - Same design as web app
-  - Documentation auto-syncs from `docs/` directory on build
+  - Deployed as standalone Vercel project
+- **`apps/landing`** - App showcase/landing page
+  - Deployed as standalone Vercel project
+- **`apps/all`, `apps/nocss`, `apps/mvp`, `apps/tailwind`, `apps/allcss`** - CSS showcase apps
+  - Ready for deployment
 
-Both apps share the same landing page design and use shared components from `@repo/ui`.
+All apps share components from `@repo/ui` and can be deployed using `./deploy.sh --prod`.
+
+See [Unified Deployment Guide](./unified-deployment.md) for deployment instructions.
 
 ## Deployment Environments
 
@@ -50,21 +52,27 @@ Deployments happen automatically via GitHub Actions when:
 - Pull requests are created/updated
 
 ### Manual
-Deployments can be triggered manually using Vercel CLI:
+Deployments can be triggered manually using the unified deployment script:
 
 ```bash
-# From repository root (Vercel uses Root Directory setting)
-vercel deploy        # Preview
-vercel deploy --prod # Production
+# Deploy all apps to production
+./deploy.sh --prod
+
+# Deploy specific apps
+./deploy.sh --prod docs landing
+
+# Preview deployment
+./deploy.sh
 ```
 
-**Note**: Vercel uses the Root Directory setting (`apps/web`) from the dashboard, so deploy from the repo root.
+See [Unified Deployment Guide](./unified-deployment.md) for complete instructions.
 
 ## Quick Links
 
-- [CI/CD Workflows](./ci-cd.md) - Detailed workflow documentation
-- [Vercel Configuration](./vercel.md) - Vercel setup and configuration
-- [Setup Guide](../setup/github-secrets.md) - Initial setup instructions
+- [Unified Deployment Guide](./unified-deployment.md) - **Start here** for deployment
+- [Deployment Architecture](../architecture/deployment-architecture.md) - Architecture overview
+- [Vercel Setup](./vercel-setup.md) - Dashboard configuration
+- [CI/CD Workflows](./ci-cd.md) - Automated deployment workflows
 
 ## Related Documentation
 
