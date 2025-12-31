@@ -66,3 +66,10 @@ export const IdeAIPageTemplate = ({
   );
 };
 
+
+
+
+
+
+
+

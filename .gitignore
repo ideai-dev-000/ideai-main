@@ -42,3 +42,5 @@ tools/code-context/build/
 tools/code-context/.gradle/
 tools/code-context/output/
 tools/code-context/*.log
+tools/code-context/*.tar
+tools/code-context/*.zip

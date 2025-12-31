@@ -132,8 +132,7 @@ export function IdeAISiteCard({
     : `https://github.com/ideai-dev-000/ideai-main`;
 
   return (
-    <TooltipProvider delayDuration={200}>
-      <Card className="w-full hover:shadow-xl transition-all duration-200 border-2 border-slate-200 hover:border-slate-400 bg-white overflow-hidden group">
+    <Card className="w-full hover:shadow-xl transition-all duration-200 border-2 border-slate-200 hover:border-slate-400 bg-white overflow-hidden group">
         <CardHeader className="pb-3">
           <div className="flex items-start justify-between gap-4">
             <div className="flex-1 min-w-0">
@@ -192,8 +191,9 @@ export function IdeAISiteCard({
           {app.description}
         </p>
         
-        {/* Site Preview Iframe */}
-        {(previewUrl || localUrl) && (
+        {/* Site Preview Iframe - DISABLED to prevent memory leaks */}
+        {/* Only enable iframes when memory leak issues are resolved */}
+        {false && status.local === "running" && (previewUrl || localUrl) && (
           <div 
             className="mb-4 rounded-md overflow-hidden border-2 border-slate-200 bg-slate-50 shadow-inner"
             onClick={(e) => e.stopPropagation()}
@@ -345,7 +345,6 @@ export function IdeAISiteCard({
         )}
       </CardFooter>
     </Card>
-    </TooltipProvider>
   );
 }
 

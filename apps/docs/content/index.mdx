@@ -7,6 +7,9 @@ description: Comprehensive documentation for the IdeaI monorepo, including setup
 
 Welcome to the IdeaI monorepo documentation. This directory contains comprehensive documentation for development, deployment, and setup.
 
+> **📊 Current Status**: See [STATUS.md](./STATUS.md) for project status, completed work, and pending tasks.  
+> **📋 Phased Plan**: See [PHASES.md](./PHASES.md) for detailed implementation phases.
+
 ## 📋 Quick Reference
 
 - **[Project Summary](./PROJECT-SUMMARY.md)** - High-level overview of the project

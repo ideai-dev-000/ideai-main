@@ -9,7 +9,7 @@
 
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { IdeAISiteCard, type SiteStatus } from "@repo/ui";
 import { defaultRoutingConfig, type AppConfig } from "./config/routing";
 import { getAppUrl, getAppIframeUrl } from "./config/routing";
@@ -29,16 +29,41 @@ export function SiteCardWrapper({ app }: SiteCardWrapperProps) {
   const [githubBranch, setGithubBranch] = useState<string | undefined>();
   const [lastDeployed, setLastDeployed] = useState<string | undefined>();
   const [loading, setLoading] = useState(true);
+  
+  // Use ref to track if component is mounted and prevent state updates after unmount
+  const isMountedRef = useRef(true);
+  const lastDeployedRef = useRef<string | undefined>(undefined);
 
   useEffect(() => {
+    isMountedRef.current = true;
+    
+    return () => {
+      isMountedRef.current = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    let isCancelled = false;
+
     async function fetchStatus() {
+      // Prevent fetch if component unmounted or cancelled
+      if (!isMountedRef.current || isCancelled) {
+        return;
+      }
+
       try {
-        // Fetch all statuses in parallel
+        // Fetch all statuses in parallel - but only once on mount
+        // DISABLED AUTO-REFRESH to prevent memory leaks
         const [localRes, vercelRes, githubRes] = await Promise.allSettled([
           fetch("/api/status/local"),
           fetch("/api/status/vercel"),
           fetch("/api/status/github"),
         ]);
+
+        // Check again after async operations
+        if (!isMountedRef.current || isCancelled) {
+          return;
+        }
 
         const statusData: StatusData = {};
 
@@ -51,7 +76,14 @@ export function SiteCardWrapper({ app }: SiteCardWrapperProps) {
           const data = await vercelRes.value.json();
           statusData.vercel = data.statuses;
           if (data.deployments?.[app.id]?.createdAt) {
-            setLastDeployed(data.deployments[app.id].createdAt);
+            const newDeployed = data.deployments[app.id].createdAt;
+            // Only update if different to prevent unnecessary re-renders
+            if (newDeployed !== lastDeployedRef.current) {
+              lastDeployedRef.current = newDeployed;
+              if (isMountedRef.current && !isCancelled) {
+                setLastDeployed(newDeployed);
+              }
+            }
           }
         }
 
@@ -59,33 +91,50 @@ export function SiteCardWrapper({ app }: SiteCardWrapperProps) {
           const data = await githubRes.value.json();
           statusData.github = data.branches;
           if (data.branches?.[app.id]) {
-            setGithubBranch(data.branches[app.id].branch);
+            const branch = data.branches[app.id].branch;
+            if (isMountedRef.current && !isCancelled) {
+              setGithubBranch(branch);
+            }
+            
             if (data.branches[app.id].lastCommit) {
               // Use GitHub commit time if no Vercel deployment time
-              if (!lastDeployed) {
-                setLastDeployed(data.branches[app.id].lastCommit);
+              const commitTime = data.branches[app.id].lastCommit;
+              if (!lastDeployedRef.current && commitTime !== lastDeployedRef.current) {
+                lastDeployedRef.current = commitTime;
+                if (isMountedRef.current && !isCancelled) {
+                  setLastDeployed(commitTime);
+                }
               }
             }
           }
         }
 
-        // Update status
-        setStatus({
-          local: statusData.local?.[app.id],
-          vercel: statusData.vercel?.[app.id],
-        });
+        // Update status only if still mounted
+        if (isMountedRef.current && !isCancelled) {
+          setStatus({
+            local: statusData.local?.[app.id],
+            vercel: statusData.vercel?.[app.id],
+          });
+        }
       } catch (error) {
-        console.error("Error fetching status:", error);
+        if (isMountedRef.current && !isCancelled) {
+          console.error("Error fetching status:", error);
+        }
       } finally {
-        setLoading(false);
+        if (isMountedRef.current && !isCancelled) {
+          setLoading(false);
+        }
       }
     }
 
+    // Initial fetch only - NO AUTO-REFRESH to prevent memory leaks
     fetchStatus();
-    // Refresh every 30 seconds
-    const interval = setInterval(fetchStatus, 30000);
-    return () => clearInterval(interval);
-  }, [app.id, lastDeployed]);
+
+    // Cleanup function
+    return () => {
+      isCancelled = true;
+    };
+  }, [app.id]); // CRITICAL: Removed lastDeployed from dependencies to prevent infinite loop
 
   const vercelUrl = `https://vercel.com/idea-i/${app.id === "web" ? "ideai-main" : app.id}`;
   const githubUrl = githubBranch
