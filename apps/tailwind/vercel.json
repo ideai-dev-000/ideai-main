@@ -1,7 +1,1 @@
-{
-  "_comment": "Standardized Vercel config for IdeaI monorepo. Most settings auto-detected when Root Directory is set in dashboard. Uncomment fields below if auto-detection fails.",
-  "_framework": "nextjs",
-  "_buildCommand": "pnpm --filter @repo/tailwind build",
-  "_installCommand": "pnpm install",
-  "_outputDirectory": ".next"
-}
+{}
