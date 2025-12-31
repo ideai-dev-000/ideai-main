@@ -4,40 +4,39 @@
  * @module AllAppPage
  * @description
  * Comprehensive HTML5 test page displaying all HTML elements.
- * Uses the shared IdeAIHTMLTest component for consistency testing.
+ * Uses shared page template for perfect consistency across all pages.
  * 
  * @example
  * This page is automatically rendered at the root route (/)
  * 
  * @see {@link ../layout.tsx} - Root layout component
- * @see {@link @repo/ui/components/ideai-html-test} - Shared HTML test component
+ * @see {@link @repo/ui/components/ideai-page-template} - Shared page template
  */
 
-import { IdeaIHeader } from "@repo/ui/components/ideai-header";
-import { IdeAIFooter } from "@repo/ui/components/ideai-footer";
-import { IdeaIButton } from "@repo/ui/components/ideai-button";
+import { IdeAIPageTemplate } from "@repo/ui/components/ideai-page-template";
 import { IdeAIHTMLTest } from "@repo/ui/components/ideai-html-test";
+import { IdeaIButton } from "@repo/ui/components/ideai-button";
 import styles from "./page.module.css";
 
 export default function Home() {
   const vercelProjectName = process.env.NEXT_PUBLIC_VERCEL_PROJECT_NAME || "all";
-  
+  const vercelOrgId = process.env.NEXT_PUBLIC_VERCEL_ORG_ID || "team_vhjzlMi6CfNow0IfBXnv2Yn2";
+
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <IdeaIHeader 
-          siteName="/all" 
-          subtitle="HTML5 Test Page - Complete Element Showcase"
-          vercelProjectName={vercelProjectName}
-        >
-          <IdeaIButton appName="all">Open alert</IdeaIButton>
-        </IdeaIHeader>
-        
-        <div className={styles.showcase}>
-          <IdeAIHTMLTest />
+    <IdeAIPageTemplate
+      siteName="IdeaI /all"
+      subtitle="Complete HTML5 Test Page and Component Showcase"
+      vercelProjectName={vercelProjectName}
+      vercelOrgId={vercelOrgId}
+      headerActions={<IdeaIButton appName="all">Open alert</IdeaIButton>}
+    >
+      <div className={styles.page}>
+        <div className={styles.main}>
+          <div className={styles.showcase}>
+            <IdeAIHTMLTest />
+          </div>
         </div>
-      </main>
-      <IdeAIFooter />
-    </div>
+      </div>
+    </IdeAIPageTemplate>
   );
 }

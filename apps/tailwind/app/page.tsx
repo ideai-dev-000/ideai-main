@@ -2,31 +2,25 @@
  * @fileoverview Tailwind CSS page - Utility-first styling only
  */
 
-import { IdeaIHeader } from "@repo/ui/components/ideai-header";
-import { IdeAIFooter } from "@repo/ui/components/ideai-footer";
-import { IdeaIButton } from "@repo/ui/components/ideai-button";
+import { IdeAIPageTemplate } from "@repo/ui/components/ideai-page-template";
 import { IdeAIHTMLTest } from "@repo/ui/components/ideai-html-test";
+import { IdeaIButton } from "@repo/ui/components/ideai-button";
 
 export default function Home() {
   const vercelProjectName = process.env.NEXT_PUBLIC_VERCEL_PROJECT_NAME || "tailwind";
-  
+  const vercelOrgId = process.env.NEXT_PUBLIC_VERCEL_ORG_ID || "team_vhjzlMi6CfNow0IfBXnv2Yn2";
+
   return (
-    <div>
-      <main>
-        <IdeaIHeader 
-          siteName="/tailwind" 
-          subtitle="Tailwind CSS Only - Utility-First Styling"
-          vercelProjectName={vercelProjectName}
-        >
-          <IdeaIButton appName="tailwind">Open alert</IdeaIButton>
-        </IdeaIHeader>
-        
-        <div>
-          <IdeAIHTMLTest />
-        </div>
-      </main>
-      <IdeAIFooter />
-    </div>
+    <IdeAIPageTemplate
+      siteName="IdeaI /tailwind"
+      subtitle="Tailwind CSS Only - Utility-First Styling"
+      vercelProjectName={vercelProjectName}
+      vercelOrgId={vercelOrgId}
+      headerActions={<IdeaIButton appName="tailwind">Open alert</IdeaIButton>}
+    >
+      <div>
+        <IdeAIHTMLTest />
+      </div>
+    </IdeAIPageTemplate>
   );
 }
-

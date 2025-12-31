@@ -4,6 +4,10 @@
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
+    "dev:status": "node scripts/dev-manager.mjs status",
+    "dev:start": "node scripts/dev-manager.mjs start",
+    "dev:stop": "node scripts/dev-manager.mjs stop",
+    "dev:restart": "node scripts/dev-manager.mjs restart",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "check-types": "turbo run check-types",

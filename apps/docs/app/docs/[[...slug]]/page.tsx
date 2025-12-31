@@ -5,6 +5,7 @@
  * @description
  * Handles all documentation routes dynamically using Contentlayer.
  * Provides type-safe content access, SEO metadata, and semantic URLs.
+ * Uses shared page template to ensure consistent header/footer on all doc pages.
  * 
  * @example
  * Routes like /docs/getting-started, /docs/deployment/overview
@@ -17,6 +18,8 @@ import { allDocs, type Doc } from "contentlayer/generated";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { MarkdownLink } from "../../../components/markdown-links";
+import { IdeAIPageTemplate } from "@repo/ui/components/ideai-page-template";
+import { IdeaIButton } from "@repo/ui/components/ideai-button";
 
 interface PageProps {
   params: Promise<{ slug?: string[] }>;
@@ -83,37 +86,30 @@ export default async function DocsPage({ params }: PageProps) {
     notFound();
   }
 
+  const vercelProjectName = process.env.NEXT_PUBLIC_VERCEL_PROJECT_NAME || "docs";
+  const vercelOrgId = process.env.NEXT_PUBLIC_VERCEL_ORG_ID || "team_vhjzlMi6CfNow0IfBXnv2Yn2";
+
   return (
-    <div className="min-h-screen" style={{ 
-      display: 'grid',
-      gridTemplateRows: '20px 1fr 20px',
-      alignItems: 'center',
-      justifyContent: 'center',
-      padding: '80px',
-      gap: '64px'
-    }}>
-      <main style={{
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '32px',
-        gridRowStart: 2,
-        maxWidth: '900px',
-        width: '100%'
+    <IdeAIPageTemplate
+      siteName="IdeaI /docs"
+      subtitle={doc.title}
+      vercelProjectName={vercelProjectName}
+      vercelOrgId={vercelOrgId}
+      headerActions={<IdeaIButton appName="docs">Open alert</IdeaIButton>}
+    >
+      <article className="prose prose-lg dark:prose-invert max-w-none" style={{
+        fontFamily: 'var(--font-geist-sans)',
+        color: 'var(--foreground)'
       }}>
-        <article className="prose prose-lg dark:prose-invert max-w-none" style={{
-          fontFamily: 'var(--font-geist-sans)',
-          color: 'var(--foreground)'
-        }}>
-          <ReactMarkdown
-            remarkPlugins={[remarkGfm]}
-            components={{
-              a: MarkdownLink,
-            }}
-          >
-            {doc.body.raw}
-          </ReactMarkdown>
-        </article>
-      </main>
-    </div>
+        <ReactMarkdown
+          remarkPlugins={[remarkGfm]}
+          components={{
+            a: MarkdownLink,
+          }}
+        >
+          {doc.body.raw}
+        </ReactMarkdown>
+      </article>
+    </IdeAIPageTemplate>
   );
 }

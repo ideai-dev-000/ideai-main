@@ -26,26 +26,27 @@ interface IdeaIHeaderProps {
   siteName?: string;
   subtitle?: string;
   vercelProjectName?: string;
+  vercelOrgId?: string;
   children?: ReactNode;
 }
 
 /**
- * Get Vercel project URL from project name
+ * Get Vercel project URL from project name and org ID
  */
-function getVercelProjectUrl(projectName?: string): string | null {
+function getVercelProjectUrl(projectName?: string, orgId?: string): string | null {
   if (!projectName) return null;
-  // Use environment variable or default to "idea-i" org
-  const orgId = process.env.NEXT_PUBLIC_VERCEL_ORG_ID || "idea-i";
-  return `https://vercel.com/${orgId}/${projectName}`;
+  const org = orgId || process.env.NEXT_PUBLIC_VERCEL_ORG_ID || "idea-i";
+  return `https://vercel.com/${org}/${projectName}`;
 }
 
 export const IdeaIHeader = ({ 
   siteName,
   subtitle = "Welcome to IdeaI",
   vercelProjectName,
+  vercelOrgId,
   children 
 }: IdeaIHeaderProps) => {
-  const vercelUrl = getVercelProjectUrl(vercelProjectName);
+  const vercelUrl = getVercelProjectUrl(vercelProjectName, vercelOrgId);
   
   return (
     <div className="ideai-header">

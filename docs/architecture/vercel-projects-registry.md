@@ -7,24 +7,25 @@ description: Complete registry of all Vercel projects in the IdeaI monorepo
 
 ## Current Projects
 
-### 1. ideai-main (Original)
-- **Project Name**: `ideai-main`
-- **Project ID**: `prj_Se4sFOjdH4fRzSOsK8YDiNVFssHx`
+### 1. web (Main Site - ideai-main)
+- **Project Name**: `web` (was `ideai-main`)
+- **Project ID**: `prj_rOeGwbNZwaO6sJ2J685Y3g9TV2cw`
 - **Root Directory**: `apps/web`
 - **Production URL**: https://www.myui.space
-- **Preview URL**: https://preview.myui.space
-- **Status**: ✅ Active (original production site)
+- **Status**: ✅ Active (main production site)
 - **Git Integration**: Connected to `ideai-dev-000/ideai-main`
 - **Purpose**: Main IdeaI web application
+- **⚠️ Important**: Ensure Root Directory is `apps/web` and Ignored Build Step is configured
 
-### 2. landing (New)
+### 2. landing
 - **Project Name**: `landing`
 - **Project ID**: `prj_VIRwSW56SWqru373Mby3oB1XYOAz`
 - **Root Directory**: `apps/landing`
 - **Production URL**: https://landing-gules-tau.vercel.app
-- **Status**: ✅ Active (new landing page)
+- **Status**: ✅ Active (standalone landing page)
 - **Git Integration**: Connected to `ideai-dev-000/ideai-main`
 - **Purpose**: Monorepo landing page with app showcase
+- **⚠️ Important**: Ensure Root Directory is `apps/landing` and Ignored Build Step is configured
 
 ## What Happened
 
