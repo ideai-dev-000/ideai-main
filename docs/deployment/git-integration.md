@@ -61,6 +61,15 @@ Each Vercel project must have a **unique Root Directory** setting that tells Ver
    - Production Branch: `main`
    - Preview Branches: All branches
 
+3. **Ignore Build Step**: (Recommended)
+   - **Location**: Settings → Git → Ignored Build Step
+   - **Type**: Bash/Shell command (enter directly in Vercel dashboard)
+   - **Command**: `git diff HEAD^ HEAD --quiet apps/landing packages/`
+   - **⚠️ Important**: Enter the command directly (don't use script file path)
+   - **How it works**: 
+     - If no changes in `apps/landing` or `packages/` → Skip build (exit 0)
+     - If changes found → Build (exit 1)
+
 ## Verification
 
 ### Check Project Settings
@@ -148,15 +157,21 @@ git diff HEAD^ HEAD --quiet apps/landing packages/
 
 ### Option B: Script File (If Required)
 
-If Vercel dashboard shows "bash your-script-name.sh" format, use script files:
+If Vercel dashboard shows "bash your-script-name.sh" format, use script files with correct paths:
+
+**Important**: Since Root Directory is `apps/{app-name}`, scripts are at `../../scripts/` relative to the app.
 
 **For `web` Project:**
 1. Script file: `scripts/ignore-build-web.sh` (already created)
-2. Enter in dashboard: `bash scripts/ignore-build-web.sh`
+2. Enter in dashboard: `bash ../../scripts/ignore-build-web.sh`
 
 **For `landing` Project:**
 1. Script file: `scripts/ignore-build-landing.sh` (already created)
-2. Enter in dashboard: `bash scripts/ignore-build-landing.sh`
+2. Enter in dashboard: `bash ../../scripts/ignore-build-landing.sh`
+
+**Alternative (Recommended)**: Use the direct command instead of script file:
+- For `web`: `git diff HEAD^ HEAD --quiet apps/web packages/`
+- For `landing`: `git diff HEAD^ HEAD --quiet apps/landing packages/`
 
 ### Script Files Created
 
