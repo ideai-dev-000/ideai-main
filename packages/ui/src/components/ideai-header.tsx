@@ -25,18 +25,49 @@ import { IdeAILogo } from "./ideai-logo";
 interface IdeaIHeaderProps {
   siteName?: string;
   subtitle?: string;
+  vercelProjectName?: string;
   children?: ReactNode;
+}
+
+/**
+ * Get Vercel project URL from project name
+ */
+function getVercelProjectUrl(projectName?: string): string | null {
+  if (!projectName) return null;
+  // Use environment variable or default to "idea-i" org
+  const orgId = process.env.NEXT_PUBLIC_VERCEL_ORG_ID || "idea-i";
+  return `https://vercel.com/${orgId}/${projectName}`;
 }
 
 export const IdeaIHeader = ({ 
   siteName,
   subtitle = "Welcome to IdeaI",
+  vercelProjectName,
   children 
 }: IdeaIHeaderProps) => {
+  const vercelUrl = getVercelProjectUrl(vercelProjectName);
+  
   return (
     <div className="ideai-header">
       <IdeAILogo siteName={siteName} />
       <p className="ideai-header__subtitle">{subtitle}</p>
+      {vercelProjectName && (
+        <div className="ideai-header__project">
+          <span className="ideai-header__project-label">Project:</span>
+          {vercelUrl ? (
+            <a 
+              href={vercelUrl} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="ideai-header__project-link"
+            >
+              {vercelProjectName}
+            </a>
+          ) : (
+            <span className="ideai-header__project-name">{vercelProjectName}</span>
+          )}
+        </div>
+      )}
       <div className="ideai-header__actions">
         {children}
       </div>

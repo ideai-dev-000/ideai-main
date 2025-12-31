@@ -20,10 +20,16 @@ import { IdeAIHTMLTest } from "@repo/ui/components/ideai-html-test";
 import styles from "./page.module.css";
 
 export default function Home() {
+  const vercelProjectName = process.env.NEXT_PUBLIC_VERCEL_PROJECT_NAME || "all";
+  
   return (
     <div className={styles.page}>
       <main className={styles.main}>
-        <IdeaIHeader siteName="/all" subtitle="HTML5 Test Page - Complete Element Showcase">
+        <IdeaIHeader 
+          siteName="/all" 
+          subtitle="HTML5 Test Page - Complete Element Showcase"
+          vercelProjectName={vercelProjectName}
+        >
           <IdeaIButton appName="all">Open alert</IdeaIButton>
         </IdeaIHeader>
         

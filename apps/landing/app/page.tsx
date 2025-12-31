@@ -15,10 +15,17 @@ import styles from "./page.module.css";
 const apps = defaultRoutingConfig.apps;
 
 export default function Home() {
+  // Get Vercel project name from environment or default
+  const vercelProjectName = process.env.NEXT_PUBLIC_VERCEL_PROJECT_NAME || "landing";
+  
   return (
     <div className={styles.page}>
       <main className={styles.main}>
-        <IdeaIHeader siteName="IdeaI" subtitle="Monorepo Landing - All Applications">
+        <IdeaIHeader 
+          siteName="IdeaI" 
+          subtitle="Monorepo Landing - All Applications"
+          vercelProjectName={vercelProjectName}
+        >
           <IdeaIButton appName="landing">Open alert</IdeaIButton>
         </IdeaIHeader>
         

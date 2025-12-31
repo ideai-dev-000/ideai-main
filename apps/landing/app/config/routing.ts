@@ -46,27 +46,35 @@ function isProduction(): boolean {
  * Default routing configuration
  * Can be overridden via environment variables or runtime API
  * 
- * IMPORTANT: In production, we use subdomains because each app is a separate Vercel project.
- * Folder-based routing only works in development or with a single project.
+ * IMPORTANT: Main IdeaI web app is at root domain (myui.space).
+ * Other apps (docs, all, etc.) are at /apps/{name}.
+ * Landing page (app showcase) is at /apps/landing.
  */
 export const defaultRoutingConfig: RoutingConfig = {
-  mode: (process.env.ROUTING_MODE as RoutingMode) || 
-        (isProduction() ? "subdomains" : "folders"),
+  mode: (process.env.ROUTING_MODE as RoutingMode) || "folders",
   baseUrl: process.env.NEXT_PUBLIC_BASE_URL || 
     (typeof window !== "undefined" ? window.location.origin : "http://localhost:3000"),
   apps: [
     {
       id: "web",
       name: "Web App",
-      path: "/web",
+      path: "/", // Main app at root domain
       description: "Main IdeaI web application",
       port: 3000,
       subdomain: "web",
     },
     {
+      id: "landing",
+      name: "Landing Page",
+      path: "/apps/landing",
+      description: "Monorepo landing page with app showcase",
+      port: 3007, // Assign a port for landing
+      subdomain: "landing",
+    },
+    {
       id: "docs",
       name: "Documentation",
-      path: "/docs",
+      path: "/apps/docs",
       description: "IdeaI documentation site",
       port: 3001,
       subdomain: "docs",
@@ -74,7 +82,7 @@ export const defaultRoutingConfig: RoutingConfig = {
     {
       id: "all",
       name: "All Components",
-      path: "/all",
+      path: "/apps/all",
       description: "Complete HTML5 test page and component showcase",
       port: 3002,
       subdomain: "all",
@@ -82,7 +90,7 @@ export const defaultRoutingConfig: RoutingConfig = {
     {
       id: "nocss",
       name: "No CSS",
-      path: "/nocss",
+      path: "/apps/nocss",
       description: "Pure HTML browser defaults - no CSS styling",
       port: 3003,
       subdomain: "nocss",
@@ -90,7 +98,7 @@ export const defaultRoutingConfig: RoutingConfig = {
     {
       id: "mvp",
       name: "MVP.css",
-      path: "/mvp",
+      path: "/apps/mvp",
       description: "MVP.css only - semantic HTML styling",
       port: 3004,
       subdomain: "mvp",
@@ -98,7 +106,7 @@ export const defaultRoutingConfig: RoutingConfig = {
     {
       id: "tailwind",
       name: "Tailwind CSS",
-      path: "/tailwind",
+      path: "/apps/tailwind",
       description: "Tailwind CSS only - utility-first styling",
       port: 3005,
       subdomain: "tailwind",
@@ -106,7 +114,7 @@ export const defaultRoutingConfig: RoutingConfig = {
     {
       id: "allcss",
       name: "All CSS",
-      path: "/allcss",
+      path: "/apps/allcss",
       description: "MVP.css + Tailwind CSS - complete styling",
       port: 3006,
       subdomain: "allcss",
@@ -131,11 +139,12 @@ export function getAppUrl(app: AppConfig, config: RoutingConfig): string {
 /**
  * Get app URL for iframe/popup
  * 
- * IMPORTANT: In production, each app is a separate Vercel project with its own URL.
- * We need to use subdomains or the actual Vercel deployment URL.
+ * IMPORTANT: Main IdeaI web app is at root domain (myui.space).
+ * Other apps are at /apps/{name}.
  * 
- * For now, we'll use subdomains in production (requires DNS setup).
- * If subdomains aren't configured, we'll need to use the actual Vercel URLs.
+ * Note: For folder-based routing to work in production, all apps need to be
+ * served from a single Vercel project with rewrites, OR each app needs to be
+ * accessible at the folder path (which requires a single project setup).
  */
 export function getAppIframeUrl(app: AppConfig, config: RoutingConfig): string {
   // Check if we're in development (client-side check)
@@ -148,14 +157,8 @@ export function getAppIframeUrl(app: AppConfig, config: RoutingConfig): string {
     return `http://localhost:${app.port}/`;
   }
   
-  // In production, use subdomains (each app is a separate Vercel project)
-  // TODO: For apps that don't have subdomains configured yet, we may need to
-  // use the actual Vercel deployment URLs temporarily
-  if (config.mode === "subdomains" && app.subdomain) {
-    return getAppUrl(app, config);
-  }
-  
-  // Fallback: use folder-based routing (won't work with separate projects)
+  // In production, use folder-based routing
+  // Main web app is at root (/), other apps at /apps/{name}
   return getAppUrl(app, config);
 }
 

@@ -22,10 +22,17 @@ import { IdeaIButton } from "@repo/ui/components/ideai-button";
 import styles from "./page.module.css";
 
 export default function Home() {
+  // Get Vercel project name from environment or default
+  const vercelProjectName = process.env.NEXT_PUBLIC_VERCEL_PROJECT_NAME || "ideai-main";
+  
   return (
     <div className={styles.page}>
       <main className={styles.main}>
-        <IdeaIHeader siteName="/web" subtitle="Welcome to IdeaI">
+        <IdeaIHeader 
+          siteName="IdeaI" 
+          subtitle="Welcome to IdeaI"
+          vercelProjectName={vercelProjectName}
+        >
           <IdeaIButton appName="web">Open alert</IdeaIButton>
         </IdeaIHeader>
         <IdeAIContent />

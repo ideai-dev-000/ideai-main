@@ -70,6 +70,35 @@
   width: 100%;
 }
 
+.ideai-header__project {
+  @apply flex items-center gap-2;
+  font-family: var(--font-geist-sans);
+  font-size: 0.875rem;
+  color: rgb(100 116 139); /* slate-500 */
+  @apply m-0;
+}
+
+.ideai-header__project-label {
+  font-weight: 500;
+  color: rgb(71 85 105); /* slate-600 */
+}
+
+.ideai-header__project-link {
+  color: rgb(59 130 246); /* blue-500 */
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: color 0.2s;
+}
+
+.ideai-header__project-link:hover {
+  color: rgb(37 99 235); /* blue-600 */
+}
+
+.ideai-header__project-name {
+  font-weight: 500;
+  color: rgb(71 85 105); /* slate-600 */
+}
+
 /**
  * IdeaI Footer Styles
  * Shared footer styles for all apps
