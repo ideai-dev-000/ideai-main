@@ -81,12 +81,12 @@ export const IdeAIFooter = () => {
         
         {/* 16. Blockquote element */}
         <blockquote className="ideai-footer__blockquote">
-          "Great design is invisible"
+          &quot;Great design is invisible&quot;
         </blockquote>
         
         {/* 17. Pre element */}
         <pre className="ideai-footer__pre">
-          <code>const test = "code block";</code>
+          <code>const test = &quot;code block&quot;;</code>
         </pre>
         
         {/* 18. Kbd element */}

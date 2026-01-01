@@ -35,7 +35,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import { Separator } from "./ui/separator";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./ui/tooltip";
+import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 import { ExternalLink, Play, Square, Clock, GitBranch, Info } from "lucide-react";
 import { cn } from "../lib/utils";
 
@@ -113,8 +113,8 @@ export function IdeAISiteCard({
   vercelUrl,
   githubBranch,
   lastDeployed,
-  localUrl,
-  previewUrl,
+  localUrl: _localUrl,
+  previewUrl: _previewUrl,
   onOpenLocal,
   onOpenVercel,
   onOpenGitHub,
@@ -130,6 +130,11 @@ export function IdeAISiteCard({
   const defaultGitHubUrl = githubBranch 
     ? `https://github.com/ideai-dev-000/ideai-main/tree/${githubBranch}`
     : `https://github.com/ideai-dev-000/ideai-main`;
+  
+  // localUrl and previewUrl are used in commented-out iframe code
+  // They're kept in the interface for future use when iframes are re-enabled
+  void _localUrl;
+  void _previewUrl;
 
   return (
     <Card className="w-full hover:shadow-xl transition-all duration-200 border-2 border-slate-200 hover:border-slate-400 bg-white overflow-hidden group">
@@ -193,13 +198,14 @@ export function IdeAISiteCard({
         
         {/* Site Preview Iframe - DISABLED to prevent memory leaks */}
         {/* Only enable iframes when memory leak issues are resolved */}
-        {false && status.local === "running" && (previewUrl || localUrl) && (
+        {/* 
+        {status.local === "running" && (_previewUrl || _localUrl) && (
           <div 
             className="mb-4 rounded-md overflow-hidden border-2 border-slate-200 bg-slate-50 shadow-inner"
             onClick={(e) => e.stopPropagation()}
           >
             <iframe
-              src={previewUrl || localUrl}
+              src={_previewUrl || _localUrl}
               className="w-full h-48 border-0 pointer-events-none bg-white"
               title={`${app.name} preview`}
               loading="lazy"
@@ -207,6 +213,7 @@ export function IdeAISiteCard({
             />
           </div>
         )}
+        */}
         
         <div className="space-y-2 text-xs text-slate-500 bg-slate-50 rounded-md p-3 border border-slate-100">
           <div className="flex items-center gap-2">

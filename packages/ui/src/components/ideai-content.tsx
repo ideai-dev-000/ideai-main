@@ -54,7 +54,7 @@ export const IdeAIContent = () => {
             <p><strong><a className="ideai-content__link" href="/docs/setup/commit-signing">Commit Signing Setup</a></strong></p>
             <ul>
               <li>✅ GPG signing configured and working</li>
-              <li>Verified commits show "Verified" badge on GitHub</li>
+              <li>Verified commits show &quot;Verified&quot; badge on GitHub</li>
               <li>Required for Vercel deployment protection</li>
               <li>Security best practices</li>
             </ul>

@@ -25,8 +25,6 @@ interface IdeAILogoProps {
 }
 
 export const IdeAILogo = ({ siteName }: IdeAILogoProps) => {
-  const displayName = siteName ? `IdeaI ${siteName}` : "IdeaI";
-  
   return (
     <div className="ideai-logo" itemScope itemType="https://schema.org/Organization">
       {/* Structured data for SEO */}
