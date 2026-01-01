@@ -1,0 +1,230 @@
+<html>
+  <head>
+    <title>CodeContext Analysis Report</title>
+    <style>
+                        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 20px; background: #f4f4f4; }
+                        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+                        h1 { color: #333; }
+                        h2 { color: #555; border-bottom: 2px solid #eee; padding-bottom: 10px; margin-top: 30px; }
+                        .hotspot-list { list-style: none; padding: 0; }
+                        .hotspot-item { padding: 10px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; }
+                        .hotspot-score { font-weight: bold; color: #e74c3c; }
+                        .description { color: #666; font-style: italic; display: block; margin-top: 4px; }
+                        .team-table { width: 100%; border-collapse: collapse; }
+                        .team-table th, .team-table td { text-align: left; padding: 8px; border-bottom: 1px solid #ddd; }
+                        #graph-container { width: 100%; height: 600px; border: 1px solid #ddd; margin-top: 20px; }
+                        </style>
+    <script src="https://unpkg.com/force-graph"></script>
+  </head>
+  <body>
+    <div class="container">
+      <h1>CodeContext Analysis Report</h1>
+      <div>
+        <h2>👥 Team Contribution Map</h2>
+        <table class="team-table">
+          <tr>
+            <th>Developer</th>
+            <th>Files Modified</th>
+          </tr>
+        </table>
+      </div>
+      <div>
+        <h2>🎓 Personalized Learning Path</h2>
+        <p>Start from these fundamental files and work your way up:</p>
+        <ul class="hotspot-list">
+          <li class="hotspot-item">
+            <div><strong>ParsedFile.kt</strong><span> [Fundamental]</span><br><small>This file stands alone. Start here to understand basic blocks.</small></div>
+          </li>
+          <li class="hotspot-item">
+            <div><strong>RobustDependencyGraph.kt</strong><span> [Core Logic]</span><br><small>Connects different parts of the system.</small></div>
+          </li>
+          <li class="hotspot-item">
+            <div><strong>ReportGenerator.kt</strong><span> [Core Logic]</span><br><small>Connects different parts of the system.</small></div>
+          </li>
+          <li class="hotspot-item">
+            <div><strong>RepositoryScanner.kt</strong><span> [Fundamental]</span><br><small>This file stands alone. Start here to understand basic blocks.</small></div>
+          </li>
+          <li class="hotspot-item">
+            <div><strong>OptimizedGitAnalyzer.kt</strong><span> [Core Logic]</span><br><small>Connects different parts of the system.</small></div>
+          </li>
+          <li class="hotspot-item">
+            <div><strong>CacheManager.kt</strong><span> [Core Logic]</span><br><small>Connects different parts of the system.</small></div>
+          </li>
+          <li class="hotspot-item">
+            <div><strong>AICodeAnalyzer.kt</strong><span> [Core Logic]</span><span class="description">💡 Analyze a single file and generate comprehensive insights</span><br><small>Connects different parts of the system.</small></div>
+          </li>
+          <li class="hotspot-item">
+            <div><strong>TemporalAnalyzer.kt</strong><span> [Fundamental]</span><br><small>This file stands alone. Start here to understand basic blocks.</small></div>
+          </li>
+          <li class="hotspot-item">
+            <div><strong>ParserFactory.kt</strong><span> [Fundamental]</span><br><small>This file stands alone. Start here to understand basic blocks.</small></div>
+          </li>
+          <li class="hotspot-item">
+            <div><strong>ServerCommand.kt</strong><span> [Fundamental]</span><br><small>This file stands alone. Start here to understand basic blocks.</small></div>
+          </li>
+          <li class="hotspot-item">
+            <div><strong>MainCommand.kt</strong><span> [Fundamental]</span><br><small>This file stands alone. Start here to understand basic blocks.</small></div>
+          </li>
+          <li class="hotspot-item">
+            <div><strong>ImprovedAnalyzeCommand.kt</strong><span> [Core Logic]</span><br><small>Connects different parts of the system.</small></div>
+          </li>
+          <li class="hotspot-item">
+            <div><strong>EvolutionCommand.kt</strong><span> [Core Logic]</span><br><small>Connects different parts of the system.</small></div>
+          </li>
+          <li class="hotspot-item">
+            <div><strong>AIAssistantCommand.kt</strong><span> [Core Logic]</span><br><small>Connects different parts of the system.</small></div>
+          </li>
+          <li class="hotspot-item">
+            <div><strong>CodeParallelParser.kt</strong><span> [Core Logic]</span><br><small>Connects different parts of the system.</small></div>
+          </li>
+          <li class="hotspot-item">
+            <div><strong>LearningPathGenerator.kt</strong><span> [Core Logic]</span><br><small>Connects different parts of the system.</small></div>
+          </li>
+          <li class="hotspot-item">
+            <div><strong>Main.kt</strong><span> [Entry Point]</span><span class="description">💡 The entry point of the application. Configures the CLI commands and executes the pipeline.</span><br><small>This is a high-level orchestrator. Read this last to see how everything fits.</small></div>
+          </li>
+          <li class="hotspot-item">
+            <div><strong>CodeContextServer.kt</strong><span> [Entry Point]</span><span class="description">💡 Configure rate limiting for the API server. Intercepts requests and enforces per-client rate limits.</span><br><small>This is a high-level orchestrator. Read this last to see how everything fits.</small></div>
+          </li>
+          <li class="hotspot-item">
+            <div><strong>RateLimiter.kt</strong><span> [Fundamental]</span><span class="description">💡 Thread-safe rate limiter using sliding window algorithm. Tracks requests per client (identified by API key or IP) and enforces limits.</span><br><small>This file stands alone. Start here to understand basic blocks.</small></div>
+          </li>
+          <li class="hotspot-item">
+            <div><strong>LicenseManager.kt</strong><span> [Fundamental]</span><br><small>This file stands alone. Start here to understand basic blocks.</small></div>
+          </li>
+          <li class="hotspot-item">
+            <div><strong>OrganizationAnalyzer.kt</strong><span> [Entry Point]</span><br><small>This is a high-level orchestrator. Read this last to see how everything fits.</small></div>
+          </li>
+          <li class="hotspot-item">
+            <div><strong>Analyzer.kt</strong><span> [Fundamental]</span><br><small>This file stands alone. Start here to understand basic blocks.</small></div>
+          </li>
+          <li class="hotspot-item">
+            <div><strong>Scanner.kt</strong><span> [Fundamental]</span><br><small>This file stands alone. Start here to understand basic blocks.</small></div>
+          </li>
+          <li class="hotspot-item">
+            <div><strong>GitAnalyzer.kt</strong><span> [Entry Point]</span><br><small>This is a high-level orchestrator. Read this last to see how everything fits.</small></div>
+          </li>
+          <li class="hotspot-item">
+            <div><strong>Core.kt</strong><span> [Fundamental]</span><br><small>This file stands alone. Start here to understand basic blocks.</small></div>
+          </li>
+          <li class="hotspot-item">
+            <div><strong>ContextGenerator.kt</strong><span> [Fundamental]</span><br><small>This file stands alone. Start here to understand basic blocks.</small></div>
+          </li>
+          <li class="hotspot-item">
+            <div><strong>KotlinRegexParser.kt</strong><span> [Fundamental]</span><span class="description">💡 ...</span><br><small>This file stands alone. Start here to understand basic blocks.</small></div>
+          </li>
+          <li class="hotspot-item">
+            <div><strong>JavaRealParser.kt</strong><span> [Fundamental]</span><br><small>This file stands alone. Start here to understand basic blocks.</small></div>
+          </li>
+          <li class="hotspot-item">
+            <div><strong>CodeContextConfig.kt</strong><span> [Fundamental]</span><br><small>This file stands alone. Start here to understand basic blocks.</small></div>
+          </li>
+          <li class="hotspot-item">
+            <div><strong>E2ETest.kt</strong><span> [Entry Point]</span><br><small>This is a high-level orchestrator. Read this last to see how everything fits.</small></div>
+          </li>
+          <li class="hotspot-item">
+            <div><strong>BackendVerificationTest.kt</strong><span> [Entry Point]</span><br><small>This is a high-level orchestrator. Read this last to see how everything fits.</small></div>
+          </li>
+          <li class="hotspot-item">
+            <div><strong>RateLimiterTest.kt</strong><span> [Fundamental]</span><br><small>This file stands alone. Start here to understand basic blocks.</small></div>
+          </li>
+          <li class="hotspot-item">
+            <div><strong>StressTest.kt</strong><span> [Fundamental]</span><span class="description">💡 Description for $name.</span><br><small>This file stands alone. Start here to understand basic blocks.</small></div>
+          </li>
+          <li class="hotspot-item">
+            <div><strong>LearningPathGeneratorTest.kt</strong><span> [Entry Point]</span><br><small>This is a high-level orchestrator. Read this last to see how everything fits.</small></div>
+          </li>
+          <li class="hotspot-item">
+            <div><strong>EdgeCaseTest.kt</strong><span> [Entry Point]</span><br><small>This is a high-level orchestrator. Read this last to see how everything fits.</small></div>
+          </li>
+          <li class="hotspot-item">
+            <div><strong>ParserTest.kt</strong><span> [Fundamental]</span><br><small>This file stands alone. Start here to understand basic blocks.</small></div>
+          </li>
+          <li class="hotspot-item">
+            <div><strong>DescriptionTest.kt</strong><span> [Fundamental]</span><span class="description">💡 This is a test description. It has multiple lines.</span><br><small>This file stands alone. Start here to understand basic blocks.</small></div>
+          </li>
+          <li class="hotspot-item">
+            <div><strong>DependencyGraphTest.kt</strong><span> [Entry Point]</span><br><small>This is a high-level orchestrator. Read this last to see how everything fits.</small></div>
+          </li>
+          <li class="hotspot-item">
+            <div><strong>PropertyTest.kt</strong><span> [Entry Point]</span><br><small>This is a high-level orchestrator. Read this last to see how everything fits.</small></div>
+          </li>
+        </ul>
+      </div>
+      <div>
+        <h2>🔥 Knowledge Hotspots (Top Critical Files)</h2>
+        <ul class="hotspot-list">
+          <li class="hotspot-item">
+            <div><span>ParsedFile.kt</span></div>
+<span class="hotspot-score">0.1952</span></li>
+          <li class="hotspot-item">
+            <div><span>RobustDependencyGraph.kt</span></div>
+<span class="hotspot-score">0.0891</span></li>
+          <li class="hotspot-item">
+            <div><span>TemporalAnalyzer.kt</span></div>
+<span class="hotspot-score">0.0369</span></li>
+          <li class="hotspot-item">
+            <div><span>ParserFactory.kt</span></div>
+<span class="hotspot-score">0.0363</span></li>
+          <li class="hotspot-item">
+            <div><span>RepositoryScanner.kt</span></div>
+<span class="hotspot-score">0.0339</span></li>
+          <li class="hotspot-item">
+            <div><span>CacheManager.kt</span></div>
+<span class="hotspot-score">0.0315</span></li>
+          <li class="hotspot-item">
+            <div><span>AICodeAnalyzer.kt</span><span class="description">💡 Analyze a single file and generate comprehensive insights</span></div>
+<span class="hotspot-score">0.0261</span></li>
+          <li class="hotspot-item">
+            <div><span>CodeParallelParser.kt</span></div>
+<span class="hotspot-score">0.0257</span></li>
+          <li class="hotspot-item">
+            <div><span>EvolutionCommand.kt</span></div>
+<span class="hotspot-score">0.0250</span></li>
+          <li class="hotspot-item">
+            <div><span>ImprovedAnalyzeCommand.kt</span></div>
+<span class="hotspot-score">0.0250</span></li>
+          <li class="hotspot-item">
+            <div><span>OptimizedGitAnalyzer.kt</span></div>
+<span class="hotspot-score">0.0209</span></li>
+          <li class="hotspot-item">
+            <div><span>LearningPathGenerator.kt</span></div>
+<span class="hotspot-score">0.0201</span></li>
+          <li class="hotspot-item">
+            <div><span>ReportGenerator.kt</span></div>
+<span class="hotspot-score">0.0187</span></li>
+          <li class="hotspot-item">
+            <div><span>ServerCommand.kt</span></div>
+<span class="hotspot-score">0.0183</span></li>
+          <li class="hotspot-item">
+            <div><span>MainCommand.kt</span></div>
+<span class="hotspot-score">0.0183</span></li>
+        </ul>
+      </div>
+      <div>
+        <h2>🗺️ Codebase Map (Hover for Smart Context)</h2>
+        <div id="graph-container"></div>
+      </div>
+    </div>
+    <script>
+                        const gData = {"nodes":[{"id":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/test/kotlin/com/codecontext/core/PropertyTest.kt","label":"PropertyTest.kt","score":0.015673665288522133,"lastMod":"Never"},{"id":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/test/kotlin/com/codecontext/core/graph/DependencyGraphTest.kt","label":"DependencyGraphTest.kt","score":0.015673665288522133,"lastMod":"Never"},{"id":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/test/kotlin/com/codecontext/core/parser/DescriptionTest.kt","label":"DescriptionTest.kt","score":0.015673665288522133,"lastMod":"Never","description":"This is a test description. It has multiple lines."},{"id":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/test/kotlin/com/codecontext/core/parser/ParserTest.kt","label":"ParserTest.kt","score":0.015673665288522133,"lastMod":"Never"},{"id":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/test/kotlin/com/codecontext/core/EdgeCaseTest.kt","label":"EdgeCaseTest.kt","score":0.015673665288522133,"lastMod":"Never"},{"id":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/test/kotlin/com/codecontext/core/generator/LearningPathGeneratorTest.kt","label":"LearningPathGeneratorTest.kt","score":0.015673665288522133,"lastMod":"Never"},{"id":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/test/kotlin/com/codecontext/core/StressTest.kt","label":"StressTest.kt","score":0.015673665288522133,"lastMod":"Never","description":"Description for $name."},{"id":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/test/kotlin/com/codecontext/server/RateLimiterTest.kt","label":"RateLimiterTest.kt","score":0.015673665288522133,"lastMod":"Never"},{"id":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/test/kotlin/com/codecontext/verification/BackendVerificationTest.kt","label":"BackendVerificationTest.kt","score":0.015673665288522133,"lastMod":"Never"},{"id":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/test/kotlin/com/codecontext/E2ETest.kt","label":"E2ETest.kt","score":0.015673665288522133,"lastMod":"Never"},{"id":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/core/temporal/TemporalAnalyzer.kt","label":"TemporalAnalyzer.kt","score":0.03692903243685602,"lastMod":"Never"},{"id":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/core/cache/CacheManager.kt","label":"CacheManager.kt","score":0.03153603906129461,"lastMod":"Never"},{"id":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/core/config/CodeContextConfig.kt","label":"CodeContextConfig.kt","score":0.015673665288522133,"lastMod":"Never"},{"id":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/core/graph/RobustDependencyGraph.kt","label":"RobustDependencyGraph.kt","score":0.08911422427696994,"lastMod":"Never"},{"id":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/core/parser/ParserFactory.kt","label":"ParserFactory.kt","score":0.0362722798501547,"lastMod":"Never"},{"id":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/core/parser/JavaRealParser.kt","label":"JavaRealParser.kt","score":0.015673665288522133,"lastMod":"Never"},{"id":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/core/parser/KotlinRegexParser.kt","label":"KotlinRegexParser.kt","score":0.015673665288522133,"lastMod":"Never","description":"..."},{"id":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/core/parser/ParsedFile.kt","label":"ParsedFile.kt","score":0.19518471858964823,"lastMod":"Never"},{"id":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/core/generator/ContextGenerator.kt","label":"ContextGenerator.kt","score":0.015673665288522133,"lastMod":"Never"},{"id":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/core/generator/LearningPathGenerator.kt","label":"LearningPathGenerator.kt","score":0.020115220608551074,"lastMod":"Never"},{"id":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/core/ai/AICodeAnalyzer.kt","label":"AICodeAnalyzer.kt","score":0.026127784164827243,"lastMod":"Never","description":"Analyze a single file and generate comprehensive insights"},{"id":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/core/Core.kt","label":"Core.kt","score":0.015673665288522133,"lastMod":"Never"},{"id":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/core/scanner/GitAnalyzer.kt","label":"GitAnalyzer.kt","score":0.015673665288522133,"lastMod":"Never"},{"id":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/core/scanner/OptimizedGitAnalyzer.kt","label":"OptimizedGitAnalyzer.kt","score":0.020930923969727157,"lastMod":"Never"},{"id":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/core/scanner/Scanner.kt","label":"Scanner.kt","score":0.015673665288522133,"lastMod":"Never"},{"id":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/core/scanner/RepositoryScanner.kt","label":"RepositoryScanner.kt","score":0.033900505974877884,"lastMod":"Never"},{"id":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/core/analyzer/Analyzer.kt","label":"Analyzer.kt","score":0.015673665288522133,"lastMod":"Never"},{"id":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/enterprise/OrganizationAnalyzer.kt","label":"OrganizationAnalyzer.kt","score":0.015673665288522133,"lastMod":"Never"},{"id":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/enterprise/LicenseManager.kt","label":"LicenseManager.kt","score":0.015673665288522133,"lastMod":"Never"},{"id":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/output/ReportGenerator.kt","label":"ReportGenerator.kt","score":0.018710146309712686,"lastMod":"Never"},{"id":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/server/RateLimiter.kt","label":"RateLimiter.kt","score":0.015673665288522133,"lastMod":"Never","description":"Thread-safe rate limiter using sliding window algorithm. Tracks requests per client (identified by API key or IP) and enforces limits."},{"id":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/server/CodeContextServer.kt","label":"CodeContextServer.kt","score":0.015673665288522133,"lastMod":"Never","description":"Configure rate limiting for the API server. Intercepts requests and enforces per-client rate limits."},{"id":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/cli/ServerCommand.kt","label":"ServerCommand.kt","score":0.018338598480539495,"lastMod":"Never"},{"id":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/cli/EvolutionCommand.kt","label":"EvolutionCommand.kt","score":0.025000931460582906,"lastMod":"Never"},{"id":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/cli/MainCommand.kt","label":"MainCommand.kt","score":0.018338598480539495,"lastMod":"Never"},{"id":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/cli/CodeParallelParser.kt","label":"CodeParallelParser.kt","score":0.025667164758587244,"lastMod":"Never"},{"id":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/cli/ImprovedAnalyzeCommand.kt","label":"ImprovedAnalyzeCommand.kt","score":0.025000931460582906,"lastMod":"Never"},{"id":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/cli/AIAssistantCommand.kt","label":"AIAssistantCommand.kt","score":0.018338598480539495,"lastMod":"Never"},{"id":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/Main.kt","label":"Main.kt","score":0.015673665288522133,"lastMod":"Never","description":"The entry point of the application. Configures the CLI commands and executes the pipeline."}],"links":[{"source":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/test/kotlin/com/codecontext/core/PropertyTest.kt","target":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/core/generator/LearningPathGenerator.kt"},{"source":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/test/kotlin/com/codecontext/core/PropertyTest.kt","target":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/core/graph/RobustDependencyGraph.kt"},{"source":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/test/kotlin/com/codecontext/core/PropertyTest.kt","target":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/core/parser/ParsedFile.kt"},{"source":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/test/kotlin/com/codecontext/core/graph/DependencyGraphTest.kt","target":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/core/parser/ParsedFile.kt"},{"source":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/test/kotlin/com/codecontext/core/EdgeCaseTest.kt","target":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/core/parser/ParserFactory.kt"},{"source":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/test/kotlin/com/codecontext/core/generator/LearningPathGeneratorTest.kt","target":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/core/graph/RobustDependencyGraph.kt"},{"source":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/test/kotlin/com/codecontext/core/generator/LearningPathGeneratorTest.kt","target":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/core/parser/ParsedFile.kt"},{"source":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/test/kotlin/com/codecontext/verification/BackendVerificationTest.kt","target":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/cli/CodeParallelParser.kt"},{"source":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/test/kotlin/com/codecontext/verification/BackendVerificationTest.kt","target":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/core/graph/RobustDependencyGraph.kt"},{"source":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/test/kotlin/com/codecontext/verification/BackendVerificationTest.kt","target":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/core/scanner/RepositoryScanner.kt"},{"source":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/test/kotlin/com/codecontext/E2ETest.kt","target":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/cli/EvolutionCommand.kt"},{"source":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/test/kotlin/com/codecontext/E2ETest.kt","target":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/cli/ImprovedAnalyzeCommand.kt"},{"source":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/core/cache/CacheManager.kt","target":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/core/parser/ParsedFile.kt"},{"source":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/core/graph/RobustDependencyGraph.kt","target":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/core/parser/ParsedFile.kt"},{"source":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/core/generator/LearningPathGenerator.kt","target":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/core/graph/RobustDependencyGraph.kt"},{"source":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/core/ai/AICodeAnalyzer.kt","target":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/core/graph/RobustDependencyGraph.kt"},{"source":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/core/ai/AICodeAnalyzer.kt","target":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/core/parser/ParsedFile.kt"},{"source":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/core/scanner/GitAnalyzer.kt","target":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/core/parser/ParsedFile.kt"},{"source":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/core/scanner/OptimizedGitAnalyzer.kt","target":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/core/parser/ParsedFile.kt"},{"source":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/enterprise/OrganizationAnalyzer.kt","target":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/cli/CodeParallelParser.kt"},{"source":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/enterprise/OrganizationAnalyzer.kt","target":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/core/cache/CacheManager.kt"},{"source":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/enterprise/OrganizationAnalyzer.kt","target":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/core/graph/RobustDependencyGraph.kt"},{"source":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/enterprise/OrganizationAnalyzer.kt","target":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/core/scanner/RepositoryScanner.kt"},{"source":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/output/ReportGenerator.kt","target":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/core/graph/RobustDependencyGraph.kt"},{"source":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/server/CodeContextServer.kt","target":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/cli/CodeParallelParser.kt"},{"source":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/server/CodeContextServer.kt","target":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/core/ai/AICodeAnalyzer.kt"},{"source":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/server/CodeContextServer.kt","target":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/core/cache/CacheManager.kt"},{"source":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/server/CodeContextServer.kt","target":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/core/graph/RobustDependencyGraph.kt"},{"source":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/server/CodeContextServer.kt","target":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/core/scanner/OptimizedGitAnalyzer.kt"},{"source":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/server/CodeContextServer.kt","target":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/core/scanner/RepositoryScanner.kt"},{"source":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/cli/EvolutionCommand.kt","target":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/core/temporal/TemporalAnalyzer.kt"},{"source":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/cli/CodeParallelParser.kt","target":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/core/cache/CacheManager.kt"},{"source":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/cli/CodeParallelParser.kt","target":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/core/parser/ParsedFile.kt"},{"source":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/cli/CodeParallelParser.kt","target":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/core/parser/ParserFactory.kt"},{"source":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/cli/ImprovedAnalyzeCommand.kt","target":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/core/ai/AICodeAnalyzer.kt"},{"source":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/cli/ImprovedAnalyzeCommand.kt","target":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/core/cache/CacheManager.kt"},{"source":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/cli/ImprovedAnalyzeCommand.kt","target":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/core/graph/RobustDependencyGraph.kt"},{"source":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/cli/ImprovedAnalyzeCommand.kt","target":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/core/parser/ParsedFile.kt"},{"source":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/cli/ImprovedAnalyzeCommand.kt","target":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/core/scanner/OptimizedGitAnalyzer.kt"},{"source":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/cli/ImprovedAnalyzeCommand.kt","target":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/core/scanner/RepositoryScanner.kt"},{"source":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/cli/ImprovedAnalyzeCommand.kt","target":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/output/ReportGenerator.kt"},{"source":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/cli/AIAssistantCommand.kt","target":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/core/ai/AICodeAnalyzer.kt"},{"source":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/cli/AIAssistantCommand.kt","target":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/core/graph/RobustDependencyGraph.kt"},{"source":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/cli/AIAssistantCommand.kt","target":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/core/scanner/RepositoryScanner.kt"},{"source":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/Main.kt","target":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/cli/AIAssistantCommand.kt"},{"source":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/Main.kt","target":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/cli/EvolutionCommand.kt"},{"source":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/Main.kt","target":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/cli/ImprovedAnalyzeCommand.kt"},{"source":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/Main.kt","target":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/cli/MainCommand.kt"},{"source":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/Main.kt","target":"/Users/sv/_IDEAI/ideai-main/tools/code-context/../../tools/code-context/src/main/kotlin/com/codecontext/cli/ServerCommand.kt"}]};
+                        
+                        const Graph = ForceGraph()
+                          (document.getElementById('graph-container'))
+                            .graphData(gData)
+                            .nodeLabel(node => {
+                                let label = `${node.label}\n\n`;
+                                if (node.description) label += `💡 ${node.description}\n\n`;
+                                label += `Score: ${node.score.toFixed(4)}\n`;
+                                label += `Authors: ${node.authors}\n`;
+                                label += `Changes: ${node.churn}\n`;
+                                label += `Last Mod: ${node.lastMod}`;
+                                return label;
+                            })
+                            .nodeVal('score')
+                            .nodeAutoColorBy('group')
+                            .linkDirectionalParticles(2)
+                            .linkDirectionalParticleWidth(2);
+                        </script>
+  </body>
+</html>
