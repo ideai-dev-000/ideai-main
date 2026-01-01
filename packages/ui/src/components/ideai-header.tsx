@@ -1,77 +1,189 @@
 /**
- * @fileoverview IdeaI header/branding component
+ * @fileoverview Semantic IdeaI header component with best practices
  * 
  * @module IdeaIHeader
  * @description
- * Shared header component for all IdeaI applications.
- * Displays the IdeaI branding with logo and site name.
- * Uses ONLY centralized CSS classes - NO app-specific CSS.
- * Guaranteed identical rendering across all apps.
- * 
- * @example
- * ```tsx
- * import { IdeaIHeader } from "@repo/ui/components/ideai-header";
- * 
- * <IdeaIHeader siteName="/web" subtitle="Welcome to IdeaI" />
- * ```
- * 
- * @see {@link ./ideai-logo.tsx} - Logo component
- * @see {@link ./ideai-footer.tsx} - Footer component
+ * Semantic header with logo/brand (left), navigation (middle), and accounts (right).
+ * Includes bounce-down menu in middle that shows extra nav bar above header.
+ * Uses semantic HTML5 elements and ARIA labels for accessibility.
+ * Sticky header that shrinks on scroll.
  */
 
-import { ReactNode } from "react";
+"use client";
+
+import { useState, useEffect } from "react";
 import { IdeAILogo } from "./ideai-logo";
+
+interface NavItem {
+  label: string;
+  href: string;
+  children?: NavItem[];
+}
 
 interface IdeaIHeaderProps {
   siteName?: string;
-  subtitle?: string;
-  vercelProjectName?: string;
-  vercelOrgId?: string;
-  children?: ReactNode;
+  mainNav?: NavItem[];
+  extraNav?: NavItem[];
+  accountLinks?: {
+    label: string;
+    href: string;
+  }[];
+  sticky?: boolean;
+  shrinkOnScroll?: boolean;
+  fullWidth?: boolean;
 }
 
-/**
- * Get Vercel project URL from project name and org ID
- */
-function getVercelProjectUrl(projectName?: string, orgId?: string): string | null {
-  if (!projectName) return null;
-  const org = orgId || process.env.NEXT_PUBLIC_VERCEL_ORG_ID || "idea-i";
-  return `https://vercel.com/${org}/${projectName}`;
-}
-
-export const IdeaIHeader = ({ 
+export const IdeaIHeader = ({
   siteName,
-  subtitle = "Welcome to IdeaI",
-  vercelProjectName,
-  vercelOrgId,
-  children 
+  mainNav = [
+    { label: "Home", href: "/" },
+    { label: "Documentation", href: "/docs" },
+    { label: "Apps", href: "/index" },
+  ],
+  extraNav = [
+    { label: "About", href: "/about" },
+    { label: "Contact", href: "/contact" },
+    { label: "Blog", href: "/blog" },
+    { label: "Resources", href: "/resources" },
+  ],
+  accountLinks = [
+    { label: "Sign In", href: "/signin" },
+    { label: "Sign Up", href: "/signup" },
+  ],
+  sticky = true,
+  shrinkOnScroll = true,
+  fullWidth = true,
 }: IdeaIHeaderProps) => {
-  const vercelUrl = getVercelProjectUrl(vercelProjectName, vercelOrgId);
-  
+  const [isExtraNavOpen, setIsExtraNavOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    if (!shrinkOnScroll) return;
+
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 10);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [shrinkOnScroll]);
+
   return (
-    <div className="ideai-header">
-      <IdeAILogo siteName={siteName} />
-      <p className="ideai-header__subtitle">{subtitle}</p>
-      {vercelProjectName && (
-        <div className="ideai-header__project">
-          <span className="ideai-header__project-label">Project:</span>
-          {vercelUrl ? (
-            <a 
-              href={vercelUrl} 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="ideai-header__project-link"
-            >
-              {vercelProjectName}
-            </a>
-          ) : (
-            <span className="ideai-header__project-name">{vercelProjectName}</span>
-          )}
-        </div>
+    <>
+      {/* Extra Navigation Bar - Appears above header when menu is open */}
+      {isExtraNavOpen && (
+        <nav
+          className={`ideai-header-extra ${fullWidth ? "ideai-header-extra--full-width" : ""}`}
+          aria-label="Extra navigation"
+          role="navigation"
+        >
+          <div className="ideai-header-extra__container">
+            <ul className="ideai-header-extra__list">
+              {extraNav.map((item) => (
+                <li key={item.href} className="ideai-header-extra__item">
+                  <a
+                    href={item.href}
+                    className="ideai-header-extra__link"
+                    onClick={() => setIsExtraNavOpen(false)}
+                  >
+                    {item.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </nav>
       )}
-      <div className="ideai-header__actions">
-        {children}
-      </div>
-    </div>
+
+      {/* Main Header */}
+      <header
+        className={`ideai-header ${sticky ? "ideai-header--sticky" : ""} ${isScrolled ? "ideai-header--scrolled" : ""} ${fullWidth ? "ideai-header--full-width" : ""}`}
+        role="banner"
+      >
+        <div className="ideai-header__container">
+          {/* Left: Logo/Brand */}
+          <div className="ideai-header__brand">
+            <IdeAILogo siteName={siteName} />
+          </div>
+
+          {/* Middle: Navigation */}
+          <nav
+            className="ideai-header__nav"
+            aria-label="Main navigation"
+            role="navigation"
+          >
+            <ul className="ideai-header__nav-list">
+              {mainNav.map((item) => (
+                <li key={item.href} className="ideai-header__nav-item">
+                  {item.children ? (
+                    <div className="ideai-header__nav-dropdown">
+                      <button
+                        type="button"
+                        className="ideai-header__nav-link"
+                        aria-expanded="false"
+                        aria-haspopup="true"
+                      >
+                        {item.label}
+                        <span className="ideai-header__nav-arrow" aria-hidden="true">
+                          ▼
+                        </span>
+                      </button>
+                      <ul className="ideai-header__nav-dropdown-menu">
+                        {item.children.map((child) => (
+                          <li key={child.href}>
+                            <a
+                              href={child.href}
+                              className="ideai-header__nav-dropdown-link"
+                            >
+                              {child.label}
+                            </a>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ) : (
+                    <a href={item.href} className="ideai-header__nav-link">
+                      {item.label}
+                    </a>
+                  )}
+                </li>
+              ))}
+            </ul>
+
+            {/* Bounce-down Menu Button */}
+            <button
+              type="button"
+              className="ideai-header__menu-toggle"
+              aria-label="Toggle extra navigation"
+              aria-expanded={isExtraNavOpen}
+              onClick={() => setIsExtraNavOpen(!isExtraNavOpen)}
+            >
+              <span className="ideai-header__menu-icon" aria-hidden="true">
+                {isExtraNavOpen ? "▲" : "▼"}
+              </span>
+              <span className="ideai-header__menu-text">More</span>
+            </button>
+          </nav>
+
+          {/* Right: Accounts */}
+          <div className="ideai-header__accounts">
+            <nav aria-label="Account navigation" role="navigation">
+              <ul className="ideai-header__accounts-list">
+                {accountLinks.map((link) => (
+                  <li key={link.href} className="ideai-header__accounts-item">
+                    <a
+                      href={link.href}
+                      className="ideai-header__accounts-link"
+                    >
+                      {link.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </header>
+    </>
   );
 };

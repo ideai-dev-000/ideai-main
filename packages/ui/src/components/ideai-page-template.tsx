@@ -40,28 +40,49 @@ interface IdeAIPageTemplateProps {
  */
 export const IdeAIPageTemplate = ({
   siteName,
-  subtitle = "Welcome to IdeaI",
-  vercelProjectName,
-  vercelOrgId,
+  subtitle: _subtitle = "Welcome to IdeaI",
+  vercelProjectName: _vercelProjectName,
+  vercelOrgId: _vercelOrgId,
   children,
-  headerActions,
+  headerActions: _headerActions,
 }: IdeAIPageTemplateProps) => {
+  // Suppress unused variable warnings - these props are kept for backward compatibility
+  void _subtitle;
+  void _vercelProjectName;
+  void _vercelOrgId;
+  void _headerActions;
+
   return (
-    <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
+    <div style={{ position: "relative", minHeight: "100vh" }}>
       <IdeaIHeader
         siteName={siteName}
-        subtitle={subtitle}
-        vercelProjectName={vercelProjectName}
-        vercelOrgId={vercelOrgId}
-      >
-        {headerActions}
-      </IdeaIHeader>
+        mainNav={[
+          { label: "Home", href: "/" },
+          { label: "Documentation", href: "/docs" },
+          { label: "Apps", href: "/index" },
+        ]}
+        extraNav={[
+          { label: "About", href: "/about" },
+          { label: "Contact", href: "/contact" },
+          { label: "Blog", href: "/blog" },
+          { label: "Resources", href: "/resources" },
+        ]}
+        accountLinks={[
+          { label: "Sign In", href: "/signin" },
+          { label: "Sign Up", href: "/signup" },
+        ]}
+        sticky={true}
+        shrinkOnScroll={true}
+        fullWidth={true}
+      />
       
-      <main style={{ flex: 1, padding: "20px", maxWidth: "1200px", width: "100%", margin: "0 auto" }}>
-        {children}
-      </main>
-      
-      <IdeAIFooter />
+      <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
+        <main style={{ flex: 1, padding: "20px", maxWidth: "1200px", width: "100%", margin: "0 auto" }}>
+          {children}
+        </main>
+        
+        <IdeAIFooter siteName={siteName} />
+      </div>
     </div>
   );
 };

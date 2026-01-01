@@ -233,12 +233,22 @@ Most settings are auto-detected. Configure in Vercel dashboard:
 - ❌ Harder to scale independently
 - ❌ One failure affects all
 
+## Smart Routing Implementation
+
+The catch-all route (`apps/web/app/apps/[app]/[[...path]]/page.tsx`) implements smart routing:
+
+1. **Priority 1**: If standalone URL is set and in production → Redirect
+2. **Priority 2**: If app is available locally → Serve via iframe
+3. **Priority 3**: Show info page with links and instructions
+
+This allows seamless switching between integrated and standalone modes per app.
+
 ## Future Enhancements
 
-1. **Dynamic Sub-App Loading**: Load sub-apps dynamically via iframe or module federation
+1. **Dynamic Sub-App Loading**: Load sub-apps dynamically via iframe or module federation ✅ (Implemented)
 2. **Single Build**: Build all apps into main app for true single deployment
 3. **Subdomain Routing**: Support `docs.myui.space` style routing
-4. **Auto-Discovery**: Automatically discover deployed apps at runtime
+4. **Auto-Discovery**: Automatically discover deployed apps at runtime ✅ (Via .ideai metadata)
 
 ## Troubleshooting
 

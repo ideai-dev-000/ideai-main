@@ -67,106 +67,17 @@
 
 /**
  * IdeaI Header Styles
- * Shared header/branding styles for all apps
- * CRITICAL: All styles here - NO app-specific CSS
+ * Semantic header with three-column layout: logo (left), nav (middle), accounts (right)
+ * Includes bounce-down extra navigation menu
+ * Sticky header that shrinks on scroll (best practice)
+ * 
+ * NOTE: Old header styles removed - this is now the only header implementation
  */
-.ideai-header {
-  @apply flex flex-col gap-8 items-center text-center;
-  width: 100%;
-}
-
-.ideai-header__subtitle {
-  font-family: var(--font-geist-sans);
-  font-size: clamp(1rem, 2vw, 1.25rem);
-  line-height: 1.6;
-  opacity: 0.7;
-  @apply m-0;
-  text-align: center;
-  color: rgb(15 23 42); /* slate-900 - explicit */
-}
-
-.ideai-header__actions {
-  @apply flex items-center justify-center;
-  width: 100%;
-}
-
-.ideai-header__project {
-  @apply flex items-center gap-2;
-  font-family: var(--font-geist-sans);
-  font-size: 0.875rem;
-  color: rgb(100 116 139); /* slate-500 */
-  @apply m-0;
-}
-
-.ideai-header__project-label {
-  font-weight: 500;
-  color: rgb(71 85 105); /* slate-600 */
-}
-
-.ideai-header__project-link {
-  color: rgb(59 130 246); /* blue-500 */
-  text-decoration: underline;
-  text-underline-offset: 2px;
-  transition: color 0.2s;
-}
-
-.ideai-header__project-link:hover {
-  color: rgb(37 99 235); /* blue-600 */
-}
-
-.ideai-header__project-name {
-  font-weight: 500;
-  color: rgb(71 85 105); /* slate-600 */
-}
 
 /**
  * IdeaI Footer Styles
- * Shared footer styles for all apps
- * COMPREHENSIVE UI ELEMENT TEST SUITE
- * All elements use same classes as pages for consistency testing
+ * Semantic footer with three-column layout: address/copyright (left), nav (middle), social/accounts (right)
  */
-.ideai-footer {
-  @apply flex items-center justify-center;
-  grid-row-start: 3;
-  width: 100%;
-  padding: 20px 0;
-  margin-top: auto;
-}
-
-.ideai-footer__content {
-  @apply flex flex-wrap items-center justify-center gap-4;
-  @apply max-w-[600px] w-full;
-  @apply px-4;
-  @apply text-center;
-}
-
-/* ============================================ */
-/* ELEMENT STYLES - SAME AS PAGES */
-/* ============================================ */
-
-/* 1. Text element (p) - from .main p */
-.ideai-footer__text {
-  font-family: var(--font-geist-sans);
-  font-size: clamp(1rem, 2vw, 1.25rem);
-  line-height: 1.6;
-  opacity: 0.7;
-  @apply m-0;
-  color: rgb(15 23 42); /* slate-900 - explicit */
-}
-
-/* 2. Link element */
-.ideai-footer__link {
-  font-family: var(--font-geist-sans);
-  font-size: 14px;
-  @apply underline underline-offset-4;
-  @apply transition-colors duration-200;
-  text-decoration: none;
-  color: rgb(15 23 42); /* slate-900 - explicit */
-}
-
-.ideai-footer__link:hover {
-  color: rgb(51 65 85); /* slate-700 */
-}
 
 /**
  * IdeaI Button Styles
@@ -554,6 +465,467 @@
   
   .ideai-content__prose h3 {
     font-size: 1.125rem;
+  }
+}
+
+/**
+ * IdeaI New Header Styles
+ * Semantic header with three-column layout: logo (left), nav (middle), accounts (right)
+ * Includes bounce-down extra navigation menu
+ * Sticky header that shrinks on scroll (best practice)
+ */
+.ideai-header-extra {
+  @apply bg-slate-50 dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700;
+  padding: 0.75rem 0;
+  animation: slideDown 0.3s ease-out;
+  margin: 0;
+  width: 100vw;
+  max-width: 100%;
+  box-sizing: border-box;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  z-index: 101;
+}
+
+/* Ensure no gap between extra nav and header */
+.ideai-header-extra + .ideai-header {
+  margin-top: 0;
+  border-top: none;
+}
+
+/* When extra nav is open, header should be below it */
+.ideai-header-extra ~ .ideai-header--sticky {
+  top: 0;
+}
+
+.ideai-header-extra--full-width {
+  width: 100%;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.ideai-header-extra__container {
+  @apply max-w-7xl mx-auto px-4;
+  width: 100%;
+}
+
+.ideai-header-extra__list {
+  @apply flex flex-wrap items-center justify-center gap-4;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.ideai-header-extra__item {
+  margin: 0;
+}
+
+.ideai-header-extra__link {
+  @apply text-sm font-medium text-slate-700 dark:text-slate-300;
+  text-decoration: none;
+  transition: color 0.2s;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+}
+
+.ideai-header-extra__link:hover {
+  @apply text-slate-900 dark:text-slate-100 bg-slate-100 dark:bg-slate-800;
+}
+
+.ideai-header {
+  @apply bg-white dark:bg-slate-950 border-b border-slate-200 dark:border-slate-800;
+  padding: 1rem 0;
+  margin: 0;
+  width: 100vw;
+  max-width: 100%;
+  box-sizing: border-box;
+  transition: padding 0.3s ease, box-shadow 0.3s ease;
+}
+
+.ideai-header--full-width {
+  width: 100vw;
+  max-width: 100%;
+}
+
+.ideai-header--sticky {
+  position: -webkit-sticky !important;
+  position: sticky !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  z-index: 100 !important;
+  background-color: white !important;
+  will-change: transform;
+  width: 100vw !important;
+  max-width: 100% !important;
+}
+
+@media (prefers-color-scheme: dark) {
+  .ideai-header--sticky {
+    background-color: rgb(2 6 23); /* slate-950 */
+  }
+}
+
+/* When extra nav is open, header should be below it */
+.ideai-header-extra ~ .ideai-header--sticky {
+  top: 0;
+}
+
+.ideai-header--scrolled {
+  padding: 0.5rem 0;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+}
+
+.ideai-header--scrolled .ideai-header__brand .ideai-logo__icon {
+  width: 24px;
+  height: 24px;
+}
+
+.ideai-header--scrolled .ideai-header__brand .ideai-logo__text {
+  font-size: 1rem;
+}
+
+.ideai-header__container {
+  @apply max-w-7xl mx-auto px-4;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 2rem;
+  align-items: center;
+  width: 100%;
+}
+
+.ideai-header__brand {
+  display: flex;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+.ideai-header__brand .ideai-logo__container {
+  justify-content: flex-start;
+}
+
+.ideai-header__brand .ideai-logo__icon {
+  width: 32px;
+  height: 32px;
+  transition: width 0.3s ease, height 0.3s ease;
+}
+
+.ideai-header__brand .ideai-logo__text {
+  font-size: 1.25rem;
+  transition: font-size 0.3s ease;
+}
+
+.ideai-footer__brand .ideai-logo__icon {
+  width: 48px;
+  height: 48px;
+}
+
+.ideai-footer__brand .ideai-logo__text {
+  font-size: 1.5rem;
+}
+
+.ideai-header__nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.ideai-header__nav-list {
+  @apply flex items-center gap-6;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.ideai-header__nav-item {
+  margin: 0;
+  position: relative;
+}
+
+.ideai-header__nav-link {
+  @apply text-sm font-medium text-slate-700 dark:text-slate-300;
+  text-decoration: none;
+  transition: color 0.2s;
+  padding: 0.5rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.ideai-header__nav-link:hover {
+  @apply text-slate-900 dark:text-slate-100;
+}
+
+.ideai-header__nav-arrow {
+  font-size: 0.625rem;
+  transition: transform 0.2s;
+}
+
+.ideai-header__nav-dropdown:hover .ideai-header__nav-arrow {
+  transform: rotate(180deg);
+}
+
+.ideai-header__nav-dropdown-menu {
+  @apply absolute top-full left-0 mt-1 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-md shadow-lg;
+  list-style: none;
+  margin: 0;
+  padding: 0.5rem 0;
+  min-width: 200px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: all 0.2s;
+  z-index: 50;
+}
+
+.ideai-header__nav-dropdown:hover .ideai-header__nav-dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.ideai-header__nav-dropdown-link {
+  @apply block px-4 py-2 text-sm text-slate-700 dark:text-slate-300;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+
+.ideai-header__nav-dropdown-link:hover {
+  @apply bg-slate-50 dark:bg-slate-800;
+}
+
+.ideai-header__menu-toggle {
+  @apply flex items-center gap-2 px-3 py-2 text-sm font-medium text-slate-700 dark:text-slate-300;
+  background: none;
+  border: 1px solid rgb(226 232 240); /* slate-200 */
+  border-radius: 0.375rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-left: 1rem;
+}
+
+.ideai-header__menu-toggle:hover {
+  @apply bg-slate-50 dark:bg-slate-800;
+  border-color: rgb(148 163 184); /* slate-400 */
+}
+
+.ideai-header__menu-icon {
+  font-size: 0.75rem;
+  transition: transform 0.3s;
+}
+
+.ideai-header__menu-toggle[aria-expanded="true"] .ideai-header__menu-icon {
+  transform: rotate(180deg);
+}
+
+.ideai-header__accounts {
+  display: flex;
+  align-items: center;
+}
+
+.ideai-header__accounts-list {
+  @apply flex items-center gap-4;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.ideai-header__accounts-item {
+  margin: 0;
+}
+
+.ideai-header__accounts-link {
+  @apply text-sm font-medium text-slate-700 dark:text-slate-300;
+  text-decoration: none;
+  transition: color 0.2s;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+}
+
+.ideai-header__accounts-link:hover {
+  @apply text-slate-900 dark:text-slate-100 bg-slate-50 dark:bg-slate-800;
+}
+
+@media (max-width: 768px) {
+  .ideai-header__container {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .ideai-header__nav {
+    justify-content: flex-start;
+  }
+
+  .ideai-header__nav-list {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .ideai-header__accounts {
+    justify-content: flex-start;
+  }
+}
+
+/**
+ * IdeaI New Footer Styles
+ * Semantic footer with three-column layout: address/copyright (left), nav (middle), social/accounts (right)
+ */
+.ideai-footer {
+  @apply bg-slate-50 dark:bg-slate-900 border-t border-slate-200 dark:border-slate-700;
+  padding: 3rem 0 1.5rem;
+  margin-top: auto;
+  width: 100vw;
+  max-width: 100%;
+  box-sizing: border-box;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  padding-left: calc(50vw - 50%);
+  padding-right: calc(50vw - 50%);
+}
+
+.ideai-footer__container {
+  @apply max-w-7xl mx-auto px-4;
+}
+
+.ideai-footer__brand {
+  @apply mb-8 text-center;
+}
+
+.ideai-footer__columns {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
+
+.ideai-footer__column {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.ideai-footer__column-title {
+  @apply text-sm font-semibold text-slate-900 dark:text-slate-100;
+  margin: 0 0 0.5rem 0;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.ideai-footer__address {
+  @apply text-sm text-slate-600 dark:text-slate-400;
+  font-style: normal;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.ideai-footer__address-line {
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+.ideai-footer__contact {
+  @apply text-sm text-slate-600 dark:text-slate-400;
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.ideai-footer__contact-label {
+  font-weight: 600;
+  color: rgb(15 23 42); /* slate-900 */
+}
+
+@media (prefers-color-scheme: dark) {
+  .ideai-footer__contact-label {
+    color: rgb(248 250 252); /* slate-50 */
+  }
+}
+
+.ideai-footer__contact-link {
+  @apply text-slate-600 dark:text-slate-400;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.ideai-footer__contact-link:hover {
+  @apply text-slate-900 dark:text-slate-100;
+}
+
+.ideai-footer__copyright {
+  @apply text-xs text-slate-500 dark:text-slate-500;
+  margin: 1rem 0 0 0;
+}
+
+.ideai-footer__nav-list,
+.ideai-footer__social-list,
+.ideai-footer__accounts-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.ideai-footer__nav-item,
+.ideai-footer__social-item,
+.ideai-footer__accounts-item {
+  margin: 0;
+}
+
+.ideai-footer__nav-link,
+.ideai-footer__accounts-link {
+  @apply text-sm text-slate-600 dark:text-slate-400;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.ideai-footer__nav-link:hover,
+.ideai-footer__accounts-link:hover {
+  @apply text-slate-900 dark:text-slate-100;
+}
+
+.ideai-footer__social-link {
+  @apply flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.ideai-footer__social-link:hover {
+  @apply text-slate-900 dark:text-slate-100;
+}
+
+.ideai-footer__social-icon {
+  font-size: 1.25rem;
+}
+
+.ideai-footer__social-label {
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .ideai-footer__columns {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .ideai-footer__brand {
+    margin-bottom: 2rem;
   }
 }
 

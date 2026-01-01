@@ -1,0 +1,11 @@
+{
+  "id": "bootstrap",
+  "name": "IdeaI /bootstrap",
+  "description": "Bootstrap CSS only - Component-based styling",
+  "port": 3007,
+  "css": ["Bootstrap CSS"],
+  "capabilities": ["Bootstrap components", "Component-based styling", "Bootstrap utilities"],
+  "path": "/bootstrap",
+  "category": "showcase"
+}
+

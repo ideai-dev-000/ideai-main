@@ -1,104 +1,192 @@
 /**
- * @fileoverview IdeaI footer component
+ * @fileoverview Semantic IdeaI footer component with best practices
  * 
  * @module IdeAIFooter
  * @description
- * Shared footer component for all IdeaI applications.
- * Uses centralized CSS classes for perfect consistency across all apps.
- * Contains comprehensive UI element test suite - all elements from pages
- * with same classes to verify perfect consistency across both apps.
- * 
- * @example
- * ```tsx
- * import { IdeAIFooter } from "@repo/ui/components/ideai-footer";
- * 
- * <IdeAIFooter />
- * ```
- * 
- * @see {@link ./ideai-header.tsx} - Header component
+ * Semantic footer with logo/brand, three-column layout (left: address/copyright,
+ * middle: navigation, right: social/contact), and structured data for SEO.
+ * Uses semantic HTML5 elements and ARIA labels for accessibility.
  */
 
-export const IdeAIFooter = () => {
+import { IdeAILogo } from "./ideai-logo";
+
+interface FooterNavItem {
+  label: string;
+  href: string;
+}
+
+interface SocialLink {
+  label: string;
+  href: string;
+  icon?: string;
+}
+
+interface IdeAIFooterProps {
+  siteName?: string;
+  address?: {
+    street?: string;
+    city?: string;
+    state?: string;
+    zip?: string;
+    country?: string;
+  };
+  phone?: string;
+  email?: string;
+  copyright?: string;
+  footerNav?: FooterNavItem[];
+  socialLinks?: SocialLink[];
+  accountLinks?: FooterNavItem[];
+}
+
+export const IdeAIFooter = ({
+  siteName,
+  address = {
+    street: "123 Innovation Street",
+    city: "San Francisco",
+    state: "CA",
+    zip: "94105",
+    country: "USA",
+  },
+  phone = "+1 (555) 123-4567",
+  email = "hello@ideai.space",
+  copyright = `© ${new Date().getFullYear()} IdeaI. All rights reserved.`,
+  footerNav = [
+    { label: "Home", href: "/" },
+    { label: "About", href: "/about" },
+    { label: "Documentation", href: "/docs" },
+    { label: "Contact", href: "/contact" },
+    { label: "Privacy", href: "/privacy" },
+    { label: "Terms", href: "/terms" },
+  ],
+  socialLinks = [
+    { label: "Twitter", href: "https://twitter.com/ideai", icon: "🐦" },
+    { label: "GitHub", href: "https://github.com/ideai-dev-000", icon: "💻" },
+    { label: "LinkedIn", href: "https://linkedin.com/company/ideai", icon: "💼" },
+  ],
+  accountLinks = [
+    { label: "Sign In", href: "/signin" },
+    { label: "Sign Up", href: "/signup" },
+    { label: "Dashboard", href: "/dashboard" },
+  ],
+}: IdeAIFooterProps) => {
   return (
-    <footer className="ideai-footer">
-      <div className="ideai-footer__content">
-        {/* ============================================ */}
-        {/* COMPREHENSIVE UI ELEMENT TEST SUITE */}
-        {/* All elements use same classes as pages */}
-        {/* ============================================ */}
-        
-        {/* 1. Text element (p) - from .main p */}
-        <p className="ideai-footer__text">© {new Date().getFullYear()} IdeaI</p>
-        
-        {/* 2. Link element (a) */}
-        <a href="/about" className="ideai-footer__link">About</a>
-        
-        {/* 3. Button element - from .secondary / button.secondary */}
-        <button type="button" className="ideai-footer__button">Contact</button>
-        
-        {/* 4. Span/Badge element */}
-        <span className="ideai-footer__badge">v1.0.0</span>
-        
-        {/* 5. Div with text */}
-        <div className="ideai-footer__div">Made with ❤️</div>
-        
-        {/* 6. Strong element */}
-        <strong className="ideai-footer__strong">IdeaI</strong>
-        
-        {/* 7. Small element */}
-        <small className="ideai-footer__small">All rights reserved</small>
-        
-        {/* 8. Unordered list (ul/li) */}
-        <ul className="ideai-footer__list">
-          <li className="ideai-footer__list-item">Privacy</li>
-          <li className="ideai-footer__list-item">Terms</li>
-        </ul>
-        
-        {/* 9. Code element - from .main code */}
-        <code className="ideai-footer__code">npm install @repo/ui</code>
-        
-        {/* 10. Heading element (h3) */}
-        <h3 className="ideai-footer__heading">Quick Links</h3>
-        
-        {/* 11. Heading h1 - from .main h1 / .ideai-header__title */}
-        <h1 className="ideai-footer__h1">IdeaI Footer</h1>
-        
-        {/* 12. Ordered list (ol) - from .main ol */}
-        <ol className="ideai-footer__ol">
-          <li className="ideai-footer__ol-item">First item</li>
-          <li className="ideai-footer__ol-item">Second item</li>
-          <li className="ideai-footer__ol-item">Third item</li>
-        </ol>
-        
-        {/* 13. List item - from .main li */}
-        <li className="ideai-footer__li">Standalone list item</li>
-        
-        {/* 14. Em element */}
-        <em className="ideai-footer__em">Emphasized text</em>
-        
-        {/* 15. Mark element */}
-        <mark className="ideai-footer__mark">Highlighted text</mark>
-        
-        {/* 16. Blockquote element */}
-        <blockquote className="ideai-footer__blockquote">
-          &quot;Great design is invisible&quot;
-        </blockquote>
-        
-        {/* 17. Pre element */}
-        <pre className="ideai-footer__pre">
-          <code>const test = &quot;code block&quot;;</code>
-        </pre>
-        
-        {/* 18. Kbd element */}
-        <kbd className="ideai-footer__kbd">Ctrl</kbd>
-        
-        {/* 19. Abbr element */}
-        <abbr title="IdeaI" className="ideai-footer__abbr">IA</abbr>
-        
-        {/* 20. Time element */}
-        <time className="ideai-footer__time" dateTime="2025-12-30">
-          Dec 30, 2025
-        </time>
+    <footer
+      className="ideai-footer"
+      role="contentinfo"
+      itemScope
+      itemType="https://schema.org/WPFooter"
+    >
+      <div className="ideai-footer__container">
+        {/* Logo/Brand Area */}
+        <div className="ideai-footer__brand">
+          <IdeAILogo siteName={siteName} />
+        </div>
+
+        {/* Three-Column Layout */}
+        <div className="ideai-footer__columns">
+          {/* Left: Address & Copyright */}
+          <div className="ideai-footer__column ideai-footer__column--left">
+            <address className="ideai-footer__address" itemScope itemType="https://schema.org/PostalAddress">
+              {address.street && (
+                <span itemProp="streetAddress" className="ideai-footer__address-line">
+                  {address.street}
+                </span>
+              )}
+              <span className="ideai-footer__address-line">
+                {address.city && <span itemProp="addressLocality">{address.city}</span>}
+                {address.state && <span itemProp="addressRegion">, {address.state}</span>}
+                {address.zip && <span itemProp="postalCode"> {address.zip}</span>}
+                {address.country && <span itemProp="addressCountry">, {address.country}</span>}
+              </span>
+            </address>
+
+            {phone && (
+              <div className="ideai-footer__contact">
+                <span className="ideai-footer__contact-label">Tell:</span>
+                <a
+                  href={`tel:${phone.replace(/\s/g, "")}`}
+                  className="ideai-footer__contact-link"
+                  itemProp="telephone"
+                >
+                  {phone}
+                </a>
+              </div>
+            )}
+
+            {email && (
+              <div className="ideai-footer__contact">
+                <span className="ideai-footer__contact-label">Email:</span>
+                <a
+                  href={`mailto:${email}`}
+                  className="ideai-footer__contact-link"
+                  itemProp="email"
+                >
+                  {email}
+                </a>
+              </div>
+            )}
+
+            <p className="ideai-footer__copyright">{copyright}</p>
+          </div>
+
+          {/* Middle: Navigation */}
+          <div className="ideai-footer__column ideai-footer__column--middle">
+            <nav aria-label="Footer navigation" role="navigation">
+              <h2 className="ideai-footer__column-title">Navigation</h2>
+              <ul className="ideai-footer__nav-list">
+                {footerNav.map((item) => (
+                  <li key={item.href} className="ideai-footer__nav-item">
+                    <a href={item.href} className="ideai-footer__nav-link">
+                      {item.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          </div>
+
+          {/* Right: Social & Accounts */}
+          <div className="ideai-footer__column ideai-footer__column--right">
+            {/* Social Links */}
+            <div className="ideai-footer__social">
+              <h2 className="ideai-footer__column-title">Connect</h2>
+              <ul className="ideai-footer__social-list">
+                {socialLinks.map((link) => (
+                  <li key={link.href} className="ideai-footer__social-item">
+                    <a
+                      href={link.href}
+                      className="ideai-footer__social-link"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`${link.label} (opens in new tab)`}
+                    >
+                      {link.icon && (
+                        <span className="ideai-footer__social-icon" aria-hidden="true">
+                          {link.icon}
+                        </span>
+                      )}
+                      <span className="ideai-footer__social-label">{link.label}</span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Account Links */}
+            <nav aria-label="Account navigation" role="navigation">
+              <h2 className="ideai-footer__column-title">Account</h2>
+              <ul className="ideai-footer__accounts-list">
+                {accountLinks.map((link) => (
+                  <li key={link.href} className="ideai-footer__accounts-item">
+                    <a href={link.href} className="ideai-footer__accounts-link">
+                      {link.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          </div>
+        </div>
       </div>
     </footer>
   );
