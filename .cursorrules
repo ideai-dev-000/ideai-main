@@ -89,7 +89,8 @@ All code files must include rich, descriptive headers with:
 ## Commit Standards
 
 ### Commit Messages
-All commits must be detailed:
+**CRITICAL**: All commits must follow this exact format with ticket reference:
+
 ```
 type(scope): detailed subject line
 
@@ -98,6 +99,49 @@ Detailed explanation of what changed and why.
 - Specific change 1
 - Specific change 2
 - Specific change 3
+
+Related: TICKET-XXX
+```
+
+**Commit Types**:
+- `fix`: Bug fixes
+- `feat`: New features
+- `docs`: Documentation changes
+- `refactor`: Code refactoring
+- `test`: Test additions/changes
+- `chore`: Maintenance tasks
+- `deploy`: Deployment changes
+- `style`: Code style changes (formatting, etc.)
+
+**Scope Examples**:
+- `web`: Main web app
+- `docs`: Documentation site
+- `ui`: Shared UI package
+- `deploy`: Deployment scripts
+- `config`: Configuration files
+- `vercel`: Vercel configuration
+
+**Ticket Reference**: Every commit must include `Related: TICKET-XXX` at the end, where XXX is the ticket number (e.g., TICKET-0.1, TICKET-1.2).
+
+**Example Good Commit**:
+```
+fix(web): resolve sub-folder route 404 issue
+
+Fixed Next.js App Router catch-all route that was returning 404
+in production. Converted client component to use React's use() hook
+for async params handling.
+
+- Updated page.tsx to use use() hook instead of useEffect
+- Fixed async params resolution
+- Added error handling for route matching
+- Updated TypeScript types for params
+
+Related: TICKET-0.1
+```
+
+**Example Bad Commit (DON'T DO THIS)**:
+```
+fix: stuff
 ```
 
 ### Commit Signing in Non-Interactive Environment

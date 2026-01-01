@@ -52,13 +52,37 @@ description: Current status, completed work, and pending tasks for IdeaI monorep
 
 ## ⏳ In Progress
 
-### Phase 1: Site Card Integration (Current Priority)
+### Phase 0: Fix Current Issues (CRITICAL - Current Priority)
+- [ ] **TICKET-0.1**: Fix sub-folder route 404 issue
+  - Route exists but returns 404 in production
+  - See: [Multi-Strategy Deployment Plan](./deployment/MULTI-STRATEGY-DEPLOYMENT-PLAN.md#ticket-01-fix-sub-folder-route-404-issue)
+
+### Phase 1: Site Card Integration (Paused)
 - [ ] Create status API endpoints (`/api/status/local`, `/api/status/vercel`)
 - [ ] Create status dashboard page
 - [ ] Replace `AppCard` with enhanced site card
 - [ ] Test with real status data
 
 ## 📋 Pending
+
+### Multi-Strategy Deployment Plan (NEW)
+**See**: [Multi-Strategy Deployment Plan](./deployment/MULTI-STRATEGY-DEPLOYMENT-PLAN.md)
+
+**Overview**: Comprehensive plan for supporting:
+- ✅ Subdomains (`{app}.myui.space`)
+- ✅ Sub-folders (`myui.space/apps/{name}`) - Currently broken, needs fix
+- ✅ Self-sovereign apps (individual apps with full isolation)
+- ✅ Mother-child apps (self-compiled mother apps with embedded child apps)
+
+**Phases**:
+- **Phase 0** (CRITICAL): Fix sub-folder route 404 issue
+- **Phase 1** (EASY): Stabilize deployment workflow
+- **Phase 2** (EASY): Self-sovereign app deployment
+- **Phase 3** (MEDIUM): Subdomain support
+- **Phase 4** (MEDIUM): Mother-child app architecture
+- **Phase 5** (ADVANCED): Advanced routing & optimization
+
+**Total Tickets**: 19 (1 Critical, 5 High, 8 Medium, 5 Low)
 
 ### Phase 2: Status APIs
 - [ ] `/api/status/local` - Check local dev server status

@@ -17,7 +17,7 @@
 
 "use client";
 
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { IdeAIPageTemplate } from "@repo/ui/components/ideai-page-template";
 import styles from "./page.module.css";
 
@@ -89,21 +89,13 @@ const SUB_APPS = {
 type AppId = keyof typeof SUB_APPS;
 
 export default function SubAppPage({ params }: PageProps) {
-  const [app, setApp] = useState<string | null>(null);
-  const [path, setPath] = useState<string[]>([]);
+  const resolvedParams = use(params);
+  const app = resolvedParams.app;
+  const path = resolvedParams.path || [];
   const [appStatus, setAppStatus] = useState<{
     running: boolean;
     url: string | null;
   } | null>(null);
-
-  useEffect(() => {
-    async function loadParams() {
-      const resolved = await params;
-      setApp(resolved.app);
-      setPath(resolved.path || []);
-    }
-    loadParams();
-  }, [params]);
 
   useEffect(() => {
     if (!app) return;

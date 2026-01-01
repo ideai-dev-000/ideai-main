@@ -1,6 +1,6 @@
 ---
 title: Unified Deployment Guide
-description: Complete guide for deploying all IdeaI monorepo apps with a single command
+description: Complete guide for deploying all IdeaI monorepo apps with a single command, including deployment strategy and architecture
 ---
 
 # Unified Deployment Guide
@@ -9,6 +9,15 @@ description: Complete guide for deploying all IdeaI monorepo apps with a single 
 
 The IdeaI monorepo uses a unified deployment script (`deploy.sh`) that deploys all apps to Vercel with a single command. This script handles the complexity of monorepo deployments and ensures consistent deployment across all apps.
 
+## Deployment Strategy
+
+The monorepo supports **two deployment modes**:
+
+1. **Main Site with Sub-Apps** - Single main site serving sub-apps at `/apps/{name}`
+2. **Standalone Apps** - Each app deployed independently as its own Vercel project
+
+Both modes can coexist, allowing flexibility in deployment strategy.
+
 ## Quick Start
 
 ```bash
@@ -16,7 +25,7 @@ The IdeaI monorepo uses a unified deployment script (`deploy.sh`) that deploys a
 ./deploy.sh --prod
 
 # Deploy specific apps to production
-./deploy.sh --prod docs landing
+./deploy.sh --prod docs web
 
 # Deploy all apps (preview)
 ./deploy.sh
@@ -46,7 +55,7 @@ The IdeaI monorepo uses a unified deployment script (`deploy.sh`) that deploys a
 ### Required Settings for Each App
 
 1. **Root Directory**: `apps/{app-name}`
-   - Example: `apps/web`, `apps/docs`, `apps/landing`
+   - Example: `apps/web`, `apps/docs`
    - ⚠️ **Must be relative to repo root** (not absolute path)
    - ⚠️ **NOT**: `apps/web/apps/web` (would duplicate)
 
@@ -66,12 +75,13 @@ The IdeaI monorepo uses a unified deployment script (`deploy.sh`) that deploys a
 |-----|---------|---------------|--------|
 | web | `web` | `apps/web` | ✅ Deployed |
 | docs | `docs` | `apps/docs` | ✅ Deployed |
-| landing | `landing` | `apps/landing` | ✅ Deployed |
 | all | `all` | `apps/all` | Ready |
 | nocss | `nocss` | `apps/nocss` | Ready |
 | mvp | `mvp` | `apps/mvp` | Ready |
 | tailwind | `tailwind` | `apps/tailwind` | Ready |
 | allcss | `allcss` | `apps/allcss` | Ready |
+| unocss | `unocss` | `apps/unocss` | Ready |
+| shadcn | `shadcn` | `apps/shadcn` | Ready |
 
 ## Troubleshooting
 
@@ -104,16 +114,38 @@ The IdeaI monorepo uses a unified deployment script (`deploy.sh`) that deploys a
 
 ### Main Site with Sub-Apps
 
-- **Main app** (`web`) at root: `myui.space/`
-- **Sub-apps** at: `myui.space/apps/{name}`
-- **Catch-all route**: `apps/web/app/apps/[app]/[[...path]]/page.tsx`
+**Location**: `apps/web`  
+**Production URL**: `myui.space`  
+**Purpose**: Main IdeaI application served at root domain
+
+**Sub-App Routing**:
+- Catch-all route at `/apps/[app]/[[...path]]`
+- Serves sub-apps at `myui.space/apps/{name}`
+- Can redirect to standalone URLs or serve directly
+
+**Available Sub-Apps**:
+- `docs` - Documentation site
+- `all` - Component showcase
+- `nocss` - No CSS demo
+- `mvp` - MVP.css demo
+- `tailwind` - Tailwind CSS demo
+- `allcss` - All CSS demo
+- `unocss` - UnoCSS demo
+- `shadcn` - Shadcn Components Showcase
 
 ### Standalone Apps
 
-Each app can also be deployed as a standalone Vercel project:
+Each app can also be deployed independently as a separate Vercel project:
 - Independent deployments
 - Separate URLs
 - Isolated failures
+- Independent scaling
+
+**Benefits**:
+- ✅ Independent deployments
+- ✅ Separate scaling
+- ✅ Isolated failures
+- ✅ Different domains/subdomains
 
 ## Best Practices
 
@@ -123,11 +155,39 @@ Each app can also be deployed as a standalone Vercel project:
 4. ✅ Test single app first: `./deploy.sh --prod web`
 5. ✅ Verify deployment before deploying all apps
 
+## Deployment Solution Details
+
+### How the Script Works
+
+The deployment script (`deploy.sh`) handles monorepo complexity:
+
+1. **Creates temporary symlink**: `.vercel` → `apps/{app}/.vercel`
+2. **Deploys from repo root** (`vercel deploy`)
+3. **Vercel finds `.vercel` symlink** and uses project config
+4. **Vercel uses Root Directory from dashboard** (`apps/{app}` relative to repo root)
+5. **Removes symlink** after deployment
+
+### Why This Approach Works
+
+- ✅ Deploys from repo root (Root Directory is relative to repo root)
+- ✅ No path duplication (avoids `apps/web/apps/web` issue)
+- ✅ Respects Vercel dashboard settings
+- ✅ Each app deploys independently
+
+### Vercel Project Name in Header
+
+All apps display their Vercel project name in the header with a clickable link.
+
+**Environment Variable**: `NEXT_PUBLIC_VERCEL_PROJECT_NAME`
+- Set in Vercel dashboard for each project
+- Falls back to app name if not set
+
 ## Related Documentation
 
 - [Deployment Architecture](../architecture/deployment-architecture.md)
-- [Vercel Setup](./vercel-setup.md)
-- [Robust Deployment](./robust-deployment.md)
+- [Vercel Configuration](./vercel.md)
+- [Deployment Overview](./overview.md)
+
 
 
 

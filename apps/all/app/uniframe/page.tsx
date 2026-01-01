@@ -57,7 +57,7 @@ export default function UniFramePage() {
           </div>
         </div>
 
-        <UFShowcase />
+        <UniFrameShowcase />
       </div>
     </IdeAIPageTemplate>
   );

@@ -1,52 +1,84 @@
 ---
 title: Vercel Configuration
-description: Vercel deployment configuration for the IdeaI monorepo, including project setup, monorepo configuration, and deployment processes.
+description: Complete Vercel setup and configuration guide for IdeaI monorepo, including dashboard settings, project setup, and deployment processes.
 ---
+
 # Vercel Configuration
 
-This document describes the Vercel deployment configuration for this monorepo.
+Complete guide for configuring and deploying IdeaI monorepo apps to Vercel.
 
 ## Project Information
 
 - **Organization**: `idea-i`
 - **Organization ID**: `team_vhjzlMi6CfNow0IfBXnv2Yn2`
-- **Project Name**: `ideai-main` (deploys `apps/web`)
-- **Project ID**: `prj_Se4sFOjdH4fRzSOsK8YDiNVFssHx`
+- **Main Project**: `web` (deploys `apps/web`)
 - **Production URL**: https://www.myui.space
-- **Preview URL**: https://preview.myui.space
 
-## Project Settings
+## Required Dashboard Settings
 
-### Root Directory
+**⚠️ CRITICAL**: These settings must be configured correctly for each app or deployment will fail.
 
-**Critical for Monorepos**: The Vercel project must be configured with the correct root directory and build settings.
+### General Settings
 
-1. Navigate to [Project Settings → Build & Development Settings](https://vercel.com/idea-i/ideai-main/settings/general)
-2. Find **Root Directory** setting
-3. Set to: `apps/web`
-4. **Enable** "Include files outside the root directory in the Build Step" checkbox
-5. Save changes
+1. **Root Directory**: `apps/{app-name}`
+   - Example: `apps/web`, `apps/docs`
+   - ⚠️ **Must be relative to repo root** (not absolute path)
+   - ⚠️ **NOT**: `apps/web/apps/web` (would duplicate path)
 
-**Why this matters:**
-- Root Directory tells Vercel where to find the `package.json` and build the application
-- "Include files outside the root directory" is **required** for Turborepo monorepos because:
-  - The build needs access to the root `package.json`, `pnpm-workspace.yaml`, and `turbo.json`
-  - Shared packages in `packages/` must be accessible
-  - Without this, Vercel can't properly resolve workspace dependencies
+2. **Framework Preset**: Next.js (auto-detected)
 
-See [Vercel's Build Configuration Documentation](https://vercel.com/docs/builds/configure-a-build#root-directory) for details.
+3. **Build Command**: Auto-detected from `package.json`
+   - Should be: `pnpm build` or `next build`
 
-### Build Configuration
+4. **Install Command**: Auto-detected
+   - Should be: `pnpm install`
 
-Vercel automatically detects and configures Next.js applications. No `vercel.json` files are required when using the standard Turborepo + Vercel approach.
+5. **Output Directory**: `.next` (Next.js default)
 
-**Automatic Configuration:**
-- Framework detection: Next.js (auto-detected from `package.json`)
-- Build command: Auto-detected from `package.json` scripts
-- Install command: Auto-detected from package manager (pnpm)
-- Output directory: `.next` (Next.js default)
+### Advanced Settings
 
-The Root Directory setting (`apps/web`) tells Vercel where to find the app, and Vercel handles the rest automatically.
+1. **Include files outside the root directory in the Build Step**: ✅ **Enable**
+   - **Required for monorepo setup**
+   - Allows access to `packages/` and other shared code
+   - Without this, Vercel can't access workspace dependencies
+
+2. **Environment Variables**: Set as needed
+   - `NEXT_PUBLIC_VERCEL_PROJECT_NAME` - Project name (shown in header)
+   - `NEXT_PUBLIC_VERCEL_ORG_ID` - Organization ID (default: `idea-i`)
+
+## Project-Specific Configuration
+
+### Web App (Main Site)
+
+**Project**: `web`  
+**Root Directory**: `apps/web`  
+**Production URL**: `myui.space`
+
+**Required Settings**:
+- ✅ Root Directory: `apps/web`
+- ✅ Include files outside root: Enabled
+- ✅ Install Command: `pnpm install`
+- ✅ Build Command: `pnpm build`
+
+### Docs App
+
+**Project**: `docs`  
+**Root Directory**: `apps/docs`  
+**Production URL**: `docs-*.vercel.app`
+
+**Required Settings**:
+- ✅ Root Directory: `apps/docs`
+- ✅ Include files outside root: Enabled
+- ✅ Install Command: `pnpm install`
+- ✅ Build Command: `pnpm build`
+
+### Other Apps
+
+All other apps (`all`, `nocss`, `mvp`, `tailwind`, `allcss`, `unocss`, `shadcn`) follow the same pattern:
+- Root Directory: `apps/{app-name}`
+- Include files outside root: Enabled
+- Install Command: `pnpm install`
+- Build Command: `pnpm build`
 
 ## Vercel CLI
 
@@ -105,7 +137,7 @@ The `.env.local` file will be created in the current directory. Vercel uses the 
 
 This project uses the **standard Vercel boilerplate approach** for Turborepo monorepos:
 
-1. **Root Directory** set in Vercel dashboard: `apps/web`
+1. **Root Directory** set in Vercel dashboard: `apps/{app-name}`
 2. **Include files outside root** enabled (required for monorepos)
 3. **Deploy from repo root** (no `working-directory` in workflows)
 4. **Vercel auto-detects** Next.js and builds automatically
@@ -120,7 +152,7 @@ This project uses the **standard Vercel boilerplate approach** for Turborepo mon
 ### Framework Detection
 
 Vercel automatically detects Next.js when:
-- Root Directory is set correctly (`apps/web`)
+- Root Directory is set correctly (`apps/{app-name}`)
 - `package.json` contains `next` dependency
 - "Include files outside root directory" is enabled
 
@@ -136,13 +168,13 @@ Vercel automatically detects Next.js when:
 
 ### Deployment URLs
 
-- **Preview**: `https://web-{hash}-idea-i.vercel.app`
-- **Production**: `https://web-knac8m3pi-idea-i.vercel.app`
+- **Preview**: `https://{app}-{hash}-idea-i.vercel.app`
+- **Production**: Custom domain or `https://{app}-{hash}-idea-i.vercel.app`
 
 ### Deployment Status
 
 Check deployment status:
-- [Vercel Dashboard](https://vercel.com/idea-i/web)
+- [Vercel Dashboard](https://vercel.com/idea-i)
 - GitHub Actions workflow logs
 - Vercel CLI: `vercel inspect`
 
@@ -154,7 +186,7 @@ Generated by `vercel link`:
 
 ```json
 {
-  "projectId": "prj_rOeGwbNZwaO6sJ2J685Y3g9TV2cw",
+  "projectId": "prj_...",
   "orgId": "team_vhjzlMi6CfNow0IfBXnv2Yn2",
   "projectName": "web"
 }
@@ -167,7 +199,7 @@ Generated by `vercel link`:
 **Symptoms**: Deployment queues but fails with "Unexpected error" or module resolution errors
 
 **Solution**: This is almost always caused by missing monorepo configuration:
-1. Set Root Directory to `apps/web` in [Project Settings](https://vercel.com/idea-i/web/settings/general)
+1. Set Root Directory to `apps/{app-name}` in [Project Settings](https://vercel.com/idea-i/{app}/settings/general)
 2. **Enable** "Include files outside the root directory in the Build Step" checkbox
 3. Save and redeploy
 
@@ -179,19 +211,38 @@ Without the "Include files outside the root directory" setting, Vercel can't acc
 ### "No Next.js version detected"
 
 **Solution**: 
-1. Set Root Directory to `apps/web` in Vercel project settings
+1. Set Root Directory to `apps/{app-name}` in Vercel project settings
 2. Enable "Include files outside the root directory in the Build Step"
 
-### Build Fails: "Cannot find module"
+### Build Fails: "Cannot find module '@repo/ui'"
 
 **Solution**: 
 1. Ensure "Include files outside the root directory in the Build Step" is enabled
-2. Verify Root Directory is set to `apps/web`
+2. Verify Root Directory is set to `apps/{app-name}`
 3. Check workspace dependencies are properly configured in `package.json`
 
-### Deployment Fails: "Root Directory" error
+### Error: "npm install" exited with 1
 
-**Solution**: Verify Root Directory setting matches app location (`apps/web`) in Vercel dashboard.
+**Cause**: Vercel is using npm instead of pnpm
+
+**Fix**: 
+1. Set `installCommand` in `vercel.json`:
+   ```json
+   {
+     "installCommand": "pnpm install"
+   }
+   ```
+2. Or set in Vercel dashboard: Settings → General → Install Command
+
+### Error: Path does not exist
+
+**Cause**: Root Directory is set incorrectly in Vercel dashboard
+
+**Fix**:
+1. Go to Vercel dashboard → Project Settings → General
+2. Set Root Directory to: `apps/{app-name}` (e.g., `apps/docs`)
+3. ⚠️ Do NOT include the full path or absolute paths
+4. Just the relative path from repo root: `apps/docs`
 
 ### Deployment Canceled: "Unverified commit"
 
@@ -201,7 +252,7 @@ Without the "Include files outside the root directory" setting, Vercel can't acc
 
 ## Best Practices
 
-- ✅ Set Root Directory to `apps/web` in Vercel dashboard
+- ✅ Set Root Directory to `apps/{app-name}` in Vercel dashboard
 - ✅ **Enable "Include files outside the root directory in the Build Step"** (required for monorepos)
 - ✅ Deploy from repo root in GitHub Actions (no `working-directory` parameter)
 - ✅ Let Vercel auto-detect Next.js framework (no `vercel.json` needed)
@@ -209,9 +260,24 @@ Without the "Include files outside the root directory" setting, Vercel can't acc
 - ✅ Test deployments on preview before production
 - ✅ Use standard Turborepo + Vercel boilerplate approach
 
+## Quick Reference
+
+| App | Root Directory | Project Name | Status |
+|-----|---------------|--------------|--------|
+| web | `apps/web` | `web` | ✅ Deployed |
+| docs | `apps/docs` | `docs` | ✅ Deployed |
+| all | `apps/all` | `all` | Ready |
+| nocss | `apps/nocss` | `nocss` | Ready |
+| mvp | `apps/mvp` | `mvp` | Ready |
+| tailwind | `apps/tailwind` | `tailwind` | Ready |
+| allcss | `apps/allcss` | `allcss` | Ready |
+| unocss | `apps/unocss` | `unocss` | Ready |
+| shadcn | `apps/shadcn` | `shadcn` | Ready |
+
 ## Related Documentation
 
 - [Deployment Overview](./overview.md)
+- [Unified Deployment Guide](./unified-deployment.md) - **Start here** for deployment
 - [CI/CD Workflows](./ci-cd.md)
 - [GitHub Secrets Setup](../setup/github-secrets.md)
-
+- [Vercel Checklist](../setup/vercel-checklist.md)

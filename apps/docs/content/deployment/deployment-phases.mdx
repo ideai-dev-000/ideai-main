@@ -1,0 +1,227 @@
+---
+title: Deployment Phases
+description: Phased approach to deploying IdeaI monorepo apps
+---
+
+# Deployment Phases
+
+This document outlines a phased approach to deploying IdeaI monorepo apps, from development to production.
+
+## Phase Overview
+
+1. **Phase 1: Development** - All apps integrated, local development
+2. **Phase 2: Preview** - Hybrid mode, test deployments
+3. **Phase 3: Production** - Choose strategy per app
+
+## Phase 1: Development (All Integrated)
+
+### Setup
+- **No environment variables needed**
+- All apps run locally on different ports
+- Main app serves all sub-apps via iframe
+
+### Configuration
+```bash
+# No env vars needed - default behavior
+```
+
+### Behavior
+- Main app: `localhost:3000`
+- Apps index: `localhost:3000/index`
+- Sub-apps: `localhost:3000/apps/{name}`
+  - Example: `localhost:3000/apps/docs` → iframe to `localhost:3001`
+  - Example: `localhost:3000/apps/all` → iframe to `localhost:3002`
+
+### Use Case
+- Local development
+- Testing all apps together
+- Quick iteration
+
+### Advantages
+- ✅ Simple setup
+- ✅ No configuration needed
+- ✅ All apps accessible from one place
+- ✅ Easy to test interactions
+
+## Phase 2: Preview (Hybrid Mode)
+
+### Setup
+- Set standalone URLs for **critical apps only**
+- Other apps remain integrated
+
+### Configuration
+```bash
+# In Vercel dashboard or .env.local for main web app:
+NEXT_PUBLIC_DOCS_URL=https://docs-xxx.vercel.app
+NEXT_PUBLIC_ALL_URL=https://all-xxx.vercel.app
+
+# Other apps (nocss, mvp, etc.) - no env vars
+# They'll be served directly via iframe
+```
+
+### Behavior
+- Critical apps (docs, all) → Redirect to standalone URLs
+- Other apps → Served directly via iframe
+- Main app shows all apps at `/index`
+
+### Use Case
+- Testing deployment strategies
+- Gradual migration
+- Preview deployments
+
+### Advantages
+- ✅ Test standalone deployments
+- ✅ Keep other apps simple
+- ✅ Flexible migration path
+- ✅ Best of both worlds
+
+## Phase 3: Production (Choose Strategy)
+
+### Option A: All Integrated
+
+**Setup**: No environment variables
+
+**Result**:
+- All apps served via iframe from main app
+- Single deployment
+- Single domain
+
+**Use Case**: Small to medium projects, tightly coupled apps
+
+### Option B: All Standalone
+
+**Setup**: Set all environment variables
+
+**Result**:
+- Each app is separate Vercel project
+- Each app has own URL
+- Main app redirects to standalone URLs
+
+**Use Case**: Large projects, independent scaling needed
+
+### Option C: Hybrid (Recommended)
+
+**Setup**: Set environment variables only for apps that need standalone
+
+**Result**:
+- Critical apps → Standalone
+- Other apps → Integrated
+- Flexible per app
+
+**Use Case**: Different apps have different needs
+
+## Migration Path
+
+### From Phase 1 to Phase 2
+
+1. Deploy critical app as standalone (create Vercel project)
+2. Set environment variable in main app: `NEXT_PUBLIC_{APP}_URL`
+3. Deploy main app
+4. Test - verify redirect works
+5. Repeat for other critical apps
+
+### From Phase 2 to Phase 3
+
+1. Decide strategy per app:
+   - **Standalone**: Set env var
+   - **Integrated**: Remove env var (if set)
+2. Deploy all apps
+3. Test all routes
+4. Monitor performance
+
+### From Integrated to Standalone
+
+1. Create Vercel project for app
+2. Set Root Directory: `apps/{app-name}`
+3. Deploy app
+4. Set environment variable in main app
+5. Deploy main app
+6. Test redirect
+
+### From Standalone to Integrated
+
+1. Remove environment variable from main app
+2. Ensure app exists in monorepo
+3. Deploy main app
+4. Test iframe serving
+5. Optional: Delete standalone Vercel project
+
+## Decision Matrix
+
+| App Type | Recommended Strategy | Reason |
+|----------|---------------------|--------|
+| Main app (web) | Always standalone | Primary app, needs own domain |
+| Documentation | Standalone | Large, independent, custom domain |
+| Component showcase | Integrated | Small, tightly coupled |
+| CSS demos | Integrated | Small, test apps |
+| Production apps | Standalone | Need independent scaling |
+| Dev/test apps | Integrated | Simple, no scaling needed |
+
+## Best Practices
+
+1. **Start integrated** - Easiest to set up
+2. **Migrate gradually** - Move apps to standalone as needed
+3. **Use hybrid** - Best flexibility
+4. **Monitor performance** - Adjust strategy based on needs
+5. **Document decisions** - Track which apps are which
+
+## Environment Variables Reference
+
+### For Main Web App (`apps/web`)
+
+Set in Vercel dashboard or `.env.local`:
+
+```bash
+# Standalone app URLs (only set if deploying standalone)
+NEXT_PUBLIC_DOCS_URL=https://docs-xxx.vercel.app
+NEXT_PUBLIC_ALL_URL=https://all-xxx.vercel.app
+NEXT_PUBLIC_NOCSS_URL=https://nocss-xxx.vercel.app
+NEXT_PUBLIC_MVP_URL=https://mvp-xxx.vercel.app
+NEXT_PUBLIC_TAILWIND_URL=https://tailwind-xxx.vercel.app
+NEXT_PUBLIC_ALLCSS_URL=https://allcss-xxx.vercel.app
+NEXT_PUBLIC_BOOTSTRAP_URL=https://bootstrap-xxx.vercel.app
+NEXT_PUBLIC_UNOCSS_URL=https://unocss-xxx.vercel.app
+NEXT_PUBLIC_SHADCN_URL=https://shadcn-xxx.vercel.app
+```
+
+### Behavior
+
+- **If set**: App redirects to standalone URL in production
+- **If not set**: App served directly via iframe (if available)
+
+## Examples
+
+### Example 1: Phase 1 (Development)
+
+**Setup**: No env vars
+
+**Result**:
+- `localhost:3000/apps/docs` → iframe to `localhost:3001`
+- `localhost:3000/apps/all` → iframe to `localhost:3002`
+- All apps accessible from main app
+
+### Example 2: Phase 2 (Preview)
+
+**Setup**: Only `NEXT_PUBLIC_DOCS_URL` set
+
+**Result**:
+- `preview.myui.space/apps/docs` → redirects to `docs-xxx.vercel.app`
+- `preview.myui.space/apps/all` → iframe (served directly)
+- `preview.myui.space/apps/nocss` → iframe (served directly)
+
+### Example 3: Phase 3 (Production - Hybrid)
+
+**Setup**: `NEXT_PUBLIC_DOCS_URL` and `NEXT_PUBLIC_ALL_URL` set
+
+**Result**:
+- `myui.space/apps/docs` → redirects to standalone
+- `myui.space/apps/all` → redirects to standalone
+- `myui.space/apps/nocss` → iframe (served directly)
+- `myui.space/apps/mvp` → iframe (served directly)
+
+## Related Documentation
+
+- [Deployment Strategies](./deployment-strategies.md) - Complete strategy guide
+- [Deployment Architecture](./deployment-architecture.md) - Architecture overview
+- [Vercel Setup](./vercel-setup.md) - Vercel configuration
+
