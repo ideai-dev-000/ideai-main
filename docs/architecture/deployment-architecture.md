@@ -3,6 +3,7 @@ title: Deployment Architecture
 description: Complete deployment architecture for IdeaI monorepo - main site with sub-apps and standalone deployments
 ---
 
+
 # Deployment Architecture
 
 ## Overview
