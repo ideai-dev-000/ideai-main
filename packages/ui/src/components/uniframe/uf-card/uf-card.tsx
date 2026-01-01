@@ -4,7 +4,7 @@
  * @file uf-card.tsx
  * @module UniFrameCard
  * @description
- * Main card wrapper component for the UniFrame universal framework card system.
+ * Main card wrapper component for the UniFrame framework card system.
  * Combines header, body, and footer into a complete, semantic card component.
  * 
  * UniFrame allows runtime switching between CSS frameworks (Tailwind, Bootstrap,

@@ -4,7 +4,7 @@
  * @file uf-body.tsx
  * @module UniFrameCardBody
  * @description
- * Body component for UniFrame universal framework cards.
+ * Body component for UniFrame framework cards.
  * Provides semantic body structure for card content that adapts
  * styling based on the selected CSS framework.
  * 

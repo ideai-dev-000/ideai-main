@@ -4,7 +4,7 @@
  * @file uf-badge.tsx
  * @module UniFrameCardBadge
  * @description
- * Badge component for UniFrame universal framework cards.
+ * Badge component for UniFrame framework cards.
  * Provides semantic badge/status indicator that adapts styling based on
  * framework configuration with secure class injection.
  * 

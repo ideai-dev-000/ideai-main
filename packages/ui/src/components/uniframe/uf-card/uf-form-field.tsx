@@ -4,7 +4,7 @@
  * @file uf-form-field.tsx
  * @module UniFrameCardFormField
  * @description
- * Form field component for UniFrame universal framework cards.
+ * Form field component for UniFrame framework cards.
  * Combines label and input into a complete, accessible form field that adapts
  * styling based on framework configuration.
  * 

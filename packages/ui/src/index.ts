@@ -19,7 +19,7 @@ export { IdeAISiteCard } from "./components/ideai-site-card";
 export type { IdeAISiteCardProps, SiteStatus } from "./components/ideai-site-card";
 export { IdeAIDiagnostics } from "./components/ideai-diagnostics";
 export type { IdeAIDiagnosticsProps } from "./components/ideai-diagnostics";
-export { UniFrameUniversalCard } from "./components/uf-universal-card";
+export { UniFrameShowcase } from "./components/uf-showcase";
 // UniFrame Card Components
 export { UniFrameCard } from "./components/uniframe/uf-card/uf-card";
 export { UniFrameCardHeader } from "./components/uniframe/uf-card/uf-header";

@@ -4,7 +4,7 @@
  * @file uf-input.tsx
  * @module UniFrameCardInput
  * @description
- * Input component for UniFrame universal framework cards.
+ * Input component for UniFrame framework cards.
  * Provides semantic input element that adapts styling based on framework
  * configuration with secure class injection.
  * 

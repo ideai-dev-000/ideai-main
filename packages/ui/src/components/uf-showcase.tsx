@@ -1,10 +1,10 @@
 /**
- * @fileoverview UniFrame Universal Card Component - Main Component with Framework Selector
+ * @fileoverview UniFrame Showcase Component - Main Component with Framework Selector
  * 
- * @file uf-universal-card.tsx
- * @module UniFrameUniversalCard
+ * @file uf-showcase.tsx
+ * @module UniFrameShowcase
  * @description
- * Main UniFrame component that provides a universal card with runtime framework switching.
+ * Main UniFrame component that provides a card showcase with runtime framework switching.
  * Includes a dropdown selector to switch between CSS frameworks at runtime.
  * 
  * UniFrame Architecture:
@@ -23,9 +23,9 @@
  * 
  * @example
  * ```tsx
- * import { UniFrameUniversalCard } from "@repo/ui/components/uf-universal-card";
+ * import { UniFrameShowcase } from "@repo/ui/components/uf-showcase";
  * 
- * <UniFrameUniversalCard />
+ * <UniFrameShowcase />
  * ```
  * 
  * @see {@link ./uniframe/uf-card/uf-card.tsx} - Card wrapper component
@@ -50,7 +50,7 @@ import { useState, useEffect } from "react";
 import { UniFrameCard } from "./uniframe/uf-card/uf-card";
 import type { Framework } from "./uniframe/uf-card/uf-card-types";
 
-interface UniFrameUniversalCardProps {
+interface UniFrameShowcaseProps {
   /** Initial framework selection */
   defaultFramework?: Framework;
   /** Additional CSS classes for container */
@@ -58,7 +58,7 @@ interface UniFrameUniversalCardProps {
 }
 
 /**
- * UniFrame Universal Card Component
+ * UniFrame Showcase Component
  * 
  * A complete, composable component system that demonstrates runtime framework switching.
  * Built with UniFrame structure: card wrapper, header, body, footer, and UI elements.
@@ -72,13 +72,13 @@ interface UniFrameUniversalCardProps {
  * - Secure (predefined class strings, no XSS risk)
  * - Framework CSS injection (Bootstrap loads on-demand)
  * 
- * @param props - UniFrame universal card component props
+ * @param props - UniFrame showcase component props
  * @returns React component
  */
-export const UniFrameUniversalCard = ({
+export const UniFrameShowcase = ({
   defaultFramework = "tailwind",
   className,
-}: UniFrameUniversalCardProps) => {
+}: UniFrameShowcaseProps) => {
   const [selectedFramework, setSelectedFramework] = useState<Framework>(defaultFramework);
   const [inputValue, setInputValue] = useState("Sample input text");
   const [isLoading, setIsLoading] = useState(false);
@@ -143,7 +143,7 @@ export const UniFrameUniversalCard = ({
       {/* UniFrame Card */}
       <UniFrameCard
         framework={selectedFramework}
-        title="UniFrame Universal Card"
+        title="UniFrame Card"
         description="This card dynamically adapts its styling based on the selected framework. All UI elements use framework-specific classes injected at runtime. Built with UniFrame structure: card wrapper, header, body, footer, and UI elements for infinite composability."
         inputValue={inputValue}
         onInputChange={setInputValue}

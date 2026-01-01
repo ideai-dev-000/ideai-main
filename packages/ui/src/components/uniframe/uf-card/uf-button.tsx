@@ -4,7 +4,7 @@
  * @file uf-button.tsx
  * @module UniFrameCardButton
  * @description
- * Button component for UniFrame universal framework cards.
+ * Button component for UniFrame framework cards.
  * Provides semantic button element that adapts styling based on framework
  * configuration with secure class injection.
  * 

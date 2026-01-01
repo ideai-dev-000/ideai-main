@@ -68,6 +68,14 @@ export const IdeAIDiagnostics = ({
   visible = true,
   appName,
 }: IdeAIDiagnosticsProps) => {
+  // Only show in development - never in production
+  const isDevelopment = process.env.NODE_ENV === "development" || 
+    (typeof window !== "undefined" && window.location.hostname === "localhost");
+  
+  if (!isDevelopment) {
+    return null;
+  }
+
   const [metrics, setMetrics] = useState<PerformanceMetrics>({
     domContentLoaded: null,
     loadComplete: null,

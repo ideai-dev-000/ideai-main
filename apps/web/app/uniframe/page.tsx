@@ -1,19 +1,19 @@
 /**
- * @fileoverview UniFrame Universal Card Demo Page
+ * @fileoverview UniFrame Showcase Page
  * 
- * @module UniFrameUniversalCardDemo
+ * @module UniFrameShowcasePage
  * @description
- * Demo page showcasing the UniFrame Universal Card component that can
+ * Demo page showcasing the UniFrame Showcase component that can
  * dynamically switch between different CSS frameworks at runtime.
  * 
- * UniFrame is a universal framework card system that allows runtime switching
+ * UniFrame is a framework card system that allows runtime switching
  * between CSS frameworks with secure class injection.
  * 
  * @author IdeaI Development Team
  * @since 2026-01-01
  * @version 1.0.0
  * 
- * @see {@link @repo/ui/components/uf-universal-card} - Main UniFrame component
+ * @see {@link @repo/ui/components/uf-showcase} - Main UniFrame component
  */
 
 import { IdeAIPageTemplate } from "@repo/ui/components/ideai-page-template";
@@ -27,7 +27,7 @@ export default function UniFrameCardPage() {
   return (
     <IdeAIPageTemplate
       siteName="IdeaI /uniframe"
-      subtitle="UniFrame Universal Card - Runtime Framework Switching"
+      subtitle="UniFrame Showcase - Runtime Framework Switching"
       vercelProjectName={vercelProjectName}
       vercelOrgId={vercelOrgId}
       headerActions={<IdeaIButton appName="web">Open alert</IdeaIButton>}
@@ -35,7 +35,7 @@ export default function UniFrameCardPage() {
       <div className="max-w-6xl mx-auto p-8">
         <div className="mb-8">
           <h1 className="text-4xl font-bold text-slate-900 dark:text-slate-100 mb-4">
-            UniFrame Universal Card
+            UniFrame Showcase
           </h1>
           <p className="text-lg text-slate-600 dark:text-slate-400 mb-6">
             A single React component that dynamically switches between different CSS frameworks

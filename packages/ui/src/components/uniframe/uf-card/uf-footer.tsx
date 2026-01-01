@@ -4,7 +4,7 @@
  * @file uf-footer.tsx
  * @module UniFrameCardFooter
  * @description
- * Footer component for UniFrame universal framework cards.
+ * Footer component for UniFrame framework cards.
  * Provides semantic footer structure for card metadata that adapts
  * styling based on the selected CSS framework.
  * 

@@ -7,7 +7,7 @@
  * Shared TypeScript types and configurations for the UniFrame card system.
  * Centralized type definitions ensure consistency across all UniFrame card components.
  * 
- * UniFrame is a universal framework card system that allows runtime switching
+ * UniFrame is a framework card system that allows runtime switching
  * between different CSS frameworks (Tailwind, Bootstrap, Material UI, Chakra UI,
  * Radix UI, Shadcn/UI) with secure class injection.
  * 

@@ -4,7 +4,7 @@
  * @file uf-button-group.tsx
  * @module UniFrameCardButtonGroup
  * @description
- * Button group component for UniFrame universal framework cards.
+ * Button group component for UniFrame framework cards.
  * Groups multiple buttons together with consistent spacing and layout
  * that adapts based on framework configuration.
  * 

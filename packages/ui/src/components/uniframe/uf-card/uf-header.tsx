@@ -4,7 +4,7 @@
  * @file uf-header.tsx
  * @module UniFrameCardHeader
  * @description
- * Header component for UniFrame universal framework cards.
+ * Header component for UniFrame framework cards.
  * Provides semantic header structure with title and description that adapts
  * styling based on the selected CSS framework.
  * 
