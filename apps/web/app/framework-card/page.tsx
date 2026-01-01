@@ -8,7 +8,7 @@
  */
 
 import { IdeAIPageTemplate } from "@repo/ui/components/ideai-page-template";
-import { UniversalFrameworkCard } from "@repo/ui/components/universal-framework-card";
+import { IdeAIUniversalFrameworkCard } from "@repo/ui/components/ideai-universal-framework-card";
 import { IdeaIButton } from "@repo/ui/components/ideai-button";
 
 export default function FrameworkCardPage() {
@@ -46,7 +46,7 @@ export default function FrameworkCardPage() {
           </div>
         </div>
 
-        <UniversalFrameworkCard />
+        <IdeAIUniversalFrameworkCard />
       </div>
     </IdeAIPageTemplate>
   );

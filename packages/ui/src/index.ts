@@ -19,7 +19,15 @@ export { IdeAISiteCard } from "./components/ideai-site-card";
 export type { IdeAISiteCardProps, SiteStatus } from "./components/ideai-site-card";
 export { IdeAIDiagnostics } from "./components/ideai-diagnostics";
 export type { IdeAIDiagnosticsProps } from "./components/ideai-diagnostics";
-export { UniversalFrameworkCard } from "./components/universal-framework-card";
+export { IdeAIUniversalFrameworkCard } from "./components/ideai-universal-framework-card";
+// Atomic Design Components
+export { IdeAIFrameworkButton } from "./components/atoms/ideai-framework-button";
+export { IdeAIFrameworkInput } from "./components/atoms/ideai-framework-input";
+export { IdeAIFrameworkBadge } from "./components/atoms/ideai-framework-badge";
+export { IdeAIFrameworkFormField } from "./components/molecules/ideai-framework-form-field";
+export { IdeAIFrameworkButtonGroup } from "./components/molecules/ideai-framework-button-group";
+export { IdeAIFrameworkCard } from "./components/organisms/ideai-framework-card";
+export type { Framework } from "./components/organisms/ideai-framework-card-types";
 
 // shadcn/ui components
 export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent } from "./components/ui/card";
