@@ -4,6 +4,7 @@
 
 import { IdeAIPageTemplate } from "@repo/ui/components/ideai-page-template";
 import { IdeAIHTMLTest } from "@repo/ui/components/ideai-html-test";
+import { IdeAICSSSummary } from "@repo/ui/components/ideai-css-summary";
 import { IdeaIButton } from "@repo/ui/components/ideai-button";
 
 export default function Home() {
@@ -19,6 +20,10 @@ export default function Home() {
       headerActions={<IdeaIButton appName="mvp">Open alert</IdeaIButton>}
     >
       <div>
+        <IdeAICSSSummary
+          frameworks={["MVP.css"]}
+          description="Minimalist stylesheet (~10KB) that styles semantic HTML elements. No utility classes, no Tailwind - just clean semantic styling."
+        />
         <IdeAIHTMLTest />
       </div>
     </IdeAIPageTemplate>

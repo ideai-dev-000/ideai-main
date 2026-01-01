@@ -4,6 +4,7 @@
 
 import { IdeAIPageTemplate } from "@repo/ui/components/ideai-page-template";
 import { IdeAIHTMLTest } from "@repo/ui/components/ideai-html-test";
+import { IdeAICSSSummary } from "@repo/ui/components/ideai-css-summary";
 import { IdeaIButton } from "@repo/ui/components/ideai-button";
 
 export default function Home() {
@@ -19,6 +20,10 @@ export default function Home() {
       headerActions={<IdeaIButton appName="unocss">Open alert</IdeaIButton>}
     >
       <div>
+        <IdeAICSSSummary
+          frameworks={["UnoCSS"]}
+          description="Atomic CSS engine with on-demand generation. No Tailwind, no MVP.css - just UnoCSS for utility-first styling with instant compilation."
+        />
         <IdeAIHTMLTest />
       </div>
     </IdeAIPageTemplate>

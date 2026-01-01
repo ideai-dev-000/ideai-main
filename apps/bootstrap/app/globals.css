@@ -1,0 +1,12 @@
+/**
+ * @fileoverview Bootstrap CSS only - Component-based styling
+ * 
+ * This app uses Bootstrap CSS for component-based styling.
+ * No Tailwind, no MVP.css - just Bootstrap.
+ */
+
+/* Bootstrap CSS */
+@import "bootstrap/dist/css/bootstrap.min.css";
+
+/* Bootstrap JS (loaded via script tag in layout) */
+

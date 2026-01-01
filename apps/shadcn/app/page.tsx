@@ -5,6 +5,7 @@
  */
 
 import { IdeAIPageTemplate } from "@repo/ui/components/ideai-page-template";
+import { IdeAICSSSummary } from "@repo/ui/components/ideai-css-summary";
 import { IdeaIButton } from "@repo/ui/components/ideai-button";
 import {
   Card,
@@ -37,6 +38,10 @@ export default function Home() {
       headerActions={<IdeaIButton appName="shadcn">Open alert</IdeaIButton>}
     >
       <div className="max-w-6xl mx-auto p-8 space-y-12">
+        <IdeAICSSSummary
+          frameworks={["Tailwind CSS", "IdeaI Design System", "Shadcn/UI Components"]}
+          description="Shadcn/UI component library built on Radix UI primitives, styled with Tailwind CSS and IdeaI design tokens. All components from shared @repo/ui package."
+        />
         <section>
           <h2 className="text-3xl font-bold mb-6">Shadcn/UI Components</h2>
           <p className="text-slate-600 dark:text-slate-400 mb-8">

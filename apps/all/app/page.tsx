@@ -15,6 +15,7 @@
 
 import { IdeAIPageTemplate } from "@repo/ui/components/ideai-page-template";
 import { IdeAIHTMLTest } from "@repo/ui/components/ideai-html-test";
+import { IdeAICSSSummary } from "@repo/ui/components/ideai-css-summary";
 import { IdeaIButton } from "@repo/ui/components/ideai-button";
 import styles from "./page.module.css";
 
@@ -32,6 +33,10 @@ export default function Home() {
     >
       <div className={styles.page}>
         <div className={styles.main}>
+          <IdeAICSSSummary
+            frameworks={["MVP.css", "Tailwind CSS", "IdeaI Design System"]}
+            description="Full styling stack with semantic HTML styling, utility classes, and custom design tokens."
+          />
           <div className={styles.showcase}>
             <IdeAIHTMLTest />
           </div>

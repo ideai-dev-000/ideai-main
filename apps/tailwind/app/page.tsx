@@ -4,6 +4,7 @@
 
 import { IdeAIPageTemplate } from "@repo/ui/components/ideai-page-template";
 import { IdeAIHTMLTest } from "@repo/ui/components/ideai-html-test";
+import { IdeAICSSSummary } from "@repo/ui/components/ideai-css-summary";
 import { IdeaIButton } from "@repo/ui/components/ideai-button";
 
 export default function Home() {
@@ -19,6 +20,10 @@ export default function Home() {
       headerActions={<IdeaIButton appName="tailwind">Open alert</IdeaIButton>}
     >
       <div>
+        <IdeAICSSSummary
+          frameworks={["Tailwind CSS"]}
+          description="Utility-first CSS framework. No MVP.css, no semantic HTML styling - just Tailwind utility classes."
+        />
         <IdeAIHTMLTest />
       </div>
     </IdeAIPageTemplate>

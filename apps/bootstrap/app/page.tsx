@@ -1,5 +1,5 @@
 /**
- * @fileoverview No CSS page - Pure HTML defaults
+ * @fileoverview Bootstrap CSS page - Component-based styling only
  */
 
 import { IdeAIPageTemplate } from "@repo/ui/components/ideai-page-template";
@@ -8,24 +8,25 @@ import { IdeAICSSSummary } from "@repo/ui/components/ideai-css-summary";
 import { IdeaIButton } from "@repo/ui/components/ideai-button";
 
 export default function Home() {
-  const vercelProjectName = process.env.NEXT_PUBLIC_VERCEL_PROJECT_NAME || "nocss";
+  const vercelProjectName = process.env.NEXT_PUBLIC_VERCEL_PROJECT_NAME || "bootstrap";
   const vercelOrgId = process.env.NEXT_PUBLIC_VERCEL_ORG_ID || "team_vhjzlMi6CfNow0IfBXnv2Yn2";
 
   return (
     <IdeAIPageTemplate
-      siteName="IdeaI /nocss"
-      subtitle="No CSS - Pure HTML Browser Defaults"
+      siteName="IdeaI /bootstrap"
+      subtitle="Bootstrap CSS Only - Component-Based Styling"
       vercelProjectName={vercelProjectName}
       vercelOrgId={vercelOrgId}
-      headerActions={<IdeaIButton appName="nocss">Open alert</IdeaIButton>}
+      headerActions={<IdeaIButton appName="bootstrap">Open alert</IdeaIButton>}
     >
       <div>
         <IdeAICSSSummary
-          frameworks={["Browser Defaults Only"]}
-          description="No CSS frameworks or styling - pure HTML with browser default styles. Used as a baseline for comparison."
+          frameworks={["Bootstrap CSS"]}
+          description="Bootstrap CSS framework for component-based styling. No Tailwind, no MVP.css - just Bootstrap components and utilities."
         />
         <IdeAIHTMLTest />
       </div>
     </IdeAIPageTemplate>
   );
 }
+

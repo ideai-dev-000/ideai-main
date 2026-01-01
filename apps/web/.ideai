@@ -1,0 +1,11 @@
+{
+  "id": "web",
+  "name": "IdeaI Web",
+  "description": "Main IdeaI web application with full styling stack",
+  "port": 3000,
+  "css": ["MVP.css", "Tailwind CSS", "IdeaI Design System"],
+  "capabilities": ["Full UI components", "Shared design tokens", "Dark mode support"],
+  "path": "/",
+  "category": "production"
+}
+

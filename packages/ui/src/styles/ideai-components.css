@@ -556,3 +556,58 @@
     font-size: 1.125rem;
   }
 }
+
+/**
+ * IdeaI CSS Summary Component Styles
+ * Info box displaying CSS framework summary
+ */
+.ideai-css-summary {
+  @apply mb-8 p-6 rounded-lg border-2 border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900;
+  width: 100%;
+}
+
+.ideai-css-summary__content {
+  @apply space-y-2;
+}
+
+.ideai-css-summary__title {
+  @apply text-xl font-bold m-0;
+  color: rgb(15 23 42); /* slate-900 */
+}
+
+.ideai-css-summary__description {
+  @apply text-sm m-0;
+  color: rgb(100 116 139); /* slate-500 */
+}
+
+.ideai-css-summary__frameworks {
+  @apply text-sm;
+  color: rgb(15 23 42); /* slate-900 */
+}
+
+.ideai-css-summary__code {
+  @apply px-2 py-1 rounded;
+  background-color: rgb(241 245 249); /* slate-100 */
+  color: rgb(15 23 42); /* slate-900 */
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  font-size: 0.875em;
+}
+
+@media (prefers-color-scheme: dark) {
+  .ideai-css-summary__title {
+    color: rgb(248 250 252); /* slate-50 */
+  }
+  
+  .ideai-css-summary__description {
+    color: rgb(148 163 184); /* slate-400 */
+  }
+  
+  .ideai-css-summary__frameworks {
+    color: rgb(248 250 252); /* slate-50 */
+  }
+  
+  .ideai-css-summary__code {
+    background-color: rgb(30 41 59); /* slate-800 */
+    color: rgb(248 250 252); /* slate-50 */
+  }
+}

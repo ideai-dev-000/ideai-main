@@ -4,6 +4,7 @@
 
 import { IdeAIPageTemplate } from "@repo/ui/components/ideai-page-template";
 import { IdeAIHTMLTest } from "@repo/ui/components/ideai-html-test";
+import { IdeAICSSSummary } from "@repo/ui/components/ideai-css-summary";
 import { IdeaIButton } from "@repo/ui/components/ideai-button";
 
 export default function Home() {
@@ -19,6 +20,10 @@ export default function Home() {
       headerActions={<IdeaIButton appName="allcss">Open alert</IdeaIButton>}
     >
       <div>
+        <IdeAICSSSummary
+          frameworks={["MVP.css", "Tailwind CSS", "IdeaI Design System"]}
+          description="Complete styling stack: MVP.css for semantic HTML styling, Tailwind for utility classes, and IdeaI design tokens for consistency."
+        />
         <IdeAIHTMLTest />
       </div>
     </IdeAIPageTemplate>
