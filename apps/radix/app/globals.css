@@ -1,0 +1,13 @@
+/**
+ * @fileoverview Radix UI CSS - Unstyled, accessible component primitives
+ * 
+ * This app uses Radix UI primitives - unstyled, accessible components.
+ * You style them yourself with CSS or Tailwind.
+ */
+
+/* Import centralized CSS */
+@import "../../../packages/ui/src/styles/globals.css";
+@import "../../../packages/ui/src/styles/ideai.css";
+
+/* Radix UI primitives are unstyled - add custom styles as needed */
+

@@ -1,21 +1,12 @@
 /**
- * @fileoverview Root layout component for the IdeaI web application
- * 
- * @module RootLayout
- * @description
- * Defines the root HTML structure, fonts, and metadata for the application.
- * This layout wraps all pages and provides global styles and fonts.
- * 
- * @example
- * Automatically wraps all page components in the app directory
- * 
- * @see {@link ./page.tsx} - Home page component
+ * @fileoverview Root layout component for the IdeaI Chakra UI application
  */
 
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { getIdeAIFaviconMetadata } from "@repo/ui/lib/favicon-metadata";
 import { IdeAIDiagnostics } from "@repo/ui/components/ideai-diagnostics";
+import { ChakraProvider } from "@chakra-ui/react";
 import "./globals.css";
 
 const geistSans = localFont({
@@ -28,8 +19,8 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "IdeaI",
-  description: "IdeaI web application",
+  title: "IdeaI /chakra",
+  description: "IdeaI Chakra UI showcase",
   ...getIdeAIFaviconMetadata(),
 };
 
@@ -41,9 +32,12 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        {children}
-        <IdeAIDiagnostics appName="web" />
+        <ChakraProvider>
+          {children}
+          <IdeAIDiagnostics appName="chakra" />
+        </ChakraProvider>
       </body>
     </html>
   );
 }
+

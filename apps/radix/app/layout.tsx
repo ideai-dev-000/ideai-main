@@ -1,15 +1,5 @@
 /**
- * @fileoverview Root layout component for the IdeaI web application
- * 
- * @module RootLayout
- * @description
- * Defines the root HTML structure, fonts, and metadata for the application.
- * This layout wraps all pages and provides global styles and fonts.
- * 
- * @example
- * Automatically wraps all page components in the app directory
- * 
- * @see {@link ./page.tsx} - Home page component
+ * @fileoverview Root layout component for the IdeaI Radix UI application
  */
 
 import type { Metadata } from "next";
@@ -28,8 +18,8 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "IdeaI",
-  description: "IdeaI web application",
+  title: "IdeaI /radix",
+  description: "IdeaI Radix UI primitives showcase",
   ...getIdeAIFaviconMetadata(),
 };
 
@@ -42,8 +32,9 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         {children}
-        <IdeAIDiagnostics appName="web" />
+        <IdeAIDiagnostics appName="radix" />
       </body>
     </html>
   );
 }
+

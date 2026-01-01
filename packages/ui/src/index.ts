@@ -17,6 +17,9 @@ export { IdeAIHTMLTest } from "./components/ideai-html-test";
 export { IdeAIPageTemplate } from "./components/ideai-page-template";
 export { IdeAISiteCard } from "./components/ideai-site-card";
 export type { IdeAISiteCardProps, SiteStatus } from "./components/ideai-site-card";
+export { IdeAIDiagnostics } from "./components/ideai-diagnostics";
+export type { IdeAIDiagnosticsProps } from "./components/ideai-diagnostics";
+export { UniversalFrameworkCard } from "./components/universal-framework-card";
 
 // shadcn/ui components
 export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent } from "./components/ui/card";
