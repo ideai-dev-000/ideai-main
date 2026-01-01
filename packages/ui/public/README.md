@@ -45,3 +45,4 @@ All brand assets are stored centrally in `packages/ui/public`. For deployment:
 - Structured data included in logo component for SEO
 - Proper semantic HTML (h1, img with alt text)
 
+

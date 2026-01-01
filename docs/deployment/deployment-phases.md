@@ -225,3 +225,4 @@ NEXT_PUBLIC_SHADCN_URL=https://shadcn-xxx.vercel.app
 - [Deployment Architecture](./deployment-architecture.md) - Architecture overview
 - [Vercel Setup](./vercel-setup.md) - Vercel configuration
 
+
