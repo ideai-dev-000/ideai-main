@@ -174,7 +174,9 @@ export const IdeAIDiagnostics = ({
           const lcpObserver = new PerformanceObserver((list) => {
             const entries = list.getEntries();
             const lastEntry = entries[entries.length - 1];
-            largestContentfulPaint = lastEntry.startTime;
+            if (lastEntry) {
+              largestContentfulPaint = lastEntry.startTime;
+            }
           });
           lcpObserver.observe({ entryTypes: ["largest-contentful-paint"] });
         } catch (e) {

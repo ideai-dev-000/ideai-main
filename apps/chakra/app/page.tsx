@@ -7,7 +7,7 @@
 import { IdeAIPageTemplate } from "@repo/ui/components/ideai-page-template";
 import { IdeAICSSSummary } from "@repo/ui/components/ideai-css-summary";
 import { IdeaIButton } from "@repo/ui/components/ideai-button";
-import { UF } from "@repo/ui/components/uf";
+import { useIFrameContext } from "@repo/ui";
 import {
   Box,
   Button,
@@ -44,12 +44,11 @@ export default function Home() {
         {/* UF - Universal Framework Component by IdeaI */}
         <Box mb={8} mt={8}>
           <Heading as="h2" size="lg" mb={4}>
-            UF by IdeaI
+            UniFrame by IdeaI
           </Heading>
           <Text color="gray.600" mb={6}>
             Hot-toggle between all CSS frameworks available in the IdeaI monorepo. Pure HTML with dynamic CSS injection.
           </Text>
-          <UF defaultFramework="chakra" />
         </Box>
 
         <VStack spacing={8} align="stretch" mt={8}>

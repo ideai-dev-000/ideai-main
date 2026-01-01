@@ -13,6 +13,7 @@
 
 import { useState, useEffect } from "react";
 import { IdeAILogo } from "./ideai-logo";
+import { UFModalTrigger } from "./uf-modal-trigger";
 
 interface NavItem {
   label: string;
@@ -165,10 +166,19 @@ export const IdeaIHeader = ({
             </button>
           </nav>
 
-          {/* Right: Accounts */}
+          {/* Right: Accounts + UniFrame Demo */}
           <div className="ideai-header__accounts">
             <nav aria-label="Account navigation" role="navigation">
               <ul className="ideai-header__accounts-list">
+                {/* UniFrame Demo Modal Trigger */}
+                <li className="ideai-header__accounts-item">
+                  <UFModalTrigger
+                    defaultFramework="tailwind"
+                    buttonText="UniFrame"
+                    variant="outline"
+                    className="ideai-header__uniframe-trigger"
+                  />
+                </li>
                 {accountLinks.map((link) => (
                   <li key={link.href} className="ideai-header__accounts-item">
                     <a

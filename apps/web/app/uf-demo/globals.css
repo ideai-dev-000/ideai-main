@@ -1,0 +1,35 @@
+/**
+ * UniFrame Demo - Minimal CSS (Only Normalize)
+ * 
+ * This page only includes normalize CSS - no additional presets.
+ * Used for iframe isolation of UniFrame component.
+ */
+
+/* Only normalize CSS - reset margins, padding, box-sizing */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: white;
+  color: #1e293b;
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background: #0f172a;
+    color: #f1f5f9;
+  }
+}
+

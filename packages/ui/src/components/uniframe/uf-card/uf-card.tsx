@@ -58,7 +58,8 @@ import { UniFrameCardButton } from "./uf-button";
 import { UniFrameCardBadge } from "./uf-badge";
 import { UniFrameCardFormField } from "./uf-form-field";
 import { UniFrameCardButtonGroup } from "./uf-button-group";
-import type { Framework, frameworkConfigs } from "./uf-card-types";
+import type { Framework } from "./uf-card-types";
+import { frameworkConfigs } from "./uf-card-types";
 
 interface UniFrameCardProps {
   /** Framework to use for styling */

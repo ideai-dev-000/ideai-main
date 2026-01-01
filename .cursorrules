@@ -36,23 +36,34 @@
 - Avoid abbreviations unless widely understood
 - Group related files with consistent prefixes
 
-### UF (Universal Framework) Naming Standard
-**CRITICAL**: UF components must ALWAYS use "UF" naming, NEVER "UniFrame" or "uniframe":
-- ✅ Correct: `UF`, `UFCodeViewer`, `uf.tsx`, `uf-code-viewer.tsx`, `uf-container`, `UFProps`
-- ❌ Incorrect: `UniFrame`, `UniFrameCodeViewer`, `uniframe.tsx`, `uniframe-code-viewer.tsx`, `uniframe-container`, `UniFrameProps`
+### UniFrame (UF) Naming Standard
+**CRITICAL**: UniFrame is the brand name. File names use `uf-` prefix. Code can use `uf` or `uniframe`.
 
-**UF Naming Rules:**
-- Component names: `UF`, `UFCodeViewer`, `UFCard`, `UFButton` (PascalCase with "UF" prefix)
+**Brand Name**: UniFrame (capital U, capital F)
+- ✅ Correct: "UniFrame by IdeaI", "UniFrame Component", "UniFrame Card"
+- ❌ Incorrect: "Uni Frame", "uniframe", "UF" (when referring to brand)
+
+**File Naming Rules:**
 - File names: `uf.tsx`, `uf-code-viewer.tsx`, `uf-card.tsx` (kebab-case with "uf-" prefix)
-- CSS classes: `uf-container`, `uf-card`, `uf-button` (kebab-case with "uf-" prefix)
-- Interface names: `UFProps`, `UFCodeViewerProps` (PascalCase with "UF" prefix)
-- Type names: `UFFramework`, `UFConfig` (PascalCase with "UF" prefix)
 - Directory names: `uf-card/`, `uf-components/` (kebab-case with "uf-" prefix)
+- ✅ Correct: `uf.tsx`, `uf-code-viewer.tsx`
+- ❌ Incorrect: `uniframe.tsx`, `UniFrame.tsx`
+
+**Code/Import Naming Rules:**
+- Component names: `UF`, `UFCodeViewer`, `UFCard` (PascalCase with "UF" prefix)
+- Interface names: `UFProps`, `UFCodeViewerProps` (PascalCase with "UF" prefix)
+- Import paths: Can use `uf` or `uniframe` - both work: `@repo/ui/components/uf` or `@repo/ui/components/uniframe`
+- CSS classes: `uf-container`, `uf-card`, `uf-button` (kebab-case with "uf-" prefix)
+
+**Documentation/Headers:**
+- Headers and user-facing text: Use "UniFrame" (brand name)
+- Code comments: Can use "UniFrame" or "UF" - both acceptable
+- File headers: Use "UniFrame" in @fileoverview
 
 **Why this matters:**
-- Consistency prevents confusion
-- "UF" is shorter and clearer than "UniFrame"
-- Easier to search and refactor
+- Brand consistency: "UniFrame" in user-facing content
+- Code efficiency: `uf` is shorter in code
+- Flexibility: Both `uf` and `uniframe` work in imports
 - Professional code quality requires strict naming discipline
 
 **NEVER be sloppy with naming - it's a sign of unprofessional code.**

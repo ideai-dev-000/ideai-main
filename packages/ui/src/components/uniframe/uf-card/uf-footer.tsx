@@ -38,7 +38,8 @@
 
 import { ReactNode, HTMLAttributes } from "react";
 import { cn } from "../../../lib/utils";
-import type { Framework, frameworkConfigs } from "./uf-card-types";
+import type { Framework } from "./uf-card-types";
+import { frameworkConfigs } from "./uf-card-types";
 
 interface UniFrameCardFooterProps extends HTMLAttributes<HTMLElement> {
   /** Framework to use for styling */
@@ -70,7 +71,6 @@ export const UniFrameCardFooter = ({
   className,
   ...props
 }: UniFrameCardFooterProps) => {
-  const config = frameworkConfigs[framework];
   const footerClasses = framework === "bootstrap"
     ? "card-footer bg-transparent border-top pt-3"
     : "pt-4 border-t border-slate-200 dark:border-slate-700";

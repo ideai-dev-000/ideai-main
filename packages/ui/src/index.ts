@@ -15,13 +15,18 @@ export { IdeaIButton } from "./components/ideai-button";
 export { IdeAILogo } from "./components/ideai-logo";
 export { IdeAIHTMLTest } from "./components/ideai-html-test";
 export { IdeAIPageTemplate } from "./components/ideai-page-template";
+export { useIFrameContext, detectIFrame, getIFrameContext, type IFrameContext, type BrandConfig } from "./lib/iframe-detection";
 export { IdeAISiteCard } from "./components/ideai-site-card";
 export type { IdeAISiteCardProps, SiteStatus } from "./components/ideai-site-card";
 export { IdeAIDiagnostics } from "./components/ideai-diagnostics";
 export type { IdeAIDiagnosticsProps } from "./components/ideai-diagnostics";
 export { UniFrameShowcase } from "./components/uf-showcase";
-export { UF, type UFProps, type Framework } from "./components/uf";
+export { UF, type UFProps } from "./components/uf";
+// Note: Framework type from UF component is same as from uf-card-types, using uf-card-types version
 export { UFCodeViewer } from "./components/uf-code-viewer";
+export { UFIFrameWrapper, type UFIFrameWrapperProps } from "./components/uf-iframe-wrapper";
+export { UFModal, type UFModalProps } from "./components/uf-modal";
+export { UFModalTrigger, type UFModalTriggerProps } from "./components/uf-modal-trigger";
 // UniFrame Card Components
 export { UniFrameCard } from "./components/uniframe/uf-card/uf-card";
 export { UniFrameCardHeader } from "./components/uniframe/uf-card/uf-header";

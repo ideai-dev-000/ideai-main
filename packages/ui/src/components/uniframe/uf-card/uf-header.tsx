@@ -40,7 +40,8 @@
 
 import { ReactNode, HTMLAttributes } from "react";
 import { cn } from "../../../lib/utils";
-import type { Framework, frameworkConfigs } from "./uf-card-types";
+import type { Framework } from "./uf-card-types";
+import { frameworkConfigs } from "./uf-card-types";
 
 interface UniFrameCardHeaderProps extends HTMLAttributes<HTMLElement> {
   /** Framework to use for styling */

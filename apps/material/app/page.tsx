@@ -7,7 +7,7 @@
 import { IdeAIPageTemplate } from "@repo/ui/components/ideai-page-template";
 import { IdeAICSSSummary } from "@repo/ui/components/ideai-css-summary";
 import { IdeaIButton } from "@repo/ui/components/ideai-button";
-import { UF } from "@repo/ui/components/uf";
+import { useIFrameContext } from "@repo/ui";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { CssBaseline } from "@mui/material";
 import { Button, Card, CardContent, CardActions, Typography, Box, Stack, Chip } from "@mui/material";
@@ -47,12 +47,11 @@ export default function Home() {
           {/* UF - Universal Framework Component by IdeaI */}
           <Box sx={{ mb: 6, mt: 4 }}>
             <Typography variant="h4" component="h2" gutterBottom>
-              UF by IdeaI
+              UniFrame by IdeaI
             </Typography>
             <Typography variant="body1" color="text.secondary" paragraph>
               Hot-toggle between all CSS frameworks available in the IdeaI monorepo. Pure HTML with dynamic CSS injection.
             </Typography>
-            <UF defaultFramework="material" />
           </Box>
 
           <Stack spacing={4} sx={{ mt: 4 }}>

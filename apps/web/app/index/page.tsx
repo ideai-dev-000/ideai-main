@@ -126,7 +126,7 @@ export default function AppsIndex() {
                   {app.status?.running && app.status.url ? (
                     <div className={styles.iframeContainer}>
                       <iframe
-                        src={app.status.url}
+                        src={`${app.status.url}?i=1&h=0&f=0&n=0&c=0&u=0`}
                         className={styles.previewIframe}
                         title={`${app.name} preview`}
                         loading="lazy"
