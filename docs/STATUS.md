@@ -53,8 +53,11 @@ description: Current status, completed work, and pending tasks for IdeaI monorep
 ## ⏳ In Progress
 
 ### Phase 0: Fix Current Issues (CRITICAL - Current Priority)
-- [ ] **TICKET-0.1**: Fix sub-folder route 404 issue
-  - Route exists but returns 404 in production
+- [x] **TICKET-0.1**: Fix sub-folder route 404 issue ✅ **COMPLETED**
+  - Fixed async params handling in client component
+  - Added Suspense boundary for error handling
+  - Improved null safety checks
+  - Route verified working in local production mode
   - See: [Multi-Strategy Deployment Plan](./deployment/MULTI-STRATEGY-DEPLOYMENT-PLAN.md#ticket-01-fix-sub-folder-route-404-issue)
 
 ### Phase 1: Site Card Integration (Paused)

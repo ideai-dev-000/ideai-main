@@ -13,12 +13,15 @@
  * - Sub-apps at: myui.space/apps/{name}
  * - Apps can be served directly OR deployed standalone
  * - Smart detection: checks if app exists locally, serves it, otherwise redirects
+ * 
+ * @see https://nextjs.org/docs/app/building-your-application/routing/dynamic-routes
  */
 
 "use client";
 
-import { use, useEffect, useState } from "react";
+import { use, useEffect, useState, Suspense } from "react";
 import { IdeAIPageTemplate } from "@repo/ui/components/ideai-page-template";
+import { IdeAIDeployment } from "@repo/ui/components/ideai-deployment";
 import styles from "./page.module.css";
 
 interface PageProps {
@@ -88,10 +91,12 @@ const SUB_APPS = {
 
 type AppId = keyof typeof SUB_APPS;
 
-export default function SubAppPage({ params }: PageProps) {
+function SubAppPageContent({ params }: PageProps) {
+  // Use React's use() hook to unwrap the Promise
+  // This is the correct way to handle async params in client components
   const resolvedParams = use(params);
-  const app = resolvedParams.app;
-  const path = resolvedParams.path || [];
+  const app = resolvedParams?.app || "";
+  const path = resolvedParams?.path || [];
   const [appStatus, setAppStatus] = useState<{
     running: boolean;
     url: string | null;
@@ -208,11 +213,10 @@ export default function SubAppPage({ params }: PageProps) {
   // Strategy 2: Serve directly via iframe (if app is available)
   // eslint-disable-next-line turbo/no-undeclared-env-vars
   const isProduction = process.env.NODE_ENV === "production";
-  if (appStatus?.running || (!standaloneUrl && isProduction)) {
-    const iframeUrl = appStatus?.url || 
-      (isProduction
-        ? standaloneUrl || `/${app}${pathStr}`
-        : `http://localhost:${appConfig.localPort}${pathStr}`);
+  // Only serve via iframe if we have a valid URL (local dev server or standalone)
+  // Don't try to load relative paths in production as apps are separate deployments
+  if (appStatus?.running && appStatus.url) {
+    const iframeUrl = `${appStatus.url}${pathStr}`;
 
     return (
       <IdeAIPageTemplate siteName={appConfig.name}>
@@ -289,12 +293,31 @@ export default function SubAppPage({ params }: PageProps) {
             </div>
           ) : (
             <div className={styles.actions}>
-              <p className={styles.hint}>
-                Start the development server to view this app:
-              </p>
-              <code className={styles.command}>
-                pnpm --filter {app} dev
-              </code>
+              {isProduction ? (
+                <IdeAIDeployment
+                  appName={app}
+                  appConfig={appConfig}
+                  currentPath={`/apps/${app}${pathStr}`}
+                  showLogs={true}
+                />
+              ) : (
+                <>
+                  <p className={styles.hint}>
+                    Start the development server to view this app:
+                  </p>
+                  <code className={styles.command}>
+                    pnpm --filter {app} dev
+                  </code>
+                  <div className="mt-4">
+                    <IdeAIDeployment
+                      appName={app}
+                      appConfig={appConfig}
+                      currentPath={`/apps/${app}${pathStr}`}
+                      showLogs={true}
+                    />
+                  </div>
+                </>
+              )}
             </div>
           )}
           <div className={styles.backLink}>
@@ -303,5 +326,22 @@ export default function SubAppPage({ params }: PageProps) {
         </div>
       </div>
     </IdeAIPageTemplate>
+  );
+}
+
+// Export with Suspense boundary for proper error handling
+export default function SubAppPage({ params }: PageProps) {
+  return (
+    <Suspense
+      fallback={
+        <IdeAIPageTemplate siteName="Loading...">
+          <div className={styles.container}>
+            <p>Loading app...</p>
+          </div>
+        </IdeAIPageTemplate>
+      }
+    >
+      <SubAppPageContent params={params} />
+    </Suspense>
   );
 }

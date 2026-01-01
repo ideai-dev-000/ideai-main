@@ -24,17 +24,26 @@ import { ReactNode } from "react";
 interface IdeaIButtonProps {
   children: ReactNode;
   appName: string;
-  onClick?: () => void;
+  onClick?: () => void | Promise<void>;
+  disabled?: boolean;
+  className?: string;
 }
 
-export const IdeaIButton = ({ children, appName, onClick }: IdeaIButtonProps) => {
+export const IdeaIButton = ({ 
+  children, 
+  appName, 
+  onClick, 
+  disabled = false,
+  className = "",
+}: IdeaIButtonProps) => {
   const handleClick = onClick || (() => alert(`Hello from your ${appName} app!`));
   
   return (
     <button
       type="button"
-      className="ideai-button-secondary"
+      className={`ideai-button-secondary ${className}`}
       onClick={handleClick}
+      disabled={disabled}
     >
       {children}
     </button>

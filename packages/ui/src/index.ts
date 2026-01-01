@@ -20,6 +20,8 @@ export { IdeAISiteCard } from "./components/ideai-site-card";
 export type { IdeAISiteCardProps, SiteStatus } from "./components/ideai-site-card";
 export { IdeAIDiagnostics } from "./components/ideai-diagnostics";
 export type { IdeAIDiagnosticsProps } from "./components/ideai-diagnostics";
+export { IdeAIDeployment } from "./components/ideai-deployment";
+export type { IdeAIDeploymentProps, DeploymentOption } from "./components/ideai-deployment";
 export { UniFrameShowcase } from "./components/uf-showcase";
 export { UF, type UFProps } from "./components/uf";
 // Note: Framework type from UF component is same as from uf-card-types, using uf-card-types version
