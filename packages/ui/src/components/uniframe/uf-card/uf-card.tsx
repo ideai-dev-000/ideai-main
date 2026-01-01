@@ -1,19 +1,31 @@
 /**
- * @fileoverview IdeaI Framework Card Organism
+ * @fileoverview UniFrame Card Component - Main Card Wrapper
  * 
- * @module IdeAIFrameworkCard
+ * @file uf-card.tsx
+ * @module UniFrameCard
  * @description
- * Organism component that combines atoms and molecules into a complete card.
- * Uses semantic HTML article element for the card container.
+ * Main card wrapper component for the UniFrame universal framework card system.
+ * Combines header, body, and footer into a complete, semantic card component.
  * 
- * Follows atomic design principles:
- * - Atoms: Button, Input, Badge
- * - Molecules: FormField, ButtonGroup
- * - Organism: FrameworkCard (this component)
+ * UniFrame allows runtime switching between CSS frameworks (Tailwind, Bootstrap,
+ * Material UI, Chakra UI, Radix UI, Shadcn/UI) with secure class injection.
+ * 
+ * Architecture:
+ * - Card wrapper: Semantic article element with framework-adaptive styling
+ * - Header: Title and description section
+ * - Body: Main content area (Bootstrap-specific structure)
+ * - Footer: Metadata and framework information
+ * - UI Elements: Button, Input, Badge, FormField, ButtonGroup
+ * 
+ * @author IdeaI Development Team
+ * @since 2026-01-01
+ * @version 1.0.0
  * 
  * @example
  * ```tsx
- * <IdeAIFrameworkCard
+ * import { UniFrameCard } from "@repo/ui/components/uniframe/uf-card/uf-card";
+ * 
+ * <UniFrameCard
  *   framework="tailwind"
  *   title="Card Title"
  *   description="Card description"
@@ -21,17 +33,34 @@
  *   onSecondaryAction={handleCancel}
  * />
  * ```
+ * 
+ * @see {@link ./uf-card-types.ts} - TypeScript type definitions
+ * @see {@link ./uf-header.tsx} - Card header component
+ * @see {@link ./uf-body.tsx} - Card body component
+ * @see {@link ./uf-footer.tsx} - Card footer component
+ * @see {@link ./uf-button.tsx} - Button UI element
+ * @see {@link ./uf-input.tsx} - Input UI element
+ * @see {@link ./uf-badge.tsx} - Badge UI element
+ * @see {@link ./uf-form-field.tsx} - Form field component
+ * @see {@link ./uf-button-group.tsx} - Button group component
+ * 
+ * @todo Add support for custom card layouts
+ * @todo Add animation transitions between framework switches
+ * @todo Add theme customization per framework
  */
 
 import { ReactNode } from "react";
-import { cn } from "../../lib/utils";
-import { IdeAIFrameworkButton } from "../atoms/ideai-framework-button";
-import { IdeAIFrameworkBadge } from "../atoms/ideai-framework-badge";
-import { IdeAIFrameworkFormField } from "../molecules/ideai-framework-form-field";
-import { IdeAIFrameworkButtonGroup } from "../molecules/ideai-framework-button-group";
-import type { Framework, frameworkConfigs } from "./ideai-framework-card-types";
+import { cn } from "../../../lib/utils";
+import { UniFrameCardHeader } from "./uf-header";
+import { UniFrameCardBody } from "./uf-body";
+import { UniFrameCardFooter } from "./uf-footer";
+import { UniFrameCardButton } from "./uf-button";
+import { UniFrameCardBadge } from "./uf-badge";
+import { UniFrameCardFormField } from "./uf-form-field";
+import { UniFrameCardButtonGroup } from "./uf-button-group";
+import type { Framework, frameworkConfigs } from "./uf-card-types";
 
-interface IdeAIFrameworkCardProps {
+interface UniFrameCardProps {
   /** Framework to use for styling */
   framework: Framework;
   /** Card title */
@@ -65,19 +94,29 @@ interface IdeAIFrameworkCardProps {
 }
 
 /**
- * IdeaI Framework Card Organism
+ * UniFrame Card Component
  * 
- * A complete, semantic card component built from atomic design principles.
- * Uses article element for semantic HTML structure.
+ * A complete, semantic card component built with the UniFrame universal framework system.
+ * Uses article element for semantic HTML structure with framework-adaptive styling.
+ * 
+ * Features:
+ * - Semantic HTML (article, header, footer)
+ * - Framework-adaptive styling
+ * - Accessible (ARIA labels, proper form associations)
+ * - Composable (header, body, footer, UI elements)
+ * - Extensible (easy to add new frameworks)
+ * 
+ * @param props - UniFrame card component props
+ * @returns React component
  */
-export const IdeAIFrameworkCard = ({
+export const UniFrameCard = ({
   framework,
   title,
   description,
   inputValue,
   onInputChange,
   inputLabel = "Input Field:",
-  inputId = "framework-card-input",
+  inputId = "uniframe-card-input",
   primaryActionText = "Primary Action",
   onPrimaryAction,
   secondaryActionText = "Clear Input",
@@ -86,36 +125,33 @@ export const IdeAIFrameworkCard = ({
   children,
   className,
   isLoading = false,
-}: IdeAIFrameworkCardProps) => {
+}: UniFrameCardProps) => {
   const config = frameworkConfigs[framework];
 
   // Bootstrap uses different HTML structure
   if (framework === "bootstrap") {
     return (
       <article className={cn(config.cardClasses, className)}>
-        <div className="card-body">
-          <header className="mb-3">
-            <h2 className={config.titleClasses}>{title}</h2>
-            <p className={config.descriptionClasses}>{description}</p>
-          </header>
+        <UniFrameCardBody framework={framework}>
+          <UniFrameCardHeader framework={framework} title={title} description={description} />
 
           {badges.length > 0 && (
             <div className="mb-3">
               {badges.map((badge, index) => (
-                <IdeAIFrameworkBadge
+                <UniFrameCardBadge
                   key={index}
                   framework={framework}
                   variant={badge.variant}
                   className={index > 0 ? "ms-2" : ""}
                 >
                   {badge.label}
-                </IdeAIFrameworkBadge>
+                </UniFrameCardBadge>
               ))}
             </div>
           )}
 
           {inputValue !== undefined && onInputChange && (
-            <IdeAIFrameworkFormField
+            <UniFrameCardFormField
               framework={framework}
               id={inputId}
               label={inputLabel}
@@ -128,45 +164,45 @@ export const IdeAIFrameworkCard = ({
           {children && <div className="mb-3">{children}</div>}
 
           {(onPrimaryAction || onSecondaryAction) && (
-            <IdeAIFrameworkButtonGroup framework={framework} className="mb-3">
+            <UniFrameCardButtonGroup framework={framework} className="mb-3">
               {onPrimaryAction && (
-                <IdeAIFrameworkButton
+                <UniFrameCardButton
                   framework={framework}
                   onClick={onPrimaryAction}
                   disabled={isLoading}
                   className={isLoading ? "disabled" : ""}
                 >
                   {isLoading ? "Loading..." : primaryActionText}
-                </IdeAIFrameworkButton>
+                </UniFrameCardButton>
               )}
               {onSecondaryAction && (
-                <IdeAIFrameworkButton
+                <UniFrameCardButton
                   framework={framework}
                   variant="secondary"
                   onClick={onSecondaryAction}
                 >
                   {secondaryActionText}
-                </IdeAIFrameworkButton>
+                </UniFrameCardButton>
               )}
-            </IdeAIFrameworkButtonGroup>
+            </UniFrameCardButtonGroup>
           )}
 
-          <footer className="card-footer bg-transparent border-top pt-3">
+          <UniFrameCardFooter framework={framework}>
             <div className="d-flex justify-content-between align-items-center">
               <p className={cn(config.textClasses, "mb-0 small")}>
                 Framework: <span className="fw-bold">{config.name}</span>
               </p>
               <div className="d-flex gap-2">
-                <IdeAIFrameworkBadge framework={framework} variant="secondary">
+                <UniFrameCardBadge framework={framework} variant="secondary">
                   React
-                </IdeAIFrameworkBadge>
-                <IdeAIFrameworkBadge framework={framework} variant="secondary">
+                </UniFrameCardBadge>
+                <UniFrameCardBadge framework={framework} variant="secondary">
                   Next.js
-                </IdeAIFrameworkBadge>
+                </UniFrameCardBadge>
               </div>
             </div>
-          </footer>
-        </div>
+          </UniFrameCardFooter>
+        </UniFrameCardBody>
       </article>
     );
   }
@@ -174,28 +210,25 @@ export const IdeAIFrameworkCard = ({
   // Standard structure for other frameworks
   return (
     <article className={cn(config.cardClasses, className)}>
-      <header className="mb-6">
-        <h2 className={config.titleClasses}>{title}</h2>
-        <p className={config.descriptionClasses}>{description}</p>
-      </header>
+      <UniFrameCardHeader framework={framework} title={title} description={description} />
 
       {badges.length > 0 && (
         <div className="mb-4">
           {badges.map((badge, index) => (
-            <IdeAIFrameworkBadge
+            <UniFrameCardBadge
               key={index}
               framework={framework}
               variant={badge.variant}
               className={index > 0 ? "ml-2" : ""}
             >
               {badge.label}
-            </IdeAIFrameworkBadge>
+            </UniFrameCardBadge>
           ))}
         </div>
       )}
 
       {inputValue !== undefined && onInputChange && (
-        <IdeAIFrameworkFormField
+        <UniFrameCardFormField
           framework={framework}
           id={inputId}
           label={inputLabel}
@@ -207,44 +240,43 @@ export const IdeAIFrameworkCard = ({
       {children && <div className="mb-4">{children}</div>}
 
       {(onPrimaryAction || onSecondaryAction) && (
-        <IdeAIFrameworkButtonGroup framework={framework} className="mb-4">
+        <UniFrameCardButtonGroup framework={framework} className="mb-4">
           {onPrimaryAction && (
-            <IdeAIFrameworkButton
+            <UniFrameCardButton
               framework={framework}
               onClick={onPrimaryAction}
               disabled={isLoading}
             >
               {isLoading ? "Loading..." : primaryActionText}
-            </IdeAIFrameworkButton>
+            </UniFrameCardButton>
           )}
           {onSecondaryAction && (
-            <IdeAIFrameworkButton
+            <UniFrameCardButton
               framework={framework}
               variant="secondary"
               onClick={onSecondaryAction}
             >
               {secondaryActionText}
-            </IdeAIFrameworkButton>
+            </UniFrameCardButton>
           )}
-        </IdeAIFrameworkButtonGroup>
+        </UniFrameCardButtonGroup>
       )}
 
-      <footer className="pt-4 border-t border-slate-200 dark:border-slate-700">
+      <UniFrameCardFooter framework={framework}>
         <div className="flex items-center justify-between">
           <p className={cn(config.textClasses, "text-sm")}>
             Framework: <span className="font-semibold">{config.name}</span>
           </p>
           <div className="flex gap-2">
-            <IdeAIFrameworkBadge framework={framework} variant="secondary">
+            <UniFrameCardBadge framework={framework} variant="secondary">
               React
-            </IdeAIFrameworkBadge>
-            <IdeAIFrameworkBadge framework={framework} variant="secondary">
+            </UniFrameCardBadge>
+            <UniFrameCardBadge framework={framework} variant="secondary">
               Next.js
-            </IdeAIFrameworkBadge>
+            </UniFrameCardBadge>
           </div>
         </div>
-      </footer>
+      </UniFrameCardFooter>
     </article>
   );
 };
-

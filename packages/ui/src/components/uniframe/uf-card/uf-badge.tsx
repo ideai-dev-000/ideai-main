@@ -1,24 +1,48 @@
 /**
- * @fileoverview IdeaI Framework Badge Atom
+ * @fileoverview UniFrame Card Badge Component - Status Indicator Element
  * 
- * @module IdeAIFrameworkBadge
+ * @file uf-badge.tsx
+ * @module UniFrameCardBadge
  * @description
- * Atomic badge component that adapts styling based on framework configuration.
- * Uses semantic HTML span element for inline badges.
+ * Badge component for UniFrame universal framework cards.
+ * Provides semantic badge/status indicator that adapts styling based on
+ * framework configuration with secure class injection.
+ * 
+ * Part of the UniFrame card system UI elements:
+ * - Button (uf-button.tsx)
+ * - Input (uf-input.tsx)
+ * - Badge (this component)
+ * - FormField (uf-form-field.tsx)
+ * - ButtonGroup (uf-button-group.tsx)
+ * 
+ * @author IdeaI Development Team
+ * @since 2026-01-01
+ * @version 1.0.0
  * 
  * @example
  * ```tsx
- * <IdeAIFrameworkBadge framework="tailwind">
+ * import { UniFrameCardBadge } from "@repo/ui/components/uniframe/uf-card/uf-badge";
+ * 
+ * <UniFrameCardBadge framework="tailwind" variant="default">
  *   New
- * </IdeAIFrameworkBadge>
+ * </UniFrameCardBadge>
  * ```
+ * 
+ * @see {@link ./uf-card.tsx} - Main card wrapper component
+ * @see {@link ./uf-card-types.ts} - TypeScript type definitions
+ * @see {@link ./uf-button.tsx} - Button element
+ * @see {@link ./uf-input.tsx} - Input element
+ * 
+ * @todo Add color variants (success, warning, error, info)
+ * @todo Add size variants
+ * @todo Add dismissible badge option
  */
 
 import { ReactNode, HTMLAttributes } from "react";
-import { cn } from "../../lib/utils";
-import type { Framework } from "../organisms/ideai-framework-card-types";
+import { cn } from "../../../lib/utils";
+import type { Framework } from "./uf-card-types";
 
-interface IdeAIFrameworkBadgeProps extends HTMLAttributes<HTMLSpanElement> {
+interface UniFrameCardBadgeProps extends HTMLAttributes<HTMLSpanElement> {
   /** Framework to use for styling */
   framework: Framework;
   /** Badge content */
@@ -29,6 +53,14 @@ interface IdeAIFrameworkBadgeProps extends HTMLAttributes<HTMLSpanElement> {
   variant?: "default" | "secondary" | "outline";
 }
 
+/**
+ * Framework-specific badge class configurations
+ * 
+ * All class strings are predefined and XSS-safe.
+ * Each framework provides complete styling for all badge variants.
+ * 
+ * @private
+ */
 const frameworkBadgeClasses: Record<Framework, Record<string, string>> = {
   tailwind: {
     default: "inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200",
@@ -63,17 +95,27 @@ const frameworkBadgeClasses: Record<Framework, Record<string, string>> = {
 };
 
 /**
- * IdeaI Framework Badge Atom
+ * UniFrame Card Badge Component
  * 
  * A semantic span element that displays a badge with framework-adaptive styling.
+ * 
+ * Features:
+ * - Semantic HTML (span element with role="status")
+ * - Framework-adaptive styling
+ * - Multiple variants (default, secondary, outline)
+ * - Accessible (ARIA labels)
+ * - Status indicator role
+ * 
+ * @param props - UniFrame card badge component props
+ * @returns React component
  */
-export const IdeAIFrameworkBadge = ({
+export const UniFrameCardBadge = ({
   framework,
   children,
   className,
   variant = "default",
   ...props
-}: IdeAIFrameworkBadgeProps) => {
+}: UniFrameCardBadgeProps) => {
   const baseClasses = frameworkBadgeClasses[framework]?.[variant] || frameworkBadgeClasses.tailwind.default;
 
   return (
@@ -87,4 +129,3 @@ export const IdeAIFrameworkBadge = ({
     </span>
   );
 };
-

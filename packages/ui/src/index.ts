@@ -19,15 +19,19 @@ export { IdeAISiteCard } from "./components/ideai-site-card";
 export type { IdeAISiteCardProps, SiteStatus } from "./components/ideai-site-card";
 export { IdeAIDiagnostics } from "./components/ideai-diagnostics";
 export type { IdeAIDiagnosticsProps } from "./components/ideai-diagnostics";
-export { IdeAIUniversalFrameworkCard } from "./components/ideai-universal-framework-card";
-// Atomic Design Components
-export { IdeAIFrameworkButton } from "./components/atoms/ideai-framework-button";
-export { IdeAIFrameworkInput } from "./components/atoms/ideai-framework-input";
-export { IdeAIFrameworkBadge } from "./components/atoms/ideai-framework-badge";
-export { IdeAIFrameworkFormField } from "./components/molecules/ideai-framework-form-field";
-export { IdeAIFrameworkButtonGroup } from "./components/molecules/ideai-framework-button-group";
-export { IdeAIFrameworkCard } from "./components/organisms/ideai-framework-card";
-export type { Framework } from "./components/organisms/ideai-framework-card-types";
+export { UniFrameUniversalCard } from "./components/uf-universal-card";
+// UniFrame Card Components
+export { UniFrameCard } from "./components/uniframe/uf-card/uf-card";
+export { UniFrameCardHeader } from "./components/uniframe/uf-card/uf-header";
+export { UniFrameCardBody } from "./components/uniframe/uf-card/uf-body";
+export { UniFrameCardFooter } from "./components/uniframe/uf-card/uf-footer";
+export { UniFrameCardButton } from "./components/uniframe/uf-card/uf-button";
+export { UniFrameCardInput } from "./components/uniframe/uf-card/uf-input";
+export { UniFrameCardBadge } from "./components/uniframe/uf-card/uf-badge";
+export { UniFrameCardFormField } from "./components/uniframe/uf-card/uf-form-field";
+export { UniFrameCardButtonGroup } from "./components/uniframe/uf-card/uf-button-group";
+export type { Framework, FrameworkConfig } from "./components/uniframe/uf-card/uf-card-types";
+export { frameworkConfigs } from "./components/uniframe/uf-card/uf-card-types";
 
 // shadcn/ui components
 export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent } from "./components/ui/card";

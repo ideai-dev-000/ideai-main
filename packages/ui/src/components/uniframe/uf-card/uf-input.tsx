@@ -1,14 +1,29 @@
 /**
- * @fileoverview IdeaI Framework Input Atom
+ * @fileoverview UniFrame Card Input Component - Form Input Element
  * 
- * @module IdeAIFrameworkInput
+ * @file uf-input.tsx
+ * @module UniFrameCardInput
  * @description
- * Atomic input component that adapts styling based on framework configuration.
- * Uses semantic HTML input element with proper accessibility.
+ * Input component for UniFrame universal framework cards.
+ * Provides semantic input element that adapts styling based on framework
+ * configuration with secure class injection.
+ * 
+ * Part of the UniFrame card system UI elements:
+ * - Button (uf-button.tsx)
+ * - Input (this component)
+ * - Badge (uf-badge.tsx)
+ * - FormField (uf-form-field.tsx)
+ * - ButtonGroup (uf-button-group.tsx)
+ * 
+ * @author IdeaI Development Team
+ * @since 2026-01-01
+ * @version 1.0.0
  * 
  * @example
  * ```tsx
- * <IdeAIFrameworkInput
+ * import { UniFrameCardInput } from "@repo/ui/components/uniframe/uf-card/uf-input";
+ * 
+ * <UniFrameCardInput
  *   framework="tailwind"
  *   id="email"
  *   type="email"
@@ -16,19 +31,36 @@
  *   onChange={(e) => setEmail(e.target.value)}
  * />
  * ```
+ * 
+ * @see {@link ./uf-card.tsx} - Main card wrapper component
+ * @see {@link ./uf-card-types.ts} - TypeScript type definitions
+ * @see {@link ./uf-form-field.tsx} - Form field component (combines label + input)
+ * @see {@link ./uf-button.tsx} - Button element
+ * 
+ * @todo Add validation state styling
+ * @todo Add input size variants
+ * @todo Add icon support (leading/trailing icons)
  */
 
 import { InputHTMLAttributes } from "react";
-import { cn } from "../../lib/utils";
-import type { Framework } from "../organisms/ideai-framework-card-types";
+import { cn } from "../../../lib/utils";
+import type { Framework } from "./uf-card-types";
 
-interface IdeAIFrameworkInputProps extends InputHTMLAttributes<HTMLInputElement> {
+interface UniFrameCardInputProps extends InputHTMLAttributes<HTMLInputElement> {
   /** Framework to use for styling */
   framework: Framework;
   /** Additional CSS classes */
   className?: string;
 }
 
+/**
+ * Framework-specific input class configurations
+ * 
+ * All class strings are predefined and XSS-safe.
+ * Each framework provides complete styling for input elements.
+ * 
+ * @private
+ */
 const frameworkInputClasses: Record<Framework, string> = {
   tailwind: "w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-md bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent",
   bootstrap: "form-control",
@@ -39,15 +71,25 @@ const frameworkInputClasses: Record<Framework, string> = {
 };
 
 /**
- * IdeaI Framework Input Atom
+ * UniFrame Card Input Component
  * 
  * A semantic input element that adapts its styling based on the selected framework.
+ * 
+ * Features:
+ * - Semantic HTML (input element)
+ * - Framework-adaptive styling
+ * - Accessible (supports all standard input attributes)
+ * - Dark mode support
+ * - Focus states
+ * 
+ * @param props - UniFrame card input component props
+ * @returns React component
  */
-export const IdeAIFrameworkInput = ({
+export const UniFrameCardInput = ({
   framework,
   className,
   ...props
-}: IdeAIFrameworkInputProps) => {
+}: UniFrameCardInputProps) => {
   const baseClasses = frameworkInputClasses[framework] || frameworkInputClasses.tailwind;
 
   return (
@@ -57,4 +99,3 @@ export const IdeAIFrameworkInput = ({
     />
   );
 };
-
