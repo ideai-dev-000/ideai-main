@@ -44,6 +44,12 @@ Removed unused legacy component files:
 - `uniframe.tsx` - Replaced by `uf.tsx`
 - `uniframe-code-viewer.tsx` - Replaced by `uf-code-viewer.tsx`
 
+### Build Fixes
+
+- Restored `uf.tsx` (402 lines) - Was accidentally cleared
+- Restored `uf-code-viewer.tsx` (122 lines) - Was accidentally cleared
+- Fixed `/api/apps-index` route - Inlined functions to avoid external dependencies
+
 ## 📝 Changes
 
 ### Modified Files
@@ -59,6 +65,8 @@ Removed unused legacy component files:
 ### New Files
 - `docs/architecture/iframe-detection.md` - Comprehensive iframe detection documentation
 - `COMMIT_SUMMARY.md` - Detailed commit summary
+- `PR_DESCRIPTION.md` - PR description
+- `FINAL_AUDIT.md` - Comprehensive repository audit
 
 ## ✅ Testing
 

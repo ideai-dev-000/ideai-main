@@ -33,9 +33,19 @@ Removed unused legacy component files:
 - `packages/ui/src/components/uniframe.tsx` - Replaced by `uf.tsx`
 - `packages/ui/src/components/uniframe-code-viewer.tsx` - Replaced by `uf-code-viewer.tsx`
 
+### 🔧 Build Fixes
+
+Restored accidentally cleared files:
+- `packages/ui/src/components/uf.tsx` - Restored from git (402 lines)
+- `packages/ui/src/components/uf-code-viewer.tsx` - Restored from git (122 lines)
+
+Fixed API route:
+- `apps/web/app/api/apps-index/route.ts` - Inlined functions to avoid external dependencies
+
 ### 📚 Documentation Updates
 
 - Updated `docs/architecture/iframe-detection.md` with hydration-safe implementation details
+- Updated `docs/STATUS.md` to reflect 13 apps (was 9)
 - Added notes about server/client rendering strategy
 
 ## Technical Details

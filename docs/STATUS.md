@@ -12,12 +12,12 @@ description: Current status, completed work, and pending tasks for IdeaI monorep
 ### UI Consistency & Templates
 - ✅ **Shared Page Template**: `IdeAIPageTemplate` component created
 - ✅ **Universal Header/Footer**: All pages (home, 404, docs) use template
-- ✅ **Consistent Structure**: 10 apps all have identical page structure
+- ✅ **Consistent Structure**: 13 apps all have identical page structure
 - ✅ **Module Type Fixes**: All apps configured with `"type": "module"`
 
 ### Brand Assets & Favicons
 - ✅ **Central Brand Assets**: `packages/ui/public/` directory for all brand assets
-- ✅ **SVG Favicon**: All 10 apps have consistent favicon configuration
+- ✅ **SVG Favicon**: All 13 apps have consistent favicon configuration
 - ✅ **Logo Icon Component**: `IdeAILogoIcon` component with inline SVG
 - ✅ **Logo Integration**: Logo icon + text in header across all apps
 - ✅ **Favicon Metadata Utility**: `getIdeAIFaviconMetadata()` for Next.js
@@ -83,7 +83,7 @@ description: Current status, completed work, and pending tasks for IdeaI monorep
 - ✅ **Consolidated Deployment Docs**: Merged multi-app and robust deployment guides
 - ✅ **Removed Duplicates**: Deleted redundant documentation files
 - ✅ **Updated Cross-References**: All links point to consolidated docs
-- ✅ **Updated App Count**: Documentation reflects 10 apps (not 8)
+- ✅ **Updated App Count**: Documentation reflects 13 apps
 
 ### Phase 6: Enhanced Dashboard (Future)
 - [ ] Deployment history per site
@@ -93,7 +93,7 @@ description: Current status, completed work, and pending tasks for IdeaI monorep
 
 ## 🗂️ Project Structure
 
-### Apps (9 total)
+### Apps (13 total)
 - `web` - Main IdeaI app (port 3000)
 - `docs` - Documentation site (port 3001)
 - `all` - Component showcase (port 3002)
@@ -101,8 +101,12 @@ description: Current status, completed work, and pending tasks for IdeaI monorep
 - `mvp` - MVP.css demo (port 3004)
 - `tailwind` - Tailwind CSS demo (port 3005)
 - `allcss` - All CSS demo (port 3006)
+- `bootstrap` - Bootstrap CSS demo (port 3007)
 - `unocss` - UnoCSS demo (port 3008)
 - `shadcn` - Shadcn Components Showcase (port 3009)
+- `material` - Material UI demo (port 3010)
+- `chakra` - Chakra UI demo (port 3011)
+- `radix` - Radix UI demo (port 3012)
 
 ### Packages
 - `@repo/ui` - Shared UI components and styles
@@ -177,7 +181,7 @@ docs/
 - All pages use `IdeAIPageTemplate` for consistency
 - All apps have consistent favicon and logo branding
 - Dev manager script auto-discovers all apps
-- Deployment script handles all 9 apps
+- Deployment script handles all 13 apps
 - Branch-per-site strategy ready for implementation
 - Documentation consolidated and cross-references updated
 
