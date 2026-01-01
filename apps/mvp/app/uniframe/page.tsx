@@ -1,19 +1,19 @@
 /**
- * @fileoverview UniFrame Showcase Page
+ * @fileoverview UF Showcase Page
  * 
  * @module UniFrameShowcasePage
  * @description
- * Demo page showcasing the UniFrame Showcase component that can
+ * Demo page showcasing the UF Showcase component that can
  * dynamically switch between different CSS frameworks at runtime.
  * 
- * UniFrame is a framework card system that allows runtime switching
+ * UF is a framework card system that allows runtime switching
  * between CSS frameworks with secure class injection.
  * 
  * @author IdeaI Development Team
  * @since 2026-01-01
  * @version 1.0.0
  * 
- * @see {@link @repo/ui/components/uf-showcase} - Main UniFrame component
+ * @see {@link @repo/ui/components/uf-showcase} - Main UF component
  */
 
 import { IdeAIPageTemplate } from "@repo/ui/components/ideai-page-template";
@@ -27,7 +27,7 @@ export default function UniFramePage() {
   return (
     <IdeAIPageTemplate
       siteName="IdeaI /uniframe"
-      subtitle="UniFrame Showcase - Runtime Framework Switching"
+      subtitle="UF Showcase - Runtime Framework Switching"
       vercelProjectName={vercelProjectName}
       vercelOrgId={vercelOrgId}
       headerActions={<IdeaIButton appName="mvp">Open alert</IdeaIButton>}
@@ -35,16 +35,16 @@ export default function UniFramePage() {
       <div className="max-w-6xl mx-auto p-8">
         <div className="mb-8">
           <h1 className="text-4xl font-bold text-slate-900 dark:text-slate-100 mb-4">
-            UniFrame Showcase
+            UF Showcase
           </h1>
           <p className="text-lg text-slate-600 dark:text-slate-400 mb-6">
             A single React component that dynamically switches between different CSS frameworks
             at runtime. Uses secure class injection based on Tailwind and shadcn best practices.
-            Built with UniFrame structure: card wrapper, header, body, footer, and UI elements.
+            Built with UF structure: card wrapper, header, body, footer, and UI elements.
           </p>
           <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 mb-6">
             <h2 className="text-sm font-semibold text-blue-900 dark:text-blue-100 mb-2">
-              How UniFrame works:
+              How UF works:
             </h2>
             <ul className="text-sm text-blue-800 dark:text-blue-200 space-y-1 list-disc list-inside">
               <li>Framework classes are predefined in a secure configuration object</li>
@@ -52,12 +52,12 @@ export default function UniFramePage() {
               <li>All class strings are validated and XSS-safe</li>
               <li>CSS frameworks load on-demand when needed</li>
               <li>Follows 2026 best practices: React hooks, TypeScript, Tailwind + shadcn patterns</li>
-              <li>UniFrame structure: card wrapper, header, body, footer, UI elements</li>
+              <li>UF structure: card wrapper, header, body, footer, UI elements</li>
             </ul>
           </div>
         </div>
 
-        <UniFrameShowcase />
+        <UFShowcase />
       </div>
     </IdeAIPageTemplate>
   );

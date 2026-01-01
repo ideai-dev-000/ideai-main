@@ -36,6 +36,27 @@
 - Avoid abbreviations unless widely understood
 - Group related files with consistent prefixes
 
+### UF (Universal Framework) Naming Standard
+**CRITICAL**: UF components must ALWAYS use "UF" naming, NEVER "UniFrame" or "uniframe":
+- ✅ Correct: `UF`, `UFCodeViewer`, `uf.tsx`, `uf-code-viewer.tsx`, `uf-container`, `UFProps`
+- ❌ Incorrect: `UniFrame`, `UniFrameCodeViewer`, `uniframe.tsx`, `uniframe-code-viewer.tsx`, `uniframe-container`, `UniFrameProps`
+
+**UF Naming Rules:**
+- Component names: `UF`, `UFCodeViewer`, `UFCard`, `UFButton` (PascalCase with "UF" prefix)
+- File names: `uf.tsx`, `uf-code-viewer.tsx`, `uf-card.tsx` (kebab-case with "uf-" prefix)
+- CSS classes: `uf-container`, `uf-card`, `uf-button` (kebab-case with "uf-" prefix)
+- Interface names: `UFProps`, `UFCodeViewerProps` (PascalCase with "UF" prefix)
+- Type names: `UFFramework`, `UFConfig` (PascalCase with "UF" prefix)
+- Directory names: `uf-card/`, `uf-components/` (kebab-case with "uf-" prefix)
+
+**Why this matters:**
+- Consistency prevents confusion
+- "UF" is shorter and clearer than "UniFrame"
+- Easier to search and refactor
+- Professional code quality requires strict naming discipline
+
+**NEVER be sloppy with naming - it's a sign of unprofessional code.**
+
 ## Code Standards
 
 ### Code Headers

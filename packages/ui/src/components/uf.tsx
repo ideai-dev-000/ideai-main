@@ -1,10 +1,10 @@
 /**
- * @fileoverview UniFrame - Universal Framework Component by IdeaI
+ * @fileoverview UF - Universal Framework Component by IdeaI
  * 
- * @file uniframe.tsx
- * @module UniFrame
+ * @file uf.tsx
+ * @module UF
  * @description
- * UniFrame is a universal framework component created by IdeaI that uses pure HTML
+ * UF (Universal Framework) is a universal framework component created by IdeaI that uses pure HTML
  * and dynamically injects the right CSS classes and styles for each CSS framework.
  * 
  * Features:
@@ -31,9 +31,9 @@
  * 
  * @example
  * ```tsx
- * import { UniFrame } from "@repo/ui/components/uniframe";
+ * import { UF } from "@repo/ui/components/uf";
  * 
- * <UniFrame />
+ * <UF />
  * ```
  * 
  * @todo Add framework transition animations
@@ -44,6 +44,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { UFCodeViewer } from "./uf-code-viewer";
 
 /**
  * All CSS frameworks available in the IdeaI monorepo
@@ -173,9 +174,9 @@ const FRAMEWORKS: Record<Framework, FrameworkInfo> = {
 };
 
 /**
- * UniFrame Component Props
+ * UF Component Props
  */
-export interface UniFrameProps {
+export interface UFProps {
   /** Initial framework selection */
   defaultFramework?: Framework;
   /** Additional CSS classes for container */
@@ -183,16 +184,16 @@ export interface UniFrameProps {
 }
 
 /**
- * UniFrame - Universal Framework Component by IdeaI
+ * UF - Universal Framework Component by IdeaI
  * 
  * A single-file component that demonstrates hot-toggling between all CSS frameworks
  * available in the IdeaI monorepo. Uses pure HTML and injects framework-specific
  * classes and CSS at runtime.
  * 
- * @param props - UniFrame component props
+ * @param props - UF component props
  * @returns React component
  */
-export const UniFrame = ({ defaultFramework = "tailwind", className }: UniFrameProps) => {
+export const UF = ({ defaultFramework = "tailwind", className }: UFProps) => {
   const [selectedFramework, setSelectedFramework] = useState<Framework>(defaultFramework);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [inputValue, setInputValue] = useState("Sample input text");
@@ -202,7 +203,7 @@ export const UniFrame = ({ defaultFramework = "tailwind", className }: UniFrameP
   // Dynamically inject framework CSS if needed
   useEffect(() => {
     if (currentFramework.cssUrl) {
-      const linkId = `uniframe-${selectedFramework}-css`;
+      const linkId = `uf-${selectedFramework}-css`;
       if (!document.getElementById(linkId)) {
         const link = document.createElement("link");
         link.id = linkId;
@@ -218,23 +219,38 @@ export const UniFrame = ({ defaultFramework = "tailwind", className }: UniFrameP
   const frameworkKeys = Object.keys(FRAMEWORKS) as Framework[];
 
   return (
-    <div className={`uniframe-container ${className || ""}`}>
-      {/* Self-created Hot-Toggle Menu */}
-      <div className="mb-6 relative">
+    <div className={`uf-container ${className || ""}`}>
+      {/* Compact Framework Selector with Better Styling */}
+      <div className="mb-4 relative">
+        <div className="flex items-center gap-2 mb-2">
+          <span className="text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wide">
+            Select Framework:
+          </span>
+          <span className="px-2 py-0.5 bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 rounded text-xs font-medium">
+            {currentFramework.name}
+          </span>
+        </div>
         <button
           type="button"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
-          className="w-full px-4 py-2 bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-md text-left flex items-center justify-between hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
+          className="w-full px-3 py-2.5 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/30 dark:to-indigo-900/30 border-2 border-blue-200 dark:border-blue-700 rounded-lg text-left flex items-center justify-between hover:from-blue-100 hover:to-indigo-100 dark:hover:from-blue-900/40 dark:hover:to-indigo-900/40 transition-all shadow-sm hover:shadow-md"
           aria-expanded={isMenuOpen}
           aria-haspopup="true"
           aria-label="Select CSS framework"
         >
-          <span className="font-medium">
-            <span className="text-slate-600 dark:text-slate-400 text-sm">Framework: </span>
-            <span className="text-slate-900 dark:text-slate-100">{currentFramework.name}</span>
-          </span>
+          <div className="flex items-center gap-3">
+            <div className="w-2 h-2 rounded-full bg-blue-600 dark:bg-blue-400"></div>
+            <div>
+              <div className="font-semibold text-slate-900 dark:text-slate-100 text-sm">
+                {currentFramework.name}
+              </div>
+              <div className="text-xs text-slate-600 dark:text-slate-400">
+                {currentFramework.description}
+              </div>
+            </div>
+          </div>
           <svg
-            className={`w-5 h-5 text-slate-500 transition-transform ${isMenuOpen ? "rotate-180" : ""}`}
+            className={`w-5 h-5 text-blue-600 dark:text-blue-400 transition-transform ${isMenuOpen ? "rotate-180" : ""}`}
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -251,83 +267,94 @@ export const UniFrame = ({ defaultFramework = "tailwind", className }: UniFrameP
               onClick={() => setIsMenuOpen(false)}
               aria-hidden="true"
             />
-            <div className="absolute z-20 mt-1 w-full bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-md shadow-lg max-h-64 overflow-y-auto">
-              {frameworkKeys.map((framework) => {
-                const frameworkInfo = FRAMEWORKS[framework];
-                const isSelected = framework === selectedFramework;
-                return (
-                  <button
-                    key={framework}
-                    type="button"
-                    onClick={() => {
-                      setSelectedFramework(framework);
-                      setIsMenuOpen(false);
-                    }}
-                    className={`w-full px-4 py-2 text-left hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors ${
-                      isSelected ? "bg-blue-50 dark:bg-blue-900/20 font-medium" : ""
-                    }`}
-                  >
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <div className={`text-sm ${isSelected ? "text-blue-700 dark:text-blue-300" : "text-slate-900 dark:text-slate-100"}`}>
-                          {frameworkInfo.name}
+            <div className="absolute z-20 mt-2 w-full bg-white dark:bg-slate-800 border-2 border-blue-200 dark:border-blue-700 rounded-lg shadow-xl max-h-80 overflow-y-auto">
+              <div className="p-2">
+                {frameworkKeys.map((framework) => {
+                  const frameworkInfo = FRAMEWORKS[framework];
+                  const isSelected = framework === selectedFramework;
+                  return (
+                    <button
+                      key={framework}
+                      type="button"
+                      onClick={() => {
+                        setSelectedFramework(framework);
+                        setIsMenuOpen(false);
+                      }}
+                      className={`w-full px-3 py-2.5 rounded-md text-left transition-all mb-1 ${
+                        isSelected
+                          ? "bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/30 dark:to-indigo-900/30 border-2 border-blue-300 dark:border-blue-600 shadow-sm"
+                          : "hover:bg-slate-50 dark:hover:bg-slate-700/50 border-2 border-transparent"
+                      }`}
+                    >
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <div className={`w-1.5 h-1.5 rounded-full ${isSelected ? "bg-blue-600 dark:bg-blue-400" : "bg-slate-300 dark:bg-slate-600"}`}></div>
+                          <div>
+                            <div className={`text-sm font-medium ${isSelected ? "text-blue-700 dark:text-blue-300" : "text-slate-900 dark:text-slate-100"}`}>
+                              {frameworkInfo.name}
+                            </div>
+                            <div className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                              {frameworkInfo.description}
+                            </div>
+                          </div>
                         </div>
-                        <div className="text-xs text-slate-500 dark:text-slate-400">
-                          {frameworkInfo.description}
-                        </div>
+                        {isSelected && (
+                          <svg className="w-4 h-4 text-blue-600 dark:text-blue-400" fill="currentColor" viewBox="0 0 20 20">
+                            <path
+                              fillRule="evenodd"
+                              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                              clipRule="evenodd"
+                            />
+                          </svg>
+                        )}
                       </div>
-                      {isSelected && (
-                        <svg className="w-5 h-5 text-blue-600 dark:text-blue-400" fill="currentColor" viewBox="0 0 20 20">
-                          <path
-                            fillRule="evenodd"
-                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
-                      )}
-                    </div>
-                  </button>
-                );
-              })}
+                    </button>
+                  );
+                })}
+              </div>
             </div>
           </>
         )}
       </div>
 
-      {/* Framework Info Badge */}
+      {/* Code Viewer - Shows React/TSX code with classes */}
       <div className="mb-4">
-        <span className={currentFramework.badgeClasses || "px-2 py-1 bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 rounded text-sm"}>
-          {currentFramework.name} - {currentFramework.description}
-        </span>
+        <UFCodeViewer
+          framework={currentFramework.name}
+          cardClasses={currentFramework.cardClasses}
+          buttonClasses={currentFramework.buttonClasses}
+          inputClasses={currentFramework.inputClasses}
+          badgeClasses={currentFramework.badgeClasses}
+          titleClasses={currentFramework.titleClasses}
+          textClasses={currentFramework.textClasses}
+        />
       </div>
 
       {/* Pure HTML Card with Framework-Specific Classes */}
-      <article className={currentFramework.cardClasses || "border rounded p-6"}>
+      <article className={`${currentFramework.cardClasses || "border rounded p-4"} transition-all duration-200`}>
         {/* Header */}
-        <header>
-          <h2 className={currentFramework.titleClasses || "text-2xl font-bold mb-2"}>
-            UniFrame by IdeaI
+        <header className="mb-4">
+          <h2 className={currentFramework.titleClasses || "text-xl font-bold mb-1"}>
+            UF by IdeaI
           </h2>
-          <p className={currentFramework.textClasses || "text-slate-600 dark:text-slate-400 mb-4"}>
-            This card uses pure HTML and dynamically injects CSS classes for{" "}
-            <strong>{currentFramework.name}</strong>. Switch frameworks using the menu above to see
-            the styling change in real-time.
+          <p className={`${currentFramework.textClasses || "text-slate-600 dark:text-slate-400"} text-sm`}>
+            Live preview with <strong>{currentFramework.name}</strong> classes. See code above.
           </p>
         </header>
 
         {/* Body */}
-        <div className="space-y-4">
+        <div className="space-y-3">
           {/* Form Field */}
           <div>
-            <label htmlFor="uniframe-input" className="block text-sm font-medium mb-1 text-slate-700 dark:text-slate-300">
+            <label htmlFor="uf-input" className="block text-xs font-medium mb-1 text-slate-700 dark:text-slate-300">
               Sample Input
             </label>
             <input
-              id="uniframe-input"
+              id="uf-input"
               type="text"
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
-              className={currentFramework.inputClasses || "w-full px-3 py-2 border rounded"}
+              className={currentFramework.inputClasses || "w-full px-3 py-2 border rounded text-sm"}
               placeholder="Type something..."
             />
           </div>
@@ -336,42 +363,36 @@ export const UniFrame = ({ defaultFramework = "tailwind", className }: UniFrameP
           <div className="flex gap-2 flex-wrap">
             <button
               type="button"
-              className={currentFramework.buttonClasses || "px-4 py-2 bg-blue-600 text-white rounded"}
+              className={`${currentFramework.buttonClasses || "px-3 py-1.5 bg-blue-600 text-white rounded text-sm"} transition-all`}
             >
-              Primary Button
+              Primary
             </button>
             <button
               type="button"
-              className={currentFramework.buttonClasses || "px-4 py-2 bg-blue-600 text-white rounded"}
+              className={`${currentFramework.buttonClasses || "px-3 py-1.5 bg-blue-600 text-white rounded text-sm"} transition-all`}
             >
-              Secondary Action
+              Secondary
             </button>
           </div>
 
           {/* Badge Display */}
           <div className="flex gap-2 flex-wrap items-center">
-            <span className={currentFramework.badgeClasses || "px-2 py-1 bg-slate-100 text-slate-800 rounded text-sm"}>
+            <span className={currentFramework.badgeClasses || "px-2 py-0.5 bg-slate-100 text-slate-800 rounded text-xs"}>
               Framework
             </span>
-            <span className={currentFramework.badgeClasses || "px-2 py-1 bg-slate-100 text-slate-800 rounded text-sm"}>
+            <span className={currentFramework.badgeClasses || "px-2 py-0.5 bg-slate-100 text-slate-800 rounded text-xs"}>
               {currentFramework.name}
             </span>
-            <span className={currentFramework.badgeClasses || "px-2 py-1 bg-slate-100 text-slate-800 rounded text-sm"}>
+            <span className={currentFramework.badgeClasses || "px-2 py-0.5 bg-slate-100 text-slate-800 rounded text-xs"}>
               IdeaI
             </span>
           </div>
-
-          {/* Info Text */}
-          <p className={currentFramework.textClasses || "text-sm text-slate-600 dark:text-slate-400"}>
-            All styling is applied via framework-specific CSS classes injected at runtime. The HTML
-            structure remains the same across all frameworks.
-          </p>
         </div>
 
         {/* Footer */}
-        <footer className="mt-6 pt-4 border-t border-slate-200 dark:border-slate-700">
+        <footer className="mt-4 pt-3 border-t border-slate-200 dark:border-slate-700">
           <p className={`text-xs ${currentFramework.textClasses || "text-slate-500 dark:text-slate-400"}`}>
-            Created by <strong>IdeaI</strong> • Universal Framework Component • {new Date().getFullYear()}
+            Created by <strong>IdeaI</strong> • {new Date().getFullYear()}
           </p>
         </footer>
       </article>
