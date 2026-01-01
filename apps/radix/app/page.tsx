@@ -7,6 +7,7 @@
 import { IdeAIPageTemplate } from "@repo/ui/components/ideai-page-template";
 import { IdeAICSSSummary } from "@repo/ui/components/ideai-css-summary";
 import { IdeaIButton } from "@repo/ui/components/ideai-button";
+import { UniFrame } from "@repo/ui/components/uniframe";
 import * as Separator from "@radix-ui/react-separator";
 import * as Tooltip from "@radix-ui/react-tooltip";
 import * as Dialog from "@radix-ui/react-dialog";
@@ -28,6 +29,17 @@ export default function Home() {
           frameworks={["Radix UI Primitives", "Tailwind CSS", "IdeaI Design System"]}
           description="Radix UI provides unstyled, accessible component primitives. You style them yourself with CSS or Tailwind. Perfect for building custom design systems."
         />
+
+        {/* UniFrame - Universal Framework Component by IdeaI */}
+        <section>
+          <h2 className="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-4">
+            UniFrame by IdeaI
+          </h2>
+          <p className="text-slate-600 dark:text-slate-400 mb-6">
+            Hot-toggle between all CSS frameworks available in the IdeaI monorepo. Pure HTML with dynamic CSS injection.
+          </p>
+          <UniFrame defaultFramework="radix" />
+        </section>
 
         <section>
           <h2 className="text-3xl font-bold mb-6">Radix UI Primitives</h2>

@@ -7,6 +7,7 @@
 import { IdeAIPageTemplate } from "@repo/ui/components/ideai-page-template";
 import { IdeAICSSSummary } from "@repo/ui/components/ideai-css-summary";
 import { IdeaIButton } from "@repo/ui/components/ideai-button";
+import { UniFrame } from "@repo/ui/components/uniframe";
 import {
   Box,
   Button,
@@ -39,6 +40,17 @@ export default function Home() {
           frameworks={["Chakra UI", "Emotion", "Framer Motion"]}
           description="Chakra UI is a simple, modular and accessible component library that gives you the building blocks you need to build your React applications."
         />
+
+        {/* UniFrame - Universal Framework Component by IdeaI */}
+        <Box mb={8} mt={8}>
+          <Heading as="h2" size="lg" mb={4}>
+            UniFrame by IdeaI
+          </Heading>
+          <Text color="gray.600" mb={6}>
+            Hot-toggle between all CSS frameworks available in the IdeaI monorepo. Pure HTML with dynamic CSS injection.
+          </Text>
+          <UniFrame defaultFramework="chakra" />
+        </Box>
 
         <VStack spacing={8} align="stretch" mt={8}>
           <section>

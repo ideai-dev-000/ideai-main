@@ -20,6 +20,7 @@ export type { IdeAISiteCardProps, SiteStatus } from "./components/ideai-site-car
 export { IdeAIDiagnostics } from "./components/ideai-diagnostics";
 export type { IdeAIDiagnosticsProps } from "./components/ideai-diagnostics";
 export { UniFrameShowcase } from "./components/uf-showcase";
+export { UniFrame, type UniFrameProps, type Framework } from "./components/uniframe";
 // UniFrame Card Components
 export { UniFrameCard } from "./components/uniframe/uf-card/uf-card";
 export { UniFrameCardHeader } from "./components/uniframe/uf-card/uf-header";
