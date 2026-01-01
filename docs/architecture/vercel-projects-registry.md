@@ -35,7 +35,7 @@ description: Complete registry of all Vercel projects in the IdeaI monorepo
 - **Simple**: Single project, single app, single domain
 
 ### New Situation
-- **Two Projects**: `ideai-main` (web) + `landing` (landing page)
+- **Two Projects**: `ideai-main` (web) + `docs` (documentation)
 - **Separate Deployments**: Each project deploys independently
 - **Different URLs**: 
   - `ideai-main` → `myui.space` (unchanged)
@@ -73,7 +73,7 @@ description: Complete registry of all Vercel projects in the IdeaI monorepo
 - **Cons**: All apps deploy together, complex configuration, harder to scale
 
 #### Option 3: Hybrid
-- Landing page at root domain
+- Main app at root domain
 - Other apps as separate projects with subdomains
 - **Pros**: Best of both worlds
 - **Cons**: More setup
@@ -89,7 +89,7 @@ description: Complete registry of all Vercel projects in the IdeaI monorepo
 
 ### Implementation Plan
 1. Keep `ideai-main` → `www.myui.space` (existing)
-2. Keep `landing` → `ideai.space` (main domain)
+2. Keep `web` → `myui.space` (main domain)
 3. Create separate projects for each app:
    - `docs` → `docs.ideai.space`
    - `all` → `all.ideai.space`
@@ -97,7 +97,7 @@ description: Complete registry of all Vercel projects in the IdeaI monorepo
    - `mvp` → `mvp.ideai.space`
    - `tailwind` → `tailwind.ideai.space`
    - `allcss` → `allcss.ideai.space`
-4. Update landing page to use subdomain URLs in production
+4. Update main app to use subdomain URLs in production
 5. Configure DNS for all subdomains
 
 ## Git Integration
@@ -125,7 +125,7 @@ Each project in Vercel dashboard:
    - Root Directory: `apps/{name}`
    - Enable "Include files outside root"
 4. Connect Git repository
-5. Add to landing page config
+5. Add to main app config
 6. Configure DNS (if using subdomains)
 7. Update this registry
 
@@ -148,7 +148,7 @@ Each project in Vercel dashboard:
    - **Status**: Known limitation
    - **Solution**: Use subdomains or update landing page URLs
 
-2. **Landing page modal URLs**: Need to work in production
+2. **Main app modal URLs**: Need to work in production
    - **Status**: Needs fix
    - **Solution**: Update routing config to use subdomains in production
 

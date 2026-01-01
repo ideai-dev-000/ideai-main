@@ -32,7 +32,7 @@ APPS_TO_DEPLOY=("$@")
 
 # If no apps specified, deploy all
 if [ ${#APPS_TO_DEPLOY[@]} -eq 0 ]; then
-  APPS_TO_DEPLOY=("web" "docs" "all" "nocss" "mvp" "tailwind" "allcss" "unocss" "shadcn")
+  APPS_TO_DEPLOY=("web" "docs" "all" "nocss" "mvp" "tailwind" "allcss" "bootstrap" "unocss" "shadcn")
 fi
 
 echo -e "${BLUE}=== IdeaI Monorepo Deployment ===${NC}"
