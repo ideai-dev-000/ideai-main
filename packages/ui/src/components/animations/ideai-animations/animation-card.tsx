@@ -77,7 +77,12 @@ export function AnimationCard({ example, library }: AnimationCardProps) {
       case "kute":
         return <KuteDemo example={exampleWithVariant} />;
       case "motion-one":
-        return <MotionOneDemo example={exampleWithVariant} />;
+        return (
+          <MotionOneDemo
+            example={exampleWithVariant}
+            animationKey={animationKey}
+          />
+        );
       case "tsparticles":
         return <TsParticlesDemo example={exampleWithVariant} />;
       case "vivus":
@@ -1071,7 +1076,13 @@ function KuteDemo({ example }: { example: AnimationExample }) {
 /**
  * Motion One Demo Renderer
  */
-function MotionOneDemo({ example }: { example: AnimationExample }) {
+function MotionOneDemo({
+  example,
+  animationKey,
+}: {
+  example: AnimationExample;
+  animationKey?: number;
+}) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [hasAnimated, setHasAnimated] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -1080,27 +1091,70 @@ function MotionOneDemo({ example }: { example: AnimationExample }) {
   const animConfig = example.config as any;
 
   useEffect(() => {
-    if (containerRef.current && !hasAnimated && typeof window !== "undefined") {
+    // Reset animation state when example or animationKey changes
+    setHasAnimated(false);
+    setError(null);
+    if (
+      animationRef.current &&
+      typeof animationRef.current.stop === "function"
+    ) {
+      animationRef.current.stop();
+    }
+
+    if (containerRef.current && typeof window !== "undefined") {
       // Use dynamic import with proper error handling - only on client
       const loadMotionOne = async () => {
         try {
-          // Try direct import first, fallback to dynamic
+          // Try importing from @motionone/dom with multiple strategies
           let motionOneModule: any;
-          try {
-            // Direct import for better compatibility
-            motionOneModule = await import("@motionone/dom");
-          } catch (directErr) {
-            // Fallback to string concatenation if direct fails
-            const modulePath = "@motionone" + "/dom";
-            motionOneModule = await import(modulePath);
+          let importError: any = null;
+
+          // Try multiple import strategies
+          const importStrategies = [
+            () => import("@motionone/dom"),
+            () => import("@motionone/dom/dist/index.es.js"),
+            () => {
+              const path = "@motionone" + "/dom";
+              return import(path);
+            },
+          ];
+
+          for (const importFn of importStrategies) {
+            try {
+              motionOneModule = await importFn();
+              // Check for named export
+              if (motionOneModule.animate) {
+                break;
+              }
+              // Check for default export
+              if (motionOneModule.default?.animate) {
+                motionOneModule = motionOneModule.default;
+                break;
+              }
+              // Check if it's the module itself
+              if (typeof motionOneModule === "function") {
+                motionOneModule = { animate: motionOneModule };
+                break;
+              }
+            } catch (err: any) {
+              importError = err;
+              continue;
+            }
+          }
+
+          if (!motionOneModule || !motionOneModule.animate) {
+            console.error(
+              "Motion One import failed. Module:",
+              motionOneModule,
+              "Error:",
+              importError,
+            );
+            setError("Package not installed. Run: pnpm add @motionone/dom");
+            setHasAnimated(true);
+            return;
           }
 
           setHasAnimated(true);
-
-          if (!motionOneModule || !motionOneModule.animate) {
-            setError("Package not installed. Run: pnpm add @motionone/dom");
-            return;
-          }
 
           // Handle Layout Animation (reordering)
           if (animConfig.layout && animConfig.reorder) {
@@ -1177,9 +1231,19 @@ function MotionOneDemo({ example }: { example: AnimationExample }) {
               options,
             );
           }
-        } catch (err) {
+        } catch (err: any) {
           console.warn("Motion One error:", err);
-          setError("Package not installed. Run: pnpm add @motionone/dom");
+          // Check if it's a module not found error
+          if (
+            err?.message?.includes("Cannot find module") ||
+            err?.code === "MODULE_NOT_FOUND" ||
+            err?.message?.includes("Failed to fetch") ||
+            err?.message?.includes("not found")
+          ) {
+            setError("Package not installed. Run: pnpm add @motionone/dom");
+          } else {
+            setError(`Motion One error: ${err?.message || "Unknown error"}`);
+          }
           setHasAnimated(true);
         }
       };
@@ -1194,7 +1258,7 @@ function MotionOneDemo({ example }: { example: AnimationExample }) {
         animationRef.current.stop();
       }
     };
-  }, [example.config, hasAnimated, itemOrder]);
+  }, [example.config, example.id, animationKey, itemOrder]); // Include animationKey to reset on play
 
   // Handle layout reordering on click
   const handleReorder = () => {
