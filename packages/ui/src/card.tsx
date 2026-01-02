@@ -1,27 +1,11 @@
-import { type JSX } from "react";
+import { type HTMLAttributes, forwardRef } from "react"
 
-export function Card({
-  className,
-  title,
-  children,
-  href,
-}: {
-  className?: string;
-  title: string;
-  children: React.ReactNode;
-  href: string;
-}): JSX.Element {
+interface CardProps extends HTMLAttributes<HTMLDivElement> {}
+
+export const Card = forwardRef<HTMLDivElement, CardProps>(({ className = "", ...props }, ref) => {
   return (
-    <a
-      className={className}
-      href={`${href}?utm_source=create-turbo&utm_medium=basic&utm_campaign=create-turbo"`}
-      rel="noopener noreferrer"
-      target="_blank"
-    >
-      <h2>
-        {title} <span>-&gt;</span>
-      </h2>
-      <p>{children}</p>
-    </a>
-  );
-}
+    <div ref={ref} className={`rounded-lg border bg-card text-card-foreground shadow-sm ${className}`} {...props} />
+  )
+})
+
+Card.displayName = "Card"
