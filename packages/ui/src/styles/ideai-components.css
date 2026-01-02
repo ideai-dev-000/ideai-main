@@ -761,6 +761,12 @@
   @apply text-slate-900 dark:text-slate-100 bg-slate-50 dark:bg-slate-800;
 }
 
+/* Prevent header link styles from affecting footer */
+.ideai-footer .ideai-header__accounts-link:hover,
+.ideai-footer.ideai-header__accounts-link:hover {
+  background-color: transparent !important;
+}
+
 @media (max-width: 768px) {
   .ideai-header__container {
     grid-template-columns: 1fr;
@@ -786,11 +792,11 @@
  * Semantic footer with three-column layout: address/copyright (left), nav (middle), social/accounts (right)
  */
 .ideai-footer {
-  /* Force opacity variables to 1 to prevent Tailwind opacity issues */
+  /* Force opacity variables to 1 FIRST to prevent Tailwind opacity issues */
   --tw-bg-opacity: 1 !important;
   --tw-border-opacity: 1 !important;
   
-  /* Explicit white background - no opacity variables */
+  /* Explicit white background - NO opacity variables in the value */
   background-color: rgb(255 255 255) !important;
   border-top: 1px solid rgb(226 232 240) !important;
   
@@ -805,7 +811,7 @@
   padding-right: calc(50vw - 50%);
 }
 
-/* Override any Tailwind background classes */
+/* Override any Tailwind background classes - must come after base rule */
 .ideai-footer.bg-slate-50,
 .ideai-footer.bg-slate-900,
 .ideai-footer[class*="bg-"] {
@@ -813,16 +819,38 @@
   background-color: rgb(255 255 255) !important;
 }
 
+/* Override any combined selectors that might affect footer background */
+.ideai-footer.ideai-header__accounts-link,
+.ideai-footer.ideai-header__accounts-link:hover,
+.ideai-footer .ideai-header__accounts-link,
+.ideai-footer .ideai-header__accounts-link:hover {
+  --tw-bg-opacity: 1 !important;
+  background-color: rgb(255 255 255) !important;
+}
+
 @media (prefers-color-scheme: dark) {
   .ideai-footer {
+    /* Remove Tailwind opacity variables completely */
     --tw-bg-opacity: 1 !important;
     --tw-border-opacity: 1 !important;
+    /* Use explicit RGB without opacity variables */
     background-color: rgb(15 23 42) !important;
     border-top-color: rgb(51 65 85) !important;
   }
   
+  /* Override any Tailwind classes */
   .ideai-footer.bg-slate-900,
+  .ideai-footer.bg-slate-50,
   .ideai-footer[class*="bg-"] {
+    --tw-bg-opacity: 1 !important;
+    background-color: rgb(15 23 42) !important;
+  }
+  
+  /* Override combined selectors in dark mode */
+  .ideai-footer.ideai-header__accounts-link,
+  .ideai-footer.ideai-header__accounts-link:hover,
+  .ideai-footer .ideai-header__accounts-link,
+  .ideai-footer .ideai-header__accounts-link:hover {
     --tw-bg-opacity: 1 !important;
     background-color: rgb(15 23 42) !important;
   }
