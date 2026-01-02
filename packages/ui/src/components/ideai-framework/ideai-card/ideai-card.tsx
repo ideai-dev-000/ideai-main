@@ -27,7 +27,8 @@ import { IdeAICardButton } from "./ideai-card-button";
 import { IdeAICardBadge } from "./ideai-card-badge";
 import { IdeAICardFormField } from "./ideai-card-form-field";
 import { IdeAICardButtonGroup } from "./ideai-card-button-group";
-import type { Framework, frameworkConfigs } from "./ideai-card-types";
+import type { Framework } from "./ideai-card-types";
+import { frameworkConfigs } from "./ideai-card-types";
 
 interface IdeAICardProps {
   /** Framework to use for styling */

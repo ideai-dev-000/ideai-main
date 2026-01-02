@@ -131,7 +131,7 @@ export function getSEOMetadata({
  * Request Middleware Helper
  * Adds security headers to requests
  */
-export function middleware(request: NextRequest) {
+export function middleware(_request: NextRequest) {
   const headers = new Headers();
   
   // Add security headers

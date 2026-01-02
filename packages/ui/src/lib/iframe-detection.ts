@@ -151,7 +151,7 @@ export function detectIFrame(): boolean {
   try {
     // Method 1: Check window.self vs window.top
     return window.self !== window.top;
-  } catch (e) {
+  } catch {
     // Method 2: If cross-origin, try-catch will throw, so we're in iframe
     return true;
   }

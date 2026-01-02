@@ -29,7 +29,8 @@ import { IdeAIFrameworkButton } from "../atoms/ideai-framework-button";
 import { IdeAIFrameworkBadge } from "../atoms/ideai-framework-badge";
 import { IdeAIFrameworkFormField } from "../molecules/ideai-framework-form-field";
 import { IdeAIFrameworkButtonGroup } from "../molecules/ideai-framework-button-group";
-import type { Framework, frameworkConfigs } from "./ideai-framework-card-types";
+import type { Framework } from "./ideai-framework-card-types";
+import { frameworkConfigs } from "./ideai-framework-card-types";
 
 interface IdeAIFrameworkCardProps {
   /** Framework to use for styling */
