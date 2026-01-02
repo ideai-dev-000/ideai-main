@@ -141,3 +141,9 @@ Create `.ideai.json` in app directory to override:
 - **Easy Switching**: Change `.ideai.json` to switch roles
 
 
+
+
+
+
+
+

@@ -43,9 +43,10 @@ export function VivusDraw({
   const vivusRef = useRef<any>(null);
 
   useEffect(() => {
-    // Dynamic import for Vivus - using runtime string to prevent static analysis
-    const moduleName = 'vivus';
-    import(/* @vite-ignore */ moduleName)
+    // Dynamic import for Vivus - using Function to prevent static analysis
+    try {
+      const loadModule = new Function('moduleName', 'return import(moduleName)');
+      loadModule('vivus')
       .then((VivusModule) => {
         const Vivus = VivusModule.default || (VivusModule as any);
         const options: any = {
@@ -70,6 +71,9 @@ export function VivusDraw({
       .catch((error) => {
         console.warn("Vivus not loaded:", error);
       });
+    } catch (e) {
+      console.warn("Vivus not available:", e);
+    }
 
     return () => {
       if (vivusRef.current && typeof vivusRef.current.destroy === 'function') {

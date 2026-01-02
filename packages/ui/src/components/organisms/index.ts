@@ -18,3 +18,9 @@ export type { Framework, FrameworkConfig } from "./ideai-framework-card-types";
 export { frameworkConfigs } from "./ideai-framework-card-types";
 
 
+
+
+
+
+
+

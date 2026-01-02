@@ -69,18 +69,30 @@ async function readIdeaiMetadata(
         const stats = await stat(ideaiJsonPath);
         if (stats.isFile()) {
           const content = await readFile(ideaiJsonPath, "utf-8");
-          const config = JSON.parse(content) as Record<string, unknown>;
+          const config = JSON.parse(content) as {
+            name?: string;
+            description?: string;
+            localPort?: number;
+            metadata?: {
+              id?: string;
+              port?: number;
+              css?: string[];
+              capabilities?: string[];
+              path?: string;
+              category?: string;
+            };
+          };
           
           // Extract metadata from config
           metadata = {
-            id: config.metadata?.id || entry.name,
-            name: config.name || entry.name,
-            description: config.description || "",
+            id: (config.metadata?.id as string | undefined) || entry.name,
+            name: (config.name as string | undefined) || entry.name,
+            description: (config.description as string | undefined) || "",
             port: config.metadata?.port || config.localPort || 0,
-            css: config.metadata?.css || [],
-            capabilities: config.metadata?.capabilities || [],
-            path: config.metadata?.path || `/${entry.name}`,
-            category: config.metadata?.category || "development",
+            css: (config.metadata?.css as string[] | undefined) || [],
+            capabilities: (config.metadata?.capabilities as string[] | undefined) || [],
+            path: (config.metadata?.path as string | undefined) || `/${entry.name}`,
+            category: (config.metadata?.category as string | undefined) || "development",
           };
         }
         

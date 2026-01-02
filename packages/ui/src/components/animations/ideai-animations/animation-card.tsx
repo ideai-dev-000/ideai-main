@@ -596,29 +596,35 @@ function ReactSpringDemo({ example }: { example: AnimationExample }) {
 function KuteDemo({ example }: { example: AnimationExample }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // Dynamic import for KUTE.js
-    import('kute.js').then((KUTE) => {
-      if (containerRef.current && !isAnimating) {
-        setIsAnimating(true);
-        // Basic demo - will be enhanced once library is properly installed
-        const element = containerRef.current.querySelector('.kute-demo-element') as HTMLElement;
-        if (element) {
-          // Simple opacity animation as placeholder
-          element.style.transition = 'opacity 0.5s';
-          element.style.opacity = '0';
-          setTimeout(() => {
+    try {
+      const loadModule = new Function('moduleName', 'return import(moduleName)');
+      loadModule('kute.js')
+        .then((KUTE: any) => {
+          if (containerRef.current && !isAnimating) {
+            setIsAnimating(true);
+            const element = containerRef.current.querySelector('.kute-demo-element') as HTMLElement;
             if (element) {
-              element.style.opacity = '1';
+              element.style.transition = 'opacity 0.5s';
+              element.style.opacity = '0';
+              setTimeout(() => {
+                if (element) {
+                  element.style.opacity = '1';
+                }
+              }, 100);
             }
-          }, 100);
-        }
-      }
-    }).catch(() => {
-      // Library not installed yet - show placeholder
+          }
+        })
+        .catch(() => {
+          setError('Package not installed');
+          setIsAnimating(true);
+        });
+    } catch (e) {
+      setError('Package not installed');
       setIsAnimating(true);
-    });
+    }
   }, []);
 
   return (
@@ -636,7 +642,11 @@ function KuteDemo({ example }: { example: AnimationExample }) {
       <div className="kute-demo-element" style={{ opacity: 1 }}>
         <div className="ideai-animation-demo-content">{example.title}</div>
         <div style={{ fontSize: "0.75rem", marginTop: "0.5rem", opacity: 0.7 }}>
-          KUTE.js - {example.description}
+          {error ? (
+            <span style={{ color: '#ef4444' }}>⚠️ Package not installed. Run: pnpm add kute.js</span>
+          ) : (
+            <>KUTE.js - {example.description}</>
+          )}
         </div>
       </div>
     </div>
@@ -649,27 +659,32 @@ function KuteDemo({ example }: { example: AnimationExample }) {
 function MotionOneDemo({ example }: { example: AnimationExample }) {
   const elementRef = useRef<HTMLDivElement>(null);
   const [hasAnimated, setHasAnimated] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (elementRef.current && !hasAnimated) {
-      // Dynamic import for Motion One - using runtime string to prevent static analysis
-      const moduleName = '@motionone/' + 'dom';
-      import(/* @vite-ignore */ moduleName)
-        .then((motionOne) => {
-          setHasAnimated(true);
-          const animConfig = example.config as any;
-          if (motionOne.animate && elementRef.current) {
-            motionOne.animate(
-              elementRef.current,
-              animConfig.opacity || { opacity: [0, 1] },
-              { duration: animConfig.duration || 0.5 }
-            );
-          }
-        })
-        .catch(() => {
-          // Library not installed yet - show placeholder
-          setHasAnimated(true);
-        });
+      try {
+        const loadModule = new Function('moduleName', 'return import(moduleName)');
+        loadModule('@motionone/dom')
+          .then((motionOne: any) => {
+            setHasAnimated(true);
+            const animConfig = example.config as any;
+            if (motionOne.animate && elementRef.current) {
+              motionOne.animate(
+                elementRef.current,
+                animConfig.opacity || { opacity: [0, 1] },
+                { duration: animConfig.duration || 0.5 }
+              );
+            }
+          })
+          .catch(() => {
+            setError('Package not installed');
+            setHasAnimated(true);
+          });
+      } catch (e) {
+        setError('Package not installed');
+        setHasAnimated(true);
+      }
     }
   }, [example.config, hasAnimated]);
 
@@ -686,7 +701,14 @@ function MotionOneDemo({ example }: { example: AnimationExample }) {
         opacity: hasAnimated ? 1 : 0,
       }}
     >
-      <div className="ideai-animation-demo-content">{example.title}</div>
+      <div className="ideai-animation-demo-content">
+        {example.title}
+        {error && (
+          <div style={{ fontSize: "0.75rem", marginTop: "0.5rem", color: '#ef4444' }}>
+            ⚠️ Package not installed. Run: pnpm add @motionone/dom
+          </div>
+        )}
+      </div>
     </div>
   );
 }
@@ -697,22 +719,25 @@ function MotionOneDemo({ example }: { example: AnimationExample }) {
 function TsParticlesDemo({ example }: { example: AnimationExample }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // Dynamic import for tsParticles - using runtime strings to prevent static analysis
-    const reactModule = '@tsparticles/' + 'react';
-    const slimModule = '@tsparticles/' + 'slim';
-    const engineModule = '@tsparticles/' + 'engine';
-    Promise.all([
-      import(/* @vite-ignore */ reactModule).catch(() => null),
-      import(/* @vite-ignore */ slimModule).catch(() => null),
-      import(/* @vite-ignore */ engineModule).catch(() => null)
-    ]).then(() => {
+    try {
+      const loadModule = new Function('moduleName', 'return import(moduleName)');
+      Promise.all([
+        loadModule('@tsparticles/react').catch(() => null),
+        loadModule('@tsparticles/slim').catch(() => null),
+        loadModule('@tsparticles/engine').catch(() => null)
+      ]).then(() => {
+        setIsLoaded(true);
+      }).catch(() => {
+        setError('Packages not installed');
+        setIsLoaded(true);
+      });
+    } catch (e) {
+      setError('Packages not installed');
       setIsLoaded(true);
-      // Particles will be rendered via React component once library is installed
-    }).catch(() => {
-      setIsLoaded(true);
-    });
+    }
   }, []);
 
   return (
@@ -732,7 +757,11 @@ function TsParticlesDemo({ example }: { example: AnimationExample }) {
         <div className="ideai-animation-demo-content">
           {example.title}
           <div style={{ fontSize: "0.75rem", marginTop: "0.5rem", opacity: 0.7 }}>
-            tsParticles - {example.description}
+            {error ? (
+              <span style={{ color: '#ef4444' }}>⚠️ Packages not installed. Run: pnpm add @tsparticles/react @tsparticles/slim @tsparticles/engine</span>
+            ) : (
+              <>tsParticles - {example.description}</>
+            )}
           </div>
         </div>
       ) : (
@@ -749,27 +778,33 @@ function VivusDemo({ example }: { example: AnimationExample }) {
   const svgRef = useRef<SVGSVGElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (svgRef.current && !isAnimating) {
-      // Dynamic import for Vivus - using runtime string to prevent static analysis
-      const moduleName = 'vivus';
-      import(/* @vite-ignore */ moduleName)
-        .then((VivusModule) => {
-          setIsAnimating(true);
-          const animConfig = example.config as any;
-          const Vivus = VivusModule.default || (VivusModule as any);
-          if (Vivus && svgRef.current) {
-            new Vivus(svgRef.current, {
-              type: animConfig.type || 'oneByOne',
-              duration: animConfig.duration || 200,
-              animTimingFunction: Vivus.EASE,
-            });
-          }
-        })
-        .catch(() => {
-          setIsAnimating(true);
-        });
+      try {
+        const loadModule = new Function('moduleName', 'return import(moduleName)');
+        loadModule('vivus')
+          .then((VivusModule: any) => {
+            setIsAnimating(true);
+            const animConfig = example.config as any;
+            const Vivus = VivusModule.default || VivusModule;
+            if (Vivus && svgRef.current) {
+              new Vivus(svgRef.current, {
+                type: animConfig.type || 'oneByOne',
+                duration: animConfig.duration || 200,
+                animTimingFunction: Vivus.EASE,
+              });
+            }
+          })
+          .catch(() => {
+            setError('Package not installed');
+            setIsAnimating(true);
+          });
+      } catch (e) {
+        setError('Package not installed');
+        setIsAnimating(true);
+      }
     }
   }, [example.config, isAnimating]);
 
@@ -785,16 +820,27 @@ function VivusDemo({ example }: { example: AnimationExample }) {
         justifyContent: "center",
       }}
     >
-      <svg
-        ref={svgRef}
-        width="120"
-        height="120"
-        viewBox="0 0 120 120"
-        style={{ stroke: "#3b82f6", strokeWidth: 2, fill: "none" }}
-      >
-        <circle cx="60" cy="60" r="50" />
-        <path d="M 30 60 L 60 30 L 90 60 L 60 90 Z" />
-      </svg>
+      {error ? (
+        <div style={{ textAlign: 'center' }}>
+          <div style={{ fontSize: "0.875rem", marginBottom: "0.5rem", color: '#ef4444' }}>
+            ⚠️ Package not installed
+          </div>
+          <div style={{ fontSize: "0.75rem", opacity: 0.7 }}>
+            Run: pnpm add vivus
+          </div>
+        </div>
+      ) : (
+        <svg
+          ref={svgRef}
+          width="120"
+          height="120"
+          viewBox="0 0 120 120"
+          style={{ stroke: "#3b82f6", strokeWidth: 2, fill: "none" }}
+        >
+          <circle cx="60" cy="60" r="50" />
+          <path d="M 30 60 L 60 30 L 90 60 L 60 90 Z" />
+        </svg>
+      )}
     </div>
   );
 }

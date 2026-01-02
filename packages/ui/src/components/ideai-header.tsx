@@ -11,9 +11,10 @@
 
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, lazy, Suspense } from "react";
 import { IdeAILogo } from "./ideai-logo";
-import { IdeAIDiagnostics } from "./ideai-diagnostics";
+// Lazy load IdeAIDiagnostics to prevent framer-motion from blocking compilation
+const IdeAIDiagnostics = lazy(() => import("./ideai-diagnostics").then(module => ({ default: module.IdeAIDiagnostics })));
 import { ThemeToggle } from "./theme-toggle";
 import { MobileNav } from "./mobile-nav";
 
@@ -107,7 +108,9 @@ export const IdeaIHeader = ({
       >
         {/* IdeaI Diagnostics - First element in header DOM */}
         {diagnosticsAppName && (
-          <IdeAIDiagnostics appName={diagnosticsAppName} position="top-right" />
+          <Suspense fallback={null}>
+            <IdeAIDiagnostics appName={diagnosticsAppName} position="top-right" />
+          </Suspense>
         )}
         
         <div className="ideai-header__container">

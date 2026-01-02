@@ -89,3 +89,9 @@ echo "  2. Test: https://${FULL_DOMAIN}"
 echo "  3. Test redirect: https://www.${ROOT_DOMAIN}/apps/${APP_NAME}"
 
 
+
+
+
+
+
+
