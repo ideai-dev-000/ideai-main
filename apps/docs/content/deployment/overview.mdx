@@ -66,9 +66,33 @@ Deployments can be triggered manually using the unified deployment script:
 
 See [Unified Deployment Guide](./unified-deployment.md) for complete instructions.
 
+## Deployment Workflows
+
+### GitHub → Vercel (Recommended)
+- **Primary deployment method**: Automatic deployments via GitHub Actions
+- **Triggers**: Push to `main` (production) or `preview` (preview)
+- **Benefits**: Full version control, automated CI/CD, team visibility
+- **See**: [GitHub → Vercel Workflow](./workflow-git-to-vercel.md)
+
+### Vercel CLI Direct (Backup)
+- **Backup deployment method**: Direct deployment via Vercel CLI
+- **Use cases**: Quick iterations, emergency hotfixes, testing
+- **Benefits**: Faster deployment, direct control
+- **See**: [Vercel CLI Direct Workflow](./workflow-vercel-direct.md)
+
+### Choosing a Method
+- **Decision guide**: [Deployment Decision Matrix](./deployment-decision-matrix.md)
+- **Safety checklists**: [Deployment Safety Checklist](./safety-checklist.md)
+- **Rollback procedures**: [Rollback Procedures](./rollback-procedures.md)
+
 ## Quick Links
 
 - [Unified Deployment Guide](./unified-deployment.md) - **Start here** for deployment
+- [GitHub → Vercel Workflow](./workflow-git-to-vercel.md) - Primary deployment method
+- [Vercel CLI Direct Workflow](./workflow-vercel-direct.md) - Backup deployment method
+- [Deployment Decision Matrix](./deployment-decision-matrix.md) - Choose deployment method
+- [Deployment Safety Checklist](./safety-checklist.md) - Pre/post deployment checklists
+- [Rollback Procedures](./rollback-procedures.md) - Rollback guide
 - [Deployment Architecture](../architecture/deployment-architecture.md) - Architecture overview
 - [Vercel Configuration](./vercel.md) - Dashboard configuration
 - [CI/CD Workflows](./ci-cd.md) - Automated deployment workflows

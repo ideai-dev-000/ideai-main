@@ -389,7 +389,7 @@ export const UF = ({ defaultFramework = "tailwind", className }: UFProps) => {
         '"': '&quot;',
         "'": '&#039;',
       };
-      return text.replace(/[&<>"']/g, (m) => map[m]);
+      return text.replace(/[&<>"']/g, (m) => map[m] || m);
     };
 
     const codeText = `// UF Card - ${frameworkInfo.name}

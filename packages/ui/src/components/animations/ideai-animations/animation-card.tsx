@@ -341,7 +341,8 @@ function ReactSpringDemo({ example }: { example: AnimationExample }) {
   const resolveConfig = (cfg: any) => {
     if (!cfg) return config.gentle;
     if (typeof cfg === "string") {
-      return config[cfg] || config.gentle;
+      const configKey = cfg as keyof typeof config;
+      return config[configKey] || config.gentle;
     }
     return cfg;
   };
