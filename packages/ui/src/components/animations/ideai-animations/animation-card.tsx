@@ -1122,22 +1122,30 @@ function MotionOneDemo({
           for (const importFn of importStrategies) {
             try {
               motionOneModule = await importFn();
-              // Check for named export
-              if (motionOneModule.animate) {
+              console.log(
+                "Motion One import attempt - keys:",
+                Object.keys(motionOneModule || {}),
+              );
+              // Check for named export (animate is exported directly)
+              if (motionOneModule && motionOneModule.animate) {
+                console.log("✅ Motion One animate found as named export");
                 break;
               }
               // Check for default export
-              if (motionOneModule.default?.animate) {
+              if (motionOneModule?.default?.animate) {
                 motionOneModule = motionOneModule.default;
+                console.log("✅ Motion One animate found in default export");
                 break;
               }
               // Check if it's the module itself
               if (typeof motionOneModule === "function") {
                 motionOneModule = { animate: motionOneModule };
+                console.log("✅ Motion One wrapped as function");
                 break;
               }
             } catch (err: any) {
               importError = err;
+              console.warn("Import strategy failed:", err.message);
               continue;
             }
           }
