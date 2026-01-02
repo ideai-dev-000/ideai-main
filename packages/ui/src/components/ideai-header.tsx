@@ -14,7 +14,6 @@
 import { useState, useEffect, lazy, Suspense } from "react";
 import { IdeAILogo } from "./ideai-logo";
 // Lazy load IdeAIDiagnostics to prevent framer-motion from blocking compilation
-// @ts-expect-error - Dynamic import path resolution for Next.js (moduleResolution NodeNext requires explicit extensions)
 const IdeAIDiagnostics = lazy(() =>
   import("./ideai-diagnostics").then((module) => ({
     default: module.IdeAIDiagnostics,

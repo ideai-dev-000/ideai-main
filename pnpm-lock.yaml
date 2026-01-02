@@ -261,9 +261,18 @@ importers:
       "@types/react-dom":
         specifier: ^19.0.2
         version: 19.2.2(@types/react@19.2.2)
+      autoprefixer:
+        specifier: ^10.4.20
+        version: 10.4.23(postcss@8.5.6)
       eslint:
         specifier: ^9.18.0
-        version: 9.39.1(jiti@2.6.1)
+        version: 9.39.1(jiti@1.21.7)
+      postcss:
+        specifier: ^8.4.47
+        version: 8.5.6
+      tailwindcss:
+        specifier: ^3.4.1
+        version: 3.4.19(tsx@4.21.0)(yaml@2.8.2)
       typescript:
         specifier: ^5.7.2
         version: 5.9.2
