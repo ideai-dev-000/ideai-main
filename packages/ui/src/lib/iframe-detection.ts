@@ -181,10 +181,18 @@ export function getIFrameContext(): IFrameContext {
   const isInIFrame = detectIFrame();
   const searchParams = new URLSearchParams(window.location.search);
 
+  // Check if we're being served as a child app in unified mode
+  // Child apps are served at /apps/{name} in the parent app
+  const pathname = window.location.pathname;
+  const isChildAppRoute = pathname.startsWith("/apps/") && 
+    pathname !== "/apps" &&
+    !pathname.startsWith("/apps/["); // Not the catch-all route itself
+
   // COMPACT FORMAT (Preferred)
   // i=1 - In iframe
   const explicitIFrame = parseBoolean(searchParams.get("i"), false);
-  const finalIsInIFrame = isInIFrame || explicitIFrame;
+  // In unified mode, child apps should hide branding (like in iframe)
+  const finalIsInIFrame = isInIFrame || explicitIFrame || isChildAppRoute;
 
   // v=0|1 - Visibility (0 = hide all, 1 = show all)
   const visibility = searchParams.get("v");

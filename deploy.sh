@@ -55,11 +55,23 @@ for app in "${APPS_TO_DEPLOY[@]}"; do
     exit 1
   fi
   
-  # Verify .vercel directory exists (project is linked)
+  # Check if project is linked, if not, try to link based on .ideai.json
   if [ ! -f "apps/$app/.vercel/project.json" ]; then
-    echo -e "${RED}❌ Project not linked: apps/${app}${NC}"
-    echo -e "${YELLOW}Run: cd apps/${app} && vercel link${NC}"
-    exit 1
+    echo -e "${YELLOW}⚠️  Project not linked: apps/${app}${NC}"
+    echo -e "${BLUE}Attempting to link based on .ideai.json config...${NC}"
+    
+    # Try to link using ideai-vercel-link script
+    if [ -f "scripts/ideai-vercel-link.mjs" ]; then
+      node scripts/ideai-vercel-link.mjs "$app" || {
+        echo -e "${RED}❌ Failed to link project${NC}"
+        echo -e "${YELLOW}Run manually: node scripts/ideai-vercel-link.mjs ${app}${NC}"
+        exit 1
+      }
+    else
+      echo -e "${RED}❌ Project not linked and linker script not found${NC}"
+      echo -e "${YELLOW}Run: cd apps/${app} && vercel link${NC}"
+      exit 1
+    fi
   fi
   
   # The issue: When Root Directory is set in dashboard AND we deploy from apps/$app,

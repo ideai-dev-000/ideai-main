@@ -86,6 +86,24 @@ All code files must include rich, descriptive headers with:
 - Error handling for async operations
 - Comments for complex logic
 
+### No Legacy Support Policy
+**CRITICAL**: IdeaI is building a future framework, not maintaining legacy code.
+
+**Rules**:
+- ❌ **NO legacy file format support** (e.g., `.ideai` files - only `.ideai.json`)
+- ❌ **NO backward compatibility code** for deprecated formats
+- ❌ **NO fallback to old formats** - if format changes, migrate immediately
+- ❌ **NO "legacy mode" flags** or feature toggles for old behavior
+- ✅ **ONLY current formats** - use `.ideai.json`, not `.ideai`
+- ✅ **Clean migration scripts** - migrate once, then remove old format
+- ✅ **Future-focused** - build for 2026+ best practices, not 2020 compatibility
+
+**Why**: Legacy support is bloat. We're building a modern framework, not maintaining old systems. If a format changes, migrate and remove the old format immediately.
+
+**Example**:
+- ❌ Bad: `if (legacyFile) { readLegacy(); } else { readNew(); }`
+- ✅ Good: `readNew();` (only new format supported)
+
 ## Commit Standards
 
 ### Commit Messages

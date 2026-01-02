@@ -1,0 +1,56 @@
+{
+  "role": "parent",
+  "name": "IdeaI",
+  "description": "Main IdeaI application",
+  "childApps": [
+    "docs",
+    "all",
+    "nocss",
+    "mvp",
+    "tailwind",
+    "allcss",
+    "bootstrap",
+    "unocss",
+    "shadcn"
+  ],
+  "vercelProject": {
+    "projectName": "ideai-main",
+    "orgId": "team_vhjzlMi6CfNow0IfBXnv2Yn2",
+    "forkToNew": false,
+    "comment": "Use existing ideai-main project. Set forkToNew: true to create new project."
+  },
+  "dependencies": {
+    "required": [
+      "@repo/ui"
+    ],
+    "childDependencies": {
+      "docs": [
+        "@repo/ui",
+        "@tailwindcss/typography",
+        "contentlayer",
+        "next-contentlayer",
+        "next-mdx-remote",
+        "react-markdown",
+        "rehype-raw",
+        "remark-gfm"
+      ],
+      "bootstrap": [
+        "@repo/ui",
+        "bootstrap"
+      ],
+      "shadcn": [
+        "@repo/ui",
+        "class-variance-authority",
+        "clsx",
+        "lucide-react",
+        "tailwind-merge",
+        "tailwindcss-animate"
+      ]
+    }
+  },
+  "build": {
+    "includeChildDependencies": true,
+    "verifyDependencies": true,
+    "securityCheck": true
+  }
+}

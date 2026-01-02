@@ -15,31 +15,46 @@ description: Strict UI consistency rules for the IdeaI monorepo to ensure identi
 
 ## Centralized CSS Architecture
 
-### Two-Layer System
+### Three-Layer System
 
-IdeaI uses a two-layer CSS architecture:
+IdeaI uses a three-layer CSS architecture:
 
-1. **Base Layer** (`packages/ui/src/styles/globals.css`):
-   - Tailwind CSS base, components, utilities
-   - Standard Tailwind colors and utilities
-   - Base typography and layout
+1. **Normalize Layer** (`packages/ui/src/styles/normalize.css`):
+   - Browser reset/normalize for consistent base styles
+   - Required for all apps
+   - Framework-agnostic
 
-2. **IdeaI Layer** (`packages/ui/src/styles/ideai.css`):
+2. **Framework Layer** (choose ONE):
+   - **Tailwind CSS** (`packages/ui/src/styles/globals.css`): Utility-first framework
+   - **MVP.css** (`packages/ui/src/styles/mvp.css`): Semantic HTML styling
+   - **Other frameworks**: Bootstrap, Material UI, Chakra UI, UnoCSS, etc.
+   - **IMPORTANT**: Frameworks are **mutually exclusive** - use ONE only
+
+3. **IdeaI Layer** (`packages/ui/src/styles/ideai.css`):
    - Custom IdeaI-specific styles
-   - Finesse and polish
+   - Framework-agnostic design tokens
    - Brand-specific components (buttons, typography, layouts)
 
 ### Import Pattern (MANDATORY)
 
-Every app's `globals.css` MUST import both layers:
+Every app's `globals.css` MUST follow this pattern:
 
 ```css
 /* apps/*/app/globals.css */
-@import "../../../packages/ui/src/styles/globals.css";
+
+/* 1. Normalize (required for all apps) */
+@import "../../../packages/ui/src/styles/normalize.css";
+
+/* 2. Framework (choose ONE - Tailwind OR MVP.css, never both) */
+@import "../../../packages/ui/src/styles/globals.css"; /* Tailwind CSS */
+/* OR */
+@import "../../../packages/ui/src/styles/mvp.css"; /* MVP.css */
+
+/* 3. IdeaI layer (framework-agnostic) */
 @import "../../../packages/ui/src/styles/ideai.css";
 ```
 
-**NO exceptions. NO custom CSS in app globals.css.**
+**NO exceptions. NO custom CSS in app globals.css. Frameworks are mutually exclusive.**
 
 ## Using Centralized IdeaI Styles
 

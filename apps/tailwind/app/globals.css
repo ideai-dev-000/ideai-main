@@ -1,11 +1,15 @@
 /**
  * @fileoverview Tailwind CSS only - Utility-first styling
  * 
- * This app uses Tailwind CSS for utility-first styling.
- * No MVP.css, no custom CSS - just Tailwind.
+ * This app uses Tailwind CSS exclusively for utility-first styling.
+ * NO MVP.css - frameworks are mutually exclusive.
+ * 
+ * Framework: Tailwind CSS only
+ * Base: Tailwind Preflight (includes normalize - no separate normalize.css needed)
  */
 
-/* Tailwind CSS base, components, utilities (without MVP.css) */
+/* Tailwind CSS base, components, utilities (EXCLUSIVE - no MVP.css) */
+/* Note: @tailwind base includes Preflight (normalize/reset) - no separate normalize.css */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

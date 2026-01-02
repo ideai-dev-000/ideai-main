@@ -39,16 +39,16 @@ Four dedicated apps demonstrate different CSS approaches:
   - Responsive design utilities
   - Customizable via config
 
-### 4. `/allcss` - MVP.css + Tailwind (Port 3006)
-- **Purpose**: Combined approach - semantic HTML + utilities
-- **Use Case**: Production apps with full styling capabilities
-- **Styling**: MVP.css + Tailwind CSS + IdeaI custom layer
+### 4. `/allcss` - Tailwind CSS Only (Port 3006)
+- **Purpose**: Tailwind CSS showcase (previously combined MVP + Tailwind)
+- **Use Case**: Production apps with utility-first styling
+- **Styling**: Tailwind CSS + IdeaI custom layer (NO MVP.css - frameworks are exclusive)
 - **URL**: http://localhost:3006
 - **Features**:
-  - MVP.css for semantic HTML styling
   - Tailwind for utility classes
   - IdeaI custom layer for brand-specific styles
   - Complete styling solution
+  - **Note**: This app was renamed from "allcss" but now uses Tailwind exclusively
 
 ## Best Practice Configurations
 
@@ -128,21 +128,26 @@ Four dedicated apps demonstrate different CSS approaches:
 - `tailwind.config.ts` - Tailwind configuration
 - `postcss.config.js` - PostCSS configuration
 
-### MVP.css + Tailwind Configuration (Recommended)
+### Framework Exclusivity
 
-**File**: `apps/allcss/app/globals.css`
+**IMPORTANT**: CSS frameworks are **mutually exclusive**. You must choose ONE:
+- ✅ **MVP.css** OR **Tailwind CSS** (never both)
+- ✅ All frameworks include **normalize.css** as the base layer
+- ✅ IdeaI CSS (`ideai.css`) is framework-agnostic and works with any framework
+
+**File**: `apps/allcss/app/globals.css` (now uses Tailwind only)
 
 ```css
 /**
- * MVP.css + Tailwind CSS - Complete styling
- * This app uses both MVP.css and Tailwind CSS for complete styling.
- * MVP.css provides semantic HTML styling, Tailwind provides utilities.
+ * Tailwind CSS only - Complete styling
+ * This app uses Tailwind CSS exclusively.
+ * NO MVP.css - frameworks are mutually exclusive.
  */
 
-/* MVP.css - Minimalist stylesheet for semantic HTML (~10KB) */
-@import "../../../packages/ui/src/styles/mvp.css";
+/* Normalize/Reset - Base styles */
+@import "../../../packages/ui/src/styles/normalize.css";
 
-/* Tailwind CSS base, components, utilities */
+/* Tailwind CSS base, components, utilities (EXCLUSIVE - no MVP.css) */
 @import "../../../packages/ui/src/styles/globals.css";
 
 /* IdeaI custom layer */
@@ -213,11 +218,11 @@ pnpm --filter @repo/allcss dev   # Port 3006
 
 ### For New Projects
 
-**Start with MVP.css + Tailwind** (`/allcss` approach):
-- Provides semantic HTML styling out of the box
-- Adds utility classes when needed
-- Best of both worlds
-- Production-ready
+**Choose ONE framework** (frameworks are mutually exclusive):
+- **MVP.css** (`/mvp` approach): Semantic HTML styling, no classes needed
+- **Tailwind CSS** (`/tailwind` or `/allcss` approach): Utility-first, full control
+- Both include normalize.css as base layer
+- Production-ready with either approach
 
 ### For Rapid Prototyping
 
@@ -249,9 +254,9 @@ apps/
 │   │   └── globals.css  # Tailwind directives
 │   ├── tailwind.config.ts
 │   └── postcss.config.js
-└── allcss/         # MVP.css + Tailwind
+└── allcss/         # Tailwind CSS only (previously MVP + Tailwind)
     ├── app/
-    │   └── globals.css  # Both imports
+    │   └── globals.css  # Tailwind only (normalize + Tailwind)
     ├── tailwind.config.ts
     └── postcss.config.js
 ```

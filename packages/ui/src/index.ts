@@ -22,6 +22,14 @@ export { IdeAIDiagnostics } from "./components/ideai-diagnostics";
 export type { IdeAIDiagnosticsProps } from "./components/ideai-diagnostics";
 export { IdeAIDeployment } from "./components/ideai-deployment";
 export type { IdeAIDeploymentProps, DeploymentOption } from "./components/ideai-deployment";
+export { IdeAIDocsViewer } from "./components/ideai-docs-viewer";
+export type { IdeAIDocsViewerProps } from "./components/ideai-docs-viewer";
+export { IdeAIHero } from "./components/ideai-hero";
+export type { IdeAIHeroProps } from "./components/ideai-hero";
+export { IdeAIFeatureGrid } from "./components/ideai-feature-grid";
+export type { IdeAIFeatureGridProps, Feature } from "./components/ideai-feature-grid";
+export { IdeAICTASection } from "./components/ideai-cta-section";
+export type { IdeAICTASectionProps } from "./components/ideai-cta-section";
 export { UniFrameShowcase } from "./components/uf-showcase";
 export { UF, type UFProps } from "./components/uf";
 // Note: Framework type from UF component is same as from uf-card-types, using uf-card-types version
@@ -51,4 +59,8 @@ export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from "./comp
 
 // Utilities
 export { getIdeAIFaviconMetadata } from "./lib/favicon-metadata";
+export { readIdeAIConfig, readIdeAIConfigSync, getChildAppConfig, getChildApps, type IdeAIConfig, type VercelProjectConfig } from "./lib/ideai-config";
+export { getAppMode, loadChildAppPage, shouldUseUnifiedMode, type AppMode } from "./lib/ideai-app-loader";
+export { getVercelProjectConfig, getVercelProjectName, shouldForkToNewProject, type VercelProjectConfig as IdeAIVercelProjectConfig } from "./lib/ideai-vercel";
+export { getAllDependencies, verifyDependencies, generateBuildMetadata, checkSecurity, readPackageDependencies, type IdeAIBuildConfig, type ChildDependency, type BuildMetadata } from "./lib/ideai-build";
 

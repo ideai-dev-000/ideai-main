@@ -15,12 +15,13 @@
 "use client";
 
 import { UF } from "@repo/ui/components/uf";
+import type { Framework } from "@repo/ui";
 import { Suspense } from "react";
 
 function UFDemoContent() {
   // Get framework from URL search params
   const searchParams = typeof window !== "undefined" ? new URLSearchParams(window.location.search) : null;
-  const defaultFramework = (searchParams?.get("framework") || "tailwind") as any;
+  const defaultFramework = (searchParams?.get("framework") || "tailwind") as Framework;
 
   return (
     <div style={{ padding: "1rem", minHeight: "100vh" }}>

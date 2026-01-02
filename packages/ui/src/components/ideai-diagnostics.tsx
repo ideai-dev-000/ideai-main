@@ -238,111 +238,127 @@ export const IdeAIDiagnostics = ({
   };
 
   const positionClasses = {
-    "top-right": "top-4 right-4",
-    "top-left": "top-4 left-4",
-    "bottom-right": "bottom-4 right-4",
-    "bottom-left": "bottom-4 left-4",
+    "top-right": "ideai-diagnostics--top-right",
+    "top-left": "ideai-diagnostics--top-left",
+    "bottom-right": "ideai-diagnostics--bottom-right",
+    "bottom-left": "ideai-diagnostics--bottom-left",
   };
 
   if (!visible) return null;
 
   return (
-    <div className={`fixed ${positionClasses[position]} z-50 font-mono text-xs`}>
+    <div className={`ideai-diagnostics ${positionClasses[position]}`}>
       {/* Toggle Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 px-3 py-2 rounded-lg shadow-lg hover:bg-slate-800 dark:hover:bg-slate-200 transition-colors flex items-center gap-2"
+        className="ideai-diagnostics__toggle"
         aria-label="Toggle IdeaI Diagnostics"
       >
-        <span className="font-bold">IdeaI</span>
-        <span className="text-[10px]">⚡</span>
+        <span style={{ fontWeight: 700 }}>IdeaI</span>
+        <span style={{ fontSize: "10px" }}>⚡</span>
       </button>
 
       {/* Diagnostics Panel */}
       {isOpen && (
-        <div className="absolute bottom-full right-0 mb-2 w-80 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg shadow-xl p-4 max-h-[80vh] overflow-y-auto">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="font-bold text-sm text-slate-900 dark:text-slate-100">
-              IdeaI Diagnostics {appName && `- ${appName}`}
-            </h3>
+        <div className="ideai-diagnostics__panel">
+          {/* Header */}
+          <div className="ideai-diagnostics__header">
+            <div>
+              <h3 className="ideai-diagnostics__title">
+                IdeaI Diagnostics {appName && `- ${appName}`}
+              </h3>
+              <p className="ideai-diagnostics__subtitle">Performance metrics and diagnostics</p>
+            </div>
             <button
               onClick={() => setIsOpen(false)}
-              className="text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
+              className="ideai-diagnostics__close"
               aria-label="Close"
             >
               ✕
             </button>
           </div>
 
-          <div className="space-y-4 text-xs">
-            {/* Framework Info */}
-            <section>
-              <h4 className="font-semibold text-slate-700 dark:text-slate-300 mb-2">Framework</h4>
-              <div className="space-y-1 text-slate-600 dark:text-slate-400">
-                <div>{metrics.framework}</div>
-                <div>React {metrics.reactVersion}</div>
-                {metrics.nextVersion && <div>Next.js {metrics.nextVersion}</div>}
+          {/* Dashboard Grid */}
+          <div className="ideai-diagnostics__grid">
+            {/* Framework Info - 3 columns */}
+            <section className="ideai-diagnostics__card" style={{ gridColumn: "span 3" }}>
+              <h4 className="ideai-diagnostics__card-title">Framework</h4>
+              <div className="ideai-diagnostics__card-content">
+                <div className="ideai-diagnostics__row">
+                  <span className="ideai-diagnostics__label">Framework:</span>
+                  <span className="ideai-diagnostics__value" style={{ fontWeight: 500 }}>{metrics.framework}</span>
+                </div>
+                <div className="ideai-diagnostics__row">
+                  <span className="ideai-diagnostics__label">React:</span>
+                  <span className="ideai-diagnostics__value">{metrics.reactVersion}</span>
+                </div>
+                {metrics.nextVersion && (
+                  <div className="ideai-diagnostics__row">
+                    <span className="ideai-diagnostics__label">Next.js:</span>
+                    <span className="ideai-diagnostics__value">{metrics.nextVersion}</span>
+                  </div>
+                )}
               </div>
             </section>
 
-            {/* Render Times */}
-            <section>
-              <h4 className="font-semibold text-slate-700 dark:text-slate-300 mb-2">Render Times</h4>
-              <div className="space-y-1 text-slate-600 dark:text-slate-400">
-                <div className="flex justify-between">
-                  <span>DOM Ready:</span>
-                  <span className="font-mono">{formatTime(metrics.domContentLoaded)}</span>
+            {/* Render Times - 5 columns */}
+            <section className="ideai-diagnostics__card" style={{ gridColumn: "span 5" }}>
+              <h4 className="ideai-diagnostics__card-title">Render Times</h4>
+              <div className="ideai-diagnostics__card-content">
+                <div className="ideai-diagnostics__row">
+                  <span className="ideai-diagnostics__label">DOM Ready:</span>
+                  <span className="ideai-diagnostics__value" style={{ fontWeight: 500 }}>{formatTime(metrics.domContentLoaded)}</span>
                 </div>
-                <div className="flex justify-between">
-                  <span>First Paint:</span>
-                  <span className="font-mono">{formatTime(metrics.firstPaint)}</span>
+                <div className="ideai-diagnostics__row">
+                  <span className="ideai-diagnostics__label">First Paint:</span>
+                  <span className="ideai-diagnostics__value" style={{ fontWeight: 500 }}>{formatTime(metrics.firstPaint)}</span>
                 </div>
-                <div className="flex justify-between">
-                  <span>FCP:</span>
-                  <span className="font-mono">{formatTime(metrics.firstContentfulPaint)}</span>
+                <div className="ideai-diagnostics__row">
+                  <span className="ideai-diagnostics__label">FCP:</span>
+                  <span className="ideai-diagnostics__value" style={{ fontWeight: 500 }}>{formatTime(metrics.firstContentfulPaint)}</span>
                 </div>
-                <div className="flex justify-between">
-                  <span>LCP:</span>
-                  <span className="font-mono">{formatTime(metrics.largestContentfulPaint)}</span>
+                <div className="ideai-diagnostics__row">
+                  <span className="ideai-diagnostics__label">LCP:</span>
+                  <span className="ideai-diagnostics__value" style={{ fontWeight: 500 }}>{formatTime(metrics.largestContentfulPaint)}</span>
                 </div>
-                <div className="flex justify-between">
-                  <span>Load Complete:</span>
-                  <span className="font-mono">{formatTime(metrics.loadComplete)}</span>
-                </div>
-              </div>
-            </section>
-
-            {/* File Sizes */}
-            <section>
-              <h4 className="font-semibold text-slate-700 dark:text-slate-300 mb-2">File Sizes</h4>
-              <div className="space-y-1 text-slate-600 dark:text-slate-400">
-                <div className="flex justify-between">
-                  <span>Total:</span>
-                  <span className="font-mono">{formatBytes(metrics.totalFileSize)}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>JavaScript:</span>
-                  <span className="font-mono">{formatBytes(metrics.jsFileSize)}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>CSS:</span>
-                  <span className="font-mono">{formatBytes(metrics.cssFileSize)}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Images:</span>
-                  <span className="font-mono">{formatBytes(metrics.imageFileSize)}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Fonts:</span>
-                  <span className="font-mono">{formatBytes(metrics.fontFileSize)}</span>
+                <div className="ideai-diagnostics__row">
+                  <span className="ideai-diagnostics__label">Load Complete:</span>
+                  <span className="ideai-diagnostics__value" style={{ fontWeight: 500 }}>{formatTime(metrics.loadComplete)}</span>
                 </div>
               </div>
             </section>
 
-            {/* Dev Tools */}
-            <section>
-              <h4 className="font-semibold text-slate-700 dark:text-slate-300 mb-2">Dev Tools</h4>
-              <div className="space-y-2">
+            {/* File Sizes - 4 columns */}
+            <section className="ideai-diagnostics__card" style={{ gridColumn: "span 4" }}>
+              <h4 className="ideai-diagnostics__card-title">File Sizes</h4>
+              <div className="ideai-diagnostics__card-content">
+                <div className="ideai-diagnostics__row">
+                  <span className="ideai-diagnostics__label">Total:</span>
+                  <span className="ideai-diagnostics__value" style={{ fontWeight: 500 }}>{formatBytes(metrics.totalFileSize)}</span>
+                </div>
+                <div className="ideai-diagnostics__row">
+                  <span className="ideai-diagnostics__label">JavaScript:</span>
+                  <span className="ideai-diagnostics__value" style={{ fontWeight: 500 }}>{formatBytes(metrics.jsFileSize)}</span>
+                </div>
+                <div className="ideai-diagnostics__row">
+                  <span className="ideai-diagnostics__label">CSS:</span>
+                  <span className="ideai-diagnostics__value" style={{ fontWeight: 500 }}>{formatBytes(metrics.cssFileSize)}</span>
+                </div>
+                <div className="ideai-diagnostics__row">
+                  <span className="ideai-diagnostics__label">Images:</span>
+                  <span className="ideai-diagnostics__value" style={{ fontWeight: 500 }}>{formatBytes(metrics.imageFileSize)}</span>
+                </div>
+                <div className="ideai-diagnostics__row">
+                  <span className="ideai-diagnostics__label">Fonts:</span>
+                  <span className="ideai-diagnostics__value" style={{ fontWeight: 500 }}>{formatBytes(metrics.fontFileSize)}</span>
+                </div>
+              </div>
+            </section>
+
+            {/* Dev Tools - Full width row */}
+            <section className="ideai-diagnostics__card" style={{ gridColumn: "span 12" }}>
+              <h4 className="ideai-diagnostics__card-title">Dev Tools</h4>
+              <div className="ideai-diagnostics__tools-grid">
                 <button
                   onClick={() => {
                     if (typeof window !== "undefined" && (window as any).__REACT_DEVTOOLS_GLOBAL_HOOK__) {
@@ -351,17 +367,19 @@ export const IdeAIDiagnostics = ({
                       console.log("React DevTools not detected");
                     }
                   }}
-                  className="w-full text-left px-2 py-1 bg-slate-100 dark:bg-slate-800 rounded hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300"
+                  className="ideai-diagnostics__tool-button"
                 >
-                  Check React DevTools
+                  <div className="ideai-diagnostics__tool-title">Check React DevTools</div>
+                  <div className="ideai-diagnostics__tool-desc">Detect if DevTools is active</div>
                 </button>
                 <button
                   onClick={() => {
                     console.table(metrics);
                   }}
-                  className="w-full text-left px-2 py-1 bg-slate-100 dark:bg-slate-800 rounded hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300"
+                  className="ideai-diagnostics__tool-button"
                 >
-                  Log Metrics to Console
+                  <div className="ideai-diagnostics__tool-title">Log Metrics to Console</div>
+                  <div className="ideai-diagnostics__tool-desc">Output all metrics data</div>
                 </button>
                 <button
                   onClick={() => {
@@ -370,9 +388,10 @@ export const IdeAIDiagnostics = ({
                       console.log("Performance Entries:", perf.getEntriesByType("resource"));
                     }
                   }}
-                  className="w-full text-left px-2 py-1 bg-slate-100 dark:bg-slate-800 rounded hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300"
+                  className="ideai-diagnostics__tool-button"
                 >
-                  Log Performance Entries
+                  <div className="ideai-diagnostics__tool-title">Log Performance Entries</div>
+                  <div className="ideai-diagnostics__tool-desc">View performance data</div>
                 </button>
               </div>
             </section>

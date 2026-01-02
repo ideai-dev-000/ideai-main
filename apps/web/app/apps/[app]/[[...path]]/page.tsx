@@ -1,18 +1,20 @@
 /**
- * @fileoverview Smart catch-all route for serving sub-apps at /apps/{name}
+ * @fileoverview Parent app route for serving child apps at /apps/{name}
  * 
  * @module SubAppCatchAll
  * @description
- * Smart routing that:
- * 1. Serves apps directly via iframe when available (development or integrated mode)
- * 2. Redirects to standalone URLs when configured (standalone deployment mode)
- * 3. Shows app info page as fallback
+ * Unified routing that serves child apps as routes within the parent app.
+ * Supports two modes:
+ * - Unified mode: Child apps imported as components (all on port 3000)
+ * - Individual mode: Child apps on separate ports (iframes, for dev/testing)
  * 
  * Architecture:
- * - Main app (web) at root: myui.space/
- * - Sub-apps at: myui.space/apps/{name}
- * - Apps can be served directly OR deployed standalone
- * - Smart detection: checks if app exists locally, serves it, otherwise redirects
+ * - Parent app (web) at root: myui.space/
+ * - Child apps at: myui.space/apps/{name}
+ * - Unified: Child apps are imported components (no branding, just main content)
+ * - Individual: Child apps in iframes (for development/testing)
+ * 
+ * Toggle mode via NEXT_PUBLIC_IDEAI_APP_MODE=unified|individual
  * 
  * @see https://nextjs.org/docs/app/building-your-application/routing/dynamic-routes
  */
@@ -20,8 +22,8 @@
 "use client";
 
 import { use, useEffect, useState, Suspense } from "react";
-import { IdeAIPageTemplate } from "@repo/ui/components/ideai-page-template";
-import { IdeAIDeployment } from "@repo/ui/components/ideai-deployment";
+import { IdeAIPageTemplate, getChildAppConfig, getAppMode } from "@repo/ui";
+import { getChildAppComponent } from "../registry";
 import styles from "./page.module.css";
 
 interface PageProps {
@@ -31,149 +33,52 @@ interface PageProps {
   }>;
 }
 
-// App configuration - matches all apps in monorepo
-const SUB_APPS = {
-  docs: {
-    name: "Documentation",
-    description: "IdeaI documentation site",
-    standaloneUrl: process.env.NEXT_PUBLIC_DOCS_URL,
-    localPort: 3001,
-  },
-  all: {
-    name: "All Components",
-    description: "Complete HTML5 test page and component showcase",
-    standaloneUrl: process.env.NEXT_PUBLIC_ALL_URL,
-    localPort: 3002,
-  },
-  nocss: {
-    name: "No CSS",
-    description: "Pure HTML browser defaults",
-    standaloneUrl: process.env.NEXT_PUBLIC_NOCSS_URL,
-    localPort: 3003,
-  },
-  mvp: {
-    name: "MVP.css",
-    description: "MVP.css only - semantic HTML styling",
-    standaloneUrl: process.env.NEXT_PUBLIC_MVP_URL,
-    localPort: 3004,
-  },
-  tailwind: {
-    name: "Tailwind CSS",
-    description: "Tailwind CSS only - utility-first styling",
-    standaloneUrl: process.env.NEXT_PUBLIC_TAILWIND_URL,
-    localPort: 3005,
-  },
-  allcss: {
-    name: "All CSS",
-    description: "MVP.css + Tailwind CSS - complete styling",
-    standaloneUrl: process.env.NEXT_PUBLIC_ALLCSS_URL,
-    localPort: 3006,
-  },
-  bootstrap: {
-    name: "Bootstrap",
-    description: "Bootstrap CSS framework",
-    standaloneUrl: process.env.NEXT_PUBLIC_BOOTSTRAP_URL,
-    localPort: 3007,
-  },
-  unocss: {
-    name: "UnoCSS",
-    description: "UnoCSS utility-first CSS engine",
-    standaloneUrl: process.env.NEXT_PUBLIC_UNOCSS_URL,
-    localPort: 3008,
-  },
-  shadcn: {
-    name: "Shadcn Components",
-    description: "Shadcn/ui component showcase",
-    standaloneUrl: process.env.NEXT_PUBLIC_SHADCN_URL,
-    localPort: 3009,
-  },
-} as const;
-
-type AppId = keyof typeof SUB_APPS;
 
 function SubAppPageContent({ params }: PageProps) {
-  // Use React's use() hook to unwrap the Promise
-  // This is the correct way to handle async params in client components
   const resolvedParams = use(params);
   const app = resolvedParams?.app || "";
   const path = resolvedParams?.path || [];
-  const [appStatus, setAppStatus] = useState<{
-    running: boolean;
-    url: string | null;
-  } | null>(null);
+  const [appUrl, setAppUrl] = useState<string | null>(null);
+  const [appConfig, setAppConfig] = useState<{ name: string; localPort?: number } | null>(null);
+  const [ChildComponent, setChildComponent] = useState<React.ComponentType<any> | null>(null);
+  const [mode, setMode] = useState<"unified" | "individual">("individual");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (!app) return;
 
-    const appConfig = SUB_APPS[app as AppId];
-    if (!appConfig) return;
+    const currentMode = getAppMode();
+    setMode(currentMode);
 
-    // Check if app is running locally (development)
-    async function checkAppStatus() {
-      if (typeof window === "undefined") return;
+    // Get child app config
+    const config = getChildAppConfig(app);
+    setAppConfig({
+      name: config.name,
+      localPort: config.localPort,
+    });
 
-      // In development, check if local server is running
+    if (currentMode === "unified") {
+      // Unified mode: Load child app as component from registry (synchronous)
+      const Component = getChildAppComponent(app);
+      setChildComponent(Component);
+      setLoading(false);
+    } else {
+      // Individual mode: Use iframe with separate port
       // eslint-disable-next-line turbo/no-undeclared-env-vars
-      if (process.env.NODE_ENV === "development" && appConfig.localPort) {
-        try {
-          const localUrl = `http://localhost:${appConfig.localPort}`;
-          // Use no-cors mode to check if server is running (CORS errors are expected)
-          await fetch(localUrl, { 
-            method: "HEAD",
-            mode: "no-cors",
-            cache: "no-store"
-          });
-          // If we can reach it (even with CORS error), it's running
-          setAppStatus({
-            running: true,
-            url: localUrl,
-          });
-        } catch {
-          setAppStatus({
-            running: false,
-            url: null,
-          });
-        }
-      } else {
-        // In production, assume app is available if no standalone URL is set
-        // (meaning it should be served directly)
-        if (!appConfig.standaloneUrl) {
-          setAppStatus({
-            running: true,
-            url: null, // Will be served via iframe from same origin
-          });
-        } else {
-          setAppStatus({
-            running: false,
-            url: null,
-          });
-        }
+      if (process.env.NODE_ENV === "development" && config.localPort) {
+        setAppUrl(`http://localhost:${config.localPort}`);
       }
+      setLoading(false);
     }
-
-    checkAppStatus();
   }, [app]);
 
-  // Compute values for rendering
-  const appConfig = app ? SUB_APPS[app as AppId] : null;
   const pathStr = path.length > 0 ? `/${path.join("/")}` : "";
-  const standaloneUrl = appConfig?.standaloneUrl 
-    ? `${appConfig.standaloneUrl}${pathStr}`
-    : null;
 
-  // Strategy 1: Redirect to standalone URL (if configured and in production)
-  useEffect(() => {
-    // eslint-disable-next-line turbo/no-undeclared-env-vars
-    if (standaloneUrl && process.env.NODE_ENV === "production" && typeof window !== "undefined") {
-      window.location.href = standaloneUrl;
-    }
-  }, [standaloneUrl]);
-
-  if (!app) {
+  if (!app || loading) {
     return (
       <IdeAIPageTemplate siteName="Loading...">
         <div className={styles.container}>
-          <p>Loading...</p>
+          <p>Loading {app || "app"}...</p>
         </div>
       </IdeAIPageTemplate>
     );
@@ -193,136 +98,88 @@ function SubAppPageContent({ params }: PageProps) {
     );
   }
 
-  // eslint-disable-next-line turbo/no-undeclared-env-vars
-  if (standaloneUrl && process.env.NODE_ENV === "production") {
-    return (
-      <IdeAIPageTemplate siteName={`Redirecting to ${appConfig.name}...`}>
-        <div className={styles.container}>
-          <div className={styles.infoPage}>
-            <h1>Redirecting...</h1>
-            <p>Redirecting to {appConfig.name}...</p>
-            <p>
-              If you are not redirected, <a href={standaloneUrl}>click here</a>.
-            </p>
+  // Unified mode: All apps on port 3000, child apps embedded as iframes
+  // Parent app: http://localhost:3000/ (default)
+  // Child apps: http://localhost:3000/{name} (proxied via rewrites)
+  // Parent embeds: http://localhost:3000/apps/{name} (shows child app in iframe)
+  // Child apps detect /apps/{name} route and hide branding automatically
+  if (mode === "unified") {
+    // In unified mode, child apps are proxied to their root paths via Next.js rewrites
+    // We use iframe pointing to child app's root (/) - rewrites handle the proxy
+    // The child app will detect it's embedded via iframe detection and hide branding
+    const iframeUrl = typeof window !== "undefined" 
+      ? `${window.location.origin}/${app}${pathStr}?i=1&h=0&f=0&n=0`
+      : null;
+    
+    if (iframeUrl) {
+      return (
+        <IdeAIPageTemplate siteName={appConfig.name}>
+          <div className={styles.container}>
+            <div className={styles.iframeWrapper}>
+              <iframe
+                src={iframeUrl}
+                className={styles.appIframe}
+                title={appConfig.name}
+                loading="lazy"
+                sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-modals"
+              />
+            </div>
           </div>
-        </div>
-      </IdeAIPageTemplate>
-    );
-  }
-
-  // Strategy 2: Serve directly via iframe (if app is available)
-  // eslint-disable-next-line turbo/no-undeclared-env-vars
-  const isProduction = process.env.NODE_ENV === "production";
-  // Only serve via iframe if we have a valid URL (local dev server or standalone)
-  // Don't try to load relative paths in production as apps are separate deployments
-  if (appStatus?.running && appStatus.url) {
-    const iframeUrl = `${appStatus.url}${pathStr}`;
-
+        </IdeAIPageTemplate>
+      );
+    }
+    
+    // Fallback
     return (
       <IdeAIPageTemplate siteName={appConfig.name}>
         <div className={styles.container}>
-          <div className={styles.header}>
+          <div className={styles.infoPage}>
             <h1>{appConfig.name}</h1>
-            <p className={styles.description}>{appConfig.description}</p>
-            {standaloneUrl && (
-              <p className={styles.standaloneLink}>
-                <a
-                  href={standaloneUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Open as standalone app →
-                </a>
-              </p>
-            )}
-          </div>
-          <div className={styles.iframeWrapper}>
-            <iframe
-              src={iframeUrl}
-              className={styles.appIframe}
-              title={`${appConfig.name} - ${app}`}
-              loading="lazy"
-              sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-modals"
-            />
+            <p>Mode: Unified (all apps on port 3000)</p>
+            <p>Child apps are embedded as iframes in the parent app.</p>
+            <p>
+              <a href="/index">← Back to Apps Index</a>
+            </p>
           </div>
         </div>
       </IdeAIPageTemplate>
     );
   }
 
-  // Strategy 3: Show info page (fallback)
+  // Individual mode: Use iframe
+  const iframeUrl = appUrl ? `${appUrl}${pathStr}` : null;
+
+  if (!iframeUrl) {
+    return (
+      <IdeAIPageTemplate siteName={appConfig.name}>
+        <div className={styles.container}>
+          <div className={styles.infoPage}>
+            <h1>{appConfig.name}</h1>
+            <p>Mode: Individual (separate ports)</p>
+            <p>Start the development server to view this app:</p>
+            <code className={styles.command}>
+              pnpm --filter {app} dev
+            </code>
+            <p>
+              <a href="/index">← Back to Apps Index</a>
+            </p>
+          </div>
+        </div>
+      </IdeAIPageTemplate>
+    );
+  }
+
   return (
     <IdeAIPageTemplate siteName={appConfig.name}>
       <div className={styles.container}>
-        <div className={styles.infoPage}>
-          <h1>{appConfig.name}</h1>
-          <p className={styles.description}>{appConfig.description}</p>
-          <div className={styles.info}>
-            <p>
-              <strong>Path:</strong> /apps/{app}
-              {path.length > 0 && `/${path.join("/")}`}
-            </p>
-            {appConfig.localPort && (
-              <p>
-                <strong>Local Port:</strong> {appConfig.localPort}
-              </p>
-            )}
-            {standaloneUrl && (
-              <p>
-                <strong>Standalone URL:</strong>{" "}
-                <a
-                  href={standaloneUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {standaloneUrl}
-                </a>
-              </p>
-            )}
-          </div>
-          {standaloneUrl ? (
-            <div className={styles.actions}>
-              <a
-                href={standaloneUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={styles.button}
-              >
-                Open Standalone App
-              </a>
-            </div>
-          ) : (
-            <div className={styles.actions}>
-              {isProduction ? (
-                <IdeAIDeployment
-                  appName={app}
-                  appConfig={appConfig}
-                  currentPath={`/apps/${app}${pathStr}`}
-                  showLogs={true}
-                />
-              ) : (
-                <>
-                  <p className={styles.hint}>
-                    Start the development server to view this app:
-                  </p>
-                  <code className={styles.command}>
-                    pnpm --filter {app} dev
-                  </code>
-                  <div className="mt-4">
-                    <IdeAIDeployment
-                      appName={app}
-                      appConfig={appConfig}
-                      currentPath={`/apps/${app}${pathStr}`}
-                      showLogs={true}
-                    />
-                  </div>
-                </>
-              )}
-            </div>
-          )}
-          <div className={styles.backLink}>
-            <a href="/index">← Back to Apps Index</a>
-          </div>
+        <div className={styles.iframeWrapper}>
+          <iframe
+            src={iframeUrl}
+            className={styles.appIframe}
+            title={appConfig.name}
+            loading="lazy"
+            sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-modals"
+          />
         </div>
       </div>
     </IdeAIPageTemplate>

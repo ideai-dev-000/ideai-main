@@ -26,3 +26,4 @@ export type { Framework, FrameworkConfig } from "./ideai-card-types";
 export { frameworkConfigs } from "./ideai-card-types";
 
 
+

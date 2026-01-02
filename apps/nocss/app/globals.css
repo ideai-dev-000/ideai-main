@@ -3,7 +3,11 @@
  * 
  * This app has NO CSS styling - just browser defaults.
  * Used to compare against styled versions.
+ * 
+ * Framework: None
+ * Base: Normalize only (for consistent baseline)
  */
 
-/* No CSS imports - pure HTML defaults */
+/* Normalize/Reset only - Base styles for consistent rendering, no framework CSS */
+@import "../../../packages/ui/src/styles/normalize.css";
 

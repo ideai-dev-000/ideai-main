@@ -1,187 +1,236 @@
 # IdeaI Monorepo
 
-A Turborepo monorepo containing Next.js applications and shared packages for IdeaI.
+**Future-focused framework for building powerful SaaS applications with parent-child app architecture.**
 
-## 📚 Documentation
+## What is IdeaI?
 
-Comprehensive documentation is available in the [`docs/`](./docs/) directory:
-
-- **[Documentation Index](./docs/README.md)** - Start here for all documentation
-- **[Getting Started](./docs/development/getting-started.md)** - Development setup
-- **[Deployment Guide](./docs/deployment/overview.md)** - Deployment documentation
-- **[Setup Guide](./docs/setup/github-secrets.md)** - CI/CD configuration
-
-## Using this example
-
-Run the following command:
-
-```sh
-npx create-turbo@latest
-```
-
-## What's inside?
-
-This Turborepo includes the following packages/apps:
-
-### Apps and Packages
-
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
-
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
-
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build
-yarn dlx turbo build
-pnpm exec turbo build
-```
-
-You can build a specific package by using a [filter](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters):
-
-```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build --filter=docs
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build --filter=docs
-yarn exec turbo build --filter=docs
-pnpm exec turbo build --filter=docs
-```
-
-### Develop
-
-To develop all apps and packages, run the following command:
-
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev
-yarn exec turbo dev
-pnpm exec turbo dev
-```
-
-You can develop a specific package by using a [filter](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters):
-
-```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev --filter=web
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev --filter=web
-yarn exec turbo dev --filter=web
-pnpm exec turbo dev --filter=web
-```
-
-### Remote Caching
-
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
-
-Turborepo can use a technique known as [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
-
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo login
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo login
-yarn exec turbo login
-pnpm exec turbo login
-```
-
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo link
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo link
-yarn exec turbo link
-pnpm exec turbo link
-```
+IdeaI is a modern monorepo framework that enables:
+- **Parent-Child App Architecture**: One parent app serving multiple child apps
+- **Unified Deployment**: All apps on one domain with iframe embedding
+- **Documentation Integration**: Built-in docs viewer for AI and developers
+- **Vercel Ready**: Complete deployment configuration
+- **Future-Focused**: No legacy support, 2026+ best practices
 
 ## Quick Start
 
+### Prerequisites
+
+- Node.js 20+
+- pnpm 9+
+
+### Installation
+
 ```bash
+# Clone repository
+git clone <repo-url>
+cd ideai-main
+
 # Install dependencies
 pnpm install
 
-# Start development servers
-pnpm dev
-
-# Build all applications
-pnpm build
+# Start development
+pnpm --filter web dev
 ```
 
 ## Project Structure
 
-- `apps/web` - Main web application (Next.js)
-- `apps/docs` - Documentation site (Next.js)
-- `packages/ui` - Shared UI components
-- `packages/eslint-config` - Shared ESLint configuration
-- `packages/typescript-config` - Shared TypeScript configuration
-
-## CI/CD
-
-This project uses GitHub Actions for CI/CD and Vercel for deployments.
-
-- **Preview deployments**: Automatic on push to `preview` branch
-- **Production deployments**: Automatic on push to `main` branch
-
-See [Deployment Documentation](./docs/deployment/overview.md) for details.
-
-## Setup Scripts
-
-### GitHub Secrets Setup
-
-Use the provided script to configure GitHub secrets for CI/CD:
-
-```bash
-./scripts/setup-secrets.sh
+```
+ideai-main/
+├── apps/                  # Applications
+│   ├── web/              # Main parent app (boilerplate)
+│   ├── docs/             # Documentation site
+│   └── ...               # Other child apps
+├── packages/             # Shared packages
+│   └── ui/               # UI components and utilities
+├── docs/                 # Documentation files
+└── scripts/              # Build and deployment scripts
 ```
 
-See [GitHub Secrets Setup Guide](./docs/setup/github-secrets.md) for details.
+## Main App: `apps/web`
 
-### Commit Signing
+The `web` app is:
+- **Production App**: Main IdeaI application
+- **Boilerplate**: Complete example for new apps
+- **Documentation Hub**: Integrated docs viewer
 
-✅ **Commit signing is configured and working!**
+See [apps/web/README.md](apps/web/README.md) for details.
 
-All commits are automatically signed with GPG. See [Commit Signing Setup](./docs/setup/commit-signing.md) for details.
+## Documentation
 
-## Useful Links
+### For Developers
 
-- [Documentation](./docs/README.md) - Complete documentation index
-- [Turborepo Docs](https://turbo.build/repo/docs) - Turborepo documentation
-- [Next.js Docs](https://nextjs.org/docs) - Next.js documentation
+- **Getting Started**: [docs/development/getting-started.md](docs/development/getting-started.md)
+- **Architecture**: [docs/architecture/](docs/architecture/)
+- **Deployment**: [docs/deployment/](docs/deployment/)
+
+### For AI Assistants
+
+- **Documentation Viewer**: `http://localhost:3000/docs`
+- **Filtered Docs**: `http://localhost:3000/docs?category=deployment`
+- **App Config**: Check `.ideai.json` files in each app
+
+## Key Features
+
+### 1. Parent-Child Architecture
+
+Configure apps in `.ideai.json`:
+
+```json
+{
+  "role": "parent",
+  "name": "IdeaI",
+  "childApps": ["docs", "all", "nocss"]
+}
+```
+
+### 2. Unified Deployment
+
+All apps deploy to one Vercel project:
+- Parent app: `ideai-main`
+- Child apps: Embedded via iframes
+- Single domain: `myui.space`
+
+### 3. Documentation Integration
+
+Built-in docs viewer component:
+```tsx
+import { IdeAIDocsViewer } from "@repo/ui";
+
+<IdeAIDocsViewer filter={{ category: "deployment" }} />
+```
+
+### 4. No Legacy Support
+
+- Only current formats (`.ideai.json`)
+- No backward compatibility code
+- Future-focused architecture
+
+## Development
+
+### Start Development Server
+
+```bash
+# Parent app (web)
+pnpm --filter web dev
+
+# Child app (docs)
+pnpm --filter docs dev
+```
+
+### Build
+
+```bash
+# Build all apps
+pnpm build
+
+# Build specific app
+pnpm --filter web build
+```
+
+### Linting & Type Checking
+
+```bash
+# Lint
+pnpm lint
+
+# Type check
+pnpm check-types
+```
+
+## Deployment
+
+### Vercel Deployment
+
+```bash
+# Preview
+./deploy.sh web
+
+# Production
+./deploy.sh --prod web
+```
+
+### Configuration
+
+Each app's `.ideai.json` specifies Vercel project:
+
+```json
+{
+  "vercelProject": {
+    "projectName": "ideai-main",
+    "forkToNew": false
+  }
+}
+```
+
+## Architecture
+
+### Parent-Child Apps
+
+- **Parent**: Serves at root, embeds child apps
+- **Child**: Separate Next.js apps, embedded via iframes
+- **Configuration**: `.ideai.json` files
+
+### Documentation
+
+- **Docs App**: `apps/docs` (Contentlayer-based)
+- **Docs Viewer**: `IdeAIDocsViewer` component
+- **Filtering**: By category, path, or search
+
+## Configuration
+
+### App Configuration (`.ideai.json`)
+
+```json
+{
+  "role": "parent" | "child",
+  "name": "App Name",
+  "childApps": ["app1", "app2"],
+  "vercelProject": {
+    "projectName": "project-name",
+    "forkToNew": false
+  },
+  "metadata": {
+    "id": "app-id",
+    "port": 3000,
+    "css": ["Tailwind CSS"],
+    "capabilities": ["Feature 1", "Feature 2"]
+  }
+}
+```
+
+## Documentation
+
+### For Developers
+
+- [Getting Started](docs/development/getting-started.md)
+- [Architecture Guide](docs/architecture/parent-child-complete.md)
+- [Deployment Guide](docs/deployment/overview.md)
+- [Vercel Configuration](docs/deployment/vercel.md)
+
+### For AI Assistants
+
+- **Documentation**: Access via `/docs` route
+- **App Config**: Check `.ideai.json` in each app
+- **Component Docs**: See `packages/ui/src/components/`
+- **Architecture**: See `docs/architecture/`
+
+## Contributing
+
+1. Read [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)
+2. Follow code standards in `.cursorrules`
+3. No legacy support - use current formats only
+4. Update documentation with changes
+
+## License
+
+[License information]
+
+## Support
+
+- **Documentation**: `/docs` or `https://docs.myui.space`
+- **Issues**: GitHub Issues
+- **Questions**: Check documentation first
+
+---
+
+**Built with IdeaI** - Future-focused framework for modern SaaS applications.

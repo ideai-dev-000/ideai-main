@@ -77,15 +77,14 @@ export const IdeAIFooter = ({
       itemType="https://schema.org/WPFooter"
     >
       <div className="ideai-footer__container">
-        {/* Logo/Brand Area */}
-        <div className="ideai-footer__brand">
-          <IdeAILogo siteName={siteName} />
-        </div>
-
         {/* Three-Column Layout */}
         <div className="ideai-footer__columns">
-          {/* Left: Address & Copyright */}
+          {/* Left: Brand, Address & Copyright */}
           <div className="ideai-footer__column ideai-footer__column--left">
+            {/* Logo/Brand Area */}
+            <div className="ideai-footer__brand">
+              <IdeAILogo siteName={siteName} />
+            </div>
             <address className="ideai-footer__address" itemScope itemType="https://schema.org/PostalAddress">
               {address.street && (
                 <span itemProp="streetAddress" className="ideai-footer__address-line">

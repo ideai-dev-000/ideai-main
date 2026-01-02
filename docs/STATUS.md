@@ -60,6 +60,25 @@ description: Current status, completed work, and pending tasks for IdeaI monorep
   - Route verified working in local production mode
   - See: [Multi-Strategy Deployment Plan](./deployment/MULTI-STRATEGY-DEPLOYMENT-PLAN.md#ticket-01-fix-sub-folder-route-404-issue)
 
+### Phase 1: Stabilize Deployment Workflow ✅ **COMPLETED**
+- [x] **TICKET-1.1**: Document Current Deployment Workflow ✅ **COMPLETED**
+  - Created comprehensive GitHub → Vercel workflow documentation
+  - Created Vercel CLI direct deployment guide
+  - Created deployment decision matrix
+  - Created rollback procedures guide
+- [x] **TICKET-1.2**: Implement GitHub → Vercel Auto-Deployment ✅ **COMPLETED**
+  - Verified existing GitHub Actions workflows
+  - Created branch protection setup guide
+  - Documented deployment status checks
+- [x] **TICKET-1.3**: Implement Vercel → GitHub Backup Workflow ✅ **COMPLETED**
+  - Created Vercel → GitHub sync workflow documentation
+  - Created sync script (`scripts/sync-vercel-to-github.sh`)
+  - Documented sync procedures and best practices
+- [x] **TICKET-1.4**: Create Deployment Safety Checklist ✅ **COMPLETED**
+  - Created pre/post deployment checklists
+  - Documented rollback procedures
+  - Created safety guidelines
+
 ### Phase 1: Site Card Integration (Paused)
 - [ ] Create status API endpoints (`/api/status/local`, `/api/status/vercel`)
 - [ ] Create status dashboard page

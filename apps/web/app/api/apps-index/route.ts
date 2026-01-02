@@ -60,14 +60,31 @@ async function readIdeaiMetadata(
   for (const entry of entries) {
     if (entry.isDirectory()) {
       const appPath = join(appsDir, entry.name);
-      const ideaiPath = join(appPath, ".ideai");
+      const ideaiJsonPath = join(appPath, ".ideai.json");
       
       try {
-        const stats = await stat(ideaiPath);
+        let metadata: AppMetadata | null = null;
+        
+        // Read .ideai.json (only format supported)
+        const stats = await stat(ideaiJsonPath);
         if (stats.isFile()) {
-          const content = await readFile(ideaiPath, "utf-8");
-          const metadata = JSON.parse(content) as AppMetadata;
+          const content = await readFile(ideaiJsonPath, "utf-8");
+          const config = JSON.parse(content) as any;
           
+          // Extract metadata from config
+          metadata = {
+            id: config.metadata?.id || entry.name,
+            name: config.name || entry.name,
+            description: config.description || "",
+            port: config.metadata?.port || config.localPort || 0,
+            css: config.metadata?.css || [],
+            capabilities: config.metadata?.capabilities || [],
+            path: config.metadata?.path || `/${entry.name}`,
+            category: config.metadata?.category || "development",
+          };
+        }
+        
+        if (metadata) {
           let status: AppStatus | undefined = undefined;
           if (includeStatus && metadata.port) {
             const running = await isPortInUse(metadata.port);
@@ -84,8 +101,8 @@ async function readIdeaiMetadata(
             appPath: appPath.replace(repoRoot, ""),
           });
         }
-      } catch (error) {
-        // Skip if .ideai doesn't exist or can't be read
+      } catch {
+        // Skip if files don't exist or can't be read
       }
     }
   }

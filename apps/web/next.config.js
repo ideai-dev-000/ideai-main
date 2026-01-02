@@ -17,10 +17,34 @@ const nextConfig = {
   // Catch-all routes are handled by app/apps/[app]/[[...path]]/page.tsx
   // This allows serving sub-apps at /apps/{name}
   
-  // Optional: Add rewrites for development if needed
+  // Rewrites for unified mode: proxy child apps to their dev servers
+  // In unified mode, child apps run on their own ports but are proxied through parent
+  // Parent app embeds them as iframes at /apps/{name}
   async rewrites() {
-    // In development, we could proxy to local dev servers
-    // In production, sub-apps are either served directly or redirect to standalone URLs
+    const isUnified = process.env.NEXT_PUBLIC_IDEAI_APP_MODE === "unified";
+    
+    if (isUnified && process.env.NODE_ENV === "development") {
+      // In unified mode (dev), proxy child app routes to their dev servers
+      // This allows child apps to be accessible on port 3000 via proxy
+      // Parent app embeds them as iframes at /apps/{name}
+      const childApps = {
+        docs: 3001,
+        all: 3002,
+        nocss: 3003,
+        mvp: 3004,
+        tailwind: 3005,
+        allcss: 3006,
+        bootstrap: 3007,
+        unocss: 3008,
+        shadcn: 3009,
+      };
+      
+      return Object.entries(childApps).map(([app, port]) => ({
+        source: `/${app}/:path*`,
+        destination: `http://localhost:${port}/:path*`,
+      }));
+    }
+    
     return [];
   },
 };

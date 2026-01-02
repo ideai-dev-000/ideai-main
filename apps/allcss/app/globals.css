@@ -1,14 +1,15 @@
 /**
- * @fileoverview MVP.css + Tailwind CSS - Complete styling
+ * @fileoverview Tailwind CSS only - Complete styling
  * 
- * This app uses both MVP.css and Tailwind CSS for complete styling.
- * MVP.css provides semantic HTML styling, Tailwind provides utilities.
+ * NOTE: This app was previously "allcss" (MVP + Tailwind), but frameworks
+ * are now mutually exclusive. This app now uses Tailwind CSS only.
+ * 
+ * Framework: Tailwind CSS only
+ * Base: Tailwind Preflight (includes normalize - no separate normalize.css needed)
  */
 
-/* MVP.css - Minimalist stylesheet for semantic HTML (~10KB) */
-@import "../../../packages/ui/src/styles/mvp.css";
-
-/* Tailwind CSS base, components, utilities */
+/* Tailwind CSS - Utility-first framework (EXCLUSIVE - no MVP.css) */
+/* Note: @tailwind base includes Preflight (normalize/reset) - no separate normalize.css */
 @import "../../../packages/ui/src/styles/globals.css";
 
 /* IdeaI custom layer */

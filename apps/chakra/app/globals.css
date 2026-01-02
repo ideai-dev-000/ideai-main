@@ -1,10 +1,17 @@
 /**
  * @fileoverview Chakra UI CSS - Simple, modular and accessible component library
  * 
- * This app uses Chakra UI for component-based styling.
- * Chakra UI provides simple, modular and accessible components.
+ * This app uses Chakra UI exclusively for component-based styling.
+ * NO Tailwind, NO MVP.css - frameworks are mutually exclusive.
+ * 
+ * Framework: Chakra UI only
+ * Base: Normalize
  */
 
+/* Normalize/Reset - Base styles for consistent rendering */
+@import "../../../packages/ui/src/styles/normalize.css";
+
 /* Chakra UI styles are injected via @emotion/react */
+
 
 

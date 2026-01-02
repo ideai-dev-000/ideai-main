@@ -62,7 +62,7 @@ interface IdeAIPageTemplateProps {
 export const IdeAIPageTemplate = ({
   siteName,
   subtitle: _subtitle = "Welcome to IdeaI",
-  vercelProjectName: _vercelProjectName,
+  vercelProjectName,
   vercelOrgId: _vercelOrgId,
   children,
   headerActions: _headerActions,
@@ -72,7 +72,6 @@ export const IdeAIPageTemplate = ({
 }: IdeAIPageTemplateProps) => {
   // Suppress unused variable warnings - these props are kept for backward compatibility
   void _subtitle;
-  void _vercelProjectName;
   void _vercelOrgId;
   void _headerActions;
 
@@ -125,6 +124,7 @@ export const IdeAIPageTemplate = ({
           sticky={true}
           shrinkOnScroll={true}
           fullWidth={true}
+          diagnosticsAppName={vercelProjectName}
         />
       </div>
       

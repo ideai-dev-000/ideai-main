@@ -13,7 +13,7 @@
 
 import { useState, useEffect } from "react";
 import { IdeAILogo } from "./ideai-logo";
-import { UFModalTrigger } from "./uf-modal-trigger";
+import { IdeAIDiagnostics } from "./ideai-diagnostics";
 
 interface NavItem {
   label: string;
@@ -32,6 +32,7 @@ interface IdeaIHeaderProps {
   sticky?: boolean;
   shrinkOnScroll?: boolean;
   fullWidth?: boolean;
+  diagnosticsAppName?: string;
 }
 
 export const IdeaIHeader = ({
@@ -54,6 +55,7 @@ export const IdeaIHeader = ({
   sticky = true,
   shrinkOnScroll = true,
   fullWidth = true,
+  diagnosticsAppName,
 }: IdeaIHeaderProps) => {
   const [isExtraNavOpen, setIsExtraNavOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -101,6 +103,11 @@ export const IdeaIHeader = ({
         className={`ideai-header ${sticky ? "ideai-header--sticky" : ""} ${isScrolled ? "ideai-header--scrolled" : ""} ${fullWidth ? "ideai-header--full-width" : ""}`}
         role="banner"
       >
+        {/* IdeaI Diagnostics - First element in header DOM */}
+        {diagnosticsAppName && (
+          <IdeAIDiagnostics appName={diagnosticsAppName} position="top-right" />
+        )}
+        
         <div className="ideai-header__container">
           {/* Left: Logo/Brand */}
           <div className="ideai-header__brand">
@@ -166,19 +173,10 @@ export const IdeaIHeader = ({
             </button>
           </nav>
 
-          {/* Right: Accounts + UniFrame Demo */}
+          {/* Right: Accounts */}
           <div className="ideai-header__accounts">
             <nav aria-label="Account navigation" role="navigation">
               <ul className="ideai-header__accounts-list">
-                {/* UniFrame Demo Modal Trigger */}
-                <li className="ideai-header__accounts-item">
-                  <UFModalTrigger
-                    defaultFramework="tailwind"
-                    buttonText="UniFrame"
-                    variant="outline"
-                    className="ideai-header__uniframe-trigger"
-                  />
-                </li>
                 {accountLinks.map((link) => (
                   <li key={link.href} className="ideai-header__accounts-item">
                     <a

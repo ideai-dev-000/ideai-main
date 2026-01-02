@@ -3,15 +3,17 @@
  * 
  * @module DocsGlobalStyles
  * @description
- * Global styles for the docs app. Imports centralized IdeaI design system.
- * NO custom CSS - all styles come from @repo/ui.
+ * Uses Tailwind CSS exclusively. NO MVP.css - frameworks are mutually exclusive.
+ * 
+ * Framework: Tailwind CSS only
+ * Base: Tailwind Preflight (includes normalize - no separate normalize.css needed)
  */
 
-/* MVP.css - Minimalist stylesheet for semantic HTML (~10KB) */
-@import "../../../packages/ui/src/styles/mvp.css";
-
-/* Import centralized IdeaI design system */
+/* Tailwind CSS - Utility-first framework (EXCLUSIVE - no MVP.css) */
+/* Note: @tailwind base includes Preflight (normalize/reset) - no separate normalize.css */
 @import "../../../packages/ui/src/styles/globals.css";
+
+/* IdeaI custom layer */
 @import "../../../packages/ui/src/styles/ideai.css";
 
 :root {

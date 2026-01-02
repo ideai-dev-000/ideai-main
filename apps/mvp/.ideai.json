@@ -1,0 +1,7 @@
+{
+  "role": "child",
+  "name": "MVP.css",
+  "description": "MVP.css only - semantic HTML styling",
+  "parentApp": "web",
+  "localPort": 3004
+}

@@ -16,7 +16,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { getIdeAIFaviconMetadata } from "@repo/ui/lib/favicon-metadata";
-import { IdeAIDiagnostics } from "@repo/ui/components/ideai-diagnostics";
 import "./globals.css";
 
 const geistSans = localFont({
@@ -46,7 +45,6 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         {children}
-        <IdeAIDiagnostics appName="docs" />
       </body>
     </html>
   );
