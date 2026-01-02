@@ -1,0 +1,97 @@
+[
+  {
+    "id": "framer-motion-1",
+    "title": "Basic Fade In",
+    "description": "Simple fade in animation with opacity transition",
+    "library": "Framer Motion",
+    "category": "Basic",
+    "tags": ["fade", "opacity", "basic"],
+    "source": "https://www.framer.com/motion/",
+    "code": "import { motion } from 'framer-motion';\n\n<motion.div\n  initial={{ opacity: 0 }}\n  animate={{ opacity: 1 }}\n  transition={{ duration: 0.5 }}\n>\n  Content\n</motion.div>",
+    "config": {
+      "initial": { "opacity": 0 },
+      "animate": { "opacity": 1 },
+      "transition": { "duration": 0.5 }
+    }
+  },
+  {
+    "id": "framer-motion-2",
+    "title": "Scale on Hover",
+    "description": "Scale animation triggered on hover with spring physics",
+    "library": "Framer Motion",
+    "category": "Gestures",
+    "tags": ["hover", "scale", "spring"],
+    "source": "https://www.framer.com/motion/gestures/",
+    "code": "import { motion } from 'framer-motion';\n\n<motion.div\n  whileHover={{ scale: 1.1 }}\n  whileTap={{ scale: 0.9 }}\n  transition={{ type: 'spring', stiffness: 300 }}\n>\n  Hover me\n</motion.div>",
+    "config": {
+      "whileHover": { "scale": 1.1 },
+      "whileTap": { "scale": 0.9 },
+      "transition": { "type": "spring", "stiffness": 300 }
+    }
+  },
+  {
+    "id": "framer-motion-3",
+    "title": "Drag and Drop",
+    "description": "Draggable element with constraints and elastic boundaries",
+    "library": "Framer Motion",
+    "category": "Gestures",
+    "tags": ["drag", "interactive", "constraints"],
+    "source": "https://www.framer.com/motion/drag/",
+    "code": "import { motion } from 'framer-motion';\n\n<motion.div\n  drag\n  dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}\n  dragElastic={0.2}\n>\n  Drag me\n</motion.div>",
+    "config": {
+      "drag": true,
+      "dragConstraints": { "left": 0, "right": 0, "top": 0, "bottom": 0 },
+      "dragElastic": 0.2
+    }
+  },
+  {
+    "id": "framer-motion-4",
+    "title": "Stagger Children",
+    "description": "Animate children with staggered delays for list effects",
+    "library": "Framer Motion",
+    "category": "Layout",
+    "tags": ["stagger", "list", "children"],
+    "source": "https://www.framer.com/motion/layout-animations/",
+    "code": "import { motion } from 'framer-motion';\n\n<motion.div\n  initial='hidden'\n  animate='visible'\n  variants={{\n    visible: { transition: { staggerChildren: 0.1 } }\n  }}\n>\n  {items.map((item, i) => (\n    <motion.div\n      key={i}\n      variants={{\n        hidden: { opacity: 0, y: 20 },\n        visible: { opacity: 1, y: 0 }\n      }}\n    >\n      {item}\n    </motion.div>\n  ))}\n</motion.div>",
+    "config": {
+      "initial": "hidden",
+      "animate": "visible",
+      "variants": {
+        "visible": { "transition": { "staggerChildren": 0.1 } }
+      }
+    }
+  },
+  {
+    "id": "framer-motion-5",
+    "title": "Scroll Reveal",
+    "description": "Animate elements when they enter the viewport",
+    "library": "Framer Motion",
+    "category": "Scroll",
+    "tags": ["scroll", "viewport", "reveal"],
+    "source": "https://www.framer.com/motion/scroll-animations/",
+    "code": "import { motion } from 'framer-motion';\n\n<motion.div\n  initial={{ opacity: 0, y: 50 }}\n  whileInView={{ opacity: 1, y: 0 }}\n  viewport={{ once: true }}\n  transition={{ duration: 0.5 }}\n>\n  Scroll to reveal\n</motion.div>",
+    "config": {
+      "initial": { "opacity": 0, "y": 50 },
+      "whileInView": { "opacity": 1, "y": 0 },
+      "viewport": { "once": true },
+      "transition": { "duration": 0.5 }
+    }
+  },
+  {
+    "id": "framer-motion-6",
+    "title": "Layout Animation",
+    "description": "Automatic layout animations when elements reorder",
+    "library": "Framer Motion",
+    "category": "Layout",
+    "tags": ["layout", "reorder", "automatic"],
+    "source": "https://www.framer.com/motion/layout-animations/",
+    "code": "import { motion, AnimatePresence } from 'framer-motion';\n\n<AnimatePresence>\n  {items.map((item) => (\n    <motion.div\n      key={item.id}\n      layout\n      initial={{ opacity: 0 }}\n      animate={{ opacity: 1 }}\n      exit={{ opacity: 0 }}\n    >\n      {item.content}\n    </motion.div>\n  ))}\n</AnimatePresence>",
+    "config": {
+      "layout": true,
+      "initial": { "opacity": 0 },
+      "animate": { "opacity": 1 },
+      "exit": { "opacity": 0 }
+    }
+  }
+]
+

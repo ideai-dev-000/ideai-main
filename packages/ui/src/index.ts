@@ -57,6 +57,27 @@ export { Button as ShadcnButton } from "./components/ui/button";
 export { Separator } from "./components/ui/separator";
 export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from "./components/ui/tooltip";
 
+// Theme Components
+export { ThemeProvider } from "./components/theme-provider";
+export { ThemeToggle } from "./components/theme-toggle";
+export { MobileNav } from "./components/mobile-nav";
+
+// Animation System
+export {
+  useIdeAIAnimations,
+  AnimatedDiv,
+  sideMenuVariants,
+  panelVariants,
+  overlayVariants,
+  fadeVariants,
+  createSlideVariants,
+  createAnimationVariants,
+  createAnimationTransition,
+} from "./lib/ideai-animations";
+
+// Animation Demos (lazy-loaded)
+export { FramerMotionDemo, ReactSpringDemo } from "./components/animations";
+
 // Utilities
 export { getIdeAIFaviconMetadata } from "./lib/favicon-metadata";
 export { readIdeAIConfig, readIdeAIConfigSync, getChildAppConfig, getChildApps, type IdeAIConfig, type VercelProjectConfig } from "./lib/ideai-config";

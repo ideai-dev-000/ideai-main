@@ -25,6 +25,15 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { PanelRight, PanelLeft } from "lucide-react";
+import {
+  useIdeAIAnimations,
+  sideMenuVariants,
+  panelVariants,
+  overlayVariants,
+  createAnimationVariants,
+} from "../lib/ideai-animations";
 
 interface PerformanceMetrics {
   domContentLoaded: number | null;
@@ -93,8 +102,10 @@ export const IdeAIDiagnostics = ({
     nextVersion: null,
   });
   const [isOpen, setIsOpen] = useState(false);
+  const [isSideMenu, setIsSideMenu] = useState(true); // Default to side menu view
   const [componentTimes, setComponentTimes] = useState<ComponentRenderTime[]>([]);
   const observerRef = useRef<PerformanceObserver | null>(null);
+  const { animationsEnabled } = useIdeAIAnimations();
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -258,25 +269,65 @@ export const IdeAIDiagnostics = ({
         <span style={{ fontSize: "10px" }}>⚡</span>
       </button>
 
+      {/* Overlay - Only show in side menu mode */}
+      <AnimatePresence>
+        {isOpen && isSideMenu && (
+          <motion.div
+            className="ideai-diagnostics__overlay"
+            variants={createAnimationVariants(overlayVariants, animationsEnabled)}
+            initial="closed"
+            animate="open"
+            exit="closed"
+            onClick={() => setIsOpen(false)}
+          />
+        )}
+      </AnimatePresence>
+
       {/* Diagnostics Panel */}
-      {isOpen && (
-        <div className="ideai-diagnostics__panel">
-          {/* Header */}
-          <div className="ideai-diagnostics__header">
-            <div>
-              <h3 className="ideai-diagnostics__title">
-                IdeaI Diagnostics {appName && `- ${appName}`}
-              </h3>
-              <p className="ideai-diagnostics__subtitle">Performance metrics and diagnostics</p>
+      <AnimatePresence mode="wait">
+        {isOpen && (
+          <motion.div
+            key={isSideMenu ? "side-menu" : "panel"}
+            className={`ideai-diagnostics__panel ${isSideMenu ? "ideai-diagnostics__panel--side-menu" : ""}`}
+            variants={createAnimationVariants(
+              isSideMenu ? sideMenuVariants : panelVariants,
+              animationsEnabled
+            )}
+            initial="closed"
+            animate="open"
+            exit="closed"
+          >
+            {/* Header */}
+            <div className="ideai-diagnostics__header">
+              <div>
+                <h3 className="ideai-diagnostics__title">
+                  IdeaI Diagnostics {appName && `- ${appName}`}
+                </h3>
+                <p className="ideai-diagnostics__subtitle">Performance metrics and diagnostics</p>
+              </div>
+              <div className="ideai-diagnostics__header-actions">
+                {/* Toggle View Button */}
+                <button
+                  onClick={() => setIsSideMenu(!isSideMenu)}
+                  className="ideai-diagnostics__toggle-view"
+                  aria-label={isSideMenu ? "Switch to panel view" : "Switch to side menu view"}
+                  title={isSideMenu ? "Panel View" : "Side Menu View"}
+                >
+                  {isSideMenu ? (
+                    <PanelLeft className="h-5 w-5" />
+                  ) : (
+                    <PanelRight className="h-5 w-5" />
+                  )}
+                </button>
+                <button
+                  onClick={() => setIsOpen(false)}
+                  className="ideai-diagnostics__close"
+                  aria-label="Close"
+                >
+                  ✕
+                </button>
+              </div>
             </div>
-            <button
-              onClick={() => setIsOpen(false)}
-              className="ideai-diagnostics__close"
-              aria-label="Close"
-            >
-              ✕
-            </button>
-          </div>
 
           {/* Dashboard Grid */}
           <div className="ideai-diagnostics__grid">
@@ -396,8 +447,9 @@ export const IdeAIDiagnostics = ({
               </div>
             </section>
           </div>
-        </div>
-      )}
+        </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

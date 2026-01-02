@@ -14,6 +14,8 @@
 import { useState, useEffect } from "react";
 import { IdeAILogo } from "./ideai-logo";
 import { IdeAIDiagnostics } from "./ideai-diagnostics";
+import { ThemeToggle } from "./theme-toggle";
+import { MobileNav } from "./mobile-nav";
 
 interface NavItem {
   label: string;
@@ -173,12 +175,21 @@ export const IdeaIHeader = ({
             </button>
           </nav>
 
-          {/* Right: Accounts */}
+          {/* Right: Theme Toggle + Mobile Nav + Accounts */}
           <div className="ideai-header__accounts">
             <nav aria-label="Account navigation" role="navigation">
               <ul className="ideai-header__accounts-list">
+                {/* Theme Toggle - Top Right */}
+                <li className="ideai-header__accounts-item">
+                  <ThemeToggle />
+                </li>
+                {/* Mobile Navigation - Only visible on mobile */}
+                <li className="ideai-header__accounts-item ideai-header__mobile-nav-item">
+                  <MobileNav navItems={[...mainNav, ...extraNav]} />
+                </li>
+                {/* Desktop Account Links */}
                 {accountLinks.map((link) => (
-                  <li key={link.href} className="ideai-header__accounts-item">
+                  <li key={link.href} className="ideai-header__accounts-item ideai-header__accounts-item--desktop">
                     <a
                       href={link.href}
                       className="ideai-header__accounts-link"

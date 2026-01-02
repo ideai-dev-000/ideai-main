@@ -22,8 +22,14 @@
  * ```
  */
 
+/* Import base theme system */
+@import "./base-theme.css";
+
 /* Import shared component styles */
 @import "./ideai-components.css";
+
+/* Import animation demo styles */
+@import "./ideai-animations.css";
 
 /**
  * IdeaI Design Tokens

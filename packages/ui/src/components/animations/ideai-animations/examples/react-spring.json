@@ -1,0 +1,89 @@
+[
+  {
+    "id": "react-spring-1",
+    "title": "Spring Physics",
+    "description": "Natural spring physics animation with configurable tension and friction",
+    "library": "React Spring",
+    "category": "Spring",
+    "tags": ["spring", "physics", "natural"],
+    "source": "https://www.react-spring.dev/docs/advanced/springs",
+    "code": "import { useSpring, animated } from '@react-spring/web';\n\nconst spring = useSpring({\n  from: { scale: 0 },\n  to: { scale: 1 },\n  config: { tension: 200, friction: 20 }\n});\n\n<animated.div style={spring}>\n  Content\n</animated.div>",
+    "config": {
+      "from": { "scale": 0 },
+      "to": { "scale": 1 },
+      "config": { "tension": 200, "friction": 20 }
+    }
+  },
+  {
+    "id": "react-spring-2",
+    "title": "Number Animation",
+    "description": "Animate numeric values with smooth transitions",
+    "library": "React Spring",
+    "category": "Transitions",
+    "tags": ["number", "counter", "interpolation"],
+    "source": "https://www.react-spring.dev/docs/advanced/interpolation",
+    "code": "import { useSpring, animated } from '@react-spring/web';\n\nconst { number } = useSpring({\n  number: targetValue,\n  from: { number: 0 },\n  config: { duration: 2000 }\n});\n\n<animated.div>\n  {number.to(n => Math.floor(n))}\n</animated.div>",
+    "config": {
+      "number": 100,
+      "from": { "number": 0 },
+      "config": { "duration": 2000 }
+    }
+  },
+  {
+    "id": "react-spring-3",
+    "title": "Trail Animation",
+    "description": "Staggered animations for lists with trail effect",
+    "library": "React Spring",
+    "category": "Trail",
+    "tags": ["trail", "stagger", "list"],
+    "source": "https://www.react-spring.dev/docs/advanced/trail",
+    "code": "import { useTrail, animated } from '@react-spring/web';\n\nconst trail = useTrail(items.length, {\n  from: { opacity: 0, y: 20 },\n  to: { opacity: 1, y: 0 }\n});\n\n{trail.map((props, i) => (\n  <animated.div key={i} style={props}>\n    {items[i]}\n  </animated.div>\n))}",
+    "config": {
+      "from": { "opacity": 0, "y": 20 },
+      "to": { "opacity": 1, "y": 0 }
+    }
+  },
+  {
+    "id": "react-spring-4",
+    "title": "Parallax Scroll",
+    "description": "Parallax effect based on scroll position",
+    "library": "React Spring",
+    "category": "Parallax",
+    "tags": ["parallax", "scroll", "transform"],
+    "source": "https://www.react-spring.dev/docs/advanced/parallax",
+    "code": "import { useSpring, animated, useScroll } from '@react-spring/web';\n\nconst { scrollYProgress } = useScroll();\nconst parallax = useSpring({\n  transform: scrollYProgress.to(\n    value => `translateY(${value * 100}px)`\n  )\n});\n\n<animated.div style={parallax}>\n  Parallax content\n</animated.div>",
+    "config": {
+      "transform": "translateY(0px)"
+    }
+  },
+  {
+    "id": "react-spring-5",
+    "title": "Color Transition",
+    "description": "Smooth color transitions with spring physics",
+    "library": "React Spring",
+    "category": "Transitions",
+    "tags": ["color", "transition", "smooth"],
+    "source": "https://www.react-spring.dev/docs/advanced/transitions",
+    "code": "import { useSpring, animated } from '@react-spring/web';\n\nconst color = useSpring({\n  backgroundColor: isActive ? '#3b82f6' : '#ef4444',\n  config: { tension: 200, friction: 20 }\n});\n\n<animated.div style={color}>\n  Content\n</animated.div>",
+    "config": {
+      "backgroundColor": "#3b82f6",
+      "config": { "tension": 200, "friction": 20 }
+    }
+  },
+  {
+    "id": "react-spring-6",
+    "title": "Spring Configurations",
+    "description": "Different spring presets: gentle, wobbly, stiff, slow",
+    "library": "React Spring",
+    "category": "Spring",
+    "tags": ["config", "presets", "spring"],
+    "source": "https://www.react-spring.dev/docs/advanced/config",
+    "code": "import { useSpring, animated, config } from '@react-spring/web';\n\nconst spring = useSpring({\n  from: { x: 0 },\n  to: { x: 100 },\n  config: config.wobbly // or gentle, stiff, slow\n});\n\n<animated.div style={spring}>\n  Content\n</animated.div>",
+    "config": {
+      "from": { "x": 0 },
+      "to": { "x": 100 },
+      "config": "wobbly"
+    }
+  }
+]
+

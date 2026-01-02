@@ -17,6 +17,7 @@
 interface IdeAICSSSummaryProps {
   frameworks: string[];
   description?: string;
+  stacked?: boolean;
 }
 
 /**
@@ -109,11 +110,11 @@ function getCardClasses(frameworks: string[]): {
   };
 }
 
-export const IdeAICSSSummary = ({ frameworks, description }: IdeAICSSSummaryProps) => {
+export const IdeAICSSSummary = ({ frameworks, description, stacked = false }: IdeAICSSSummaryProps) => {
   const cardClasses = getCardClasses(frameworks);
 
   return (
-    <div className="ideai-css-summary">
+    <div className={`ideai-css-summary ${stacked ? "ideai-css-summary--stacked" : ""}`}>
       <div className="ideai-css-summary__content">
         <div className="ideai-css-summary__grid">
           {/* Left: Summary Info */}
