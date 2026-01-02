@@ -231,3 +231,67 @@
 .ideai-animation-demo-content {
   font-size: 1.125rem;
 }
+
+/* SVG Artista Animation Styles */
+.svg-artista {
+  width: 120px;
+  height: 120px;
+  display: inline-block;
+}
+
+.svg-artista svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.svg-artista-stroke svg path,
+.svg-artista-stroke svg circle,
+.svg-artista-stroke svg rect,
+.svg-artista-stroke svg line,
+.svg-artista-stroke svg polyline,
+.svg-artista-stroke svg polygon {
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+}
+
+.svg-artista-stroke.active svg path,
+.svg-artista-stroke.active svg circle,
+.svg-artista-stroke.active svg rect,
+.svg-artista-stroke.active svg line,
+.svg-artista-stroke.active svg polyline,
+.svg-artista-stroke.active svg polygon {
+  animation: svg-artista-stroke-draw var(--duration, 2s) ease-in-out forwards;
+  animation-delay: var(--delay, 0s);
+}
+
+@keyframes svg-artista-stroke-draw {
+  from {
+    stroke-dashoffset: 1000;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.svg-artista-fill svg path,
+.svg-artista-fill svg circle,
+.svg-artista-fill svg rect {
+  fill-opacity: 0;
+}
+
+.svg-artista-fill.active svg path,
+.svg-artista-fill.active svg circle,
+.svg-artista-fill.active svg rect {
+  animation: svg-artista-fill-reveal var(--duration, 2s) ease-in-out forwards;
+  animation-delay: var(--delay, 0s);
+}
+
+@keyframes svg-artista-fill-reveal {
+  from {
+    fill-opacity: 0;
+  }
+  to {
+    fill-opacity: 1;
+  }
+}

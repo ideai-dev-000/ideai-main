@@ -1,47 +1,322 @@
 [
   {
     "id": "motion-one-1",
-    "title": "Fade In Animation",
-    "description": "Ultra-lightweight fade in using Motion One",
+    "title": "Spring Physics",
+    "description": "Natural spring physics animation with configurable tension and friction",
     "library": "Motion One",
-    "category": "Basic",
-    "tags": ["fade", "opacity", "lightweight"],
+    "category": "Physics",
+    "tags": ["spring", "physics", "bounce", "popular"],
     "source": "https://motion.dev/",
-    "code": "import { animate } from '@motionone/dom';\n\nanimate('#element', { opacity: [0, 1] }, { duration: 0.5 });",
+    "code": "import { animate } from '@motionone/dom';\n\nanimate('#element', \n  { scale: [1, 1.2] },\n  { duration: 0.6, easing: 'spring()' }\n);",
     "config": {
-      "opacity": [0, 1],
-      "duration": 0.5,
-      "easing": "easeOut"
-    }
+      "scale": [1, 1.2],
+      "duration": 0.6,
+      "easing": "spring()",
+      "springType": "default"
+    },
+    "effectType": "animating",
+    "variants": [
+      {
+        "name": "Default Spring",
+        "description": "Simple spring animation",
+        "code": "animate('#element', { scale: [1, 1.2] }, { easing: 'spring()' });",
+        "config": {
+          "scale": [1, 1.2],
+          "easing": "spring()",
+          "duration": 0.6,
+          "springType": "default"
+        }
+      },
+      {
+        "name": "Bouncy Spring",
+        "description": "Spring with more bounce",
+        "code": "animate('#element', { scale: [1, 1.5] }, { easing: 'spring(100, 10)' });",
+        "config": {
+          "scale": [1, 1.5],
+          "easing": "spring(100, 10)",
+          "duration": 0.8,
+          "springType": "bouncy"
+        }
+      },
+      {
+        "name": "Smooth Spring",
+        "description": "Smooth spring with less bounce",
+        "code": "animate('#element', { scale: [1, 1.3] }, { easing: 'spring(200, 20)' });",
+        "config": {
+          "scale": [1, 1.3],
+          "easing": "spring(200, 20)",
+          "duration": 0.5,
+          "springType": "smooth"
+        }
+      }
+    ]
   },
   {
     "id": "motion-one-2",
-    "title": "Spring Animation",
-    "description": "Physics-based spring animation with Motion One",
+    "title": "Keyframes",
+    "description": "Multi-step keyframe animations with precise control",
     "library": "Motion One",
-    "category": "Physics",
-    "tags": ["spring", "physics", "bounce"],
+    "category": "Animation",
+    "tags": ["keyframes", "multi-step", "precise", "popular"],
     "source": "https://motion.dev/",
-    "code": "import { animate } from '@motionone/dom';\n\nanimate('#element', \n  { scale: [1, 1.2, 1] },\n  { duration: 0.6, easing: 'spring()' }\n);",
+    "code": "import { animate } from '@motionone/dom';\n\nanimate('#element', \n  { opacity: [0, 1, 0.5, 1], scale: [1, 1.2, 0.9, 1] },\n  { duration: 1, easing: 'ease-in-out' }\n);",
     "config": {
-      "scale": [1, 1.2, 1],
-      "duration": 0.6,
-      "easing": "spring()"
-    }
+      "opacity": [0, 1, 0.5, 1],
+      "scale": [1, 1.2, 0.9, 1],
+      "duration": 1,
+      "easing": "ease-in-out"
+    },
+    "effectType": "animating"
   },
   {
     "id": "motion-one-3",
-    "title": "Scroll Triggered",
-    "description": "Animation triggered on scroll with Motion One",
+    "title": "Scroll-Linked Animations",
+    "description": "Animations triggered and controlled by scroll position",
     "library": "Motion One",
     "category": "Scroll",
-    "tags": ["scroll", "trigger", "reveal"],
+    "tags": ["scroll", "trigger", "reveal", "popular"],
     "source": "https://motion.dev/",
     "code": "import { animate, scroll } from '@motionone/dom';\n\nscroll(animate('#element', { opacity: [0, 1] }), {\n  target: '#element',\n  offset: ['start end', 'start center']\n});",
     "config": {
       "opacity": [0, 1],
-      "offset": ["start end", "start center"]
-    }
+      "offset": ["start end", "start center"],
+      "scroll": true
+    },
+    "effectType": "animating",
+    "variants": [
+      {
+        "name": "Fade In on Scroll",
+        "description": "Fade in as element enters viewport",
+        "code": "scroll(animate('#element', { opacity: [0, 1] }), { offset: ['start end', 'start center'] });",
+        "config": {
+          "opacity": [0, 1],
+          "offset": ["start end", "start center"],
+          "scroll": true
+        }
+      },
+      {
+        "name": "Spring on Scroll",
+        "description": "Spring animation linked to scroll",
+        "code": "scroll(animate('#element', { scale: [0.8, 1] }, { easing: 'spring()' }), { offset: ['start end', 'start center'] });",
+        "config": {
+          "scale": [0.8, 1],
+          "easing": "spring()",
+          "offset": ["start end", "start center"],
+          "scroll": true
+        }
+      }
+    ]
+  },
+  {
+    "id": "motion-one-4",
+    "title": "Drag",
+    "description": "Drag interactions with constraints and momentum",
+    "library": "Motion One",
+    "category": "Gestures",
+    "tags": ["drag", "interactive", "gestures", "popular"],
+    "source": "https://motion.dev/",
+    "code": "import { animate } from '@motionone/dom';\n\n// Drag with spring back\nconst drag = animate('#element', { x: 0, y: 0 }, { duration: 0 });",
+    "config": {
+      "drag": true,
+      "x": [0, 100],
+      "y": [0, 100],
+      "duration": 0.3
+    },
+    "effectType": "animating",
+    "variants": [
+      {
+        "name": "Basic Drag",
+        "description": "Simple drag interaction",
+        "code": "animate('#element', { x: 0, y: 0 }, { duration: 0 });",
+        "config": {
+          "drag": true,
+          "x": [0, 100],
+          "y": [0, 100]
+        }
+      },
+      {
+        "name": "Drag with Constraints",
+        "description": "Drag with boundary constraints",
+        "code": "animate('#element', { x: 0, y: 0 }, { duration: 0, constraints: { x: [-100, 100], y: [-100, 100] } });",
+        "config": {
+          "drag": true,
+          "x": [0, 100],
+          "y": [0, 100],
+          "constraints": { "x": [-100, 100], "y": [-100, 100] }
+        }
+      },
+      {
+        "name": "Lock Direction",
+        "description": "Drag locked to single axis",
+        "code": "animate('#element', { x: 0 }, { duration: 0, lockAxis: 'x' });",
+        "config": {
+          "drag": true,
+          "x": [0, 200],
+          "lockAxis": "x"
+        }
+      }
+    ]
+  },
+  {
+    "id": "motion-one-5",
+    "title": "Enter Animation",
+    "description": "Element entrance animations - fade, slide, scale",
+    "library": "Motion One",
+    "category": "Animation",
+    "tags": ["enter", "fade", "slide", "entrance", "popular"],
+    "source": "https://motion.dev/",
+    "code": "import { animate } from '@motionone/dom';\n\nanimate('#element', \n  { opacity: [0, 1], y: [20, 0] },\n  { duration: 0.5, easing: 'ease-out' }\n);",
+    "config": {
+      "opacity": [0, 1],
+      "y": [20, 0],
+      "duration": 0.5,
+      "easing": "ease-out"
+    },
+    "effectType": "animating",
+    "variants": [
+      {
+        "name": "Fade In",
+        "description": "Simple fade in",
+        "code": "animate('#element', { opacity: [0, 1] }, { duration: 0.5 });",
+        "config": {
+          "opacity": [0, 1],
+          "duration": 0.5
+        }
+      },
+      {
+        "name": "Slide In",
+        "description": "Slide in from bottom",
+        "code": "animate('#element', { y: [20, 0], opacity: [0, 1] }, { duration: 0.5 });",
+        "config": {
+          "y": [20, 0],
+          "opacity": [0, 1],
+          "duration": 0.5
+        }
+      },
+      {
+        "name": "Scale In",
+        "description": "Scale in with fade",
+        "code": "animate('#element', { scale: [0.8, 1], opacity: [0, 1] }, { duration: 0.5 });",
+        "config": {
+          "scale": [0.8, 1],
+          "opacity": [0, 1],
+          "duration": 0.5
+        }
+      }
+    ]
+  },
+  {
+    "id": "motion-one-6",
+    "title": "Exit Animation",
+    "description": "Element exit animations - fade out, slide away",
+    "library": "Motion One",
+    "category": "Animation",
+    "tags": ["exit", "fade", "slide", "popular"],
+    "source": "https://motion.dev/",
+    "code": "import { animate } from '@motionone/dom';\n\nanimate('#element', \n  { opacity: [1, 0], y: [0, -20] },\n  { duration: 0.5, easing: 'ease-in' }\n);",
+    "config": {
+      "opacity": [1, 0],
+      "y": [0, -20],
+      "duration": 0.5,
+      "easing": "ease-in"
+    },
+    "effectType": "animating"
+  },
+  {
+    "id": "motion-one-7",
+    "title": "Rotate",
+    "description": "Rotation animations with easing",
+    "library": "Motion One",
+    "category": "Transform",
+    "tags": ["rotate", "transform", "rotation", "popular"],
+    "source": "https://motion.dev/",
+    "code": "import { animate } from '@motionone/dom';\n\nanimate('#element', \n  { rotate: [0, 360] },\n  { duration: 1, easing: 'ease-in-out', repeat: Infinity }\n);",
+    "config": {
+      "rotate": [0, 360],
+      "duration": 1,
+      "easing": "ease-in-out",
+      "repeat": "Infinity"
+    },
+    "effectType": "animating"
+  },
+  {
+    "id": "motion-one-8",
+    "title": "Bounce Easing",
+    "description": "Bounce easing functions for playful animations",
+    "library": "Motion One",
+    "category": "Easing",
+    "tags": ["bounce", "easing", "playful", "popular"],
+    "source": "https://motion.dev/",
+    "code": "import { animate } from '@motionone/dom';\n\nanimate('#element', \n  { y: [0, -50, 0] },\n  { duration: 0.6, easing: 'ease-out' }\n);",
+    "config": {
+      "y": [0, -50, 0],
+      "duration": 0.6,
+      "easing": "ease-out"
+    },
+    "effectType": "animating"
+  },
+  {
+    "id": "motion-one-9",
+    "title": "Color Interpolation",
+    "description": "Smooth color transitions between values",
+    "library": "Motion One",
+    "category": "Color",
+    "tags": ["color", "interpolation", "transition", "coloring", "popular"],
+    "source": "https://motion.dev/",
+    "code": "import { animate } from '@motionone/dom';\n\nanimate('#element', \n  { backgroundColor: ['#3b82f6', '#8b5cf6'] },\n  { duration: 1 }\n);",
+    "config": {
+      "backgroundColor": ["#3b82f6", "#8b5cf6"],
+      "duration": 1
+    },
+    "effectType": "coloring"
+  },
+  {
+    "id": "motion-one-10",
+    "title": "Path Drawing",
+    "description": "Animate along SVG paths",
+    "library": "Motion One",
+    "category": "SVG",
+    "tags": ["svg", "path", "drawing", "popular"],
+    "source": "https://motion.dev/",
+    "code": "import { animate } from '@motionone/dom';\n\nanimate('#element', \n  { path: 'M 0 0 L 100 100' },\n  { duration: 1 }\n);",
+    "config": {
+      "path": "M 0 0 L 100 100",
+      "duration": 1
+    },
+    "effectType": "drawing"
+  },
+  {
+    "id": "motion-one-11",
+    "title": "Layout Animation",
+    "description": "Automatic layout animations when elements reorder",
+    "library": "Motion One",
+    "category": "Layout",
+    "tags": ["layout", "reorder", "automatic", "popular"],
+    "source": "https://motion.dev/",
+    "code": "import { animate } from '@motionone/dom';\n\n// Animate elements when they reorder\nconst elements = document.querySelectorAll('.item');\nelements.forEach((el, i) => {\n  animate(el, { x: i * 60 }, { duration: 0.3 });\n});",
+    "config": {
+      "layout": true,
+      "reorder": true,
+      "itemCount": 4,
+      "duration": 0.3
+    },
+    "effectType": "animating"
+  },
+  {
+    "id": "motion-one-12",
+    "title": "Parallax",
+    "description": "Parallax scrolling effects",
+    "library": "Motion One",
+    "category": "Scroll",
+    "tags": ["parallax", "scroll", "depth", "popular"],
+    "source": "https://motion.dev/",
+    "code": "import { animate, scroll } from '@motionone/dom';\n\nscroll(animate('#element', { y: [0, -100] }), {\n  target: '#element',\n  offset: ['start start', 'end end']\n});",
+    "config": {
+      "y": [0, -100],
+      "offset": ["start start", "end end"],
+      "scroll": true,
+      "parallax": true
+    },
+    "effectType": "animating"
   }
 ]
-

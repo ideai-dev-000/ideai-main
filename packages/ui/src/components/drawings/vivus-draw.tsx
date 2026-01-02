@@ -1,11 +1,11 @@
 /**
  * @fileoverview Vivus SVG Drawing Component
- * 
+ *
  * @module VivusDraw
  * @description
  * React component wrapper for Vivus.js SVG drawing animations.
  * Perfect for logo animations and illustration reveals.
- * 
+ *
  * @example
  * ```tsx
  * <VivusDraw
@@ -28,6 +28,7 @@ interface VivusDrawProps {
   delay?: number;
   start?: "manual" | "autostart" | "inViewport";
   onComplete?: () => void;
+  onVivusReady?: (vivus: any) => void;
   className?: string;
 }
 
@@ -38,50 +39,83 @@ export function VivusDraw({
   delay,
   start = "autostart",
   onComplete,
+  onVivusReady,
   className,
 }: VivusDrawProps) {
   const vivusRef = useRef<any>(null);
 
   useEffect(() => {
-    // Dynamic import for Vivus - using Function to prevent static analysis
-    try {
-      const loadModule = new Function('moduleName', 'return import(moduleName)');
-      loadModule('vivus')
-      .then((VivusModule) => {
-        const Vivus = VivusModule.default || (VivusModule as any);
-        const options: any = {
-          type,
-          duration,
-          start,
-        };
+    // Wait for SVG to be in DOM
+    const checkAndInit = () => {
+      const svgElement = document.getElementById(svgId);
+      if (!svgElement) {
+        // Retry after a short delay
+        setTimeout(checkAndInit, 100);
+        return;
+      }
 
-        if (delay !== undefined) {
-          options.delay = delay;
-        }
+      // Dynamic import for Vivus
+      import("vivus")
+        .then((VivusModule) => {
+          const Vivus = VivusModule.default || (VivusModule as any);
+          const options: any = {
+            type,
+            duration,
+            start,
+          };
 
-        if (onComplete) {
-          options.callback = onComplete;
-        }
+          if (delay !== undefined) {
+            options.delay = delay;
+          }
 
-        const svgElement = document.getElementById(svgId);
-        if (Vivus && svgElement) {
-          vivusRef.current = new Vivus(svgId, options);
-        }
-      })
-      .catch((error) => {
-        console.warn("Vivus not loaded:", error);
-      });
-    } catch (e) {
-      console.warn("Vivus not available:", e);
-    }
+          if (onComplete) {
+            options.callback = onComplete;
+          }
+
+          const svgEl = document.getElementById(svgId);
+          if (Vivus && svgEl) {
+            // Destroy previous instance if exists
+            if (
+              vivusRef.current &&
+              typeof vivusRef.current.destroy === "function"
+            ) {
+              vivusRef.current.destroy();
+            }
+
+            // Reset SVG paths - clear any existing stroke-dasharray/dashoffset
+            const paths = svgEl.querySelectorAll(
+              "path, circle, rect, line, polyline, polygon",
+            );
+            paths.forEach((path) => {
+              const p = path as SVGElement;
+              p.style.strokeDasharray = "";
+              p.style.strokeDashoffset = "";
+              p.style.opacity = "1";
+            });
+
+            // Create new instance
+            vivusRef.current = new Vivus(svgId, options);
+
+            // Notify parent component
+            if (onVivusReady) {
+              onVivusReady(vivusRef.current);
+            }
+          }
+        })
+        .catch((error) => {
+          console.warn("Vivus not loaded:", error);
+        });
+    };
+
+    // Start checking
+    checkAndInit();
 
     return () => {
-      if (vivusRef.current && typeof vivusRef.current.destroy === 'function') {
+      if (vivusRef.current && typeof vivusRef.current.destroy === "function") {
         vivusRef.current.destroy();
       }
     };
-  }, [svgId, type, duration, delay, start, onComplete]);
+  }, [svgId, type, duration, delay, start, onComplete, onVivusReady]);
 
-  return <div className={className} id={svgId} />;
+  return <div className={className} />; // SVG is rendered separately in parent, this is just a placeholder
 }
-

@@ -1,38 +1,233 @@
 [
   {
     "id": "tsparticles-1",
-    "title": "Particle Background",
-    "description": "Lightweight particle background effect for logos and headers",
+    "title": "Basic Linked Particles",
+    "description": "Classic particle network with connecting lines - most popular background effect",
     "library": "tsParticles",
-    "category": "Particles",
-    "tags": ["particles", "background", "logo"],
-    "source": "https://particles.js.org/",
-    "code": "import { useCallback } from 'react';\nimport Particles from '@tsparticles/react';\nimport { loadSlim } from '@tsparticles/slim';\n\n<Particles\n  id=\"tsparticles\"\n  init={async (engine) => await loadSlim(engine)}\n  options={{\n    particles: {\n      number: { value: 50 },\n      color: { value: '#3b82f6' }\n    }\n  }}\n/>",
+    "category": "Background",
+    "tags": ["particles", "background", "links", "network", "popular"],
+    "source": "https://github.com/tsparticles/react",
+    "effectType": "particles",
+    "code": "import Particles, { initParticlesEngine } from '@tsparticles/react';\nimport { loadSlim } from '@tsparticles/slim';\n\n<Particles\n  id=\"tsparticles\"\n  options={{\n    particles: {\n      number: { value: 80 },\n      links: { enable: true, distance: 150, opacity: 0.5 },\n      move: { enable: true, speed: 6 }\n    }\n  }}\n/>",
     "config": {
       "particles": {
-        "number": { "value": 50 },
+        "number": { "value": 80 },
         "color": { "value": "#3b82f6" },
-        "size": { "value": 3 }
-      }
+        "links": {
+          "enable": true,
+          "color": "#3b82f6",
+          "opacity": 0.5,
+          "distance": 150,
+          "width": 1
+        },
+        "move": {
+          "enable": true,
+          "speed": 6,
+          "direction": "none"
+        },
+        "size": { "value": { "min": 1, "max": 5 } },
+        "opacity": { "value": 0.5 }
+      },
+      "fullScreen": { "enable": false }
     }
   },
   {
     "id": "tsparticles-2",
-    "title": "Logo Particle Effect",
-    "description": "Particles that interact with logo elements",
+    "title": "Hover Repulse",
+    "description": "Interactive particles that repel on mouse hover - highly engaging effect",
     "library": "tsParticles",
-    "category": "Logo",
-    "tags": ["logo", "interactive", "particles"],
-    "source": "https://particles.js.org/",
-    "code": "import Particles from '@tsparticles/react';\nimport { loadSlim } from '@tsparticles/slim';\n\n<Particles\n  init={async (engine) => await loadSlim(engine)}\n  options={{\n    interactivity: {\n      events: {\n        onHover: { enable: true, mode: 'repulse' }\n      }\n    },\n    particles: { number: { value: 30 } }\n  }}\n/>",
+    "category": "Interactive",
+    "tags": ["particles", "interactive", "hover", "repulse", "popular"],
+    "source": "https://github.com/tsparticles/react",
+    "effectType": "particles",
+    "code": "import Particles from '@tsparticles/react';\n\n<Particles\n  options={{\n    interactivity: {\n      events: {\n        onHover: { enable: true, mode: 'repulse' }\n      },\n      modes: {\n        repulse: { distance: 200, duration: 0.4 }\n      }\n    },\n    particles: { number: { value: 50 } }\n  }}\n/>",
     "config": {
       "interactivity": {
         "events": {
           "onHover": { "enable": true, "mode": "repulse" }
+        },
+        "modes": {
+          "repulse": { "distance": 200, "duration": 0.4 }
         }
       },
-      "particles": { "number": { "value": 30 } }
+      "particles": {
+        "number": { "value": 50 },
+        "color": { "value": "#3b82f6" },
+        "links": { "enable": true, "opacity": 0.5 },
+        "size": { "value": 3 }
+      },
+      "fullScreen": { "enable": false }
+    }
+  },
+  {
+    "id": "tsparticles-3",
+    "title": "Click to Push",
+    "description": "Particles push away on click - great for interactive backgrounds",
+    "library": "tsParticles",
+    "category": "Interactive",
+    "tags": ["particles", "interactive", "click", "push", "popular"],
+    "source": "https://github.com/tsparticles/react",
+    "effectType": "particles",
+    "code": "import Particles from '@tsparticles/react';\n\n<Particles\n  options={{\n    interactivity: {\n      events: {\n        onClick: { enable: true, mode: 'push' }\n      },\n      modes: {\n        push: { quantity: 4 }\n      }\n    },\n    particles: { number: { value: 60 } }\n  }}\n/>",
+    "config": {
+      "interactivity": {
+        "events": {
+          "onClick": { "enable": true, "mode": "push" }
+        },
+        "modes": {
+          "push": { "quantity": 4 }
+        }
+      },
+      "particles": {
+        "number": { "value": 60 },
+        "color": { "value": "#3b82f6" },
+        "links": { "enable": true },
+        "size": { "value": 3 }
+      },
+      "fullScreen": { "enable": false }
+    }
+  },
+  {
+    "id": "tsparticles-4",
+    "title": "Bubble Effect",
+    "description": "Floating bubbles with bounce physics - smooth and elegant",
+    "library": "tsParticles",
+    "category": "Particles",
+    "tags": ["particles", "bubble", "bounce", "physics", "popular"],
+    "source": "https://github.com/tsparticles/react",
+    "effectType": "particles",
+    "code": "import Particles from '@tsparticles/react';\n\n<Particles\n  options={{\n    particles: {\n      move: {\n        outModes: { default: 'bounce' },\n        bounce: true\n      },\n      shape: { type: 'circle' },\n      opacity: { value: 0.5 },\n      size: { value: { min: 3, max: 8 } }\n    }\n  }}\n/>",
+    "config": {
+      "particles": {
+        "move": {
+          "outModes": { "default": "bounce" },
+          "bounce": true,
+          "enable": true,
+          "speed": 2
+        },
+        "shape": { "type": "circle" },
+        "opacity": { "value": 0.5 },
+        "size": { "value": { "min": 3, "max": 8 } },
+        "color": { "value": "#3b82f6" },
+        "number": { "value": 40 }
+      },
+      "fullScreen": { "enable": false }
+    }
+  },
+  {
+    "id": "tsparticles-5",
+    "title": "Starfield",
+    "description": "Twinkling starfield effect - perfect for space themes",
+    "library": "tsParticles",
+    "category": "Particles",
+    "tags": ["particles", "starfield", "stars", "twinkle", "space", "popular"],
+    "source": "https://github.com/tsparticles/react",
+    "effectType": "particles",
+    "code": "import Particles from '@tsparticles/react';\n\n<Particles\n  options={{\n    background: { color: '#000000' },\n    particles: {\n      number: { value: 100 },\n      color: { value: '#ffffff' },\n      opacity: {\n        value: { min: 0.3, max: 1 },\n        animation: { enable: true, speed: 1 }\n      },\n      size: { value: 1 }\n    }\n  }}\n/>",
+    "config": {
+      "background": { "color": { "value": "#000000" } },
+      "particles": {
+        "number": { "value": 100 },
+        "color": { "value": "#ffffff" },
+        "opacity": {
+          "value": { "min": 0.3, "max": 1 },
+          "animation": { "enable": true, "speed": 1 }
+        },
+        "size": { "value": 1 },
+        "move": { "enable": true, "speed": 0.5 }
+      },
+      "fullScreen": { "enable": false }
+    }
+  },
+  {
+    "id": "tsparticles-6",
+    "title": "Connected Network",
+    "description": "Network visualization with distance-based particle connections",
+    "library": "tsParticles",
+    "category": "Network",
+    "tags": [
+      "particles",
+      "network",
+      "links",
+      "connections",
+      "visualization",
+      "popular"
+    ],
+    "source": "https://github.com/tsparticles/react",
+    "effectType": "particles",
+    "code": "import Particles from '@tsparticles/react';\n\n<Particles\n  options={{\n    particles: {\n      links: {\n        enable: true,\n        distance: 200,\n        opacity: 0.4,\n        width: 1\n      },\n      number: { value: 60 },\n      move: { enable: true, speed: 2 }\n    }\n  }}\n/>",
+    "config": {
+      "particles": {
+        "links": {
+          "enable": true,
+          "distance": 200,
+          "opacity": 0.4,
+          "width": 1,
+          "color": "#3b82f6"
+        },
+        "number": { "value": 60 },
+        "color": { "value": "#3b82f6" },
+        "move": {
+          "enable": true,
+          "speed": 2,
+          "direction": "none"
+        },
+        "size": { "value": 3 },
+        "opacity": { "value": 0.5 }
+      },
+      "fullScreen": { "enable": false }
+    }
+  },
+  {
+    "id": "tsparticles-7",
+    "title": "Snow Effect",
+    "description": "Falling snow particles - perfect for winter themes",
+    "library": "tsParticles",
+    "category": "Particles",
+    "tags": ["particles", "snow", "falling", "winter", "weather", "popular"],
+    "source": "https://github.com/tsparticles/react",
+    "effectType": "particles",
+    "code": "import Particles from '@tsparticles/react';\n\n<Particles\n  options={{\n    particles: {\n      number: { value: 100 },\n      color: { value: '#ffffff' },\n      move: {\n        enable: true,\n        direction: 'bottom',\n        speed: 1,\n        gravity: { enable: true }\n      },\n      size: { value: { min: 2, max: 5 } }\n    }\n  }}\n/>",
+    "config": {
+      "particles": {
+        "number": { "value": 100 },
+        "color": { "value": "#ffffff" },
+        "move": {
+          "enable": true,
+          "direction": "bottom",
+          "speed": 1,
+          "gravity": { "enable": true }
+        },
+        "size": { "value": { "min": 2, "max": 5 } },
+        "opacity": { "value": 0.8 },
+        "shape": { "type": "circle" }
+      },
+      "fullScreen": { "enable": false }
+    }
+  },
+  {
+    "id": "tsparticles-8",
+    "title": "Trail Effect",
+    "description": "Particles with trailing effects - dynamic motion trails",
+    "library": "tsParticles",
+    "category": "Particles",
+    "tags": ["particles", "trail", "motion", "dynamic", "popular"],
+    "source": "https://github.com/tsparticles/react",
+    "effectType": "particles",
+    "code": "import Particles from '@tsparticles/react';\n\n<Particles\n  options={{\n    particles: {\n      number: { value: 50 },\n      move: {\n        enable: true,\n        speed: 3,\n        trail: {\n          enable: true,\n          length: 3,\n          fill: { color: { value: '#3b82f6' } }\n        }\n      }\n    }\n  }}\n/>",
+    "config": {
+      "particles": {
+        "number": { "value": 50 },
+        "color": { "value": "#3b82f6" },
+        "move": {
+          "enable": true,
+          "speed": 3,
+          "direction": "none"
+        },
+        "size": { "value": 3 },
+        "opacity": { "value": 0.7 }
+      },
+      "fullScreen": { "enable": false }
     }
   }
 ]
-

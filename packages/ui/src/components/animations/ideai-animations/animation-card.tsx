@@ -1,11 +1,11 @@
 /**
  * @fileoverview Animation Demo Card Component
- * 
+ *
  * @module AnimationCard
  * @description
  * Reusable card component for displaying animation examples.
  * Shows effect description on left, demo on right.
- * 
+ *
  * @example
  * ```tsx
  * <AnimationCard example={exampleData} />
@@ -16,42 +16,76 @@
 
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useSpring, useSprings, animated, config } from "@react-spring/web";
+import {
+  useSpring,
+  useSprings,
+  useTrail,
+  animated,
+  config,
+} from "@react-spring/web";
 import { ExternalLink, Code2, Play, Sparkles, Zap } from "lucide-react";
 import type { AnimationExample } from "./types";
 
 interface AnimationCardProps {
   example: AnimationExample;
-  library: "framer-motion" | "react-spring" | "kute" | "motion-one" | "tsparticles" | "vivus";
+  library:
+    | "framer-motion"
+    | "react-spring"
+    | "kute"
+    | "motion-one"
+    | "tsparticles"
+    | "vivus";
 }
 
 /**
  * Animation Demo Card
- * 
+ *
  * Displays animation example with description card on left and demo on right
  */
 export function AnimationCard({ example, library }: AnimationCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [showCode, setShowCode] = useState(false);
   const [animationKey, setAnimationKey] = useState(0);
+  const [selectedVariant, setSelectedVariant] = useState<string | null>(null);
+
+  // Get current config (variant or default)
+  const currentConfig =
+    selectedVariant && example.variants
+      ? example.variants.find((v) => v.name === selectedVariant)?.config ||
+        example.config
+      : example.config;
+
+  const currentCode =
+    selectedVariant && example.variants
+      ? example.variants.find((v) => v.name === selectedVariant)?.code ||
+        example.code
+      : example.code;
+
+  const exampleWithVariant = {
+    ...example,
+    config: currentConfig,
+    code: currentCode,
+  };
 
   // Render animation based on library
   const renderDemo = () => {
     switch (library) {
       case "framer-motion":
-        return <FramerMotionDemo example={example} />;
+        return <FramerMotionDemo example={exampleWithVariant} />;
       case "react-spring":
-        return <ReactSpringDemo example={example} />;
+        return <ReactSpringDemo example={exampleWithVariant} />;
       case "kute":
-        return <KuteDemo example={example} />;
+        return <KuteDemo example={exampleWithVariant} />;
       case "motion-one":
-        return <MotionOneDemo example={example} />;
+        return <MotionOneDemo example={exampleWithVariant} />;
       case "tsparticles":
-        return <TsParticlesDemo example={example} />;
+        return <TsParticlesDemo example={exampleWithVariant} />;
       case "vivus":
-        return <VivusDemo example={example} />;
+        return <VivusDemo example={exampleWithVariant} />;
       default:
-        return <div className="ideai-animation-demo-box">Library not supported</div>;
+        return (
+          <div className="ideai-animation-demo-box">Library not supported</div>
+        );
     }
   };
 
@@ -63,7 +97,9 @@ export function AnimationCard({ example, library }: AnimationCardProps) {
           <div className="ideai-animation-card__header">
             <div>
               <h3 className="ideai-animation-card__title">{example.title}</h3>
-              <p className="ideai-animation-card__description">{example.description}</p>
+              <p className="ideai-animation-card__description">
+                {example.description}
+              </p>
             </div>
             <button
               onClick={() => setIsExpanded(!isExpanded)}
@@ -88,6 +124,31 @@ export function AnimationCard({ example, library }: AnimationCardProps) {
                 {example.category}
               </span>
             </div>
+
+            {/* Variant Selector */}
+            {example.variants && example.variants.length > 0 && (
+              <div className="mt-3">
+                <label className="text-xs font-medium text-slate-600 dark:text-slate-400 mb-1.5 block">
+                  Variant:
+                </label>
+                <select
+                  value={selectedVariant || ""}
+                  onChange={(e) => {
+                    setSelectedVariant(e.target.value || null);
+                    setAnimationKey((prev) => prev + 1); // Reset animation
+                  }}
+                  className="w-full px-2 py-1.5 text-sm border border-slate-300 dark:border-slate-600 rounded-md bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  <option value="">Default</option>
+                  {example.variants.map((variant) => (
+                    <option key={variant.name} value={variant.name}>
+                      {variant.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
+
             <div className="ideai-animation-card__tags">
               {example.tags.map((tag) => (
                 <span key={tag} className="ideai-animation-card__tag">
@@ -132,7 +193,7 @@ export function AnimationCard({ example, library }: AnimationCardProps) {
                     exit={{ opacity: 0 }}
                     className="ideai-animation-card__code"
                   >
-                    <code>{example.code}</code>
+                    <code>{currentCode}</code>
                   </motion.pre>
                 )}
               </motion.div>
@@ -165,7 +226,10 @@ export function AnimationCard({ example, library }: AnimationCardProps) {
               <span>Play</span>
             </button>
           </div>
-          <div className="ideai-animation-card__demo-content" key={animationKey}>
+          <div
+            className="ideai-animation-card__demo-content"
+            key={animationKey}
+          >
             {renderDemo()}
           </div>
         </div>
@@ -180,7 +244,7 @@ export function AnimationCard({ example, library }: AnimationCardProps) {
 function FramerMotionDemo({ example }: { example: AnimationExample }) {
   const animConfig = example.config as any;
   const [isDragging, setIsDragging] = useState(false);
-  
+
   // Handle special cases
   if (example.id === "framer-motion-4") {
     // Stagger Children - render multiple items
@@ -233,9 +297,19 @@ function FramerMotionDemo({ example }: { example: AnimationExample }) {
   if (example.id === "framer-motion-6") {
     // Layout Animation - render list that can be reordered
     const [items, setItems] = useState([1, 2, 3, 4, 5]);
-    
+
     return (
-      <div style={{ width: "100%", height: "200px", display: "flex", flexDirection: "column", gap: "0.5rem", alignItems: "center", justifyContent: "center" }}>
+      <div
+        style={{
+          width: "100%",
+          height: "200px",
+          display: "flex",
+          flexDirection: "column",
+          gap: "0.5rem",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
         <AnimatePresence>
           {items.map((item) => (
             <motion.div
@@ -258,14 +332,22 @@ function FramerMotionDemo({ example }: { example: AnimationExample }) {
         </AnimatePresence>
         <button
           onClick={() => setItems([...items].reverse())}
-          style={{ marginTop: "0.5rem", padding: "0.5rem 1rem", background: "rgba(255, 255, 255, 0.3)", border: "none", borderRadius: "4px", cursor: "pointer", color: "white" }}
+          style={{
+            marginTop: "0.5rem",
+            padding: "0.5rem 1rem",
+            background: "rgba(255, 255, 255, 0.3)",
+            border: "none",
+            borderRadius: "4px",
+            cursor: "pointer",
+            color: "white",
+          }}
         >
           Reverse
         </button>
       </div>
     );
   }
-  
+
   // Build motion props from config
   const baseStyle: React.CSSProperties = {
     width: "100%",
@@ -273,7 +355,11 @@ function FramerMotionDemo({ example }: { example: AnimationExample }) {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    cursor: animConfig.drag ? "grab" : animConfig.whileHover ? "pointer" : "default",
+    cursor: animConfig.drag
+      ? "grab"
+      : animConfig.whileHover
+        ? "pointer"
+        : "default",
   };
 
   const motionProps: any = {
@@ -307,7 +393,12 @@ function FramerMotionDemo({ example }: { example: AnimationExample }) {
     if (animConfig.dragConstraints) {
       motionProps.dragConstraints = animConfig.dragConstraints;
     } else {
-      motionProps.dragConstraints = { left: -50, right: 50, top: -50, bottom: 50 };
+      motionProps.dragConstraints = {
+        left: -50,
+        right: 50,
+        top: -50,
+        bottom: 50,
+      };
     }
     if (animConfig.dragElastic !== undefined) {
       motionProps.dragElastic = animConfig.dragElastic;
@@ -330,7 +421,7 @@ function FramerMotionDemo({ example }: { example: AnimationExample }) {
       motionProps.viewport = { once: false, margin: "-50px" };
     }
   }
-  
+
   return (
     <motion.div {...motionProps}>
       <div className="ideai-animation-demo-content">
@@ -346,7 +437,7 @@ function FramerMotionDemo({ example }: { example: AnimationExample }) {
 function ReactSpringDemo({ example }: { example: AnimationExample }) {
   const animConfig = example.config as any;
   const [toggle, setToggle] = useState(false);
-  const [count, setCount] = useState(animConfig.number || 100);
+  const [targetNumber, setTargetNumber] = useState(animConfig.number || 100);
 
   // Helper to resolve config (handle string references like "wobbly")
   const resolveConfig = (cfg: any) => {
@@ -358,66 +449,100 @@ function ReactSpringDemo({ example }: { example: AnimationExample }) {
     return cfg;
   };
 
-  // Handle different React Spring patterns
+  // Spring Physics (react-spring-1)
   if (example.id === "react-spring-1") {
-    // Spring physics - auto-animate on mount, toggle on click
     const springProps = useSpring({
       from: animConfig.from || { scale: 0 },
-      to: { scale: 1 },
-      config: resolveConfig(animConfig.config),
-    });
-    
-    const toggleSpring = useSpring({
-      scale: toggle ? 1.2 : 1,
-      rotate: toggle ? 180 : 0,
+      to: toggle ? { scale: 1.2, rotate: 180 } : { scale: 1, rotate: 0 },
       config: resolveConfig(animConfig.config),
     });
 
     return (
-      <animated.div
+      <div
         style={{
-          ...springProps,
-          ...toggleSpring,
           width: "100%",
           height: "200px",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          cursor: "pointer",
+          position: "relative",
         }}
         className="ideai-animation-demo-box"
-        onClick={() => setToggle(!toggle)}
       >
-        <div className="ideai-animation-demo-content">{example.title}</div>
-      </animated.div>
+        <animated.div
+          style={{
+            ...springProps,
+            width: "100px",
+            height: "100px",
+            backgroundColor: "#3b82f6",
+            borderRadius: "8px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            color: "white",
+            fontWeight: "bold",
+            cursor: "pointer",
+          }}
+          onClick={() => setToggle(!toggle)}
+        >
+          Click
+        </animated.div>
+      </div>
     );
   }
 
+  // Number Animation (react-spring-2)
   if (example.id === "react-spring-2") {
     // Number animation
-    const springProps = useSpring({
-      number: count,
+    const { number } = useSpring({
+      number: targetNumber,
       from: animConfig.from || { number: 0 },
       config: resolveConfig(animConfig.config),
     });
 
     return (
-      <div style={{ width: "100%", height: "200px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "1rem" }}>
-        <animated.div style={{ fontSize: "3rem", fontWeight: 700 }}>
-          {springProps.number.to((n: number) => Math.floor(n))}
+      <div
+        style={{
+          width: "100%",
+          height: "200px",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: "1rem",
+        }}
+      >
+        <animated.div
+          style={{ fontSize: "3rem", fontWeight: 700, color: "#3b82f6" }}
+        >
+          {number.to((n: number) => Math.floor(n))}
         </animated.div>
         <div style={{ display: "flex", gap: "0.5rem" }}>
           <button
-            onClick={() => setCount(count + 10)}
-            style={{ padding: "0.5rem 1rem", background: "#3b82f6", color: "white", border: "none", borderRadius: "4px", cursor: "pointer" }}
+            onClick={() => setTargetNumber(100)}
+            style={{
+              padding: "0.5rem 1rem",
+              background: "#3b82f6",
+              color: "white",
+              border: "none",
+              borderRadius: "4px",
+              cursor: "pointer",
+            }}
           >
-            +10
+            To 100
           </button>
           <button
-            onClick={() => setCount(count - 10)}
-            style={{ padding: "0.5rem 1rem", background: "#ef4444", color: "white", border: "none", borderRadius: "4px", cursor: "pointer" }}
+            onClick={() => setTargetNumber(0)}
+            style={{
+              padding: "0.5rem 1rem",
+              background: "#ef4444",
+              color: "white",
+              border: "none",
+              borderRadius: "4px",
+              cursor: "pointer",
+            }}
           >
-            -10
+            To 0
           </button>
         </div>
       </div>
@@ -426,44 +551,56 @@ function ReactSpringDemo({ example }: { example: AnimationExample }) {
 
   if (example.id === "react-spring-3") {
     // Trail animation
-    const items = [1, 2, 3, 4, 5];
-    const [springs, api] = useSprings(
-      items.length,
-      (i) => ({
-        opacity: toggle ? 1 : 0.5,
-        transform: toggle ? `translateY(0px)` : `translateY(${i * 20}px)`,
-        delay: i * 100,
-        config: resolveConfig(animConfig.config),
-      })
-    );
-
-    useEffect(() => {
-      api.start((i) => ({
-        opacity: toggle ? 1 : 0.5,
-        transform: toggle ? `translateY(0px)` : `translateY(${i * 20}px)`,
-        delay: i * 100,
-      }));
-    }, [toggle, api]);
+    const itemCount = animConfig.itemCount || 5;
+    const trail = useTrail(itemCount, {
+      from: animConfig.from || { opacity: 0, y: 20 },
+      to: toggle ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 },
+      config: resolveConfig(animConfig.config),
+    });
 
     return (
-      <div style={{ width: "100%", height: "200px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "1rem" }}>
-        <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
-          {springs.map((spring, i) => (
-            <animated.div
-              key={i}
-              style={{
-                ...spring,
-                width: "40px",
-                height: "40px",
-                background: "#9333ea",
-                borderRadius: "8px",
-              }}
-            />
-          ))}
-        </div>
+      <div
+        style={{
+          width: "100%",
+          height: "200px",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: "0.5rem",
+        }}
+      >
+        {trail.map((props, i) => (
+          <animated.div
+            key={i}
+            style={{
+              ...props,
+              width: "80px",
+              height: "30px",
+              background: `hsl(${i * 60}, 70%, 60%)`,
+              borderRadius: "4px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              color: "white",
+              fontWeight: "bold",
+              fontSize: "0.875rem",
+            }}
+          >
+            Item {i + 1}
+          </animated.div>
+        ))}
         <button
           onClick={() => setToggle(!toggle)}
-          style={{ padding: "0.5rem 1rem", background: "#3b82f6", color: "white", border: "none", borderRadius: "4px", cursor: "pointer" }}
+          style={{
+            marginTop: "0.5rem",
+            padding: "0.5rem 1rem",
+            background: "#3b82f6",
+            color: "white",
+            border: "none",
+            borderRadius: "4px",
+            cursor: "pointer",
+          }}
         >
           Toggle Trail
         </button>
@@ -480,7 +617,14 @@ function ReactSpringDemo({ example }: { example: AnimationExample }) {
     });
 
     return (
-      <div style={{ width: "100%", height: "200px", overflow: "auto", position: "relative" }}>
+      <div
+        style={{
+          width: "100%",
+          height: "200px",
+          overflow: "auto",
+          position: "relative",
+        }}
+      >
         <animated.div
           style={springProps}
           className="ideai-animation-demo-box"
@@ -488,7 +632,11 @@ function ReactSpringDemo({ example }: { example: AnimationExample }) {
         >
           <div className="ideai-animation-demo-content">
             {example.title}
-            <div style={{ fontSize: "0.75rem", marginTop: "0.5rem", opacity: 0.8 }}>Click to animate</div>
+            <div
+              style={{ fontSize: "0.75rem", marginTop: "0.5rem", opacity: 0.8 }}
+            >
+              Click to animate
+            </div>
           </div>
         </animated.div>
       </div>
@@ -522,45 +670,56 @@ function ReactSpringDemo({ example }: { example: AnimationExample }) {
   }
 
   if (example.id === "react-spring-6") {
-    // Spring configurations - show all configs
-    const configs = ["gentle", "wobbly", "stiff", "slow", "molasses"];
-    const [activeConfig, setActiveConfig] = useState("wobbly");
-    
+    // Spring configurations - use variant config if available, otherwise use default
+    const currentConfig = resolveConfig(animConfig.config);
+    const [resetKey, setResetKey] = useState(0);
+
     const springProps = useSpring({
       from: animConfig.from || { x: 0 },
       to: { x: 100 },
-      config: config[activeConfig as keyof typeof config] || config.gentle,
+      config: currentConfig,
+      reset: resetKey > 0,
     });
 
+    // Get all available configs
+    const configs = [
+      { name: "gentle", label: "Gentle" },
+      { name: "wobbly", label: "Wobbly" },
+      { name: "stiff", label: "Stiff" },
+      { name: "slow", label: "Slow" },
+      { name: "molasses", label: "Molasses" },
+    ];
+
+    const handleConfigChange = (cfgName: string) => {
+      // This would need to be handled via variant selection in parent
+      setResetKey((prev) => prev + 1);
+    };
+
     return (
-      <div style={{ width: "100%", height: "200px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "1rem" }}>
+      <div
+        style={{
+          width: "100%",
+          height: "200px",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: "1rem",
+        }}
+      >
         <animated.div
           style={{
             ...springProps,
-            width: "100px",
-            height: "100px",
+            width: "80px",
+            height: "80px",
             background: "#3b82f6",
             borderRadius: "8px",
           }}
         />
-        <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap", justifyContent: "center" }}>
-          {configs.map((cfg) => (
-            <button
-              key={cfg}
-              onClick={() => setActiveConfig(cfg)}
-              style={{
-                padding: "0.25rem 0.75rem",
-                background: activeConfig === cfg ? "#3b82f6" : "#e2e8f0",
-                color: activeConfig === cfg ? "white" : "#1e293b",
-                border: "none",
-                borderRadius: "4px",
-                cursor: "pointer",
-                fontSize: "0.75rem",
-              }}
-            >
-              {cfg}
-            </button>
-          ))}
+        <div
+          style={{ fontSize: "0.75rem", color: "#64748b", textAlign: "center" }}
+        >
+          Use variant dropdown to change config
         </div>
       </div>
     );
@@ -595,150 +754,281 @@ function ReactSpringDemo({ example }: { example: AnimationExample }) {
  */
 function KuteDemo({ example }: { example: AnimationExample }) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const svgRef = useRef<SVGSVGElement>(null);
+  const tweenRef = useRef<any>(null);
   const [isAnimating, setIsAnimating] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [animationKey, setAnimationKey] = useState(0);
+
+  const config = example.config || {};
+  const effectType = example.effectType || "animating";
 
   useEffect(() => {
-    try {
-      const loadModule = new Function('moduleName', 'return import(moduleName)');
-      loadModule('kute.js')
-        .then((KUTE: any) => {
-          if (containerRef.current && !isAnimating) {
+    if (containerRef.current && !isAnimating) {
+      const modulePath = "kute" + ".js";
+      import(modulePath)
+        .then((KUTEModule: any) => {
+          const KUTE = KUTEModule.default || KUTEModule;
+
+          if (
+            !KUTE ||
+            (typeof KUTE.fromTo !== "function" && typeof KUTE.to !== "function")
+          ) {
+            setError("KUTE.js not loaded correctly");
             setIsAnimating(true);
-            const element = containerRef.current.querySelector('.kute-demo-element') as HTMLElement;
-            if (element) {
-              element.style.transition = 'opacity 0.5s';
-              element.style.opacity = '0';
-              setTimeout(() => {
-                if (element) {
-                  element.style.opacity = '1';
-                }
-              }, 100);
-            }
+            return;
           }
+
+          setIsAnimating(true);
+
+          // Small delay to ensure DOM is ready
+          setTimeout(() => {
+            try {
+              // Handle different KUTE.js component types
+              if (
+                config.type === "svgMorph" ||
+                config.type === "svgCubicMorph"
+              ) {
+                // SVG Morph animation
+                if (svgRef.current) {
+                  const paths = svgRef.current.querySelectorAll("path");
+                  if (paths.length >= 2) {
+                    const fromPath = paths[0] as SVGPathElement;
+                    const toPath = paths[1] as SVGPathElement;
+
+                    // Destroy previous tween
+                    if (
+                      tweenRef.current &&
+                      typeof tweenRef.current.stop === "function"
+                    ) {
+                      tweenRef.current.stop();
+                    }
+
+                    // Use path strings instead of elements for morph
+                    const fromPathStr = fromPath.getAttribute("d") || "";
+                    const toPathStr = toPath.getAttribute("d") || "";
+
+                    if (fromPathStr && toPathStr) {
+                      tweenRef.current = KUTE.fromTo(
+                        fromPath,
+                        { path: fromPathStr },
+                        { path: toPathStr },
+                        { duration: config.duration || 1000 },
+                      );
+                      tweenRef.current.start();
+                    }
+                  }
+                }
+              } else if (config.type === "svgDraw") {
+                // SVG Draw animation
+                if (svgRef.current) {
+                  const path = svgRef.current.querySelector(
+                    "path",
+                  ) as SVGPathElement;
+                  if (path) {
+                    if (
+                      tweenRef.current &&
+                      typeof tweenRef.current.stop === "function"
+                    ) {
+                      tweenRef.current.stop();
+                    }
+
+                    // Use fromTo for draw animations with start and end values
+                    const drawFrom = config.drawFrom || "0% 0%";
+                    const drawTo = config.drawTo || "0% 100%";
+
+                    tweenRef.current = KUTE.fromTo(
+                      path,
+                      { draw: drawFrom },
+                      { draw: drawTo },
+                      { duration: config.duration || 2000 },
+                    );
+                    tweenRef.current.start();
+                  }
+                }
+              } else if (config.type === "transformFunctions") {
+                // Transform Functions - simpler approach
+                const targetElement = containerRef.current?.querySelector(
+                  ".kute-transform-target",
+                ) as HTMLElement;
+                if (targetElement) {
+                  if (
+                    tweenRef.current &&
+                    typeof tweenRef.current.stop === "function"
+                  ) {
+                    tweenRef.current.stop();
+                  }
+
+                  // Use simple transform properties
+                  tweenRef.current = KUTE.to(
+                    targetElement,
+                    {
+                      translateX: config.translate?.[0] || 0,
+                      translateY: config.translate?.[1] || 0,
+                      rotate: config.rotate || 0,
+                      scale: config.scale || 1,
+                    },
+                    { duration: config.duration || 600 },
+                  );
+                  tweenRef.current.start();
+                }
+              } else if (config.type === "colorProperties") {
+                // Color animations
+                const targetElement = containerRef.current?.querySelector(
+                  ".kute-color-target",
+                ) as HTMLElement;
+                if (targetElement) {
+                  if (
+                    tweenRef.current &&
+                    typeof tweenRef.current.stop === "function"
+                  ) {
+                    tweenRef.current.stop();
+                  }
+
+                  tweenRef.current = KUTE.to(
+                    targetElement,
+                    {
+                      color: config.color,
+                      backgroundColor: config.backgroundColor,
+                      borderColor: config.borderColor,
+                    },
+                    { duration: config.duration || 600 },
+                  );
+                  tweenRef.current.start();
+                }
+              }
+            } catch (err) {
+              console.warn("KUTE.js animation error:", err);
+              setError("Animation failed to start");
+            }
+          }, 100);
         })
-        .catch(() => {
-          setError('Package not installed');
+        .catch((err) => {
+          console.warn("KUTE.js import error:", err);
+          setError("Package not installed");
           setIsAnimating(true);
         });
-    } catch (e) {
-      setError('Package not installed');
-      setIsAnimating(true);
     }
-  }, []);
 
-  return (
-    <div
-      ref={containerRef}
-      className="ideai-animation-demo-box"
-      style={{
-        width: "100%",
-        height: "200px",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
-      <div className="kute-demo-element" style={{ opacity: 1 }}>
-        <div className="ideai-animation-demo-content">{example.title}</div>
-        <div style={{ fontSize: "0.75rem", marginTop: "0.5rem", opacity: 0.7 }}>
-          {error ? (
-            <span style={{ color: '#ef4444' }}>⚠️ Package not installed. Run: pnpm add kute.js</span>
-          ) : (
-            <>KUTE.js - {example.description}</>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-/**
- * Motion One Demo Renderer
- */
-function MotionOneDemo({ example }: { example: AnimationExample }) {
-  const elementRef = useRef<HTMLDivElement>(null);
-  const [hasAnimated, setHasAnimated] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (elementRef.current && !hasAnimated) {
-      try {
-        const loadModule = new Function('moduleName', 'return import(moduleName)');
-        loadModule('@motionone/dom')
-          .then((motionOne: any) => {
-            setHasAnimated(true);
-            const animConfig = example.config as any;
-            if (motionOne.animate && elementRef.current) {
-              motionOne.animate(
-                elementRef.current,
-                animConfig.opacity || { opacity: [0, 1] },
-                { duration: animConfig.duration || 0.5 }
-              );
-            }
-          })
-          .catch(() => {
-            setError('Package not installed');
-            setHasAnimated(true);
-          });
-      } catch (e) {
-        setError('Package not installed');
-        setHasAnimated(true);
+    return () => {
+      if (tweenRef.current && typeof tweenRef.current.stop === "function") {
+        tweenRef.current.stop();
       }
-    }
-  }, [example.config, hasAnimated]);
+    };
+  }, [isAnimating, animationKey, config]);
 
-  return (
-    <div
-      ref={elementRef}
-      className="ideai-animation-demo-box"
-      style={{
-        width: "100%",
-        height: "200px",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        opacity: hasAnimated ? 1 : 0,
-      }}
-    >
+  const handlePlay = () => {
+    setAnimationKey((prev) => prev + 1);
+    setIsAnimating(false);
+  };
+
+  // Render appropriate demo based on effect type
+  const renderDemo = () => {
+    if (error) {
+      return (
+        <div className="ideai-animation-demo-content">
+          <div style={{ color: "#ef4444" }}>
+            ⚠️ Package not installed. Run: pnpm add kute.js
+          </div>
+        </div>
+      );
+    }
+
+    if (config.type === "svgMorph" || config.type === "svgCubicMorph") {
+      // SVG Morph - rectangle to star
+      return (
+        <svg
+          ref={svgRef}
+          width="120"
+          height="120"
+          viewBox="0 0 600 600"
+          style={{ stroke: "#3b82f6", strokeWidth: 2, fill: "none" }}
+        >
+          <path
+            id="rectangle"
+            d="M38.01,5.653h526.531c17.905,0,32.422,14.516,32.422,32.422v526.531 c0,17.905-14.517,32.422-32.422,32.422H38.01c-17.906,0-32.422-14.517-32.422-32.422V38.075C5.588,20.169,20.104,5.653,38.01,5.653z"
+          />
+          <path
+            id="star"
+            d="M301.113,12.011l99.25,179.996l201.864,38.778L461.706,380.808 l25.508,203.958l-186.101-87.287L115.01,584.766l25.507-203.958L0,230.785l201.86-38.778L301.113,12.011"
+            style={{ visibility: "hidden" }}
+          />
+        </svg>
+      );
+    }
+
+    if (config.type === "svgDraw") {
+      // SVG Draw - use a more complex path for better demo
+      return (
+        <svg
+          ref={svgRef}
+          width="120"
+          height="120"
+          viewBox="0 0 200 200"
+          style={{ stroke: "#3b82f6", strokeWidth: 4, fill: "none" }}
+        >
+          <path d="M 20 100 Q 50 20, 100 100 T 180 100" />
+        </svg>
+      );
+    }
+
+    if (
+      config.type === "transformMatrix" ||
+      config.type === "transformFunctions"
+    ) {
+      // Transform animations
+      return (
+        <div
+          className="kute-transform-target"
+          style={{
+            width: "60px",
+            height: "60px",
+            backgroundColor: "#3b82f6",
+            borderRadius: "8px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            color: "white",
+            fontSize: "12px",
+            fontWeight: "bold",
+          }}
+        >
+          KUTE
+        </div>
+      );
+    }
+
+    if (config.type === "colorProperties") {
+      // Color animations
+      return (
+        <div
+          className="kute-color-target"
+          style={{
+            padding: "16px 24px",
+            borderRadius: "8px",
+            border: "2px solid #e5e7eb",
+            backgroundColor: "#ffffff",
+            color: "#1f2937",
+            fontSize: "14px",
+            fontWeight: "500",
+            transition: "all 0.3s",
+          }}
+        >
+          Color Transition
+        </div>
+      );
+    }
+
+    // Default fallback
+    return (
       <div className="ideai-animation-demo-content">
         {example.title}
-        {error && (
-          <div style={{ fontSize: "0.75rem", marginTop: "0.5rem", color: '#ef4444' }}>
-            ⚠️ Package not installed. Run: pnpm add @motionone/dom
-          </div>
-        )}
+        <div style={{ fontSize: "0.75rem", marginTop: "0.5rem", opacity: 0.7 }}>
+          KUTE.js - {example.description}
+        </div>
       </div>
-    </div>
-  );
-}
-
-/**
- * tsParticles Demo Renderer
- */
-function TsParticlesDemo({ example }: { example: AnimationExample }) {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    try {
-      const loadModule = new Function('moduleName', 'return import(moduleName)');
-      Promise.all([
-        loadModule('@tsparticles/react').catch(() => null),
-        loadModule('@tsparticles/slim').catch(() => null),
-        loadModule('@tsparticles/engine').catch(() => null)
-      ]).then(() => {
-        setIsLoaded(true);
-      }).catch(() => {
-        setError('Packages not installed');
-        setIsLoaded(true);
-      });
-    } catch (e) {
-      setError('Packages not installed');
-      setIsLoaded(true);
-    }
-  }, []);
+    );
+  };
 
   return (
     <div
@@ -752,17 +1042,412 @@ function TsParticlesDemo({ example }: { example: AnimationExample }) {
         justifyContent: "center",
         position: "relative",
       }}
+      key={animationKey}
     >
-      {isLoaded ? (
+      {renderDemo()}
+      {!error && (
+        <button
+          onClick={handlePlay}
+          style={{
+            position: "absolute",
+            bottom: "8px",
+            right: "8px",
+            padding: "4px 8px",
+            fontSize: "11px",
+            backgroundColor: "#3b82f6",
+            color: "white",
+            border: "none",
+            borderRadius: "4px",
+            cursor: "pointer",
+          }}
+        >
+          Play
+        </button>
+      )}
+    </div>
+  );
+}
+
+/**
+ * Motion One Demo Renderer
+ */
+function MotionOneDemo({ example }: { example: AnimationExample }) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [hasAnimated, setHasAnimated] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const animationRef = useRef<any>(null);
+  const [itemOrder, setItemOrder] = useState([0, 1, 2, 3]);
+  const animConfig = example.config as any;
+
+  useEffect(() => {
+    if (containerRef.current && !hasAnimated && typeof window !== "undefined") {
+      // Use dynamic import with proper error handling - only on client
+      const loadMotionOne = async () => {
+        try {
+          // Try direct import first, fallback to dynamic
+          let motionOneModule: any;
+          try {
+            // Direct import for better compatibility
+            motionOneModule = await import("@motionone/dom");
+          } catch (directErr) {
+            // Fallback to string concatenation if direct fails
+            const modulePath = "@motionone" + "/dom";
+            motionOneModule = await import(modulePath);
+          }
+
+          setHasAnimated(true);
+
+          if (!motionOneModule || !motionOneModule.animate) {
+            setError("Package not installed. Run: pnpm add @motionone/dom");
+            return;
+          }
+
+          // Handle Layout Animation (reordering)
+          if (animConfig.layout && animConfig.reorder) {
+            const itemCount = animConfig.itemCount || 4;
+            const items =
+              containerRef.current?.querySelectorAll(".layout-item");
+            if (items && items.length > 0) {
+              // Animate each item to its new position
+              items.forEach((el: any, i: number) => {
+                const newIndex = itemOrder[i];
+                const x = newIndex * 50;
+                motionOneModule.animate(
+                  el,
+                  { x: [null, x] },
+                  { duration: animConfig.duration || 0.3, easing: "ease-out" },
+                );
+              });
+            }
+            return;
+          }
+
+          // Handle regular animations
+          const targetElement = containerRef.current?.querySelector(
+            ".motion-one-target",
+          ) as HTMLElement;
+          if (targetElement) {
+            // Stop previous animation
+            if (
+              animationRef.current &&
+              typeof animationRef.current.stop === "function"
+            ) {
+              animationRef.current.stop();
+            }
+
+            // Build keyframes object from config
+            const keyframes: any = {};
+            if (animConfig.opacity) keyframes.opacity = animConfig.opacity;
+            if (animConfig.scale) {
+              // Spring animations only support 2 keyframes
+              const scaleValues = Array.isArray(animConfig.scale)
+                ? animConfig.scale
+                : [1, animConfig.scale];
+              keyframes.scale =
+                scaleValues.length > 2 && animConfig.easing?.includes("spring")
+                  ? [scaleValues[0], scaleValues[1]]
+                  : scaleValues;
+            }
+            if (animConfig.x !== undefined) keyframes.x = animConfig.x;
+            if (animConfig.y !== undefined) keyframes.y = animConfig.y;
+            if (animConfig.rotate) keyframes.rotate = animConfig.rotate;
+            if (animConfig.backgroundColor)
+              keyframes.backgroundColor = animConfig.backgroundColor;
+
+            const options: any = {
+              duration: animConfig.duration || 0.5,
+            };
+
+            // Handle spring easing - Motion One uses string 'spring()' or 'spring(stiffness, damping)'
+            if (animConfig.easing) {
+              // Motion One accepts spring easing as string directly
+              options.easing = animConfig.easing;
+            }
+
+            if (animConfig.repeat) {
+              options.repeat =
+                animConfig.repeat === "Infinity" ? Infinity : animConfig.repeat;
+            }
+
+            animationRef.current = motionOneModule.animate(
+              targetElement,
+              Object.keys(keyframes).length > 0
+                ? keyframes
+                : { opacity: [0, 1] },
+              options,
+            );
+          }
+        } catch (err) {
+          console.warn("Motion One error:", err);
+          setError("Package not installed. Run: pnpm add @motionone/dom");
+          setHasAnimated(true);
+        }
+      };
+      loadMotionOne();
+    }
+
+    return () => {
+      if (
+        animationRef.current &&
+        typeof animationRef.current.stop === "function"
+      ) {
+        animationRef.current.stop();
+      }
+    };
+  }, [example.config, hasAnimated, itemOrder]);
+
+  // Handle layout reordering on click
+  const handleReorder = () => {
+    setItemOrder((prev) => {
+      const newOrder = [...prev];
+      // Rotate items
+      const first = newOrder.shift();
+      if (first !== undefined) {
+        newOrder.push(first);
+      }
+      return newOrder;
+    });
+    setHasAnimated(false); // Trigger re-animation
+  };
+
+  // Layout Animation - show reorderable items
+  if (animConfig.layout && animConfig.reorder) {
+    const itemCount = animConfig.itemCount || 4;
+    return (
+      <div
+        ref={containerRef}
+        className="ideai-animation-demo-box"
+        style={{
+          width: "100%",
+          height: "200px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: "8px",
+          position: "relative",
+        }}
+      >
+        {Array.from({ length: itemCount }).map((_, i) => (
+          <div
+            key={i}
+            className="layout-item"
+            style={{
+              width: "40px",
+              height: "40px",
+              backgroundColor: `hsl(${i * 90}, 70%, 60%)`,
+              borderRadius: "4px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              color: "white",
+              fontWeight: "bold",
+              fontSize: "14px",
+            }}
+          >
+            {itemOrder[i] + 1}
+          </div>
+        ))}
+        <button
+          onClick={handleReorder}
+          style={{
+            position: "absolute",
+            bottom: "8px",
+            right: "8px",
+            padding: "4px 8px",
+            fontSize: "11px",
+            backgroundColor: "#3b82f6",
+            color: "white",
+            border: "none",
+            borderRadius: "4px",
+            cursor: "pointer",
+          }}
+        >
+          Reorder
+        </button>
+        {error && (
+          <div
+            style={{
+              fontSize: "0.75rem",
+              marginTop: "0.5rem",
+              color: "#ef4444",
+              position: "absolute",
+              top: "8px",
+            }}
+          >
+            ⚠️ Package not installed. Run: pnpm add @motionone/dom
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  // Regular animations
+  return (
+    <div
+      ref={containerRef}
+      className="ideai-animation-demo-box"
+      style={{
+        width: "100%",
+        height: "200px",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        position: "relative",
+      }}
+    >
+      <div
+        className="motion-one-target"
+        style={{
+          width: "80px",
+          height: "80px",
+          backgroundColor: "#3b82f6",
+          borderRadius: "8px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          color: "white",
+          fontWeight: "bold",
+        }}
+      >
+        {example.title}
+      </div>
+      {error && (
+        <div
+          style={{
+            fontSize: "0.75rem",
+            marginTop: "0.5rem",
+            color: "#ef4444",
+            position: "absolute",
+            top: "8px",
+          }}
+        >
+          ⚠️ Package not installed. Run: pnpm add @motionone/dom
+        </div>
+      )}
+    </div>
+  );
+}
+
+/**
+ * tsParticles Demo Renderer
+ */
+function TsParticlesDemo({ example }: { example: AnimationExample }) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [init, setInit] = useState(false);
+  const [ParticlesComponent, setParticlesComponent] = useState<any>(null);
+  const [initParticlesEngine, setInitParticlesEngine] = useState<any>(null);
+  const [loadSlimFn, setLoadSlimFn] = useState<any>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  // Initialize particles engine once per component mount
+  useEffect(() => {
+    Promise.all([
+      import("@tsparticles/react").catch(() => null),
+      import("@tsparticles/slim").catch(() => null),
+    ])
+      .then(([Particles, Slim]) => {
+        if (Particles && Slim) {
+          const ParticlesComp = Particles.default || Particles.Particles;
+          const initEngine = Particles.initParticlesEngine;
+          const loadSlim = Slim.default || Slim.loadSlim;
+
+          if (ParticlesComp && loadSlim && initEngine) {
+            setParticlesComponent(() => ParticlesComp);
+            setInitParticlesEngine(() => initEngine);
+            setLoadSlimFn(() => loadSlim);
+
+            // Initialize engine - only once
+            initEngine(async (engine: any) => {
+              await loadSlim(engine);
+            })
+              .then(() => {
+                setInit(true);
+              })
+              .catch((err: any) => {
+                console.warn("Particles init error:", err);
+                setError("Failed to initialize particles engine");
+              });
+          } else {
+            setError("Packages not installed");
+          }
+        } else {
+          setError("Packages not installed");
+        }
+      })
+      .catch((err) => {
+        console.warn("Particles import error:", err);
+        setError("Packages not installed");
+      });
+  }, []);
+
+  const particlesConfig = example.config || {
+    particles: {
+      number: { value: 50 },
+      color: { value: "#3b82f6" },
+      size: { value: 3 },
+    },
+  };
+
+  return (
+    <div
+      ref={containerRef}
+      className="ideai-animation-demo-box"
+      style={{
+        width: "100%",
+        height: "200px",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        position: "relative",
+        overflow: "hidden",
+        isolation: "isolate",
+        zIndex: 1,
+        backgroundColor:
+          particlesConfig.background?.color?.value || "transparent",
+      }}
+    >
+      {error ? (
         <div className="ideai-animation-demo-content">
           {example.title}
-          <div style={{ fontSize: "0.75rem", marginTop: "0.5rem", opacity: 0.7 }}>
-            {error ? (
-              <span style={{ color: '#ef4444' }}>⚠️ Packages not installed. Run: pnpm add @tsparticles/react @tsparticles/slim @tsparticles/engine</span>
-            ) : (
-              <>tsParticles - {example.description}</>
-            )}
+          <div
+            style={{
+              fontSize: "0.75rem",
+              marginTop: "0.5rem",
+              color: "#ef4444",
+            }}
+          >
+            ⚠️ Packages not installed. Run: pnpm add @tsparticles/react
+            @tsparticles/slim @tsparticles/engine
           </div>
+        </div>
+      ) : init && ParticlesComponent ? (
+        <div
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            overflow: "hidden",
+            isolation: "isolate",
+            zIndex: 1,
+          }}
+        >
+          <ParticlesComponent
+            id={`tsparticles-demo-${example.id}`}
+            options={{
+              ...particlesConfig,
+              fullScreen: { enable: false },
+              detectRetina: true,
+            }}
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+            }}
+          />
         </div>
       ) : (
         <div className="ideai-animation-demo-content">Loading particles...</div>
@@ -782,29 +1467,23 @@ function VivusDemo({ example }: { example: AnimationExample }) {
 
   useEffect(() => {
     if (svgRef.current && !isAnimating) {
-      try {
-        const loadModule = new Function('moduleName', 'return import(moduleName)');
-        loadModule('vivus')
-          .then((VivusModule: any) => {
-            setIsAnimating(true);
-            const animConfig = example.config as any;
-            const Vivus = VivusModule.default || VivusModule;
-            if (Vivus && svgRef.current) {
-              new Vivus(svgRef.current, {
-                type: animConfig.type || 'oneByOne',
-                duration: animConfig.duration || 200,
-                animTimingFunction: Vivus.EASE,
-              });
-            }
-          })
-          .catch(() => {
-            setError('Package not installed');
-            setIsAnimating(true);
-          });
-      } catch (e) {
-        setError('Package not installed');
-        setIsAnimating(true);
-      }
+      import("vivus")
+        .then((VivusModule: any) => {
+          setIsAnimating(true);
+          const animConfig = example.config as any;
+          const Vivus = VivusModule.default || VivusModule;
+          if (Vivus && svgRef.current) {
+            new Vivus(svgRef.current, {
+              type: animConfig.type || "oneByOne",
+              duration: animConfig.duration || 200,
+              animTimingFunction: Vivus.EASE,
+            });
+          }
+        })
+        .catch(() => {
+          setError("Package not installed");
+          setIsAnimating(true);
+        });
     }
   }, [example.config, isAnimating]);
 
@@ -821,8 +1500,14 @@ function VivusDemo({ example }: { example: AnimationExample }) {
       }}
     >
       {error ? (
-        <div style={{ textAlign: 'center' }}>
-          <div style={{ fontSize: "0.875rem", marginBottom: "0.5rem", color: '#ef4444' }}>
+        <div style={{ textAlign: "center" }}>
+          <div
+            style={{
+              fontSize: "0.875rem",
+              marginBottom: "0.5rem",
+              color: "#ef4444",
+            }}
+          >
             ⚠️ Package not installed
           </div>
           <div style={{ fontSize: "0.75rem", opacity: 0.7 }}>

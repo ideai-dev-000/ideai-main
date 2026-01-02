@@ -12,7 +12,8 @@
       "type": "oneByOne",
       "duration": 200,
       "animTimingFunction": "EASE"
-    }
+    },
+    "effectType": "drawing"
   },
   {
     "id": "vivus-2",
@@ -27,7 +28,8 @@
       "type": "delayed",
       "duration": 200,
       "delay": 50
-    }
+    },
+    "effectType": "drawing"
   },
   {
     "id": "vivus-3",
@@ -41,7 +43,7 @@
     "config": {
       "type": "sync",
       "duration": 200
-    }
+    },
+    "effectType": "drawing"
   }
 ]
-

@@ -1,6 +1,6 @@
 /**
  * @fileoverview Semantic IdeaI footer component with best practices
- * 
+ *
  * @module IdeAIFooter
  * @description
  * Semantic footer with logo/brand, three-column layout (left: address/copyright,
@@ -61,7 +61,11 @@ export const IdeAIFooter = ({
   socialLinks = [
     { label: "Twitter", href: "https://twitter.com/ideai", icon: "🐦" },
     { label: "GitHub", href: "https://github.com/ideai-dev-000", icon: "💻" },
-    { label: "LinkedIn", href: "https://linkedin.com/company/ideai", icon: "💼" },
+    {
+      label: "LinkedIn",
+      href: "https://linkedin.com/company/ideai",
+      icon: "💼",
+    },
   ],
   accountLinks = [
     { label: "Sign In", href: "/signin" },
@@ -69,11 +73,12 @@ export const IdeAIFooter = ({
     { label: "Dashboard", href: "/dashboard" },
   ],
 }: IdeAIFooterProps) => {
-  // Compute copyright at render time (not in default param) to avoid build issues
-  // Use static year 2025 for SSR safety (will be updated dynamically if needed)
-  const currentYear = typeof window !== "undefined" ? new Date().getFullYear() : 2025;
-  const copyright = copyrightProp ?? `© ${currentYear} IdeaI. All rights reserved.`;
-  
+  // Use static year 2026 for SSR/client consistency (prevents hydration mismatch)
+  // The year can be updated annually or passed via copyrightProp
+  const currentYear = 2026;
+  const copyright =
+    copyrightProp ?? `© ${currentYear} IdeaI. All rights reserved.`;
+
   return (
     <footer
       className="ideai-footer"
@@ -90,17 +95,32 @@ export const IdeAIFooter = ({
             <div className="ideai-footer__brand">
               <IdeAILogo siteName={siteName} />
             </div>
-            <address className="ideai-footer__address" itemScope itemType="https://schema.org/PostalAddress">
+            <address
+              className="ideai-footer__address"
+              itemScope
+              itemType="https://schema.org/PostalAddress"
+            >
               {address.street && (
-                <span itemProp="streetAddress" className="ideai-footer__address-line">
+                <span
+                  itemProp="streetAddress"
+                  className="ideai-footer__address-line"
+                >
                   {address.street}
                 </span>
               )}
               <span className="ideai-footer__address-line">
-                {address.city && <span itemProp="addressLocality">{address.city}</span>}
-                {address.state && <span itemProp="addressRegion">, {address.state}</span>}
-                {address.zip && <span itemProp="postalCode"> {address.zip}</span>}
-                {address.country && <span itemProp="addressCountry">, {address.country}</span>}
+                {address.city && (
+                  <span itemProp="addressLocality">{address.city}</span>
+                )}
+                {address.state && (
+                  <span itemProp="addressRegion">, {address.state}</span>
+                )}
+                {address.zip && (
+                  <span itemProp="postalCode"> {address.zip}</span>
+                )}
+                {address.country && (
+                  <span itemProp="addressCountry">, {address.country}</span>
+                )}
               </span>
             </address>
 
@@ -165,11 +185,16 @@ export const IdeAIFooter = ({
                       aria-label={`${link.label} (opens in new tab)`}
                     >
                       {link.icon && (
-                        <span className="ideai-footer__social-icon" aria-hidden="true">
+                        <span
+                          className="ideai-footer__social-icon"
+                          aria-hidden="true"
+                        >
                           {link.icon}
                         </span>
                       )}
-                      <span className="ideai-footer__social-label">{link.label}</span>
+                      <span className="ideai-footer__social-label">
+                        {link.label}
+                      </span>
                     </a>
                   </li>
                 ))}

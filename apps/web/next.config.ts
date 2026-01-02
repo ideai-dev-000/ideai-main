@@ -1,9 +1,14 @@
-import type { NextConfig } from "next"
+import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   experimental: {
     // Optimize package imports to reduce bundle size
-    optimizePackageImports: ["@repo/ui", "lucide-react", "@radix-ui/react-dialog", "@radix-ui/react-tooltip"],
+    optimizePackageImports: [
+      "@repo/ui",
+      "lucide-react",
+      "@radix-ui/react-dialog",
+      "@radix-ui/react-tooltip",
+    ],
 
     // Enable cache components (Next.js 16 feature - includes PPR)
     // Note: Temporarily disabled due to ThemeProvider compatibility issues
@@ -11,6 +16,9 @@ const nextConfig: NextConfig = {
   },
 
   transpilePackages: ["@repo/ui"],
+
+  // Turbopack config (Next.js 16 uses Turbopack by default)
+  turbopack: {},
 
   images: {
     formats: ["image/avif", "image/webp"],
@@ -28,6 +36,6 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: false,
   },
-}
+};
 
-export default nextConfig
+export default nextConfig;

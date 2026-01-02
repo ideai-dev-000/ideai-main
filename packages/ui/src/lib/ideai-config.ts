@@ -1,11 +1,11 @@
 /**
  * @fileoverview IdeaI App Configuration System
- * 
+ *
  * @module IdeAIConfig
  * @description
  * Reads .ideai.json config file to determine app role (parent/child)
  * and configuration. Makes it easy to switch apps between parent/child roles.
- * 
+ *
  * @example
  * ```json
  * {
@@ -14,7 +14,7 @@
  *   "childApps": ["docs", "all"]
  * }
  * ```
- * 
+ *
  * @example
  * ```json
  * {
@@ -89,22 +89,24 @@ const DEFAULT_CHILD_PORTS: Record<string, number> = {
 
 /**
  * Read IdeaI config from .ideai.json file
- * 
+ *
  * @param appName - App name (e.g., "web", "docs")
  * @returns Config object or null if not found
  */
-export async function readIdeAIConfig(appName: string): Promise<IdeAIConfig | null> {
+export async function readIdeAIConfig(
+  appName: string,
+): Promise<IdeAIConfig | null> {
   try {
     // In Next.js, we need to read from the app directory
     const configPath = `apps/${appName}/.ideai.json`;
     const response = await fetch(`/${configPath}`, {
       cache: "no-store",
     });
-    
+
     if (!response.ok) {
       return null;
     }
-    
+
     const config = await response.json();
     return config as IdeAIConfig;
   } catch {
@@ -116,7 +118,7 @@ export async function readIdeAIConfig(appName: string): Promise<IdeAIConfig | nu
 /**
  * Read IdeaI config synchronously
  * Works in both Node.js and browser (uses defaults in browser)
- * 
+ *
  * @param appName - App name (e.g., "web", "docs")
  * @returns Config object with defaults
  */
@@ -127,10 +129,15 @@ export function readIdeAIConfigSync(appName: string): IdeAIConfig | null {
     try {
       const fs = require("fs");
       const path = require("path");
-      
+
       // Try to read from apps/{appName}/.ideai.json
-      const configPath = path.join(process.cwd(), "apps", appName, ".ideai.json");
-      
+      const configPath = path.join(
+        process.cwd(),
+        "apps",
+        appName,
+        ".ideai.json",
+      );
+
       if (fs.existsSync(configPath)) {
         const configContent = fs.readFileSync(configPath, "utf-8");
         return JSON.parse(configContent) as IdeAIConfig;
@@ -139,7 +146,7 @@ export function readIdeAIConfigSync(appName: string): IdeAIConfig | null {
       // Fall through to defaults
     }
   }
-  
+
   // Fallback: return defaults based on app name
   if (appName === "web") {
     return {
@@ -147,10 +154,17 @@ export function readIdeAIConfigSync(appName: string): IdeAIConfig | null {
       name: "IdeaI",
       description: "Main IdeaI application",
       childApps: Object.keys(DEFAULT_CHILD_PORTS),
-      animationLibraries: ["framer-motion", "react-spring"],
+      animationLibraries: [
+        "framer-motion",
+        "react-spring",
+        "kute",
+        "motion-one",
+        "tsparticles",
+        "vivus",
+      ],
     };
   }
-  
+
   // Default to child for other apps
   return {
     role: "child",
@@ -163,7 +177,7 @@ export function readIdeAIConfigSync(appName: string): IdeAIConfig | null {
 /**
  * Get child app configuration
  * Works in both browser and Node.js
- * 
+ *
  * @param appName - Child app name
  * @returns Child app config with port info
  */
@@ -175,7 +189,7 @@ export function getChildAppConfig(appName: string): IdeAIConfig {
       return config;
     }
   }
-  
+
   // Default config (works in browser and Node.js)
   return {
     role: "child",
@@ -187,24 +201,26 @@ export function getChildAppConfig(appName: string): IdeAIConfig {
 
 /**
  * Get all child apps from parent config
- * 
+ *
  * @param parentAppName - Parent app name (default: "web")
  * @returns Array of child app configs
  */
 export function getChildApps(parentAppName: string = "web"): IdeAIConfig[] {
   const parentConfig = readIdeAIConfigSync(parentAppName);
-  
+
   if (parentConfig?.role === "parent" && parentConfig.childApps) {
     return parentConfig.childApps.map((appName) => getChildAppConfig(appName));
   }
-  
+
   // Fallback: return all known child apps
-  return Object.keys(DEFAULT_CHILD_PORTS).map((appName) => getChildAppConfig(appName));
+  return Object.keys(DEFAULT_CHILD_PORTS).map((appName) =>
+    getChildAppConfig(appName),
+  );
 }
 
 /**
  * Check if app is parent
- * 
+ *
  * @param appName - App name
  * @returns true if app is parent
  */
@@ -215,7 +231,7 @@ export function isParentApp(appName: string): boolean {
 
 /**
  * Check if app is child
- * 
+ *
  * @param appName - App name
  * @returns true if app is child
  */

@@ -1,12 +1,12 @@
 /**
  * @fileoverview SVG Artista Drawing Component
- * 
+ *
  * @module SVGArtistaDraw
  * @description
  * Component for SVG Artista-style animations.
  * SVG Artista is a tool that generates CSS-based SVG animations.
  * This component provides a React wrapper for those patterns.
- * 
+ *
  * @example
  * ```tsx
  * <SVGArtistaDraw
@@ -41,35 +41,88 @@ export function SVGArtistaDraw({
   useEffect(() => {
     if (!containerRef.current) return;
 
+    // Clear previous content and classes
+    containerRef.current.innerHTML = "";
+    containerRef.current.className = className || "";
+    containerRef.current.classList.remove(
+      "svg-artista",
+      "svg-artista-stroke",
+      "svg-artista-fill",
+      "active",
+    );
+
     // Parse SVG and add animation classes
     const parser = new DOMParser();
-    const svgDoc = parser.parseFromString(svgContent, "image/svg+xml");
+    const svgDoc = parser.parseFromString(svgContent.trim(), "image/svg+xml");
     const svgElement = svgDoc.querySelector("svg");
 
-    if (!svgElement) return;
+    if (!svgElement) {
+      console.warn("SVG Artista: Could not parse SVG content");
+      return;
+    }
 
-    // Add SVG Artista animation classes
-    svgElement.classList.add("svg-artista");
+    // Clone the SVG element to avoid modifying the original
+    const clonedSvg = svgElement.cloneNode(true) as SVGElement;
+
+    // Set SVG size
+    clonedSvg.setAttribute("width", "120");
+    clonedSvg.setAttribute("height", "120");
+    clonedSvg.setAttribute("viewBox", "0 0 200 200");
+
+    // Reset all stroke and fill properties on SVG elements
+    const allElements = clonedSvg.querySelectorAll(
+      "path, circle, rect, line, polyline, polygon",
+    );
+    allElements.forEach((el) => {
+      const element = el as SVGElement;
+      // Reset stroke properties
+      if (animationType === "stroke" || animationType === "both") {
+        element.style.strokeDasharray = "1000";
+        element.style.strokeDashoffset = "1000";
+      }
+      // Reset fill properties
+      if (animationType === "fill" || animationType === "both") {
+        element.style.fillOpacity = "0";
+        // Also set fill if not already set
+        if (
+          !element.getAttribute("fill") ||
+          element.getAttribute("fill") === "none"
+        ) {
+          element.setAttribute("fill", "#3b82f6");
+        }
+      }
+    });
+
+    // Add SVG Artista animation classes to container
+    containerRef.current.classList.add("svg-artista");
     if (animationType === "stroke" || animationType === "both") {
-      svgElement.classList.add("svg-artista-stroke");
+      containerRef.current.classList.add("svg-artista-stroke");
     }
     if (animationType === "fill" || animationType === "both") {
-      svgElement.classList.add("svg-artista-fill");
+      containerRef.current.classList.add("svg-artista-fill");
     }
 
-    // Set animation duration
-    svgElement.style.setProperty("--duration", `${duration}s`);
-    svgElement.style.setProperty("--delay", `${delay}s`);
+    // Set animation duration on container
+    containerRef.current.style.setProperty("--duration", `${duration}s`);
+    containerRef.current.style.setProperty("--delay", `${delay}s`);
 
-    // Clear and append
-    containerRef.current.innerHTML = "";
-    containerRef.current.appendChild(svgElement);
+    // Append SVG
+    containerRef.current.appendChild(clonedSvg);
 
-    // Trigger animation
-    setTimeout(() => {
-      svgElement.classList.add("active");
-    }, delay * 1000);
-  }, [svgContent, animationType, duration, delay]);
+    // Trigger animation restart - force reflow to restart animation
+    requestAnimationFrame(() => {
+      if (containerRef.current) {
+        containerRef.current.classList.remove("active");
+        // Force reflow
+        void containerRef.current.offsetWidth;
+        requestAnimationFrame(() => {
+          if (containerRef.current) {
+            containerRef.current.classList.add("active");
+          }
+        });
+      }
+    });
+  }, [svgContent, animationType, duration, delay, className]);
 
   return (
     <div
@@ -77,8 +130,9 @@ export function SVGArtistaDraw({
       className={className}
       style={{
         display: "inline-block",
+        width: "120px",
+        height: "120px",
       }}
     />
   );
 }
-
