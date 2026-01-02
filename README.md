@@ -99,7 +99,21 @@ import { IdeAIDocsViewer } from "@repo/ui";
 <IdeAIDocsViewer filter={{ category: "deployment" }} />
 ```
 
-### 4. No Legacy Support
+### 4. Page Templates Showcase
+
+Pre-built page templates for common layouts:
+- Dashboard, Blog, Social Feed, E-commerce, Landing, Portfolio, Docs, Admin
+- JSON-driven configuration for easy extension
+- Centralized shadcn theme integration
+- Filterable showcase at `/page-templates`
+
+```tsx
+import { PageTemplatesShowcase } from "@repo/ui/components/page-templates";
+
+<PageTemplatesShowcase />
+```
+
+### 5. No Legacy Support
 
 - Only current formats (`.ideai.json`)
 - No backward compatibility code
