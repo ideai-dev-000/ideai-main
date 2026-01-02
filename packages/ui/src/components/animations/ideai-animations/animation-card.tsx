@@ -1112,7 +1112,6 @@ function MotionOneDemo({
           // Try multiple import strategies
           const importStrategies = [
             () => import("@motionone/dom"),
-            () => import("@motionone/dom/dist/index.es.js"),
             () => {
               const path = "@motionone" + "/dom";
               return import(path);
@@ -1122,30 +1121,22 @@ function MotionOneDemo({
           for (const importFn of importStrategies) {
             try {
               motionOneModule = await importFn();
-              console.log(
-                "Motion One import attempt - keys:",
-                Object.keys(motionOneModule || {}),
-              );
               // Check for named export (animate is exported directly)
               if (motionOneModule && motionOneModule.animate) {
-                console.log("✅ Motion One animate found as named export");
                 break;
               }
               // Check for default export
               if (motionOneModule?.default?.animate) {
                 motionOneModule = motionOneModule.default;
-                console.log("✅ Motion One animate found in default export");
                 break;
               }
               // Check if it's the module itself
               if (typeof motionOneModule === "function") {
                 motionOneModule = { animate: motionOneModule };
-                console.log("✅ Motion One wrapped as function");
                 break;
               }
             } catch (err: any) {
               importError = err;
-              console.warn("Import strategy failed:", err.message);
               continue;
             }
           }
@@ -1173,12 +1164,17 @@ function MotionOneDemo({
               // Animate each item to its new position
               items.forEach((el: any, i: number) => {
                 const newIndex = itemOrder[i];
-                const x = newIndex * 50;
-                motionOneModule.animate(
-                  el,
-                  { x: [null, x] },
-                  { duration: animConfig.duration || 0.3, easing: "ease-out" },
-                );
+                if (newIndex !== undefined) {
+                  const x = newIndex * 50;
+                  motionOneModule.animate(
+                    el,
+                    { x: [null, x] },
+                    {
+                      duration: animConfig.duration || 0.3,
+                      easing: "ease-out",
+                    },
+                  );
+                }
               });
             }
             return;
@@ -1299,26 +1295,29 @@ function MotionOneDemo({
           position: "relative",
         }}
       >
-        {Array.from({ length: itemCount }).map((_, i) => (
-          <div
-            key={i}
-            className="layout-item"
-            style={{
-              width: "40px",
-              height: "40px",
-              backgroundColor: `hsl(${i * 90}, 70%, 60%)`,
-              borderRadius: "4px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              color: "white",
-              fontWeight: "bold",
-              fontSize: "14px",
-            }}
-          >
-            {itemOrder[i] + 1}
-          </div>
-        ))}
+        {Array.from({ length: itemCount }).map((_, i) => {
+          const orderValue = itemOrder[i];
+          return (
+            <div
+              key={i}
+              className="layout-item"
+              style={{
+                width: "40px",
+                height: "40px",
+                backgroundColor: `hsl(${i * 90}, 70%, 60%)`,
+                borderRadius: "4px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                color: "white",
+                fontWeight: "bold",
+                fontSize: "14px",
+              }}
+            >
+              {(orderValue !== undefined ? orderValue : i) + 1}
+            </div>
+          );
+        })}
         <button
           onClick={handleReorder}
           style={{
