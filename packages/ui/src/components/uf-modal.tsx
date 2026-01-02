@@ -144,6 +144,3 @@ export const UFModal = ({
     </div>
   );
 };
-
-
-

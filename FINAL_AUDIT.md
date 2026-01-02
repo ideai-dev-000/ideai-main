@@ -150,7 +150,7 @@ All `@todo` comments found are future enhancements:
 
 ## 📝 Commit Message Suggestion
 
-```
+\`\`\`
 fix(ui): resolve iframe hydration errors and remove legacy components
 
 Fixed critical React hydration errors in iframe-embedded IdeaI sites by
@@ -170,7 +170,7 @@ Changes:
 - Updated STATUS.md to reflect 13 apps (was 9)
 
 Result: All iframes now load without React hydration errors.
-```
+\`\`\`
 
 ## ✅ Final Checklist
 
@@ -187,6 +187,3 @@ Result: All iframes now load without React hydration errors.
 - [x] Repository is tidy and ready
 
 **Status**: ✅ **READY FOR COMMIT AND PR**
-
-
-

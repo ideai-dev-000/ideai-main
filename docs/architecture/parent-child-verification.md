@@ -11,10 +11,10 @@ Complete guide to verify and test the parent/child app architecture.
 
 ### 1. Test Defaults (No Config Files)
 
-```bash
+\`\`\`bash
 # Test that defaults work without .ideai.json files
 node scripts/test-parent-child.js
-```
+\`\`\`
 
 **Expected Output**:
 - ✅ Parent App (web): Role: parent, URL: /
@@ -23,11 +23,11 @@ node scripts/test-parent-child.js
 
 ### 2. Check Dependencies
 
-```bash
+\`\`\`bash
 # Verify parent has all child dependencies
 pnpm --filter web build:check
 # Or: node scripts/ideai-build-check.mjs web
-```
+\`\`\`
 
 **Expected Output**:
 - Shows parent dependencies count
@@ -37,10 +37,10 @@ pnpm --filter web build:check
 
 ### 3. Build Test
 
-```bash
+\`\`\`bash
 # Build parent app
 pnpm --filter web build
-```
+\`\`\`
 
 **Expected**:
 - ✅ Build succeeds
@@ -50,12 +50,12 @@ pnpm --filter web build
 
 ### 4. Track Build
 
-```bash
+\`\`\`bash
 # Track build metadata
 pnpm --filter web build:track
 # View report
 node scripts/ideai-build-track.mjs web report
-```
+\`\`\`
 
 **Expected**:
 - Build metadata saved to `.ideai/builds/`
@@ -67,72 +67,72 @@ node scripts/ideai-build-track.mjs web report
 ### Configuration Tests
 
 - [ ] Defaults work (no .ideai.json files)
-  ```bash
+  \`\`\`bash
   node scripts/test-parent-child.js
-  ```
+  \`\`\`
 - [ ] Config files work (with .ideai.json)
-  ```bash
+  \`\`\`bash
   # Remove some configs, test defaults
   # Add configs back, test custom configs
-  ```
+  \`\`\`
 - [ ] Parent/child detection correct
-  ```bash
+  \`\`\`bash
   # web = parent ✅
   # All others = child ✅
-  ```
+  \`\`\`
 
 ### Dependency Tests
 
 - [ ] Dependency checker works
-  ```bash
+  \`\`\`bash
   pnpm --filter web build:check
-  ```
+  \`\`\`
 - [ ] Dependency sync works (dry-run)
-  ```bash
+  \`\`\`bash
   pnpm --filter web build:sync --dry-run
-  ```
+  \`\`\`
 - [ ] Build tracking works
-  ```bash
+  \`\`\`bash
   pnpm --filter web build:track
-  ```
+  \`\`\`
 
 ### Build Tests
 
 - [ ] TypeScript compiles
-  ```bash
+  \`\`\`bash
   pnpm --filter web check-types
-  ```
+  \`\`\`
 - [ ] Linter passes
-  ```bash
+  \`\`\`bash
   pnpm --filter web lint
-  ```
+  \`\`\`
 - [ ] Build succeeds
-  ```bash
+  \`\`\`bash
   pnpm --filter web build
-  ```
+  \`\`\`
 - [ ] Routes generated correctly
-  ```bash
+  \`\`\`bash
   # Check build output for routes
-  ```
+  \`\`\`
 
 ### Runtime Tests (Development)
 
 - [ ] Parent app starts
-  ```bash
+  \`\`\`bash
   pnpm --filter web dev
   # Visit http://localhost:3000
-  ```
+  \`\`\`
 - [ ] Child app routes work
-  ```bash
+  \`\`\`bash
   # Start child: pnpm --filter docs dev
   # Visit http://localhost:3000/apps/docs
   # Should show child app in iframe
-  ```
+  \`\`\`
 - [ ] Iframe detection works
-  ```bash
+  \`\`\`bash
   # Child app header/footer should be hidden
   # Only <main> content visible
-  ```
+  \`\`\`
 
 ## Test Results
 
@@ -177,7 +177,7 @@ node scripts/ideai-build-track.mjs web report
 
 ### Full Verification Script
 
-```bash
+\`\`\`bash
 #!/bin/bash
 # scripts/verify-all.sh
 
@@ -202,7 +202,7 @@ echo "6. Tracking build..."
 node scripts/ideai-build-track.mjs web build
 
 echo "✅ All verification complete!"
-```
+\`\`\`
 
 ## Troubleshooting
 
@@ -231,5 +231,3 @@ echo "✅ All verification complete!"
 - [Build System](./ideai-build-system.md)
 - [Parent-Child Status](./parent-child-status.md)
 - [CSS Compatibility](./parent-child-css.md)
-
-

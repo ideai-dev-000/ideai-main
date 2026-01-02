@@ -96,6 +96,3 @@ export const IdeAICardFormField = ({
     </div>
   );
 };
-
-
-

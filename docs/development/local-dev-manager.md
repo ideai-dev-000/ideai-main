@@ -21,7 +21,7 @@ The dev manager script (`scripts/dev-manager.mjs`) provides a modern, zero-bloat
 
 ## Quick Commands
 
-```bash
+\`\`\`bash
 # Check status of all apps
 pnpm dev:status
 
@@ -42,25 +42,25 @@ pnpm dev:restart
 
 # Restart specific app
 pnpm dev:restart bootstrap
-```
+\`\`\`
 
 ## Direct Usage
 
 You can also use the script directly:
 
-```bash
+\`\`\`bash
 node scripts/dev-manager.mjs status
 node scripts/dev-manager.mjs start
 node scripts/dev-manager.mjs start web
 node scripts/dev-manager.mjs stop docs
 node scripts/dev-manager.mjs restart
-```
+\`\`\`
 
 ## Status Output
 
 The status command shows a clean table:
 
-```
+\`\`\`
 📊 IdeaI Monorepo - Dev Server Status
 
 ┌─────────────┬──────────┬─────────┬─────────────────────────┐
@@ -72,7 +72,7 @@ The status command shows a clean table:
 └─────────────┴──────────┴─────────┴─────────────────────────┘
 
 2/8 apps running
-```
+\`\`\`
 
 ## How It Works
 
@@ -132,13 +132,13 @@ Uses `lsof` to check if a port is in use:
 
 ### Port Already in Use
 
-```bash
+\`\`\`bash
 # Find what's using the port
 lsof -ti:3000
 
 # Kill it manually if needed
 kill -9 $(lsof -ti:3000)
-```
+\`\`\`
 
 ### Script Hangs
 
@@ -159,11 +159,3 @@ The script should exit immediately after starting apps. If it hangs:
 
 - [Getting Started](./getting-started.md) - Initial development setup
 - [Deployment Overview](../deployment/overview.md) - Production deployment
-
-
-
-
-
-
-
-

@@ -79,6 +79,3 @@ export const UFModalTrigger = ({
     </>
   );
 };
-
-
-

@@ -618,4 +618,3 @@ export const UF = ({ defaultFramework = "tailwind", className }: UFProps) => {
     </div>
   );
 };
-

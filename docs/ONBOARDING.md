@@ -57,7 +57,7 @@ See: [Multi-Strategy Deployment Plan](./deployment/MULTI-STRATEGY-DEPLOYMENT-PLA
 
 ### Project Structure
 
-```
+\`\`\`
 ideai-main/
 ├── apps/                    # 13 Next.js applications
 │   ├── web/                # Main IdeaI app (port 3000)
@@ -80,7 +80,7 @@ ideai-main/
 ├── docs/                   # Documentation
 ├── scripts/                # Utility scripts
 └── deploy.sh              # Unified deployment script
-```
+\`\`\`
 
 ### Apps Overview
 
@@ -113,7 +113,7 @@ ideai-main/
 
 ### Initial Setup
 
-```bash
+\`\`\`bash
 # Clone the repository
 git clone https://github.com/ideai-dev-000/ideai-main.git
 cd ideai-main
@@ -126,11 +126,11 @@ pnpm dev:start
 
 # Or start individual app
 pnpm --filter web dev
-```
+\`\`\`
 
 ### Development Commands
 
-```bash
+\`\`\`bash
 # Start all dev servers
 pnpm dev:start
 
@@ -151,7 +151,7 @@ pnpm lint
 
 # Type check all apps
 pnpm check-types
-```
+\`\`\`
 
 ### Accessing Apps Locally
 
@@ -235,7 +235,7 @@ pnpm check-types
 
 ### Deployment Commands
 
-```bash
+\`\`\`bash
 # Deploy all apps (preview)
 ./deploy.sh
 
@@ -244,7 +244,7 @@ pnpm check-types
 
 # Deploy specific app (production)
 ./deploy.sh --prod web
-```
+\`\`\`
 
 ### Deployment Status
 
@@ -260,7 +260,7 @@ pnpm check-types
 
 Every commit must be well-formatted and descriptive:
 
-```
+\`\`\`
 type(scope): detailed subject line
 
 Detailed explanation of what changed and why.
@@ -270,7 +270,7 @@ Detailed explanation of what changed and why.
 - Specific change 3
 
 Related: TICKET-XXX
-```
+\`\`\`
 
 ### Commit Types
 
@@ -284,7 +284,7 @@ Related: TICKET-XXX
 
 ### Examples
 
-```bash
+\`\`\`bash
 # Good commit message
 fix(web): resolve sub-folder route 404 issue
 
@@ -300,7 +300,7 @@ Related: TICKET-0.1
 
 # Bad commit message (DON'T DO THIS)
 fix: stuff
-```
+\`\`\`
 
 **See**: [Commit Standards](#commit-standards) section below for full details.
 
@@ -423,7 +423,7 @@ fix: stuff
 
 ### Format
 
-```
+\`\`\`
 type(scope): detailed subject line
 
 Detailed explanation of what changed and why.
@@ -433,7 +433,7 @@ Detailed explanation of what changed and why.
 - Specific change 3
 
 Related: TICKET-XXX
-```
+\`\`\`
 
 ### Types
 
@@ -456,7 +456,7 @@ Related: TICKET-XXX
 
 ### Good Examples
 
-```bash
+\`\`\`bash
 fix(web): resolve sub-folder route 404 issue
 
 Fixed Next.js App Router catch-all route that was returning 404
@@ -497,11 +497,11 @@ strategy. Explains how apps work in isolation and how to configure them.
 - Included troubleshooting guide
 
 Related: TICKET-2.3
-```
+\`\`\`
 
 ### Bad Examples (DON'T DO THIS)
 
-```bash
+\`\`\`bash
 # Too vague
 fix: stuff
 
@@ -513,7 +513,7 @@ fix: 404 error
 
 # No ticket reference
 feat: new feature
-```
+\`\`\`
 
 ### Commit Signing
 
@@ -543,6 +543,3 @@ feat: new feature
 **Welcome to the team! Let's build something amazing together! 🚀**
 
 **Last Updated**: January 1, 2026
-
-
-

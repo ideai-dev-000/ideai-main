@@ -100,6 +100,3 @@ export const IdeAIFrameworkButton = ({
     </button>
   );
 };
-
-
-

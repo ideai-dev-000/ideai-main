@@ -63,7 +63,7 @@ The IdeaI web app (`apps/web`) is now a complete boilerplate with integrated doc
 ## Configuration
 
 ### App Configuration (`.ideai.json`)
-```json
+\`\`\`json
 {
   "role": "parent",
   "name": "IdeaI",
@@ -79,12 +79,12 @@ The IdeaI web app (`apps/web`) is now a complete boilerplate with integrated doc
     "capabilities": ["Full UI components", "Shared design tokens", "Dark mode support"]
   }
 }
-```
+\`\`\`
 
 ## Usage Examples
 
 ### Accessing Documentation
-```bash
+\`\`\`bash
 # Main docs viewer
 https://www.myui.space/docs
 
@@ -96,10 +96,10 @@ https://www.myui.space/docs?path=deployment/vercel
 
 # Search
 https://www.myui.space/docs?search=vercel
-```
+\`\`\`
 
 ### Using the Component
-```tsx
+\`\`\`tsx
 import { IdeAIDocsViewer } from "@repo/ui";
 
 <IdeAIDocsViewer 
@@ -107,14 +107,14 @@ import { IdeAIDocsViewer } from "@repo/ui";
   title="Deployment Guide"
   showNav={true}
 />
-```
+\`\`\`
 
 ## Deployment
 
 ### Deploy Command
-```bash
+\`\`\`bash
 ./deploy.sh --prod web
-```
+\`\`\`
 
 ### Deployment Process
 1. Links to `ideai-main` Vercel project
@@ -156,5 +156,3 @@ import { IdeAIDocsViewer } from "@repo/ui";
 
 **Last Updated**: 2026-01-01
 **Status**: ✅ Production Ready
-
-

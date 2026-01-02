@@ -20,4 +20,3 @@ export function MDXContent({ code }: MDXContentProps) {
   const Component = useMemo(() => useMDXComponent(code), [code]);
   return <Component />;
 }
-

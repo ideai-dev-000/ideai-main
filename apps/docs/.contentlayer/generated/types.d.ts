@@ -67,5 +67,3 @@ export type DocumentTypeMap = {
 export type NestedTypeMap = {
 
 }
-
- 

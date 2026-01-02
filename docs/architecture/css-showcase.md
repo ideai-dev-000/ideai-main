@@ -56,14 +56,14 @@ Four dedicated apps demonstrate different CSS approaches:
 
 **File**: `apps/nocss/app/globals.css`
 
-```css
+\`\`\`css
 /**
  * No CSS - Pure HTML defaults only
  * This app has NO CSS styling - just browser defaults.
  */
 
 /* No CSS imports - pure HTML defaults */
-```
+\`\`\`
 
 **When to Use**:
 - Understanding browser defaults
@@ -74,7 +74,7 @@ Four dedicated apps demonstrate different CSS approaches:
 
 **File**: `apps/mvp/app/globals.css`
 
-```css
+\`\`\`css
 /**
  * MVP.css only - Semantic HTML styling
  * This app uses MVP.css for clean, minimal styling of semantic HTML.
@@ -83,7 +83,7 @@ Four dedicated apps demonstrate different CSS approaches:
 
 /* MVP.css - Minimalist stylesheet for semantic HTML (~10KB) */
 @import "../../../packages/ui/src/styles/mvp.css";
-```
+\`\`\`
 
 **When to Use**:
 - Rapid prototyping
@@ -97,7 +97,7 @@ Four dedicated apps demonstrate different CSS approaches:
 
 **File**: `apps/tailwind/app/globals.css`
 
-```css
+\`\`\`css
 /**
  * Tailwind CSS only - Utility-first styling
  * This app uses Tailwind CSS for utility-first styling.
@@ -111,7 +111,7 @@ Four dedicated apps demonstrate different CSS approaches:
 @layer base {
   /* Base styles */
 }
-```
+\`\`\`
 
 **When to Use**:
 - Component-based development
@@ -137,7 +137,7 @@ Four dedicated apps demonstrate different CSS approaches:
 
 **File**: `apps/allcss/app/globals.css` (now uses Tailwind only)
 
-```css
+\`\`\`css
 /**
  * Tailwind CSS only - Complete styling
  * This app uses Tailwind CSS exclusively.
@@ -152,7 +152,7 @@ Four dedicated apps demonstrate different CSS approaches:
 
 /* IdeaI custom layer */
 @import "../../../packages/ui/src/styles/ideai.css";
-```
+\`\`\`
 
 **When to Use**:
 - Production applications
@@ -186,13 +186,13 @@ All apps support **hot reload** automatically via Next.js dev servers:
 
 ### Start All Showcase Apps
 
-```bash
+\`\`\`bash
 # Start all CSS showcase apps
 pnpm --filter @repo/nocss dev    # Port 3003
 pnpm --filter @repo/mvp dev      # Port 3004
 pnpm --filter @repo/tailwind dev # Port 3005
 pnpm --filter @repo/allcss dev   # Port 3006
-```
+\`\`\`
 
 ### Access URLs
 
@@ -241,7 +241,7 @@ pnpm --filter @repo/allcss dev   # Port 3006
 
 ## File Structure
 
-```
+\`\`\`
 apps/
 ├── nocss/          # No CSS - browser defaults
 │   └── app/
@@ -259,7 +259,7 @@ apps/
     │   └── globals.css  # Tailwind only (normalize + Tailwind)
     ├── tailwind.config.ts
     └── postcss.config.js
-```
+\`\`\`
 
 ## Related Documentation
 
@@ -267,4 +267,3 @@ apps/
 - [UI Consistency Standards](./ui-consistency.md)
 - [MVP.css Documentation](https://andybrewer.github.io/mvp/)
 - [Tailwind CSS Documentation](https://tailwindcss.com/docs)
-

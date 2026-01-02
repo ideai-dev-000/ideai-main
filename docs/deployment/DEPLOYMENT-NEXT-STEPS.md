@@ -70,9 +70,9 @@ Go to: https://vercel.com/idea-i/web/settings/general
 
 ### Step 4: Retry Deployment
 
-```bash
+\`\`\`bash
 ./deploy.sh web
-```
+\`\`\`
 
 ## Next Steps (After Fix)
 
@@ -149,23 +149,23 @@ Go to: https://vercel.com/idea-i/web/settings/general
 ## Current Configuration
 
 ### `apps/web/vercel.json`
-```json
+\`\`\`json
 {
   "installCommand": "pnpm install",
   "buildCommand": "pnpm build"
 }
-```
+\`\`\`
 
 This configuration should work once "Include files outside root directory" is enabled.
 
 ### Deployment Command
-```bash
+\`\`\`bash
 # Preview
 ./deploy.sh web
 
 # Production
 ./deploy.sh --prod web
-```
+\`\`\`
 
 ## Troubleshooting
 
@@ -177,16 +177,16 @@ This configuration should work once "Include files outside root directory" is en
    - Check "Build Logs" tab
 
 2. **Verify lockfile is committed**:
-   ```bash
+   \`\`\`bash
    git status pnpm-lock.yaml
-   ```
+   \`\`\`
 
 3. **Test install locally**:
-   ```bash
+   \`\`\`bash
    cd apps/web
    cd ../..
    pnpm install
-   ```
+   \`\`\`
 
 4. **Check Vercel project settings**:
    - Root Directory: `apps/web` (relative to repo root)
@@ -207,6 +207,3 @@ This configuration should work once "Include files outside root directory" is en
 - Smart routing is implemented and ready
 - Documentation is mostly complete
 - Only blocker is Vercel dashboard setting
-
-
-

@@ -248,6 +248,3 @@ export const IdeAIFrameworkCard = ({
     </article>
   );
 };
-
-
-

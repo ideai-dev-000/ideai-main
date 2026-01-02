@@ -19,16 +19,16 @@ When IdeaI sites were embedded in iframes (e.g., on the `/index` page), they sho
 Changed from conditional rendering to CSS-based hiding:
 
 **Before** (Problematic):
-```tsx
+\`\`\`tsx
 {showHeader && <IdeaIHeader />}
-```
+\`\`\`
 
 **After** (Fixed):
-```tsx
+\`\`\`tsx
 <div style={{ display: shouldHideHeader ? "none" : "block" }}>
   <IdeaIHeader />
 </div>
-```
+\`\`\`
 
 **Key Changes**:
 1. Always render header/footer (same HTML structure on server/client)
@@ -94,4 +94,3 @@ Removed unused legacy component files:
 - Fixes hydration errors in iframe-embedded sites
 - Resolves "red buttons" (Next.js error overlay) in all iframes
 - Improves stability of embedded IdeaI apps
-

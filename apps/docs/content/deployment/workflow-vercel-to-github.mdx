@@ -42,7 +42,7 @@ When deploying directly via Vercel CLI (bypassing GitHub Actions), you **must sy
 **Steps**:
 
 1. **After Vercel deployment, commit changes**:
-   ```bash
+   \`\`\`bash
    # Stage any changes
    git add .
    
@@ -56,10 +56,10 @@ When deploying directly via Vercel CLI (bypassing GitHub Actions), you **must sy
    
    # Push to GitHub
    git push origin main
-   ```
+   \`\`\`
 
 2. **If no code changes** (deployment only):
-   ```bash
+   \`\`\`bash
    # Create empty commit documenting deployment
    git commit --allow-empty -m "deploy(web): deploy to production via CLI
    
@@ -69,25 +69,25 @@ When deploying directly via Vercel CLI (bypassing GitHub Actions), you **must sy
    Related: TICKET-XXX"
    
    git push origin main
-   ```
+   \`\`\`
 
 ### Method 2: Automated Sync Script
 
 **Best for**: Frequent CLI deployments, automation
 
 **Use the sync script**:
-```bash
+\`\`\`bash
 ./scripts/sync-vercel-to-github.sh [app-name] [reason]
-```
+\`\`\`
 
 **Example**:
-```bash
+\`\`\`bash
 # Sync after deploying web app
 ./scripts/sync-vercel-to-github.sh web "emergency hotfix"
 
 # Sync after deploying all apps
 ./scripts/sync-vercel-to-github.sh all "quick iteration"
-```
+\`\`\`
 
 **What the script does**:
 1. Checks git status
@@ -106,7 +106,7 @@ When deploying directly via Vercel CLI (bypassing GitHub Actions), you **must sy
 2. Automatically syncs to GitHub
 
 **Example**:
-```bash
+\`\`\`bash
 #!/bin/bash
 # scripts/deploy-and-sync.sh
 
@@ -115,7 +115,7 @@ When deploying directly via Vercel CLI (bypassing GitHub Actions), you **must sy
 
 # Sync to GitHub
 ./scripts/sync-vercel-to-github.sh "$1" "CLI deployment"
-```
+\`\`\`
 
 ## Sync Procedures by Scenario
 
@@ -124,7 +124,7 @@ When deploying directly via Vercel CLI (bypassing GitHub Actions), you **must sy
 **Situation**: Critical bug, deployed via CLI for speed.
 
 **Sync Steps**:
-```bash
+\`\`\`bash
 # 1. Fix bug and deploy
 ./deploy.sh --prod web
 
@@ -142,14 +142,14 @@ git push origin main
 
 # 4. Create PR for review (post-deployment)
 gh pr create --title "fix(web): emergency hotfix" --body "Emergency fix deployed via CLI. Review and merge."
-```
+\`\`\`
 
 ### Scenario 2: Quick Development Iteration
 
 **Situation**: Testing deployment process, deployed via CLI.
 
 **Sync Steps**:
-```bash
+\`\`\`bash
 # 1. Deploy via CLI
 ./deploy.sh web
 
@@ -167,14 +167,14 @@ Related: TICKET-XXX"
 
 # 4. Push to GitHub
 git push origin main
-```
+\`\`\`
 
 ### Scenario 3: Testing New Configuration
 
 **Situation**: Testing Vercel configuration changes, deployed via CLI.
 
 **Sync Steps**:
-```bash
+\`\`\`bash
 # 1. Deploy via CLI
 ./deploy.sh --prod web
 
@@ -194,22 +194,22 @@ Related: TICKET-XXX"
 
 # 5. Push to GitHub
 git push origin main
-```
+\`\`\`
 
 ## Sync Script
 
 ### Usage
 
-```bash
+\`\`\`bash
 ./scripts/sync-vercel-to-github.sh [app-name] [reason]
-```
+\`\`\`
 
 **Parameters**:
 - `app-name`: App that was deployed (e.g., `web`, `docs`, `all`)
 - `reason`: Reason for CLI deployment (e.g., "emergency hotfix", "quick iteration")
 
 **Examples**:
-```bash
+\`\`\`bash
 # Sync single app
 ./scripts/sync-vercel-to-github.sh web "emergency hotfix"
 
@@ -218,7 +218,7 @@ git push origin main
 
 # With detailed reason
 ./scripts/sync-vercel-to-github.sh docs "testing new deployment process"
-```
+\`\`\`
 
 ### What It Does
 
@@ -230,7 +230,7 @@ git push origin main
 ### Commit Message Format
 
 The script creates commits with this format:
-```
+\`\`\`
 deploy([app]): deploy via Vercel CLI
 
 [Reason for CLI deployment]
@@ -241,26 +241,26 @@ deploy([app]): deploy via Vercel CLI
 - Reason: [reason provided]
 
 Related: TICKET-XXX (if provided)
-```
+\`\`\`
 
 ## Best Practices
 
 ### Commit Messages
 
 ✅ **Good commit messages**:
-```
+\`\`\`
 deploy(web): deploy to production via CLI
 
 Emergency hotfix for authentication issue.
 Deployed via CLI for speed, changes committed.
 
 Related: TICKET-1.5
-```
+\`\`\`
 
 ❌ **Bad commit messages**:
-```
+\`\`\`
 deploy: stuff
-```
+\`\`\`
 
 ### When to Document
 
@@ -289,31 +289,31 @@ deploy: stuff
 **Problem**: No changes to commit after deployment.
 
 **Solution**: Create empty commit documenting deployment:
-```bash
+\`\`\`bash
 git commit --allow-empty -m "deploy(web): deploy via CLI
 
 No code changes - deployment only.
 Reason: [why CLI was used]"
-```
+\`\`\`
 
 ### Error: "Git repository not found"
 
 **Problem**: Not in git repository or wrong directory.
 
 **Solution**: Ensure you're in repo root:
-```bash
+\`\`\`bash
 cd /path/to/ideai-main
 ./scripts/sync-vercel-to-github.sh web "reason"
-```
+\`\`\`
 
 ### Error: "Remote not configured"
 
 **Problem**: Git remote not set up.
 
 **Solution**: Configure remote:
-```bash
+\`\`\`bash
 git remote add origin https://github.com/ideai-dev-000/ideai-main.git
-```
+\`\`\`
 
 ### Error: "Permission denied"
 
@@ -329,7 +329,7 @@ git remote add origin https://github.com/ideai-dev-000/ideai-main.git
 ### Option 1: Post-Deployment Hook
 
 Create wrapper that deploys and syncs:
-```bash
+\`\`\`bash
 #!/bin/bash
 # scripts/deploy-and-sync.sh
 
@@ -341,12 +341,12 @@ REASON=$2
 
 # Sync
 ./scripts/sync-vercel-to-github.sh "$APP" "$REASON"
-```
+\`\`\`
 
 ### Option 2: Git Hooks
 
 Create git hook to remind to sync:
-```bash
+\`\`\`bash
 #!/bin/bash
 # .git/hooks/post-commit
 
@@ -356,7 +356,7 @@ if git log -1 --pretty=%B | grep -q "via Vercel CLI"; then
 else
   echo "⚠️  Remember to sync CLI deployments to git!"
 fi
-```
+\`\`\`
 
 ### Option 3: Vercel Webhooks (Future)
 
@@ -383,4 +383,3 @@ After every CLI deployment:
 - [Deployment Decision Matrix](./deployment-decision-matrix.md)
 - [Rollback Procedures](./rollback-procedures.md)
 - [Deployment Safety Checklist](./safety-checklist.md)
-

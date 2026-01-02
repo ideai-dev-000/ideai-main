@@ -14,4 +14,3 @@ export { LandingTemplate } from "./landing-template";
 export { PortfolioTemplate } from "./portfolio-template";
 export { DocsTemplate } from "./docs-template";
 export { AdminTemplate } from "./admin-template";
-

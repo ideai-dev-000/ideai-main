@@ -131,7 +131,7 @@ Each project in Vercel dashboard:
 
 ## Project Configuration Template
 
-```json
+\`\`\`json
 {
   "projectName": "{app-name}",
   "rootDirectory": "apps/{app-name}",
@@ -140,7 +140,7 @@ Each project in Vercel dashboard:
   "framework": "nextjs",
   "includeFilesOutsideRoot": true
 }
-```
+\`\`\`
 
 ## Current Issues
 
@@ -159,4 +159,3 @@ Each project in Vercel dashboard:
 ## Next Steps
 
 See [Unified Deployment Guide](../deployment/unified-deployment.md) for deployment instructions.
-

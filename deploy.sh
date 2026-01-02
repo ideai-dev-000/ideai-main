@@ -131,4 +131,3 @@ for app in "${APPS_TO_DEPLOY[@]}"; do
 done
 
 echo -e "${GREEN}=== All deployments complete ===${NC}"
-

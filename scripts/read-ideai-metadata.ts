@@ -91,4 +91,3 @@ export async function readIdeaiMetadata(
   
   return apps.sort((a, b) => (a.port || 0) - (b.port || 0));
 }
-

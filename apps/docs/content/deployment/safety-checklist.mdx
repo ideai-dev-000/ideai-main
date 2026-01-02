@@ -237,24 +237,24 @@ This document provides comprehensive checklists for safe deployments of IdeaI ap
 
 ### Quick Pre-Deployment Checklist
 
-```
+\`\`\`
 □ Build succeeds: pnpm build
 □ Linting passes: pnpm lint
 □ Type checking passes: pnpm check-types
 □ Preview tested: Deployed and tested in preview
 □ Rollback plan: Know how to rollback
 □ Team notified: Team aware of deployment
-```
+\`\`\`
 
 ### Quick Post-Deployment Checklist
 
-```
+\`\`\`
 □ Deployment succeeded: Check Vercel dashboard
 □ Site loads: Visit production URL
 □ No errors: Check browser console
 □ Key features work: Test critical functionality
 □ Monitoring active: Watch for issues
-```
+\`\`\`
 
 ## Related Documentation
 
@@ -263,4 +263,3 @@ This document provides comprehensive checklists for safe deployments of IdeaI ap
 - [Vercel CLI Direct Workflow](./workflow-vercel-direct.md)
 - [Deployment Decision Matrix](./deployment-decision-matrix.md)
 - [Unified Deployment Guide](./unified-deployment.md)
-

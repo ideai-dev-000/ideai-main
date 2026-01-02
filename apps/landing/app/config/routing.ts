@@ -177,4 +177,3 @@ export function getAppIframeUrl(app: AppConfig, config: RoutingConfig): string {
   // Main web app is at root (/), other apps at /apps/{name}
   return getAppUrl(app, config);
 }
-

@@ -51,4 +51,3 @@ echo "📝 Next steps:"
 echo "   1. Review changes in apps/docs/content/"
 echo "   2. Test locally: pnpm dev --filter=docs"
 echo "   3. Commit changes if ready"
-

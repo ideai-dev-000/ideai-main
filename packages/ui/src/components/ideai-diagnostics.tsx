@@ -453,4 +453,3 @@ export const IdeAIDiagnostics = ({
     </div>
   );
 };
-

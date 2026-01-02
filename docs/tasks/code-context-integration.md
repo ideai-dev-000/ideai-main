@@ -130,4 +130,3 @@ Centralized task list for integrating Code Context into the IdeaI monorepo.
 - ✅ Provides dependency insights
 - ✅ No impact on production builds
 - ✅ Easy to update from upstream
-

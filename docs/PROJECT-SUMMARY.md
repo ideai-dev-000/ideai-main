@@ -14,7 +14,7 @@ This document provides a high-level overview of the IdeaI monorepo project, its 
 
 ### Monorepo Structure
 
-```
+\`\`\`
 ideai-main/
 ├── apps/
 │   ├── web/          # Main Next.js web application
@@ -25,7 +25,7 @@ ideai-main/
 │   ├── eslint-config/    # Shared ESLint configurations
 │   └── typescript-config/ # Shared TypeScript configs
 └── docs/             # Project documentation
-```
+\`\`\`
 
 ### Technology Stack
 
@@ -168,7 +168,7 @@ All apps share:
 
 ## Documentation Structure
 
-```
+\`\`\`
 docs/
 ├── README.md                    # Documentation index
 ├── PROJECT-SUMMARY.md          # This file
@@ -184,12 +184,12 @@ docs/
 └── development/
     ├── getting-started.md      # Development setup
     └── CONTRIBUTING.md         # Contribution guidelines
-```
+\`\`\`
 
 ## Quick Start
 
 ### Development
-```bash
+\`\`\`bash
 # Install dependencies
 pnpm install
 
@@ -203,7 +203,7 @@ pnpm --filter @repo/all dev  # Port 3002
 
 # Build all applications
 pnpm build
-```
+\`\`\`
 
 ### Deployment
 - **Preview**: Push to `preview` branch
@@ -231,4 +231,3 @@ pnpm build
 - [Getting Started](./development/getting-started.md)
 - [Deployment Overview](./deployment/overview.md)
 - [Vercel Configuration](./deployment/vercel.md)
-

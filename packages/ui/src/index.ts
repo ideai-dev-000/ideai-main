@@ -90,4 +90,3 @@ export { readIdeAIConfig, readIdeAIConfigSync, getChildAppConfig, getChildApps, 
 export { getAppMode, loadChildAppPage, shouldUseUnifiedMode, type AppMode } from "./lib/ideai-app-loader";
 export { getVercelProjectConfig, getVercelProjectName, shouldForkToNewProject, type VercelProjectConfig as IdeAIVercelProjectConfig } from "./lib/ideai-vercel";
 export { getAllDependencies, verifyDependencies, generateBuildMetadata, checkSecurity, readPackageDependencies, type IdeAIBuildConfig, type ChildDependency, type BuildMetadata } from "./lib/ideai-build";
-

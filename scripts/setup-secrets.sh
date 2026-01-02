@@ -51,4 +51,3 @@ echo "✅ All secrets have been added!"
 echo ""
 echo "Verify at: https://github.com/ideai-dev-000/ideai-main/settings/secrets/actions"
 echo ""
-

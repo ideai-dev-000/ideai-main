@@ -20,6 +20,3 @@
 export { IdeAIFrameworkButton } from "./ideai-framework-button";
 export { IdeAIFrameworkInput } from "./ideai-framework-input";
 export { IdeAIFrameworkBadge } from "./ideai-framework-badge";
-
-
-

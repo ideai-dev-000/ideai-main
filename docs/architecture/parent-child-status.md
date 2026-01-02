@@ -22,7 +22,7 @@ description: Current status of parent/child app architecture
 
 ### Test Results
 
-```bash
+\`\`\`bash
 $ node scripts/test-parent-child.js
 
 ✅ Parent App (web):
@@ -35,7 +35,7 @@ $ node scripts/test-parent-child.js
    docs: /apps/docs (port 3001) ✅
    all: /apps/all (port 3002) ✅
    nocss: /apps/nocss (port 3003) ✅
-```
+\`\`\`
 
 ## Architecture
 
@@ -115,13 +115,13 @@ If moving to unified build (no iframes), parent would need:
 
 Create `.ideai.json` in app directory to override:
 
-```json
+\`\`\`json
 {
   "role": "parent",
   "name": "My App",
   "childApps": ["child1", "child2"]
 }
-```
+\`\`\`
 
 ## Next Steps
 
@@ -139,5 +139,3 @@ Create `.ideai.json` in app directory to override:
 - **One App**: Parent embeds children seamlessly
 - **CSS Isolation**: Iframes prevent conflicts
 - **Easy Switching**: Change `.ideai.json` to switch roles
-
-

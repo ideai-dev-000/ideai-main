@@ -56,6 +56,3 @@ export const IdeAILogo = ({ siteName }: IdeAILogoProps) => {
     </div>
   );
 };
-
-
-

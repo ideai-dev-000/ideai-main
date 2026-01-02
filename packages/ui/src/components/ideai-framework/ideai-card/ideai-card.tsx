@@ -240,6 +240,3 @@ export const IdeAICard = ({
     </article>
   );
 };
-
-
-

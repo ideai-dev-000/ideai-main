@@ -80,12 +80,12 @@ The catch-all route at `apps/web/app/apps/[app]/[[...path]]/page.tsx` automatica
 
 Set environment variables in the main web app:
 
-```bash
+\`\`\`bash
 NEXT_PUBLIC_DOCS_URL=https://docs-xxx.vercel.app
 NEXT_PUBLIC_ALL_URL=https://all-xxx.vercel.app
 NEXT_PUBLIC_NOCSS_URL=https://nocss-xxx.vercel.app
 # ... etc
-```
+\`\`\`
 
 ### URLs
 
@@ -151,14 +151,14 @@ When `NEXT_PUBLIC_{APP}_URL` is set and `NODE_ENV === "production"`, the catch-a
 
 Set environment variables **only for apps you want standalone**:
 
-```bash
+\`\`\`bash
 # Only docs and all are standalone
 NEXT_PUBLIC_DOCS_URL=https://docs-xxx.vercel.app
 NEXT_PUBLIC_ALL_URL=https://all-xxx.vercel.app
 
 # Other apps (nocss, mvp, etc.) are served directly
 # No env vars needed - they'll be served via iframe
-```
+\`\`\`
 
 ### URLs
 
@@ -196,7 +196,7 @@ The catch-all route is smart:
 
 The catch-all route (`apps/web/app/apps/[app]/[[...path]]/page.tsx`) uses this logic:
 
-```typescript
+\`\`\`typescript
 // Priority 1: Redirect to standalone (if configured and production)
 if (standaloneUrl && NODE_ENV === "production") {
   redirect(standaloneUrl);
@@ -209,7 +209,7 @@ if (appAvailable || !standaloneUrl) {
 
 // Priority 3: Show info page (fallback)
 showInfoPage();
-```
+\`\`\`
 
 ## Deployment Phases
 
@@ -270,7 +270,7 @@ showInfoPage();
 
 Set these in Vercel dashboard or `.env.local`:
 
-```bash
+\`\`\`bash
 # Standalone app URLs (optional - only set if deploying standalone)
 NEXT_PUBLIC_DOCS_URL=https://docs-xxx.vercel.app
 NEXT_PUBLIC_ALL_URL=https://all-xxx.vercel.app
@@ -281,7 +281,7 @@ NEXT_PUBLIC_ALLCSS_URL=https://allcss-xxx.vercel.app
 NEXT_PUBLIC_BOOTSTRAP_URL=https://bootstrap-xxx.vercel.app
 NEXT_PUBLIC_UNOCSS_URL=https://unocss-xxx.vercel.app
 NEXT_PUBLIC_SHADCN_URL=https://shadcn-xxx.vercel.app
-```
+\`\`\`
 
 ### Behavior
 
@@ -356,6 +356,3 @@ NEXT_PUBLIC_SHADCN_URL=https://shadcn-xxx.vercel.app
 - [Deployment Architecture](./deployment-architecture.md)
 - [Vercel Setup](./vercel-setup.md)
 - [Unified Deployment](./unified-deployment.md)
-
-
-

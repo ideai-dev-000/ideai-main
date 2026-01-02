@@ -33,5 +33,3 @@ export default async function DocsPage({ searchParams }: PageProps) {
     />
   );
 }
-
-

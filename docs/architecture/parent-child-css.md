@@ -47,7 +47,7 @@ Currently imports:
 
 Parent app imports ALL CSS that any child might need:
 
-```css
+\`\`\`css
 /* apps/web/app/globals.css */
 /* MVP.css - for mvp, allcss, docs, all */
 @import "../../../packages/ui/src/styles/mvp.css";
@@ -63,7 +63,7 @@ Parent app imports ALL CSS that any child might need:
 
 /* UnoCSS - for unocss child */
 /* Note: UnoCSS is build-time, may need different approach */
-```
+\`\`\`
 
 **Pros**:
 - ✅ All child apps work
@@ -123,5 +123,3 @@ For "one unified app" goal, use **Option 1** with CSS scoping:
 - Iframe approach provides isolation but isn't "one app"
 - Unified build requires careful CSS management
 - CSS variables from ideai.css help with consistency
-
-

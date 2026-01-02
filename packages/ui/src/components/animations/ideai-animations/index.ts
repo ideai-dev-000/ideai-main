@@ -21,4 +21,3 @@ import reactSpringExamplesData from "./examples/react-spring.json";
 
 export const framerMotionExamples = framerMotionExamplesData as AnimationExample[];
 export const reactSpringExamples = reactSpringExamplesData as AnimationExample[];
-

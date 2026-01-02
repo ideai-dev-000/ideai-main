@@ -153,4 +153,3 @@ echo -e "Branch: ${YELLOW}${CURRENT_BRANCH}${NC}"
 echo -e "Remote: ${YELLOW}$(git remote get-url origin)${NC}"
 echo ""
 echo -e "${GREEN}=== Sync Complete ===${NC}"
-

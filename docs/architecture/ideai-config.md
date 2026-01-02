@@ -23,7 +23,7 @@ Create `.ideai.json` in each app's root directory:
 
 ### Parent App Example
 
-```json
+\`\`\`json
 {
   "role": "parent",
   "name": "IdeaI",
@@ -40,11 +40,11 @@ Create `.ideai.json` in each app's root directory:
     "shadcn"
   ]
 }
-```
+\`\`\`
 
 ### Child App Example
 
-```json
+\`\`\`json
 {
   "role": "child",
   "name": "Documentation",
@@ -52,48 +52,48 @@ Create `.ideai.json` in each app's root directory:
   "parentApp": "web",
   "localPort": 3001
 }
-```
+\`\`\`
 
 ## Switching App Roles
 
 ### Make an App a Parent
 
 1. Create `.ideai.json` in the app directory:
-   ```json
+   \`\`\`json
    {
      "role": "parent",
      "name": "My Parent App",
      "childApps": ["child1", "child2"]
    }
-   ```
+   \`\`\`
 
 2. Update child apps to reference this parent:
-   ```json
+   \`\`\`json
    {
      "role": "child",
      "parentApp": "my-parent-app"
    }
-   ```
+   \`\`\`
 
 ### Make an App a Child
 
 1. Create `.ideai.json` in the app directory:
-   ```json
+   \`\`\`json
    {
      "role": "child",
      "name": "My Child App",
      "parentApp": "web",
      "localPort": 3010
    }
-   ```
+   \`\`\`
 
 2. Add the child to parent's `childApps` array:
-   ```json
+   \`\`\`json
    {
      "role": "parent",
      "childApps": ["my-child-app"]
    }
-   ```
+   \`\`\`
 
 ## Default Behavior
 
@@ -103,7 +103,7 @@ If `.ideai.json` is missing:
 
 ## Usage in Code
 
-```typescript
+\`\`\`typescript
 import { getChildAppConfig, isParentApp, isChildApp } from "@repo/ui";
 
 // Get child app config
@@ -118,7 +118,7 @@ if (isParentApp("web")) {
 if (isChildApp("docs")) {
   // Handle child app logic
 }
-```
+\`\`\`
 
 ## File Locations
 
@@ -130,23 +130,23 @@ if (isChildApp("docs")) {
 To make `docs` the parent instead of `web`:
 
 1. **Update `apps/docs/.ideai.json`**:
-   ```json
+   \`\`\`json
    {
      "role": "parent",
      "name": "Documentation Hub",
      "childApps": ["web", "all"]
    }
-   ```
+   \`\`\`
 
 2. **Update `apps/web/.ideai.json`**:
-   ```json
+   \`\`\`json
    {
      "role": "child",
      "name": "Web App",
      "parentApp": "docs",
      "localPort": 3000
    }
-   ```
+   \`\`\`
 
 3. **Update other child apps** to reference `docs` as parent
 
@@ -154,5 +154,3 @@ To make `docs` the parent instead of `web`:
 
 - [Parent-Child Architecture](./deployment-architecture.md#parent-child-architecture)
 - [Sub-App Routing](../../apps/web/app/apps/[app]/[[...path]]/page.tsx)
-
-

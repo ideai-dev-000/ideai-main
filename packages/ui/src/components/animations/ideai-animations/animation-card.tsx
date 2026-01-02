@@ -578,4 +578,3 @@ function ReactSpringDemo({ example }: { example: AnimationExample }) {
     </animated.div>
   );
 }
-

@@ -61,7 +61,7 @@ See [Next Steps](./DEPLOYMENT-NEXT-STEPS.md) for details.
 
 ## Quick Commands
 
-```bash
+\`\`\`bash
 # Preview deployment
 ./deploy.sh web
 
@@ -70,12 +70,9 @@ See [Next Steps](./DEPLOYMENT-NEXT-STEPS.md) for details.
 
 # Deploy all apps
 ./deploy.sh --prod
-```
+\`\`\`
 
 ## Related Documentation
 
 - [Architecture Docs](../architecture/deployment-architecture.md) - Architecture overview
 - [Development Guide](../development/getting-started.md) - Local development
-
-
-

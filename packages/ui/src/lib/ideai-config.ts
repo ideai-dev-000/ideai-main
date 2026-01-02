@@ -223,4 +223,3 @@ export function isChildApp(appName: string): boolean {
   const config = readIdeAIConfigSync(appName);
   return config?.role === "child";
 }
-

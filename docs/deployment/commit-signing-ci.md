@@ -37,13 +37,13 @@ Configure GitHub Actions to sign commits using a GPG key stored as a secret.
 
 #### Step 1: Export GPG Key
 
-```bash
+\`\`\`bash
 # Export your private key (keep this secure!)
 gpg --armor --export-secret-keys 014A28289CE5DCE5 > gpg-private-key.asc
 
 # Export your public key
 gpg --armor --export 014A28289CE5DCE5 > gpg-public-key.asc
-```
+\`\`\`
 
 #### Step 2: Add GitHub Secrets
 
@@ -56,7 +56,7 @@ gpg --armor --export 014A28289CE5DCE5 > gpg-public-key.asc
 
 Add GPG setup steps before checkout:
 
-```yaml
+\`\`\`yaml
 - name: Import GPG Key
   uses: crazy-max/ghaction-import-gpg@v6
   with:
@@ -67,7 +67,7 @@ Add GPG setup steps before checkout:
 
 - name: Checkout code
   uses: actions/checkout@v4
-```
+\`\`\`
 
 **Pros**: Properly signed commits, works with Vercel verification  
 **Cons**: Requires storing GPG key as secret (security consideration)
@@ -76,12 +76,12 @@ Add GPG setup steps before checkout:
 
 If commits are already signed locally, ensure GitHub Actions verifies them:
 
-```yaml
+\`\`\`yaml
 - name: Checkout code
   uses: actions/checkout@v4
   with:
     fetch-depth: 0  # Fetch full history for commit verification
-```
+\`\`\`
 
 **Pros**: Simple, works if commits are already signed  
 **Cons**: Doesn't help if commits are unsigned
@@ -108,12 +108,12 @@ The preview deployment workflow (`preview-deploy.yml`) currently:
 **Solution 1**: Disable requirement in Vercel (see Option 1)
 
 **Solution 2**: Ensure commits are signed before pushing:
-```bash
+\`\`\`bash
 # In your terminal (not Cursor/AI)
 git config --global commit.gpgsign true
 git commit --amend -S -m "Your message"
 git push --force-with-lease
-```
+\`\`\`
 
 **Solution 3**: Set up CI signing (see Option 2)
 
@@ -130,4 +130,3 @@ This means commits are unsigned. Options:
 - [Vercel Configuration](./vercel.md) - Vercel settings
 - [Troubleshooting](./troubleshooting.md) - Common issues
 - [GitHub: Signing Commits](https://docs.github.com/en/authentication/managing-commit-signature-verification)
-

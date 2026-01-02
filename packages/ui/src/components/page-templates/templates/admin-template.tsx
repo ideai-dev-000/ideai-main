@@ -120,4 +120,3 @@ export function AdminTemplate() {
     </div>
   );
 }
-

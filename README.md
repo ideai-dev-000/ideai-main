@@ -20,7 +20,7 @@ IdeaI is a modern monorepo framework that enables:
 
 ### Installation
 
-```bash
+\`\`\`bash
 # Clone repository
 git clone <repo-url>
 cd ideai-main
@@ -30,11 +30,11 @@ pnpm install
 
 # Start development
 pnpm --filter web dev
-```
+\`\`\`
 
 ## Project Structure
 
-```
+\`\`\`
 ideai-main/
 ├── apps/                  # Applications
 │   ├── web/              # Main parent app (boilerplate)
@@ -44,7 +44,7 @@ ideai-main/
 │   └── ui/               # UI components and utilities
 ├── docs/                 # Documentation files
 └── scripts/              # Build and deployment scripts
-```
+\`\`\`
 
 ## Main App: `apps/web`
 
@@ -75,13 +75,13 @@ See [apps/web/README.md](apps/web/README.md) for details.
 
 Configure apps in `.ideai.json`:
 
-```json
+\`\`\`json
 {
   "role": "parent",
   "name": "IdeaI",
   "childApps": ["docs", "all", "nocss"]
 }
-```
+\`\`\`
 
 ### 2. Unified Deployment
 
@@ -93,11 +93,11 @@ All apps deploy to one Vercel project:
 ### 3. Documentation Integration
 
 Built-in docs viewer component:
-```tsx
+\`\`\`tsx
 import { IdeAIDocsViewer } from "@repo/ui";
 
 <IdeAIDocsViewer filter={{ category: "deployment" }} />
-```
+\`\`\`
 
 ### 4. Page Templates Showcase
 
@@ -107,11 +107,11 @@ Pre-built page templates for common layouts:
 - Centralized shadcn theme integration
 - Filterable showcase at `/page-templates`
 
-```tsx
+\`\`\`tsx
 import { PageTemplatesShowcase } from "@repo/ui/components/page-templates";
 
 <PageTemplatesShowcase />
-```
+\`\`\`
 
 ### 5. No Legacy Support
 
@@ -123,58 +123,58 @@ import { PageTemplatesShowcase } from "@repo/ui/components/page-templates";
 
 ### Start Development Server
 
-```bash
+\`\`\`bash
 # Parent app (web)
 pnpm --filter web dev
 
 # Child app (docs)
 pnpm --filter docs dev
-```
+\`\`\`
 
 ### Build
 
-```bash
+\`\`\`bash
 # Build all apps
 pnpm build
 
 # Build specific app
 pnpm --filter web build
-```
+\`\`\`
 
 ### Linting & Type Checking
 
-```bash
+\`\`\`bash
 # Lint
 pnpm lint
 
 # Type check
 pnpm check-types
-```
+\`\`\`
 
 ## Deployment
 
 ### Vercel Deployment
 
-```bash
+\`\`\`bash
 # Preview
 ./deploy.sh web
 
 # Production
 ./deploy.sh --prod web
-```
+\`\`\`
 
 ### Configuration
 
 Each app's `.ideai.json` specifies Vercel project:
 
-```json
+\`\`\`json
 {
   "vercelProject": {
     "projectName": "ideai-main",
     "forkToNew": false
   }
 }
-```
+\`\`\`
 
 ## Architecture
 
@@ -194,7 +194,7 @@ Each app's `.ideai.json` specifies Vercel project:
 
 ### App Configuration (`.ideai.json`)
 
-```json
+\`\`\`json
 {
   "role": "parent" | "child",
   "name": "App Name",
@@ -210,7 +210,7 @@ Each app's `.ideai.json` specifies Vercel project:
     "capabilities": ["Feature 1", "Feature 2"]
   }
 }
-```
+\`\`\`
 
 ## Documentation
 

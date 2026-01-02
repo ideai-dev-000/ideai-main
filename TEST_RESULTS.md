@@ -5,9 +5,9 @@
 ### ✅ All Tests Passing
 
 #### 1. Defaults Test
-```bash
+\`\`\`bash
 $ node scripts/test-parent-child.js
-```
+\`\`\`
 **Result**: ✅ PASS
 - web defaults to parent
 - All other apps default to children
@@ -15,43 +15,43 @@ $ node scripts/test-parent-child.js
 - Ports correct: 3001-3009
 
 #### 2. Dependency Check
-```bash
+\`\`\`bash
 $ node scripts/ideai-build-check.mjs web
-```
+\`\`\`
 **Result**: ✅ PASS
 - Dependency checker working
 - Found 13 missing dependencies (expected - iframe isolation)
 - Security status: ✅ Using pnpm
 
 #### 3. TypeScript
-```bash
+\`\`\`bash
 $ pnpm --filter web check-types
-```
+\`\`\`
 **Result**: ✅ PASS
 - No TypeScript errors
 - All types correct
 
 #### 4. Linter
-```bash
+\`\`\`bash
 $ pnpm --filter web lint
-```
+\`\`\`
 **Result**: ✅ PASS
 - No lint errors
 - No warnings
 
 #### 5. Build
-```bash
+\`\`\`bash
 $ pnpm --filter web build
-```
+\`\`\`
 **Result**: ✅ PASS
 - Build succeeds
 - Routes generated correctly
 - All pages compile
 
 #### 6. Build Tracking
-```bash
+\`\`\`bash
 $ node scripts/ideai-build-track.mjs web build
-```
+\`\`\`
 **Result**: ✅ PASS
 - Build metadata saved
 - Report generated
@@ -80,4 +80,3 @@ $ node scripts/ideai-build-track.mjs web build
 1. ✅ Test in development (start child servers)
 2. ⏳ Production unified build strategy
 3. ⏳ CSS compatibility (if moving away from iframes)
-

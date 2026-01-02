@@ -11,31 +11,31 @@ This guide helps you debug and fix deployment issues for both preview and produc
 
 ### Test Local Deployment
 
-```bash
+\`\`\`bash
 # Test preview deployment
 ./deploy.sh web
 
 # Test production deployment
 ./deploy.sh --prod web
-```
+\`\`\`
 
 ### Check Vercel Authentication
 
-```bash
+\`\`\`bash
 # Verify you're logged in
 vercel whoami
 
 # List all projects
 vercel project ls
-```
+\`\`\`
 
 ### Check Project Linking
 
-```bash
+\`\`\`bash
 # Verify project is linked
 cat apps/web/.vercel/project.json
 cat apps/docs/.vercel/project.json
-```
+\`\`\`
 
 ## Common Issues and Fixes
 
@@ -44,11 +44,11 @@ cat apps/docs/.vercel/project.json
 **Symptoms**: `❌ Project not linked: apps/web`
 
 **Fix**:
-```bash
+\`\`\`bash
 cd apps/web
 vercel link
 # Select your project when prompted
-```
+\`\`\`
 
 ### Issue 2: "Cannot find module '@repo/ui'"
 
@@ -65,13 +65,13 @@ vercel link
 **Symptoms**: Deployment fails with authentication error
 
 **Fix**:
-```bash
+\`\`\`bash
 # Re-authenticate
 vercel login
 
 # Or set token explicitly
 export VERCEL_TOKEN="your_token_here"
-```
+\`\`\`
 
 ### Issue 4: GitHub Actions Deployment Fails
 
@@ -79,9 +79,9 @@ export VERCEL_TOKEN="your_token_here"
 
 **Check**:
 1. Verify secrets are set:
-   ```bash
+   \`\`\`bash
    gh secret list --repo ideai-dev-000/ideai-main
-   ```
+   \`\`\`
 2. Required secrets:
    - `VERCEL_TOKEN`
    - `VERCEL_ORG_ID`
@@ -97,40 +97,40 @@ export VERCEL_TOKEN="your_token_here"
 
 **Fix**:
 1. Check `.vercel/project.json` in each app:
-   ```bash
+   \`\`\`bash
    cat apps/web/.vercel/project.json
    cat apps/docs/.vercel/project.json
-   ```
+   \`\`\`
 2. Verify Root Directory in Vercel dashboard matches
 3. Re-link if needed:
-   ```bash
+   \`\`\`bash
    cd apps/web
    vercel link
-   ```
+   \`\`\`
 
 ## Deployment Workflow
 
 ### Manual Deployment (Command Line)
 
 #### Preview Deployment
-```bash
+\`\`\`bash
 # Deploy all apps (preview)
 ./deploy.sh
 
 # Deploy specific app (preview)
 ./deploy.sh web
 ./deploy.sh docs
-```
+\`\`\`
 
 #### Production Deployment
-```bash
+\`\`\`bash
 # Deploy all apps (production)
 ./deploy.sh --prod
 
 # Deploy specific app (production)
 ./deploy.sh --prod web
 ./deploy.sh --prod docs
-```
+\`\`\`
 
 ### Automatic Deployment (Git Push)
 
@@ -158,7 +158,7 @@ For each app, check in Vercel dashboard:
 
 ### 2. Verify Project Linking
 
-```bash
+\`\`\`bash
 # Check web app
 cat apps/web/.vercel/project.json
 # Should show: {"projectId":"...","orgId":"...","projectName":"web"}
@@ -166,21 +166,21 @@ cat apps/web/.vercel/project.json
 # Check docs app
 cat apps/docs/.vercel/project.json
 # Should show: {"projectId":"...","orgId":"...","projectName":"docs"}
-```
+\`\`\`
 
 ### 3. Test Deployment Locally
 
-```bash
+\`\`\`bash
 # Test preview
 ./deploy.sh web
 
 # Test production
 ./deploy.sh --prod web
-```
+\`\`\`
 
 ### 4. Check GitHub Secrets
 
-```bash
+\`\`\`bash
 # List secrets (names only)
 gh secret list --repo ideai-dev-000/ideai-main
 
@@ -188,13 +188,13 @@ gh secret list --repo ideai-dev-000/ideai-main
 # - VERCEL_TOKEN
 # - VERCEL_ORG_ID
 # - VERCEL_PROJECT_ID (optional)
-```
+\`\`\`
 
 ## Debugging Commands
 
 ### Vercel CLI
 
-```bash
+\`\`\`bash
 # Check authentication
 vercel whoami
 
@@ -209,11 +209,11 @@ vercel logs <deployment-url>
 
 # Check project info
 vercel project ls --scope idea-i
-```
+\`\`\`
 
 ### GitHub Actions
 
-```bash
+\`\`\`bash
 # View workflow runs
 gh run list --repo ideai-dev-000/ideai-main
 
@@ -222,21 +222,21 @@ gh run view <run-id> --log --repo ideai-dev-000/ideai-main
 
 # Re-run failed workflow
 gh run rerun <run-id> --repo ideai-dev-000/ideai-main
-```
+\`\`\`
 
 ## Step-by-Step Debugging
 
 ### If Preview Deployment Fails
 
 1. **Check local deployment works**:
-   ```bash
+   \`\`\`bash
    ./deploy.sh web
-   ```
+   \`\`\`
 
 2. **If local works, check GitHub secrets**:
-   ```bash
+   \`\`\`bash
    gh secret list --repo ideai-dev-000/ideai-main
-   ```
+   \`\`\`
 
 3. **Check workflow logs**:
    - Go to: https://github.com/ideai-dev-000/ideai-main/actions
@@ -251,14 +251,14 @@ gh run rerun <run-id> --repo ideai-dev-000/ideai-main
 ### If Production Deployment Fails
 
 1. **Test production locally first**:
-   ```bash
+   \`\`\`bash
    ./deploy.sh --prod web
-   ```
+   \`\`\`
 
 2. **Verify you're on main branch**:
-   ```bash
+   \`\`\`bash
    git branch --show-current
-   ```
+   \`\`\`
 
 3. **Check workflow conditions**:
    - Production only deploys on `main` branch
@@ -291,9 +291,9 @@ gh run rerun <run-id> --repo ideai-dev-000/ideai-main
    - Click on workflow run → View logs
 
 3. **Local Build**: 
-   ```bash
+   \`\`\`bash
    pnpm build
-   ```
+   \`\`\`
 
 ### Useful Links
 
@@ -308,6 +308,3 @@ gh run rerun <run-id> --repo ideai-dev-000/ideai-main
 - [Vercel Configuration](./vercel.md)
 - [CI/CD Workflows](./ci-cd.md)
 - [GitHub Secrets Setup](../setup/github-secrets.md)
-
-
-

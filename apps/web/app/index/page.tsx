@@ -196,4 +196,3 @@ export default function AppsIndex() {
     </IdeAIPageTemplate>
   );
 }
-

@@ -51,20 +51,20 @@ Fixed API route:
 ## Technical Details
 
 ### Before (Problematic)
-```tsx
+\`\`\`tsx
 // Conditional rendering - causes hydration mismatch
 {showHeader && <IdeaIHeader />}
-```
+\`\`\`
 
 **Issue**: Server renders with header (no `window`), client might hide it (detects iframe) → different HTML structure → hydration error
 
 ### After (Fixed)
-```tsx
+\`\`\`tsx
 // Always render, hide with CSS - same HTML structure
 <div style={{ display: shouldHideHeader ? "none" : "block" }}>
   <IdeaIHeader />
 </div>
-```
+\`\`\`
 
 **Solution**: Same HTML structure on server and client, only CSS changes → no hydration errors
 
@@ -93,4 +93,3 @@ Fixed API route:
 - Consider adding transition animations for header/footer show/hide
 - Monitor iframe performance in production
 - Document iframe embedding best practices
-

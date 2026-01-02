@@ -23,7 +23,7 @@ description: Current deployment status, quick commands, and troubleshooting
 
 ### Deploy from Command Line
 
-```bash
+\`\`\`bash
 # Preview - Deploy all apps
 ./deploy.sh
 
@@ -37,11 +37,11 @@ description: Current deployment status, quick commands, and troubleshooting
 # Production - Deploy specific app
 ./deploy.sh --prod web
 ./deploy.sh --prod docs
-```
+\`\`\`
 
 ### Deploy via Git Push
 
-```bash
+\`\`\`bash
 # Preview deployment
 git checkout preview
 git push origin preview
@@ -49,7 +49,7 @@ git push origin preview
 # Production deployment
 git checkout main
 git push origin main
-```
+\`\`\`
 
 ## Current Apps (9 total)
 
@@ -74,9 +74,9 @@ For automatic deployment via GitHub Actions:
 - ⚠️ `VERCEL_PROJECT_ID` - Optional (not needed with deploy.sh)
 
 **Check secrets**:
-```bash
+\`\`\`bash
 gh secret list --repo ideai-dev-000/ideai-main
-```
+\`\`\`
 
 ## Vercel Dashboard Configuration
 
@@ -93,7 +93,7 @@ For each deployed app, verify in Vercel dashboard:
 
 ### Deployment Fails Locally
 
-```bash
+\`\`\`bash
 # Check authentication
 vercel whoami
 
@@ -102,14 +102,14 @@ vercel login
 
 # Check project linking
 cat apps/web/.vercel/project.json
-```
+\`\`\`
 
 ### GitHub Actions Fails
 
 1. **Check secrets are set**:
-   ```bash
+   \`\`\`bash
    gh secret list --repo ideai-dev-000/ideai-main
-   ```
+   \`\`\`
 
 2. **View workflow logs**:
    - Go to: https://github.com/ideai-dev-000/ideai-main/actions
@@ -132,6 +132,3 @@ cat apps/web/.vercel/project.json
 - [Unified Deployment Guide](./unified-deployment.md) - How deploy.sh works
 - [Vercel Configuration](./vercel.md) - Dashboard setup
 - [CI/CD Workflows](./ci-cd.md) - GitHub Actions details
-
-
-

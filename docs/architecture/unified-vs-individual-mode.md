@@ -42,13 +42,13 @@ IdeaI supports two modes for running child apps:
 
 Set environment variable:
 
-```bash
+\`\`\`bash
 # Unified mode (all on port 3000)
 NEXT_PUBLIC_IDEAI_APP_MODE=unified
 
 # Individual mode (separate ports)
 NEXT_PUBLIC_IDEAI_APP_MODE=individual
-```
+\`\`\`
 
 **Defaults**:
 - Production: `unified` (always)
@@ -58,22 +58,22 @@ NEXT_PUBLIC_IDEAI_APP_MODE=individual
 
 1. **Register child apps** in `apps/web/app/apps/[app]/registry.ts`:
 
-```ts
+\`\`\`ts
 import DocsPage from "../../../../docs/app/page";
 registerChildApp("docs", DocsPage);
-```
+\`\`\`
 
 2. **Set environment variable**:
 
-```bash
+\`\`\`bash
 NEXT_PUBLIC_IDEAI_APP_MODE=unified
-```
+\`\`\`
 
 3. **Start only parent app**:
 
-```bash
+\`\`\`bash
 pnpm --filter web dev
-```
+\`\`\`
 
 4. **Access child apps**:
 
@@ -96,7 +96,7 @@ pnpm --filter web dev
 
 ## Architecture
 
-```
+\`\`\`
 Unified Mode:
 ┌─────────────────────────────────┐
 │  Parent App (port 3000)         │
@@ -114,7 +114,7 @@ Individual Mode:
 │  │ <iframe>  │──┼─▶│              │
 │  └───────────┘  │  └──────────────┘
 └─────────────────┘
-```
+\`\`\`
 
 ## Next Steps
 
@@ -122,5 +122,3 @@ Individual Mode:
 2. ⏳ Register child apps in registry
 3. ⏳ Test unified mode
 4. ⏳ Update build system for unified mode
-
-

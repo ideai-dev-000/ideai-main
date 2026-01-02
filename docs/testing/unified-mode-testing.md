@@ -25,7 +25,7 @@ Child app components are loading but not rendering. The page shows "Loading..." 
 
 ### Test URLs (Unified Mode)
 
-```bash
+\`\`\`bash
 # Start unified mode
 NEXT_PUBLIC_IDEAI_APP_MODE=unified pnpm --filter web dev
 
@@ -33,7 +33,7 @@ NEXT_PUBLIC_IDEAI_APP_MODE=unified pnpm --filter web dev
 http://localhost:3000/apps/docs
 http://localhost:3000/apps/all
 http://localhost:3000/apps/tailwind
-```
+\`\`\`
 
 ### Next Steps
 
@@ -44,13 +44,11 @@ http://localhost:3000/apps/tailwind
 
 ### Individual Mode Testing
 
-```bash
+\`\`\`bash
 # Start individual mode (default)
 pnpm --filter web dev
 pnpm --filter docs dev  # In separate terminal
 
 # Test URLs
 http://localhost:3000/apps/docs  # Should use iframe to localhost:3001
-```
-
-
+\`\`\`

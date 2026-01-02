@@ -128,4 +128,3 @@ export async function GET(): Promise<NextResponse<AppMetadata[] | { error: strin
     );
   }
 }
-

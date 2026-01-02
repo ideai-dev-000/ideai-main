@@ -129,7 +129,7 @@ description: Executive summary for management and stakeholders
 
 **CRITICAL**: All commits must follow strict format with ticket references:
 
-```
+\`\`\`
 type(scope): detailed subject line
 
 Detailed explanation of what changed and why.
@@ -139,7 +139,7 @@ Detailed explanation of what changed and why.
 - Specific change 3
 
 Related: TICKET-XXX
-```
+\`\`\`
 
 **Enforcement**:
 - ✅ Updated `.cursorrules` with requirements
@@ -274,6 +274,3 @@ Related: TICKET-XXX
 **For task details, see**: [MULTI-STRATEGY-DEPLOYMENT-PLAN.md](./deployment/MULTI-STRATEGY-DEPLOYMENT-PLAN.md)
 
 **Last Updated**: January 1, 2026
-
-
-

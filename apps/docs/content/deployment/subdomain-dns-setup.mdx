@@ -28,9 +28,9 @@ This guide covers:
 If your domain is managed by Vercel or you want to use Vercel's nameservers:
 
 1. **Add domain to Vercel**:
-   ```bash
+   \`\`\`bash
    vercel domains add myui.space
-   ```
+   \`\`\`
 
 2. **Configure nameservers** at your registrar:
    - Go to your domain registrar's DNS settings
@@ -42,12 +42,12 @@ If your domain is managed by Vercel or you want to use Vercel's nameservers:
 If you want to keep DNS management at your registrar:
 
 1. **Get Vercel DNS records**:
-   ```bash
+   \`\`\`bash
    # For root domain
    vercel domains inspect myui.space
    
    # This will show you the DNS records needed
-   ```
+   \`\`\`
 
 2. **Add DNS records at registrar**:
    - **A Record** (for root domain):
@@ -73,59 +73,59 @@ If you want to keep DNS management at your registrar:
 
 ### Via Vercel CLI
 
-```bash
+\`\`\`bash
 # Add subdomain to docs project
 cd apps/docs
 vercel domains add docs.myui.space
 
 # Verify domain is added
 vercel domains ls
-```
+\`\`\`
 
 ## Step 3: Verify DNS Configuration
 
 ### Check DNS Propagation
 
-```bash
+\`\`\`bash
 # Check if DNS records are propagated
 dig docs.myui.space
 nslookup docs.myui.space
 
 # Check specific record type
 dig CNAME docs.myui.space
-```
+\`\`\`
 
 ### Test Domain Resolution
 
-```bash
+\`\`\`bash
 # Test if domain resolves
 curl -I https://docs.myui.space
 
 # Should return 200 OK or redirect
-```
+\`\`\`
 
 ## Step 4: Update Environment Variables
 
 After DNS is configured and domain is added to Vercel:
 
 1. **Update web app environment variable**:
-   ```bash
+   \`\`\`bash
    cd apps/web
    vercel env add NEXT_PUBLIC_DOCS_URL production
    # Enter: https://docs.myui.space
-   ```
+   \`\`\`
 
 2. **Redeploy web app**:
-   ```bash
+   \`\`\`bash
    cd apps/web
    vercel deploy --prod
-   ```
+   \`\`\`
 
 ## Automation Script
 
 Here's a helper script to automate subdomain setup:
 
-```bash
+\`\`\`bash
 #!/bin/bash
 # scripts/setup-subdomain.sh
 # Usage: ./scripts/setup-subdomain.sh <app-name> <subdomain> <root-domain>
@@ -213,17 +213,17 @@ echo "Next steps:"
 echo "  1. Wait for DNS propagation (if not already done)"
 echo "  2. Test: https://${FULL_DOMAIN}"
 echo "  3. Test redirect: https://www.${ROOT_DOMAIN}/apps/${APP_NAME}"
-```
+\`\`\`
 
 ### Usage
 
-```bash
+\`\`\`bash
 # Make script executable
 chmod +x scripts/setup-subdomain.sh
 
 # Setup docs subdomain
 ./scripts/setup-subdomain.sh docs docs myui.space
-```
+\`\`\`
 
 ## DNS Record Types Explained
 
@@ -231,12 +231,12 @@ chmod +x scripts/setup-subdomain.sh
 
 **Use for**: Subdomains (e.g., `docs.myui.space`)
 
-```
+\`\`\`
 Type: CNAME
 Name: docs
 Value: cname.vercel-dns.com
 TTL: 3600
-```
+\`\`\`
 
 **Pros**:
 - Easy to manage
@@ -250,12 +250,12 @@ TTL: 3600
 
 **Use for**: Root domain (e.g., `myui.space`)
 
-```
+\`\`\`
 Type: A
 Name: @ (or blank)
 Value: 76.76.21.21 (verify current Vercel IP)
 TTL: 3600
-```
+\`\`\`
 
 **Note**: Vercel IPs can change. Check current IPs in Vercel dashboard.
 
@@ -264,34 +264,34 @@ TTL: 3600
 ### DNS Not Propagating
 
 1. **Check DNS propagation**:
-   ```bash
+   \`\`\`bash
    dig docs.myui.space
    nslookup docs.myui.space
-   ```
+   \`\`\`
 
 2. **Wait**: DNS propagation can take 24-48 hours
 
 3. **Clear DNS cache**:
-   ```bash
+   \`\`\`bash
    # macOS
    sudo dscacheutil -flushcache
    
    # Linux
    sudo systemd-resolve --flush-caches
-   ```
+   \`\`\`
 
 ### Domain Not Resolving
 
 1. **Verify DNS records**:
-   ```bash
+   \`\`\`bash
    dig CNAME docs.myui.space
-   ```
+   \`\`\`
 
 2. **Check Vercel domain status**:
-   ```bash
+   \`\`\`bash
    vercel domains ls
    vercel domains inspect docs.myui.space
-   ```
+   \`\`\`
 
 3. **Verify SSL certificate**:
    - Vercel automatically provisions SSL certificates
@@ -302,9 +302,9 @@ TTL: 3600
 1. **Wait for SSL provisioning**: Vercel automatically provisions SSL (can take a few minutes)
 
 2. **Check SSL status**:
-   ```bash
+   \`\`\`bash
    vercel domains inspect docs.myui.space
-   ```
+   \`\`\`
 
 3. **Force SSL renewal** (if needed):
    - Go to Vercel dashboard → Domains
@@ -315,7 +315,7 @@ TTL: 3600
 
 ### Common Commands
 
-```bash
+\`\`\`bash
 # List all domains
 vercel domains ls
 
@@ -331,11 +331,11 @@ vercel domains rm docs.myui.space
 # Check DNS propagation
 dig docs.myui.space
 nslookup docs.myui.space
-```
+\`\`\`
 
 ### Environment Variables
 
-```bash
+\`\`\`bash
 # Set standalone URL for web app
 cd apps/web
 vercel env add NEXT_PUBLIC_DOCS_URL production
@@ -346,7 +346,7 @@ vercel env ls
 
 # Remove environment variable
 vercel env rm NEXT_PUBLIC_DOCS_URL production
-```
+\`\`\`
 
 ## Next Steps
 
@@ -364,5 +364,3 @@ After subdomain is configured:
 - [Vercel Domain Configuration](vercel.md#domain-configuration)
 - [Deployment Strategies](deployment-strategies.md)
 - [Environment Variables Reference](deployment-strategies.md#environment-variables-reference)
-
-

@@ -39,7 +39,7 @@ IdeaI uses a three-layer CSS architecture:
 
 Every app's `globals.css` MUST follow this pattern:
 
-```css
+\`\`\`css
 /* apps/*/app/globals.css */
 
 /* 1. Normalize (required for all apps) */
@@ -52,7 +52,7 @@ Every app's `globals.css` MUST follow this pattern:
 
 /* 3. IdeaI layer (framework-agnostic) */
 @import "../../../packages/ui/src/styles/ideai.css";
-```
+\`\`\`
 
 **NO exceptions. NO custom CSS in app globals.css. Frameworks are mutually exclusive.**
 
@@ -70,7 +70,7 @@ All apps have access to IdeaI CSS variables from `ideai.css`:
 
 CSS modules should use **standard Tailwind classes** directly. The centralized `ideai.css` provides CSS variables and ensures consistency.
 
-```css
+\`\`\`css
 /* ✅ CORRECT - Use standard Tailwind + CSS variables */
 .page {
   @apply grid items-center justify-items-center min-h-screen p-20 gap-16;
@@ -106,9 +106,9 @@ CSS modules should use **standard Tailwind classes** directly. The centralized `
     border-color: transparent;
   }
 }
-```
+\`\`\`
 
-```css
+\`\`\`css
 /* ❌ WRONG - NO custom colors or duplicate styles */
 .secondary:hover {
   background: #f0f0f0; /* NO - use @apply bg-slate-100 */
@@ -117,7 +117,7 @@ CSS modules should use **standard Tailwind classes** directly. The centralized `
 .page {
   padding: 100px; /* NO - must match exactly: p-20 (80px) */
 }
-```
+\`\`\`
 
 ### App-Specific CSS
 
@@ -137,7 +137,7 @@ When adding new shared styles:
 5. **Test**: Verify all apps automatically get the new styles
 
 **Example - Adding CSS Variable**:
-```css
+\`\`\`css
 /* In ideai.css */
 :root {
   --ideai-spacing-xl: 80px;
@@ -147,10 +147,10 @@ When adding new shared styles:
 .page {
   padding: var(--ideai-spacing-xl);
 }
-```
+\`\`\`
 
 **Example - Adding Utility Class**:
-```css
+\`\`\`css
 /* In ideai.css */
 @layer utilities {
   .ideai-hover-card {
@@ -162,7 +162,7 @@ When adding new shared styles:
 .card:hover {
   @apply ideai-hover-card;
 }
-```
+\`\`\`
 
 **NEVER add shared styles to app CSS modules. Always centralize.**
 
@@ -188,7 +188,7 @@ All shared component styles use explicit `rgb()` color values instead of relying
 - **Hover (dark)**: `rgb(30 41 59)` - slate-800
 
 **Example from `ideai-components.css`**:
-```css
+\`\`\`css
 .ideai-header__title {
   color: rgb(15 23 42); /* slate-900 - explicit */
 }
@@ -197,7 +197,7 @@ All shared component styles use explicit `rgb()` color values instead of relying
   background-color: rgb(241 245 249); /* slate-100 - explicit */
   border-color: transparent;
 }
-```
+\`\`\`
 
 **Why Explicit Colors?**
 - Prevents browser dark mode from auto-applying colors
@@ -241,18 +241,18 @@ Before committing any UI changes:
 When creating/updating CSS modules:
 
 1. **Use centralized classes first**:
-   ```css
+   \`\`\`css
    .page { @apply ideai-page; }
    .main { @apply ideai-main; }
-   ```
+   \`\`\`
 
 2. **Only add app-specific styles**:
-   ```css
+   \`\`\`css
    /* Only if truly app-specific */
    .docsContent {
      margin-top: 48px; /* Docs-specific layout */
    }
-   ```
+   \`\`\`
 
 3. **Never duplicate centralized styles**:
    - ❌ Don't recreate button styles
@@ -326,7 +326,7 @@ All responsive breakpoints must be **identical**:
 #### During Debugging
 
 1. **Extract and compare HTML**:
-   ```bash
+   \`\`\`bash
    # Get all classes from each app
    curl -s http://localhost:3000 | grep -o 'class="[^"]*"' | sort | uniq > /tmp/web-classes.txt
    curl -s http://localhost:3001 | grep -o 'class="[^"]*"' | sort | uniq > /tmp/docs-classes.txt
@@ -335,20 +335,20 @@ All responsive breakpoints must be **identical**:
    # Compare differences
    comm -23 /tmp/web-classes.txt /tmp/docs-classes.txt  # Classes in web but not docs
    comm -13 /tmp/web-classes.txt /tmp/docs-classes.txt  # Classes in docs but not web
-   ```
+   \`\`\`
 
 2. **Check rendered CSS**:
-   ```bash
+   \`\`\`bash
    # Inspect specific elements
    curl -s http://localhost:3000 | grep -A 50 'class="ideai-footer'
    curl -s http://localhost:3001 | grep -A 50 'class="ideai-footer'
-   ```
+   \`\`\`
 
 3. **Compare CSS files loaded**:
-   ```bash
+   \`\`\`bash
    curl -s http://localhost:3000 | grep -o 'href="[^"]*\.css[^"]*"'
    curl -s http://localhost:3001 | grep -o 'href="[^"]*\.css[^"]*"'
-   ```
+   \`\`\`
 
 #### After Making Changes
 
@@ -392,55 +392,55 @@ The `/all` app (`apps/all`) serves as a comprehensive UI test page:
 ### ❌ Different Hover Colors
 
 **Wrong**:
-```css
+\`\`\`css
 /* App 1 */
 .secondary:hover { background: #f0f0f0; }
 
 /* App 2 */
 .secondary:hover { background: #e0e0e0; }
-```
+\`\`\`
 
 **Correct**:
-```css
+\`\`\`css
 /* Both apps - IDENTICAL */
 .secondary:hover {
   @apply bg-slate-100 dark:bg-slate-800;
 }
-```
+\`\`\`
 
 ### ❌ Different Transitions
 
 **Wrong**:
-```css
+\`\`\`css
 /* App 1 */
 transition: background 0.2s;
 
 /* App 2 */
 transition: background 0.3s;
-```
+\`\`\`
 
 **Correct**:
-```css
+\`\`\`css
 /* Both apps - IDENTICAL */
 transition: background 0.2s, color 0.2s, border-color 0.2s;
-```
+\`\`\`
 
 ### ❌ Different Spacing
 
 **Wrong**:
-```css
+\`\`\`css
 /* App 1 */
 padding: 80px;
 
 /* App 2 */
 padding: 100px;
-```
+\`\`\`
 
 **Correct**:
-```css
+\`\`\`css
 /* Both apps - IDENTICAL */
 padding: 80px;
-```
+\`\`\`
 
 ## Enforcement
 
@@ -455,4 +455,3 @@ This standard is enforced through:
 - [Design System Architecture](./design-system.md)
 - [Tailwind Configuration](../setup/tailwind.md)
 - [Component Standards](../development/components.md)
-

@@ -91,4 +91,3 @@ export async function loadChildAppPage(appName: string): Promise<ComponentType<a
 export function shouldUseUnifiedMode(): boolean {
   return getAppMode() === "unified";
 }
-

@@ -12,7 +12,7 @@ This document outlines the standards and practices for contributing to this proj
 
 **All code files must include rich, descriptive headers:**
 
-```typescript
+\`\`\`typescript
 /**
  * @fileoverview Brief description of what this file does
  * 
@@ -33,7 +33,7 @@ This document outlines the standards and practices for contributing to this proj
  * @see Related files or documentation
  * @todo Any known issues or future improvements
  */
-```
+\`\`\`
 
 **Required for:**
 - All TypeScript/JavaScript files
@@ -57,7 +57,7 @@ This document outlines the standards and practices for contributing to this proj
 
 **All commits must be detailed and descriptive:**
 
-```
+\`\`\`
 type(scope): detailed subject line
 
 Detailed explanation of what changed and why.
@@ -68,7 +68,7 @@ Detailed explanation of what changed and why.
 
 Fixes #issue-number
 Related to #issue-number
-```
+\`\`\`
 
 **Commit Types:**
 - `feat`: New feature
@@ -83,7 +83,7 @@ Related to #issue-number
 
 **Examples:**
 
-```
+\`\`\`
 feat(web): add user authentication flow
 
 Implemented complete authentication system with:
@@ -93,9 +93,9 @@ Implemented complete authentication system with:
 - User session persistence
 
 Fixes #123
-```
+\`\`\`
 
-```
+\`\`\`
 docs(deployment): update Vercel configuration guide
 
 - Fixed broken relative paths in vercel-checklist.md
@@ -104,13 +104,13 @@ docs(deployment): update Vercel configuration guide
 - Added commit signing status information
 
 All documentation now accurately reflects current setup.
-```
+\`\`\`
 
 ### Commit Signing
 
 **Important**: In non-interactive environments (like Cursor/AI tools), auto-sign must be temporarily disabled:
 
-```bash
+\`\`\`bash
 # Before committing in non-interactive environment
 git config --global --unset commit.gpgsign
 
@@ -119,7 +119,7 @@ git commit -m "message"
 
 # Re-enable auto-sign
 git config --global commit.gpgsign true
-```
+\`\`\`
 
 **In interactive terminals**, auto-sign works normally - commits will be automatically signed.
 
@@ -156,7 +156,7 @@ git config --global commit.gpgsign true
 
 **Before committing documentation changes:**
 
-```bash
+\`\`\`bash
 # Verify all links
 grep -r "\[.*\](.*)" docs/ | while read line; do
   # Check if link works
@@ -169,7 +169,7 @@ grep -r "vercel.json" docs/  # Should only mention it's not needed
 
 # Verify code examples
 # Test all commands shown in documentation
-```
+\`\`\`
 
 ## CI/CD Standards
 
@@ -178,24 +178,24 @@ grep -r "vercel.json" docs/  # Should only mention it's not needed
 **Workflow Requirements:**
 
 1. **Linting**: All code must pass ESLint
-   ```bash
+   \`\`\`bash
    pnpm lint
-   ```
+   \`\`\`
 
 2. **Type Checking**: All TypeScript must type-check
-   ```bash
+   \`\`\`bash
    pnpm check-types
-   ```
+   \`\`\`
 
 3. **Build**: All apps must build successfully
-   ```bash
+   \`\`\`bash
    pnpm build
-   ```
+   \`\`\`
 
 4. **Tests**: All tests must pass (when tests exist)
-   ```bash
+   \`\`\`bash
    pnpm test
-   ```
+   \`\`\`
 
 **Pre-Commit Checklist:**
 
@@ -233,17 +233,17 @@ grep -r "vercel.json" docs/  # Should only mention it's not needed
 ### Before Committing
 
 1. Run full check suite:
-   ```bash
+   \`\`\`bash
    pnpm lint
    pnpm check-types
    pnpm build
-   ```
+   \`\`\`
 
 2. Review your changes:
-   ```bash
+   \`\`\`bash
    git diff
    git status
-   ```
+   \`\`\`
 
 3. Ensure documentation is accurate (if changed)
 
@@ -270,7 +270,7 @@ grep -r "vercel.json" docs/  # Should only mention it's not needed
 
 ### PR Description Template
 
-```markdown
+\`\`\`markdown
 ## Description
 Brief overview of what this PR does.
 
@@ -299,7 +299,7 @@ How to test these changes:
 - [ ] Tests added/updated
 - [ ] All tests pass
 - [ ] CI checks pass
-```
+\`\`\`
 
 ## File Organization
 
@@ -313,14 +313,14 @@ How to test these changes:
 
 ### File Structure
 
-```
+\`\`\`
 apps/web/
 ├── app/              # Next.js app directory
 ├── components/       # React components
 ├── lib/              # Utility functions
 ├── types/            # TypeScript types
 └── hooks/            # React hooks
-```
+\`\`\`
 
 ## Related Documentation
 

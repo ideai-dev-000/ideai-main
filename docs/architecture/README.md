@@ -51,6 +51,3 @@ The architecture is designed to support:
 - Component library expansion
 
 See [Design System Architecture](./design-system.md) for details.
-
-
-

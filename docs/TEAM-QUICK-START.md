@@ -35,7 +35,7 @@ description: Essential information for new developers to get started immediately
 
 ## ⚡ Quick Setup
 
-```bash
+\`\`\`bash
 # Clone and setup
 git clone https://github.com/ideai-dev-000/ideai-main.git
 cd ideai-main
@@ -47,7 +47,7 @@ pnpm dev:start
 # Access apps
 # Main: http://localhost:3000
 # Docs: http://localhost:3001
-```
+\`\`\`
 
 ---
 
@@ -55,7 +55,7 @@ pnpm dev:start
 
 **Every commit MUST follow this format:**
 
-```
+\`\`\`
 type(scope): detailed subject line
 
 Detailed explanation of what changed and why.
@@ -65,10 +65,10 @@ Detailed explanation of what changed and why.
 - Specific change 3
 
 Related: TICKET-XXX
-```
+\`\`\`
 
 **Example**:
-```
+\`\`\`
 fix(web): resolve sub-folder route 404 issue
 
 Fixed Next.js App Router catch-all route that was returning 404
@@ -80,7 +80,7 @@ for async params handling.
 - Added error handling for route matching
 
 Related: TICKET-0.1
-```
+\`\`\`
 
 **See**: [Commit Standards in ONBOARDING.md](./ONBOARDING.md#commit-standards) for full details.
 
@@ -110,6 +110,3 @@ Related: TICKET-0.1
 ---
 
 **Ready to start?** Begin with [TICKET-0.1](./deployment/MULTI-STRATEGY-DEPLOYMENT-PLAN.md#ticket-01-fix-sub-folder-route-404-issue)!
-
-
-

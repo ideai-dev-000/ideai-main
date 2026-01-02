@@ -102,5 +102,3 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   const apps = await readIdeaiMetadata(includeStatus);
   console.log(JSON.stringify(apps, null, 2));
 }
-
-

@@ -162,11 +162,11 @@ For `main` branch, require these status checks:
 ### Test Branch Protection
 
 1. **Create a test branch**:
-   ```bash
+   \`\`\`bash
    git checkout -b test-branch-protection
    git commit --allow-empty -m "test: branch protection"
    git push origin test-branch-protection
-   ```
+   \`\`\`
 
 2. **Create a PR to `main`**:
    - PR should be created successfully
@@ -174,12 +174,12 @@ For `main` branch, require these status checks:
    - PR should not be mergeable until checks pass
 
 3. **Try to push directly to `main`** (should fail if protection enabled):
-   ```bash
+   \`\`\`bash
    git checkout main
    git commit --allow-empty -m "test: direct push"
    git push origin main
    # Should fail with protection error
-   ```
+   \`\`\`
 
 ### Verify Status Checks
 
@@ -243,4 +243,3 @@ For `main` branch, require these status checks:
 - [CI/CD Workflows](../deployment/ci-cd.md)
 - [Branch Workflow Guide](../development/branch-workflow.md)
 - [Deployment Safety Checklist](../deployment/safety-checklist.md)
-

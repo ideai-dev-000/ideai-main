@@ -31,13 +31,3 @@ export default function NotFound() {
     </IdeAIPageTemplate>
   );
 }
-
-
-
-
-
-
-
-
-
-

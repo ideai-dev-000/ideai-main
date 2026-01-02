@@ -22,4 +22,3 @@ export interface AnimationExamplesData {
   "framer-motion": AnimationExample[];
   "react-spring": AnimationExample[];
 }
-

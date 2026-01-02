@@ -20,7 +20,7 @@ Both modes can coexist, allowing flexibility in deployment strategy.
 
 ## Quick Start
 
-```bash
+\`\`\`bash
 # Deploy all apps to production
 ./deploy.sh --prod
 
@@ -29,7 +29,7 @@ Both modes can coexist, allowing flexibility in deployment strategy.
 
 # Deploy all apps (preview)
 ./deploy.sh
-```
+\`\`\`
 
 ## How It Works
 
@@ -187,12 +187,3 @@ All apps display their Vercel project name in the header with a clickable link.
 - [Deployment Architecture](../architecture/deployment-architecture.md)
 - [Vercel Configuration](./vercel.md)
 - [Deployment Overview](./overview.md)
-
-
-
-
-
-
-
-
-

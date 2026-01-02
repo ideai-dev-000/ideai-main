@@ -87,6 +87,3 @@ export const IdeAICardBadge = ({
     </span>
   );
 };
-
-
-

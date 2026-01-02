@@ -161,7 +161,7 @@ description: Current status, completed work, and pending tasks for IdeaI monorep
 
 ## 📚 Documentation Structure
 
-```
+\`\`\`
 docs/
 ├── README.md                    # Main documentation index
 ├── STATUS.md                    # This file - project status
@@ -185,7 +185,7 @@ docs/
     ├── github-secrets.md        # GitHub secrets setup
     ├── vercel-checklist.md      # Vercel checklist
     └── commit-signing.md        # GPG commit signing
-```
+\`\`\`
 
 ## 🎯 Next Steps (Priority Order)
 
@@ -230,11 +230,3 @@ docs/
 - Deployment script handles all 13 apps
 - Branch-per-site strategy ready for implementation
 - Documentation consolidated and cross-references updated
-
-
-
-
-
-
-
-

@@ -21,9 +21,9 @@ This document outlines a phased approach to deploying IdeaI monorepo apps, from 
 - Main app serves all sub-apps via iframe
 
 ### Configuration
-```bash
+\`\`\`bash
 # No env vars needed - default behavior
-```
+\`\`\`
 
 ### Behavior
 - Main app: `localhost:3000`
@@ -50,14 +50,14 @@ This document outlines a phased approach to deploying IdeaI monorepo apps, from 
 - Other apps remain integrated
 
 ### Configuration
-```bash
+\`\`\`bash
 # In Vercel dashboard or .env.local for main web app:
 NEXT_PUBLIC_DOCS_URL=https://docs-xxx.vercel.app
 NEXT_PUBLIC_ALL_URL=https://all-xxx.vercel.app
 
 # Other apps (nocss, mvp, etc.) - no env vars
 # They'll be served directly via iframe
-```
+\`\`\`
 
 ### Behavior
 - Critical apps (docs, all) → Redirect to standalone URLs
@@ -171,7 +171,7 @@ NEXT_PUBLIC_ALL_URL=https://all-xxx.vercel.app
 
 Set in Vercel dashboard or `.env.local`:
 
-```bash
+\`\`\`bash
 # Standalone app URLs (only set if deploying standalone)
 NEXT_PUBLIC_DOCS_URL=https://docs-xxx.vercel.app
 NEXT_PUBLIC_ALL_URL=https://all-xxx.vercel.app
@@ -182,7 +182,7 @@ NEXT_PUBLIC_ALLCSS_URL=https://allcss-xxx.vercel.app
 NEXT_PUBLIC_BOOTSTRAP_URL=https://bootstrap-xxx.vercel.app
 NEXT_PUBLIC_UNOCSS_URL=https://unocss-xxx.vercel.app
 NEXT_PUBLIC_SHADCN_URL=https://shadcn-xxx.vercel.app
-```
+\`\`\`
 
 ### Behavior
 
@@ -224,6 +224,3 @@ NEXT_PUBLIC_SHADCN_URL=https://shadcn-xxx.vercel.app
 - [Deployment Strategies](./deployment-strategies.md) - Complete strategy guide
 - [Deployment Architecture](./deployment-architecture.md) - Architecture overview
 - [Vercel Setup](./vercel-setup.md) - Vercel configuration
-
-
-

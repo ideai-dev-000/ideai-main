@@ -10,10 +10,10 @@ description: Complete test results for both unified and individual modes
 ## ✅ Unified Mode (All on Port 3000)
 
 ### Setup
-```bash
+\`\`\`bash
 NEXT_PUBLIC_IDEAI_APP_MODE=unified pnpm --filter web dev
 pnpm --filter docs dev  # In separate terminal
-```
+\`\`\`
 
 ### How It Works
 1. **Parent app** runs on `http://localhost:3000/` (default)
@@ -39,11 +39,11 @@ pnpm --filter docs dev  # In separate terminal
 ## ✅ Individual Mode (Separate Ports)
 
 ### Setup
-```bash
+\`\`\`bash
 # Default mode - no env var needed
 pnpm --filter web dev
 pnpm --filter docs dev  # In separate terminal
-```
+\`\`\`
 
 ### How It Works
 1. **Parent app** runs on `http://localhost:3000/`
@@ -94,5 +94,3 @@ Both modes are working correctly:
 3. ⏳ Test preview deployment
 4. ⏳ Test production deployment
 5. ⏳ Document deployment configuration
-
-

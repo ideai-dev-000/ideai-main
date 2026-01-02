@@ -2,6 +2,3 @@
   "installCommand": "pnpm install",
   "buildCommand": "pnpm build"
 }
-
-
-

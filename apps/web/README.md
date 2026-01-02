@@ -13,7 +13,7 @@ The IdeaI web app is:
 
 ### For Developers
 
-```bash
+\`\`\`bash
 # Install dependencies
 pnpm install
 
@@ -28,7 +28,7 @@ pnpm --filter web lint
 
 # Type check
 pnpm --filter web check-types
-```
+\`\`\`
 
 ### For AI Assistants
 
@@ -41,7 +41,7 @@ The documentation is automatically filtered and embedded from the IdeaI docs app
 
 ## App Structure
 
-```
+\`\`\`
 apps/web/
 ├── app/                    # Next.js App Router
 │   ├── docs/              # Documentation viewer
@@ -51,13 +51,13 @@ apps/web/
 ├── .ideai.json            # IdeaI configuration
 ├── package.json           # Dependencies
 └── README.md             # This file
-```
+\`\`\`
 
 ## IdeaI Configuration
 
 This app is configured as a **parent app** in `.ideai.json`:
 
-```json
+\`\`\`json
 {
   "role": "parent",
   "name": "IdeaI",
@@ -67,7 +67,7 @@ This app is configured as a **parent app** in `.ideai.json`:
     "forkToNew": false
   }
 }
-```
+\`\`\`
 
 ### Key Configuration Options
 
@@ -87,14 +87,14 @@ The app includes an `IdeAIDocsViewer` component that:
 - Works in both development and production
 
 **Usage in code:**
-```tsx
+\`\`\`tsx
 import { IdeAIDocsViewer } from "@repo/ui";
 
 <IdeAIDocsViewer 
   filter={{ category: "deployment" }}
   title="Deployment Guide"
 />
-```
+\`\`\`
 
 ### For Developers
 
@@ -114,24 +114,24 @@ This app deploys to the `ideai-main` Vercel project:
 
 ### Deployment Commands
 
-```bash
+\`\`\`bash
 # Preview deployment
 ./deploy.sh web
 
 # Production deployment
 ./deploy.sh --prod web
-```
+\`\`\`
 
 ## Development
 
 ### Local Development
 
-```bash
+\`\`\`bash
 # Start dev server
 pnpm --filter web dev
 
 # App runs on http://localhost:3000
-```
+\`\`\`
 
 ### Child Apps
 

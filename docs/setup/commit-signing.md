@@ -25,9 +25,9 @@ This guide explains how to set up GPG commit signing for verified commits, which
 
 ### 1. Check if GPG is Installed
 
-```bash
+\`\`\`bash
 gpg --version
-```
+\`\`\`
 
 If not installed:
 - **macOS**: `brew install gnupg`
@@ -36,9 +36,9 @@ If not installed:
 
 ### 2. Generate a GPG Key
 
-```bash
+\`\`\`bash
 gpg --full-generate-key
-```
+\`\`\`
 
 Follow the prompts:
 1. **Key type**: Press Enter (default: RSA and RSA)
@@ -51,22 +51,22 @@ Follow the prompts:
 
 ### 3. List Your GPG Keys
 
-```bash
+\`\`\`bash
 gpg --list-secret-keys --keyid-format=long
-```
+\`\`\`
 
 Look for a line like:
-```
+\`\`\`
 sec   rsa4096/3AA5C34371567BD2 2024-01-01 [SC]
-```
+\`\`\`
 
 The part after the `/` (e.g., `3AA5C34371567BD2`) is your **Key ID**.
 
 ### 4. Export Your Public Key
 
-```bash
+\`\`\`bash
 gpg --armor --export YOUR_KEY_ID
-```
+\`\`\`
 
 Copy the entire output (starts with `-----BEGIN PGP PUBLIC KEY BLOCK-----`).
 
@@ -80,32 +80,32 @@ Copy the entire output (starts with `-----BEGIN PGP PUBLIC KEY BLOCK-----`).
 ### 6. Configure Git to Use Your Key
 
 **Set the key for this repository:**
-```bash
+\`\`\`bash
 git config user.signingkey YOUR_KEY_ID
-```
+\`\`\`
 
 **Set globally (recommended):**
-```bash
+\`\`\`bash
 git config --global user.signingkey YOUR_KEY_ID
-```
+\`\`\`
 
 **Enable automatic signing for all commits:**
-```bash
+\`\`\`bash
 git config --global commit.gpgsign true
-```
+\`\`\`
 
 **Or sign commits manually:**
-```bash
+\`\`\`bash
 git commit -S -m "Your commit message"
-```
+\`\`\`
 
 ### 7. Verify Your Setup
 
 **Test signing a commit:**
-```bash
+\`\`\`bash
 git commit --allow-empty -S -m "Test signed commit"
 git push
-```
+\`\`\`
 
 **Check if commit is verified:**
 - Go to your GitHub repository
@@ -116,14 +116,14 @@ git push
 ### "gpg: signing failed: Inappropriate ioctl for device"
 
 **Solution**: Add to your `~/.bashrc` or `~/.zshrc`:
-```bash
+\`\`\`bash
 export GPG_TTY=$(tty)
-```
+\`\`\`
 
 Then reload:
-```bash
+\`\`\`bash
 source ~/.zshrc  # or ~/.bashrc
-```
+\`\`\`
 
 ### Commit Not Showing as Verified
 
@@ -146,16 +146,16 @@ source ~/.zshrc  # or ~/.bashrc
 If your GPG key has the wrong email:
 
 1. **Edit the key:**
-```bash
+\`\`\`bash
 gpg --edit-key YOUR_KEY_ID
-```
+\`\`\`
 
 2. **In the GPG prompt:**
-```
+\`\`\`
 adduid
 # Enter your correct email
 save
-```
+\`\`\`
 
 3. **Update GitHub** with the new public key
 
@@ -171,22 +171,22 @@ save
 ## Backup Your GPG Key
 
 **Export private key:**
-```bash
+\`\`\`bash
 gpg --export-secret-keys YOUR_KEY_ID > my-gpg-key-backup.asc
-```
+\`\`\`
 
 **Store securely** (encrypted file, password manager, etc.)
 
 **Import later:**
-```bash
+\`\`\`bash
 gpg --import my-gpg-key-backup.asc
-```
+\`\`\`
 
 ## Non-Interactive Environments (Cursor/AI Tools)
 
 **Important**: In non-interactive environments where you cannot enter a passphrase (like Cursor AI tools), you must temporarily disable auto-sign:
 
-```bash
+\`\`\`bash
 # Disable auto-sign before committing
 git config --global --unset commit.gpgsign
 
@@ -195,7 +195,7 @@ git commit -m "Your commit message"
 
 # Re-enable auto-sign immediately after
 git config --global commit.gpgsign true
-```
+\`\`\`
 
 **Why?** GPG signing requires passphrase entry, which isn't possible in non-interactive environments. Disabling auto-sign allows commits to proceed, then re-enabling ensures future commits in your terminal will be signed.
 
@@ -207,4 +207,3 @@ git config --global commit.gpgsign true
 - [Vercel Configuration](../deployment/vercel.md)
 - [Deployment Troubleshooting](../deployment/troubleshooting.md)
 - [Contributing Guidelines](../CONTRIBUTING.md)
-

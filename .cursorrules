@@ -109,7 +109,7 @@ All code files must include rich, descriptive headers with:
 ### Commit Messages
 **CRITICAL**: All commits must follow this exact format with ticket reference:
 
-```
+\`\`\`
 type(scope): detailed subject line
 
 Detailed explanation of what changed and why.
@@ -119,7 +119,7 @@ Detailed explanation of what changed and why.
 - Specific change 3
 
 Related: TICKET-XXX
-```
+\`\`\`
 
 **Commit Types**:
 - `fix`: Bug fixes
@@ -142,7 +142,7 @@ Related: TICKET-XXX
 **Ticket Reference**: Every commit must include `Related: TICKET-XXX` at the end, where XXX is the ticket number (e.g., TICKET-0.1, TICKET-1.2).
 
 **Example Good Commit**:
-```
+\`\`\`
 fix(web): resolve sub-folder route 404 issue
 
 Fixed Next.js App Router catch-all route that was returning 404
@@ -155,12 +155,12 @@ for async params handling.
 - Updated TypeScript types for params
 
 Related: TICKET-0.1
-```
+\`\`\`
 
 **Example Bad Commit (DON'T DO THIS)**:
-```
+\`\`\`
 fix: stuff
-```
+\`\`\`
 
 ### Commit Signing in Non-Interactive Environment
 **CRITICAL**: When committing in Cursor/AI tools (non-interactive):
@@ -220,11 +220,11 @@ Never skip CI checks. All PRs must pass CI before merge.
    - **Both imported in every app's globals.css**
 
 2. **Import Pattern** (MANDATORY for all apps):
-   ```css
+   \`\`\`css
    /* In apps/*/app/globals.css */
    @import "../../../packages/ui/src/styles/globals.css";
    @import "../../../packages/ui/src/styles/ideai.css";
-   ```
+   \`\`\`
 
 3. **NO Custom CSS in Apps**:
    - ❌ NO custom button styles in app CSS modules
@@ -274,22 +274,22 @@ Never skip CI checks. All PRs must pass CI before merge.
 
 2. **During Debugging**:
    - Extract and compare HTML from both pages:
-     ```bash
+     \`\`\`bash
      curl -s http://localhost:3000 | grep -o 'class="[^"]*"' | sort | uniq > /tmp/web-classes.txt
      curl -s http://localhost:3001 | grep -o 'class="[^"]*"' | sort | uniq > /tmp/docs-classes.txt
      comm -23 /tmp/web-classes.txt /tmp/docs-classes.txt  # Classes in web but not docs
      comm -13 /tmp/web-classes.txt /tmp/docs-classes.txt  # Classes in docs but not web
-     ```
+     \`\`\`
    - Check rendered CSS by inspecting specific elements:
-     ```bash
+     \`\`\`bash
      curl -s http://localhost:3000 | grep -A 50 'class="ideai-footer'  # Footer HTML
      curl -s http://localhost:3001 | grep -A 50 'class="ideai-footer'  # Footer HTML
-     ```
+     \`\`\`
    - Compare CSS files loaded:
-     ```bash
+     \`\`\`bash
      curl -s http://localhost:3000 | grep -o 'href="[^"]*\.css[^"]*"'
      curl -s http://localhost:3001 | grep -o 'href="[^"]*\.css[^"]*"'
-     ```
+     \`\`\`
 
 3. **After Making Changes**:
    - **ALWAYS** take new screenshots to verify visual consistency
@@ -337,4 +337,3 @@ Never skip CI checks. All PRs must pass CI before merge.
 6. Write detailed commit message
 7. If in non-interactive environment, disable auto-sign, commit, re-enable
 8. Push and verify CI passes
-

@@ -9,9 +9,9 @@ Utility scripts for project setup and maintenance.
 Automated script to configure GitHub secrets for CI/CD deployments.
 
 **Usage**:
-```bash
+\`\`\`bash
 ./scripts/setup-secrets.sh
-```
+\`\`\`
 
 **What it does**:
 - Verifies GitHub CLI authentication
@@ -32,6 +32,3 @@ When adding new scripts:
 2. Make executable: `chmod +x scripts/script-name.sh`
 3. Add documentation to this README
 4. Reference in relevant documentation
-
-
-

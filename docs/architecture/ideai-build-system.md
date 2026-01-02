@@ -19,34 +19,34 @@ The IdeaI build system:
 
 ### Check Dependencies
 
-```bash
+\`\`\`bash
 # Check if parent has all child dependencies
 pnpm --filter web build:check
 
 # Or directly
 node scripts/ideai-build-check.mjs web
-```
+\`\`\`
 
 ### Sync Dependencies
 
-```bash
+\`\`\`bash
 # Auto-sync child dependencies to parent
 pnpm --filter web build:sync
 
 # Or with dry-run first
 node scripts/ideai-build-sync.mjs web --dry-run
 node scripts/ideai-build-sync.mjs web
-```
+\`\`\`
 
 ### Track Builds
 
-```bash
+\`\`\`bash
 # Track a build
 pnpm --filter web build:track
 
 # Generate build report
 node scripts/ideai-build-track.mjs web report
-```
+\`\`\`
 
 ## How It Works
 
@@ -85,7 +85,7 @@ Tracks each build with metadata:
 
 ### Parent App `.ideai.json`
 
-```json
+\`\`\`json
 {
   "role": "parent",
   "name": "IdeaI",
@@ -97,18 +97,18 @@ Tracks each build with metadata:
     "trackBuilds": true
   }
 }
-```
+\`\`\`
 
 ### Child App `.ideai.json`
 
-```json
+\`\`\`json
 {
   "role": "child",
   "name": "Documentation",
   "parentApp": "web",
   "localPort": 3001
 }
-```
+\`\`\`
 
 ## Security Best Practices (2026)
 
@@ -121,20 +121,20 @@ Tracks each build with metadata:
 
 ### 2. Lock File Verification
 
-```bash
+\`\`\`bash
 # In CI/CD
 pnpm install --frozen-lockfile
-```
+\`\`\`
 
 ### 3. Vulnerability Scanning
 
-```bash
+\`\`\`bash
 # Regular security audits
 pnpm audit
 
 # Fix vulnerabilities
 pnpm audit --fix
-```
+\`\`\`
 
 ### 4. Dependency Verification
 
@@ -147,7 +147,7 @@ pnpm audit --fix
 
 ### Development
 
-```bash
+\`\`\`bash
 # 1. Check dependencies
 pnpm --filter web build:check
 
@@ -163,11 +163,11 @@ pnpm --filter web build
 
 # 5. Track build
 pnpm --filter web build:track
-```
+\`\`\`
 
 ### CI/CD
 
-```bash
+\`\`\`bash
 # 1. Verify dependencies
 pnpm --filter web build:check
 
@@ -182,13 +182,13 @@ pnpm --filter web build
 
 # 5. Track build
 pnpm --filter web build:track
-```
+\`\`\`
 
 ## Build Tracking
 
 Build metadata is saved to `.ideai/builds/`:
 
-```json
+\`\`\`json
 {
   "timestamp": "2026-01-01T16:39:17.276Z",
   "parentApp": "web",
@@ -197,17 +197,17 @@ Build metadata is saved to `.ideai/builds/`:
   "childDependencies": { ... },
   "totalDependencies": 24
 }
-```
+\`\`\`
 
 ### View Build History
 
-```bash
+\`\`\`bash
 # Latest build
 node scripts/ideai-build-track.mjs web report
 
 # All builds
 ls .ideai/builds/
-```
+\`\`\`
 
 ## Scripts Reference
 
@@ -215,9 +215,9 @@ ls .ideai/builds/
 
 Checks if parent has all child dependencies.
 
-```bash
+\`\`\`bash
 node scripts/ideai-build-check.mjs [parent-app]
-```
+\`\`\`
 
 **Output**:
 - Parent dependencies count
@@ -229,13 +229,13 @@ node scripts/ideai-build-check.mjs [parent-app]
 
 Auto-syncs child dependencies to parent.
 
-```bash
+\`\`\`bash
 # Dry run
 node scripts/ideai-build-sync.mjs [parent-app] --dry-run
 
 # Actual sync
 node scripts/ideai-build-sync.mjs [parent-app]
-```
+\`\`\`
 
 **What it does**:
 - Finds missing dependencies
@@ -246,7 +246,7 @@ node scripts/ideai-build-sync.mjs [parent-app]
 
 Tracks builds and generates reports.
 
-```bash
+\`\`\`bash
 # Track build
 node scripts/ideai-build-track.mjs [parent-app] build
 
@@ -255,13 +255,13 @@ node scripts/ideai-build-track.mjs [parent-app] report
 
 # Check dependencies
 node scripts/ideai-build-track.mjs [parent-app] check
-```
+\`\`\`
 
 ## Integration with package.json
 
 Add scripts to parent app's `package.json`:
 
-```json
+\`\`\`json
 {
   "scripts": {
     "build:check": "node ../../scripts/ideai-build-check.mjs web",
@@ -269,14 +269,14 @@ Add scripts to parent app's `package.json`:
     "build:track": "node ../../scripts/ideai-build-track.mjs web build"
   }
 }
-```
+\`\`\`
 
 Then use:
-```bash
+\`\`\`bash
 pnpm --filter web build:check
 pnpm --filter web build:sync
 pnpm --filter web build:track
-```
+\`\`\`
 
 ## Benefits
 
@@ -292,5 +292,3 @@ pnpm --filter web build:track
 - Unified build: If moving away from iframes, sync dependencies first
 - Security: Always run `pnpm audit` before production builds
 - Lock files: Never commit without `pnpm-lock.yaml`
-
-

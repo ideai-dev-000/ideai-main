@@ -54,10 +54,10 @@ Deploy one app (docs) as a standalone Vercel project to test standalone mode.
 - ✅ Hybrid mode working (docs standalone, others integrated)
 
 ### Configuration
-```bash
+\`\`\`bash
 # In main web app Vercel environment variables:
 NEXT_PUBLIC_DOCS_URL=https://docs-xxx.vercel.app
-```
+\`\`\`
 
 ## Phase 3: Subdomain Configuration
 
@@ -77,12 +77,12 @@ Configure subdomain for standalone app (docs.myui.space).
 - ✅ Clean subdomain URLs
 
 ### Configuration
-```bash
+\`\`\`bash
 # DNS: docs.myui.space → CNAME to Vercel
 # Vercel: Add custom domain to docs project
 # Environment variable:
 NEXT_PUBLIC_DOCS_URL=https://docs.myui.space
-```
+\`\`\`
 
 ## Phase 4: Multitenant Vercel Setup
 
@@ -110,13 +110,13 @@ Set up full multitenant configuration with multiple standalone apps and subdomai
 - ✅ Full flexibility per app
 
 ### Configuration
-```bash
+\`\`\`bash
 # In main web app Vercel environment variables:
 NEXT_PUBLIC_DOCS_URL=https://docs.myui.space
 NEXT_PUBLIC_ALL_URL=https://all.myui.space
 NEXT_PUBLIC_SHADCN_URL=https://shadcn.myui.space
 # ... etc (only set for apps you want standalone)
-```
+\`\`\`
 
 ## Phase 5: Documentation and Cleanup
 
@@ -141,16 +141,16 @@ Review, consolidate, and clean up all documentation and legacy files.
 ## Deployment Commands
 
 ### Phase 1: Main App
-```bash
+\`\`\`bash
 # Preview
 ./deploy.sh web
 
 # Production
 ./deploy.sh --prod web
-```
+\`\`\`
 
 ### Phase 2: Standalone App
-```bash
+\`\`\`bash
 # Create Vercel project (first time)
 cd apps/docs
 vercel link
@@ -158,13 +158,13 @@ vercel link
 # Deploy
 ./deploy.sh docs
 ./deploy.sh --prod docs
-```
+\`\`\`
 
 ### Phase 4: All Apps
-```bash
+\`\`\`bash
 # Deploy all apps
 ./deploy.sh --prod
-```
+\`\`\`
 
 ## Verification Checklist
 
@@ -223,6 +223,3 @@ vercel link
 - [Deployment Phases](./deployment-phases.md) - Phased approach
 - [Unified Deployment](./unified-deployment.md) - Deployment commands
 - [Vercel Setup](./vercel.md) - Vercel configuration
-
-
-

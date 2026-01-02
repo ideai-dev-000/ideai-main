@@ -354,4 +354,3 @@ export function IdeAISiteCard({
     </Card>
   );
 }
-

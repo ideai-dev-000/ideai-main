@@ -45,4 +45,3 @@ export function getChildAppComponent(appName: string): ComponentType<any> | null
 export function isChildAppRegistered(appName: string): boolean {
   return registry.has(appName);
 }
-

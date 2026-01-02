@@ -78,11 +78,11 @@ For each app deployed as a standalone project, configure in Vercel dashboard:
 
 **Fix**: 
 1. Set `installCommand` in `vercel.json`:
-   ```json
+   \`\`\`json
    {
      "installCommand": "pnpm install"
    }
-   ```
+   \`\`\`
 2. Or set in Vercel dashboard: Settings → General → Install Command
 
 ### Error: Path does not exist
@@ -108,7 +108,7 @@ For each app deployed as a standalone project, configure in Vercel dashboard:
 
 After setup, verify deployment:
 
-```bash
+\`\`\`bash
 # Check project is linked
 cd apps/{app-name}
 cat .vercel/project.json
@@ -118,7 +118,7 @@ vercel deploy
 
 # Production deployment
 vercel deploy --prod
-```
+\`\`\`
 
 ## Quick Reference
 
@@ -127,4 +127,3 @@ vercel deploy --prod
 | web | `apps/web` | `web` | ✅ Deployed |
 | docs | `apps/docs` | `docs` | ✅ Deployed |
 | landing | `apps/landing` | `landing` | ✅ Deployed |
-

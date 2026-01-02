@@ -138,9 +138,9 @@ description: Decision guide for choosing the right deployment method for IdeaI a
 **Why**: Handles all apps automatically, consistent process
 
 **Alternative**: Vercel CLI Direct
-```bash
+\`\`\`bash
 ./deploy.sh --prod  # Deploys all apps
-```
+\`\`\`
 
 ### Scenario 7: Single App Deployment
 
@@ -153,9 +153,9 @@ description: Decision guide for choosing the right deployment method for IdeaI a
 - All apps deploy (but only one changes)
 
 **Vercel CLI Direct**:
-```bash
+\`\`\`bash
 ./deploy.sh --prod web  # Deploy only web app
-```
+\`\`\`
 
 **Recommendation**: Use GitHub → Vercel for consistency, unless you need speed.
 
@@ -176,7 +176,7 @@ description: Decision guide for choosing the right deployment method for IdeaI a
 
 ## Decision Flowchart
 
-```
+\`\`\`
 Start
   │
   ├─ Is this a regular deployment?
@@ -196,7 +196,7 @@ Start
   │   └─ No → Use GitHub → Vercel (default)
   │
 End
-```
+\`\`\`
 
 ## Best Practices
 
@@ -248,4 +248,3 @@ End
 - [Rollback Procedures](./rollback-procedures.md)
 - [Unified Deployment Guide](./unified-deployment.md)
 - [Deployment Safety Checklist](./safety-checklist.md)
-

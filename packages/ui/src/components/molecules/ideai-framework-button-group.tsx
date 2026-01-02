@@ -60,6 +60,3 @@ export const IdeAIFrameworkButtonGroup = ({
     </div>
   );
 };
-
-
-
