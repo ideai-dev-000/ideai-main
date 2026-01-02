@@ -145,7 +145,7 @@ export const IdeAIUniversalFrameworkCard = ({
           The card demonstrates how a single component can render with different visual styles
           based on runtime framework selection.
         </p>
-      </IdeAIFrameworkCard>
+      </IdeAICard>
 
       {/* Framework Info Section */}
       <aside className="mt-4 p-4 bg-slate-50 dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700">

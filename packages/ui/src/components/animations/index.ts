@@ -1,17 +1,26 @@
 /**
- * @fileoverview Animations Demo Components - Centralized Exports
+ * @fileoverview IdeaI Animations Module - Centralized Exports
  * 
- * @module AnimationsExports
+ * @module IdeAIAnimations
  * @description
- * Centralized exports for all animation demo components.
- * All components are lazy-loaded for optimal performance.
+ * Centralized exports for IdeaI animation examples and components.
+ * All animations are driven by JSON files and rendered via AnimationCard.
+ * No separate page components - everything is data-driven from JSON.
  * 
  * @example
  * ```tsx
- * import { FramerMotionDemo, ReactSpringDemo } from "@repo/ui/components/animations";
+ * import { AnimationCard, framerMotionExamples, reactSpringExamples } from "@repo/ui/components/animations";
  * ```
  */
 
-export { FramerMotionDemo } from "./framer-motion-demo";
-export { ReactSpringDemo } from "./react-spring-demo";
+export { AnimationCard } from "./ideai-animations/animation-card";
+export type { AnimationExample, AnimationExamplesData } from "./ideai-animations/types";
+export { AnimationsShowcase } from "./animations-showcase";
+
+// Load examples - using dynamic import for JSON
+import framerMotionExamplesData from "./ideai-animations/examples/framer-motion.json";
+import reactSpringExamplesData from "./ideai-animations/examples/react-spring.json";
+
+export const framerMotionExamples = framerMotionExamplesData as AnimationExample[];
+export const reactSpringExamples = reactSpringExamplesData as AnimationExample[];
 

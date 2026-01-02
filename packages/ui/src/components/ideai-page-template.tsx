@@ -109,14 +109,8 @@ export const IdeAIPageTemplate = ({
           mainNav={shouldHideNav ? [] : [
             { label: "Home", href: "/" },
             { label: "Documentation", href: "/docs" },
-            { 
-              label: "Animations", 
-              href: "/animations",
-              children: [
-                { label: "Framer Motion", href: "/animations/framer-motion" },
-                { label: "React Spring", href: "/animations/react-spring" },
-              ]
-            },
+            { label: "Animations", href: "/animations" },
+            { label: "Page Templates", href: "/page-templates" },
             { label: "Apps", href: "/index" },
           ]}
           extraNav={shouldHideNav ? [] : [

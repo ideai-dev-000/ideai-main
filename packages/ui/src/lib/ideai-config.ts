@@ -53,6 +53,8 @@ export interface IdeAIConfig {
   localPort?: number;
   /** Vercel project configuration (optional) */
   vercelProject?: VercelProjectConfig;
+  /** Animation libraries available in this app (e.g., ["framer-motion", "react-spring"]) */
+  animationLibraries?: string[];
   /** App metadata (from legacy .ideai file - now merged into .ideai.json) */
   metadata?: {
     /** App ID (usually same as directory name) */
@@ -145,6 +147,7 @@ export function readIdeAIConfigSync(appName: string): IdeAIConfig | null {
       name: "IdeaI",
       description: "Main IdeaI application",
       childApps: Object.keys(DEFAULT_CHILD_PORTS),
+      animationLibraries: ["framer-motion", "react-spring"],
     };
   }
   

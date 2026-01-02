@@ -14,6 +14,10 @@
     "shadcn"
   ],
   "localPort": 3000,
+  "animationLibraries": [
+    "framer-motion",
+    "react-spring"
+  ],
   "vercelProject": {
     "projectName": "ideai-main",
     "orgId": "team_vhjzlMi6CfNow0IfBXnv2Yn2",

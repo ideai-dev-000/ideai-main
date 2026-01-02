@@ -1,0 +1,123 @@
+[
+  {
+    "id": "dashboard-1",
+    "name": "Analytics Dashboard",
+    "description": "Modern analytics dashboard with charts, metrics, and data visualization",
+    "type": "dashboard",
+    "category": "Dashboard",
+    "tags": ["analytics", "charts", "metrics", "data"],
+    "preview": "Analytics dashboard with sidebar navigation, header stats, and chart grid",
+    "config": {
+      "layout": "sidebar-main",
+      "sections": ["sidebar", "header", "stats-grid", "charts-grid"],
+      "components": ["SidebarNav", "StatCard", "LineChart", "BarChart", "DataTable"],
+      "features": ["Responsive", "Dark mode", "Real-time updates"]
+    }
+  },
+  {
+    "id": "blog-1",
+    "name": "Blog Listing",
+    "description": "Clean blog listing page with featured posts and categories",
+    "type": "blog",
+    "category": "Blog",
+    "tags": ["blog", "articles", "content", "listing"],
+    "preview": "Blog listing with header, featured post, category filters, and post grid",
+    "config": {
+      "layout": "header-content",
+      "sections": ["header", "featured-post", "category-filters", "post-grid"],
+      "components": ["BlogHeader", "FeaturedCard", "CategoryFilter", "PostCard"],
+      "features": ["Search", "Filtering", "Pagination"]
+    }
+  },
+  {
+    "id": "social-1",
+    "name": "Social Feed",
+    "description": "Social media feed with posts, comments, and interactions",
+    "type": "social",
+    "category": "Social",
+    "tags": ["social", "feed", "posts", "interactions"],
+    "preview": "Social feed with user profile, post composer, and infinite scroll feed",
+    "config": {
+      "layout": "header-feed-sidebar",
+      "sections": ["header", "post-composer", "feed", "sidebar"],
+      "components": ["UserProfile", "PostComposer", "PostCard", "CommentThread", "ActivitySidebar"],
+      "features": ["Infinite scroll", "Real-time", "Notifications"]
+    }
+  },
+  {
+    "id": "shop-1",
+    "name": "E-commerce Grid",
+    "description": "Product grid with filters, search, and cart integration",
+    "type": "shop",
+    "category": "E-commerce",
+    "tags": ["shop", "products", "grid", "cart"],
+    "preview": "Product grid with filters sidebar, search bar, product cards, and cart",
+    "config": {
+      "layout": "sidebar-grid",
+      "sections": ["header", "filters-sidebar", "product-grid", "cart-drawer"],
+      "components": ["SearchBar", "FilterSidebar", "ProductCard", "CartDrawer", "PriceFilter"],
+      "features": ["Search", "Filtering", "Sorting", "Cart"]
+    }
+  },
+  {
+    "id": "landing-1",
+    "name": "Landing Page",
+    "description": "Modern landing page with hero, features, and CTA sections",
+    "type": "landing",
+    "category": "Marketing",
+    "tags": ["landing", "hero", "features", "cta"],
+    "preview": "Landing page with hero section, feature grid, testimonials, and footer",
+    "config": {
+      "layout": "single-column",
+      "sections": ["hero", "features", "testimonials", "cta", "footer"],
+      "components": ["HeroSection", "FeatureCard", "TestimonialCard", "CTASection"],
+      "features": ["Responsive", "Animations", "SEO optimized"]
+    }
+  },
+  {
+    "id": "portfolio-1",
+    "name": "Portfolio Grid",
+    "description": "Creative portfolio with project grid and filters",
+    "type": "portfolio",
+    "category": "Portfolio",
+    "tags": ["portfolio", "projects", "grid", "filters"],
+    "preview": "Portfolio grid with project cards, category filters, and lightbox",
+    "config": {
+      "layout": "header-grid",
+      "sections": ["header", "category-filters", "project-grid", "lightbox"],
+      "components": ["PortfolioHeader", "CategoryFilter", "ProjectCard", "Lightbox"],
+      "features": ["Filtering", "Lightbox", "Responsive grid"]
+    }
+  },
+  {
+    "id": "docs-1",
+    "name": "Documentation",
+    "description": "Documentation layout with sidebar navigation and content",
+    "type": "docs",
+    "category": "Documentation",
+    "tags": ["docs", "navigation", "content", "sidebar"],
+    "preview": "Documentation with sidebar nav, breadcrumbs, content area, and table of contents",
+    "config": {
+      "layout": "sidebar-content",
+      "sections": ["sidebar-nav", "breadcrumbs", "content", "toc"],
+      "components": ["SidebarNav", "Breadcrumbs", "ContentArea", "TableOfContents"],
+      "features": ["Search", "Navigation", "Code highlighting"]
+    }
+  },
+  {
+    "id": "admin-1",
+    "name": "Admin Panel",
+    "description": "Admin dashboard with data tables and management tools",
+    "type": "admin",
+    "category": "Admin",
+    "tags": ["admin", "dashboard", "tables", "management"],
+    "preview": "Admin panel with sidebar, data tables, forms, and action buttons",
+    "config": {
+      "layout": "sidebar-main",
+      "sections": ["sidebar", "header", "data-tables", "forms", "modals"],
+      "components": ["AdminSidebar", "DataTable", "FormModal", "ActionButtons"],
+      "features": ["CRUD operations", "Bulk actions", "Export"]
+    }
+  }
+]
+

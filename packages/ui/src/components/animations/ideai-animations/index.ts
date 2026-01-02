@@ -1,9 +1,12 @@
 /**
- * @fileoverview IdeaI Animations Module - Centralized Exports
+ * @fileoverview IdeaI Animations Module - Internal Exports
  * 
- * @module IdeAIAnimations
+ * @module IdeAIAnimationsInternal
  * @description
- * Centralized exports for IdeaI animation examples and components
+ * Internal exports for IdeaI animation examples and components.
+ * This module is used internally by the animations showcase.
+ * 
+ * For public API, use @repo/ui/components/animations instead.
  */
 
 export { AnimationCard } from "./animation-card";

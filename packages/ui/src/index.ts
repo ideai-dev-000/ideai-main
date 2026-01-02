@@ -76,7 +76,13 @@ export {
 } from "./lib/ideai-animations";
 
 // Animation Demos (lazy-loaded)
-export { FramerMotionDemo, ReactSpringDemo } from "./components/animations";
+// Animation components - all driven by JSON files
+export { AnimationCard, framerMotionExamples, reactSpringExamples } from "./components/animations";
+export { AnimationsShowcase } from "./components/animations/animations-showcase";
+
+// Page templates - all driven by JSON files
+export { PageTemplatesShowcase, pageTemplates } from "./components/page-templates";
+export type { PageTemplate, TemplateType } from "./components/page-templates";
 
 // Utilities
 export { getIdeAIFaviconMetadata } from "./lib/favicon-metadata";
