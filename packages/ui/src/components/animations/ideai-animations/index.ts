@@ -12,6 +12,9 @@
 export { AnimationCard } from "./animation-card";
 export type { AnimationExample, AnimationExamplesData } from "./types";
 
+// Import type for use in this file
+import type { AnimationExample } from "./types";
+
 // Load examples - using dynamic import for JSON
 import framerMotionExamplesData from "./examples/framer-motion.json";
 import reactSpringExamplesData from "./examples/react-spring.json";
