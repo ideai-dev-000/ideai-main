@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  transpilePackages: ["@repo/ui", "vivus"],
+  transpilePackages: ["@repo/ui"],
   experimental: {
     optimizePackageImports: ["@repo/ui"],
   },
