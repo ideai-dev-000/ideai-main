@@ -15,6 +15,9 @@
 export { PageTemplatesShowcase } from "./page-templates-showcase";
 export type { PageTemplate, TemplateType, PageTemplatesData } from "./types";
 
+// Import type for use in this file
+import type { PageTemplate } from "./types";
+
 // Load templates - using dynamic import for JSON
 import pageTemplatesData from "./examples/page-templates.json";
 
