@@ -1,0 +1,55 @@
+[
+  {
+    "id": "kute-1",
+    "title": "Basic SVG Path Morph",
+    "description": "Smooth morphing between two SVG paths using KUTE.js",
+    "library": "KUTE.js",
+    "category": "SVG",
+    "tags": ["svg", "morph", "path"],
+    "source": "https://thednp.github.io/kute.js/",
+    "code": "import KUTE from 'kute.js';\n\nconst morph = KUTE.fromTo(\n  '#path1',\n  { path: '#path1' },\n  { path: '#path2' }\n);\nmorph.start();",
+    "config": {
+      "from": "#path1",
+      "to": "#path2",
+      "duration": 1000,
+      "easing": "easingCubicInOut"
+    }
+  },
+  {
+    "id": "kute-2",
+    "title": "Logo Animation",
+    "description": "Animate logo properties with KUTE.js - perfect for brand animations",
+    "library": "KUTE.js",
+    "category": "Logo",
+    "tags": ["logo", "brand", "scale"],
+    "source": "https://thednp.github.io/kute.js/",
+    "code": "import KUTE from 'kute.js';\n\nconst tween = KUTE.to('#logo', {\n  scale: 1.2,\n  opacity: 1\n}, {\n  duration: 500,\n  easing: 'easingCubicOut'\n});\ntween.start();",
+    "config": {
+      "target": "#logo",
+      "properties": {
+        "scale": 1.2,
+        "opacity": 1
+      },
+      "duration": 500
+    }
+  },
+  {
+    "id": "kute-3",
+    "title": "Color Transition",
+    "description": "Smooth color transitions for UI elements",
+    "library": "KUTE.js",
+    "category": "Color",
+    "tags": ["color", "transition", "ui"],
+    "source": "https://thednp.github.io/kute.js/",
+    "code": "import KUTE from 'kute.js';\n\nconst colorTween = KUTE.to('#element', {\n  color: '#3b82f6',\n  backgroundColor: '#f3f4f6'\n}, {\n  duration: 600\n});\ncolorTween.start();",
+    "config": {
+      "target": "#element",
+      "properties": {
+        "color": "#3b82f6",
+        "backgroundColor": "#f3f4f6"
+      },
+      "duration": 600
+    }
+  }
+]
+

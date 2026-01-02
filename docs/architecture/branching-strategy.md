@@ -362,3 +362,5 @@ Configure branch protection in Vercel:
 - [Vercel Project Configuration](./vercel-project-config.md)
 - [Branch Workflow](../development/branch-workflow.md)
 - [Vercel Configuration](../deployment/vercel.md)
+
+

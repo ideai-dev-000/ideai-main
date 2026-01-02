@@ -75,3 +75,5 @@ export const frameworkConfigs: Record<Framework, FrameworkConfig> = {
     textClasses: "text-slate-900 dark:text-slate-100",
   },
 };
+
+

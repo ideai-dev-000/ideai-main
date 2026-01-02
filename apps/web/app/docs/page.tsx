@@ -7,6 +7,7 @@
  * Used by AI assistants and developers to access relevant documentation.
  */
 
+import { Suspense } from "react";
 import { IdeAIDocsViewer } from "@repo/ui/components/ideai-docs-viewer";
 
 interface PageProps {
@@ -22,14 +23,17 @@ export default async function DocsPage({ searchParams }: PageProps) {
   const params = await searchParams;
   
   return (
-    <IdeAIDocsViewer
-      filter={{
-        category: params.category,
-        path: params.path,
-        search: params.search,
-      }}
-      title="IdeaI Documentation"
-      showNav={true}
-    />
+    <Suspense fallback={<div>Loading documentation...</div>}>
+      <IdeAIDocsViewer
+        filter={{
+          category: params.category,
+          path: params.path,
+          search: params.search,
+        }}
+        title="IdeaI Documentation"
+        showNav={true}
+      />
+    </Suspense>
   );
 }
+

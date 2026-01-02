@@ -20,12 +20,12 @@
 import type { ComponentType } from "react";
 
 // Registry map - currently empty as we can't import server components
-const registry = new Map<string, ComponentType<any>>();
+const registry = new Map<string, ComponentType<Record<string, unknown>>>();
 
 /**
  * Register a child app component
  */
-export function registerChildApp(appName: string, component: ComponentType<any>): void {
+export function registerChildApp(appName: string, component: ComponentType<Record<string, unknown>>): void {
   registry.set(appName, component);
 }
 
@@ -33,7 +33,7 @@ export function registerChildApp(appName: string, component: ComponentType<any>)
  * Get child app component from registry
  * Returns null for now - child apps are server components
  */
-export function getChildAppComponent(appName: string): ComponentType<any> | null {
+export function getChildAppComponent(appName: string): ComponentType<Record<string, unknown>> | null {
   // For now, return null - we can't use server components in client components
   // We'll need to use iframes or refactor child apps to be client components
   return registry.get(appName) || null;

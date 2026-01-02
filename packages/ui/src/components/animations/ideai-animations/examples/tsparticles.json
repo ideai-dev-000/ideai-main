@@ -1,0 +1,38 @@
+[
+  {
+    "id": "tsparticles-1",
+    "title": "Particle Background",
+    "description": "Lightweight particle background effect for logos and headers",
+    "library": "tsParticles",
+    "category": "Particles",
+    "tags": ["particles", "background", "logo"],
+    "source": "https://particles.js.org/",
+    "code": "import { useCallback } from 'react';\nimport Particles from '@tsparticles/react';\nimport { loadSlim } from '@tsparticles/slim';\n\n<Particles\n  id=\"tsparticles\"\n  init={async (engine) => await loadSlim(engine)}\n  options={{\n    particles: {\n      number: { value: 50 },\n      color: { value: '#3b82f6' }\n    }\n  }}\n/>",
+    "config": {
+      "particles": {
+        "number": { "value": 50 },
+        "color": { "value": "#3b82f6" },
+        "size": { "value": 3 }
+      }
+    }
+  },
+  {
+    "id": "tsparticles-2",
+    "title": "Logo Particle Effect",
+    "description": "Particles that interact with logo elements",
+    "library": "tsParticles",
+    "category": "Logo",
+    "tags": ["logo", "interactive", "particles"],
+    "source": "https://particles.js.org/",
+    "code": "import Particles from '@tsparticles/react';\nimport { loadSlim } from '@tsparticles/slim';\n\n<Particles\n  init={async (engine) => await loadSlim(engine)}\n  options={{\n    interactivity: {\n      events: {\n        onHover: { enable: true, mode: 'repulse' }\n      }\n    },\n    particles: { number: { value: 30 } }\n  }}\n/>",
+    "config": {
+      "interactivity": {
+        "events": {
+          "onHover": { "enable": true, "mode": "repulse" }
+        }
+      },
+      "particles": { "number": { "value": 30 } }
+    }
+  }
+]
+

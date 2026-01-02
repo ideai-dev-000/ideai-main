@@ -7,13 +7,25 @@
  * Automatically discovers all apps, manages their lifecycle, and provides
  * status monitoring. 2027-facing, no bloat, best practices.
  * 
+ * SAFETY FEATURES:
+ * - Prevents Mac crashes by limiting concurrent app starts
+ * - Configurable exclusion list (EXCLUDED_APPS) to skip problematic apps
+ * - 3-second delay between app starts to prevent resource spikes
+ * - Requires --force flag to start more than 3 apps at once
+ * 
  * Usage:
- *   node scripts/dev-manager.mjs status    # Show status of all apps
- *   node scripts/dev-manager.mjs start     # Start all apps
- *   node scripts/dev-manager.mjs stop      # Stop all apps
- *   node scripts/dev-manager.mjs restart   # Restart all apps
- *   node scripts/dev-manager.mjs start web  # Start specific app
- *   node scripts/dev-manager.mjs stop docs # Stop specific app
+ *   node scripts/dev-manager.mjs status         # Show status of all apps
+ *   node scripts/dev-manager.mjs start          # Start safe apps only (web, docs)
+ *   node scripts/dev-manager.mjs start web      # Start specific app
+ *   node scripts/dev-manager.mjs start --force  # Start ALL apps (dangerous!)
+ *   node scripts/dev-manager.mjs stop           # Stop all apps
+ *   node scripts/dev-manager.mjs stop docs      # Stop specific app
+ *   node scripts/dev-manager.mjs restart        # Restart all apps
+ * 
+ * Configuration:
+ *   Edit EXCLUDED_APPS array (line ~49) to exclude apps from auto-start
+ *   Edit MAX_APPS_WITHOUT_CONFIRM (line ~67) to change safety limit
+ *   Edit START_DELAY_MS (line ~68) to change delay between starts
  */
 
 import { readdir, readFile } from 'fs/promises';
@@ -28,6 +40,45 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const REPO_ROOT = join(__dirname, '..');
 const APPS_DIR = join(REPO_ROOT, 'apps');
+
+/**
+ * SAFETY CONFIGURATION
+ * 
+ * To prevent Mac crashes from starting too many apps at once:
+ * 
+ * 1. EXCLUDED_APPS: Apps to skip when starting all apps
+ *    - Add app IDs here to exclude them from auto-start
+ *    - Example: ['all', 'nocss', 'mvp'] to exclude those apps
+ * 
+ * 2. MAX_APPS_WITHOUT_CONFIRM: Maximum apps to start without warning
+ *    - If starting more than this, script will warn and require --force flag
+ *    - Default: 3 (safe for most Macs)
+ * 
+ * 3. START_DELAY_MS: Delay between starting each app (milliseconds)
+ *    - Prevents resource spikes from simultaneous starts
+ *    - Default: 3000ms (3 seconds)
+ */
+const EXCLUDED_APPS = [
+  // Add app IDs here to exclude from auto-start
+  // Example: 'all', 'nocss', 'mvp', 'tailwind', 'allcss', 'bootstrap', 'chakra', 'material', 'radix', 'shadcn', 'unocss'
+  // Currently: Only 'web' and 'docs' will start by default (safest)
+  // TEMPORARILY REDUCED FOR TESTING WARNING - will restore after test
+  'all',
+  'nocss',
+  'mvp',
+  'tailwind',
+  'allcss',
+  'bootstrap',
+  'chakra',
+  'material',
+  'radix',
+  'shadcn',
+  'unocss',
+  'landing',
+];
+
+const MAX_APPS_WITHOUT_CONFIRM = 3; // Start max 3 apps without --force flag
+const START_DELAY_MS = 3000; // 3 second delay between app starts
 
 /**
  * Discover all apps from apps directory
@@ -199,20 +250,29 @@ async function main() {
   
   if (!command) {
     console.log(`
-Usage: node scripts/dev-manager.mjs <command> [app-id]
+Usage: node scripts/dev-manager.mjs <command> [app-id] [--force]
 
 Commands:
   status              Show status of all apps
-  start [app-id]      Start all apps or specific app
+  start [app-id]      Start apps (safely limited by default)
   stop [app-id]       Stop all apps or specific app
   restart [app-id]    Restart all apps or specific app
   
+Options:
+  --force, -f         Start all apps (bypasses safety limits)
+  
 Examples:
   node scripts/dev-manager.mjs status
-  node scripts/dev-manager.mjs start
-  node scripts/dev-manager.mjs start web
+  node scripts/dev-manager.mjs start          # Start safe apps only (web, docs)
+  node scripts/dev-manager.mjs start web      # Start specific app
+  node scripts/dev-manager.mjs start --force  # Start ALL apps (dangerous!)
   node scripts/dev-manager.mjs stop docs
   node scripts/dev-manager.mjs restart
+
+Safety:
+  By default, only essential apps start (web, docs).
+  Other apps are excluded to prevent Mac crashes.
+  Edit EXCLUDED_APPS in dev-manager.mjs to change this.
 `);
     process.exit(0);
   }
@@ -225,10 +285,19 @@ Examples:
     return;
   }
   
-  const targetAppId = args[0];
-  const targetApps = targetAppId
+  // Parse arguments: app-id might be first, or --force might be first
+  const forceFlag = args.includes('--force') || args.includes('-f');
+  const targetAppId = args.find(arg => !arg.startsWith('--') && arg !== '-f');
+  
+  // Filter apps based on target
+  let targetApps = targetAppId
     ? apps.filter(a => a.id === targetAppId)
     : apps;
+  
+  // Apply exclusions when starting all apps (unless --force)
+  if (!targetAppId && command === 'start' && !forceFlag) {
+    targetApps = targetApps.filter(a => !EXCLUDED_APPS.includes(a.id));
+  }
   
   if (targetAppId && targetApps.length === 0) {
     console.error(`❌ App not found: ${targetAppId}`);
@@ -236,9 +305,41 @@ Examples:
     process.exit(1);
   }
   
-  console.log(`\n${command.toUpperCase()}: ${targetAppId || 'all apps'}\n`);
+  // Safety check: warn if starting too many apps
+  if (command === 'start' && targetApps.length > MAX_APPS_WITHOUT_CONFIRM && !forceFlag) {
+    console.error(`\n⚠️  WARNING: Attempting to start ${targetApps.length} apps at once!`);
+    console.error(`   This can crash your Mac (each Next.js app uses ~300MB RAM).`);
+    console.error(`\n   Apps to start: ${targetApps.map(a => a.id).join(', ')}`);
+    console.error(`\n   To proceed anyway, use: pnpm dev:start --force`);
+    console.error(`   Or start specific apps: pnpm dev:start web`);
+    console.error(`\n   Excluded apps (safe to start manually): ${EXCLUDED_APPS.join(', ')}\n`);
+    process.exit(1);
+  }
   
-  for (const app of targetApps) {
+  // Show what will be started
+  if (command === 'start' && !targetAppId) {
+    const excludedCount = apps.length - targetApps.length;
+    if (excludedCount > 0) {
+      console.log(`\n📋 Starting ${targetApps.length} apps (${excludedCount} excluded for safety)`);
+      console.log(`   Included: ${targetApps.map(a => a.id).join(', ')}`);
+      if (excludedCount > 0) {
+        console.log(`   Excluded: ${EXCLUDED_APPS.filter(id => apps.some(a => a.id === id)).join(', ')}`);
+      }
+      console.log(`\n   To start all apps: pnpm dev:start --force\n`);
+    }
+  }
+  
+  console.log(`\n${command.toUpperCase()}: ${targetAppId || `${targetApps.length} apps`}\n`);
+  
+  // Start apps with delay to prevent resource spikes
+  for (let i = 0; i < targetApps.length; i++) {
+    const app = targetApps[i];
+    
+    // Add delay between starts (except first app)
+    if (command === 'start' && i > 0) {
+      console.log(`⏳ Waiting ${START_DELAY_MS / 1000}s before starting next app...`);
+      await new Promise(resolve => setTimeout(resolve, START_DELAY_MS));
+    }
     let result;
     
     switch (command) {

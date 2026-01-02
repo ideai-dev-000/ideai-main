@@ -23,6 +23,14 @@ import type { AnimationExample } from "./ideai-animations/types";
 // Load examples - using dynamic import for JSON
 import framerMotionExamplesData from "./ideai-animations/examples/framer-motion.json";
 import reactSpringExamplesData from "./ideai-animations/examples/react-spring.json";
+import kuteExamplesData from "./ideai-animations/examples/kute.json";
+import motionOneExamplesData from "./ideai-animations/examples/motion-one.json";
+import tsparticlesExamplesData from "./ideai-animations/examples/tsparticles.json";
+import vivusExamplesData from "./ideai-animations/examples/vivus.json";
 
 export const framerMotionExamples = framerMotionExamplesData as AnimationExample[];
 export const reactSpringExamples = reactSpringExamplesData as AnimationExample[];
+export const kuteExamples = kuteExamplesData as AnimationExample[];
+export const motionOneExamples = motionOneExamplesData as AnimationExample[];
+export const tsparticlesExamples = tsparticlesExamplesData as AnimationExample[];
+export const vivusExamples = vivusExamplesData as AnimationExample[];

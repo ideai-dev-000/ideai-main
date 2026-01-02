@@ -46,7 +46,7 @@ const securityHeaders = {
   "Strict-Transport-Security": "max-age=63072000; includeSubDomains; preload",
 }
 
-export function middleware(request) {
+export default function proxy() {
   const response = NextResponse.next()
 
   // Apply all security headers
@@ -54,7 +54,11 @@ export function middleware(request) {
     response.headers.set(key, value)
   })
 
-  const nonce = Buffer.from(crypto.randomUUID()).toString("base64")
+  // Use base64 encoding (Node.js compatible)
+  const uuid = crypto.randomUUID();
+  // Buffer is available in Node.js runtime (Next.js proxy runs in Node.js)
+  // eslint-disable-next-line no-undef
+  const nonce = Buffer.from(uuid).toString("base64");
   const cspWithNonce = response.headers.get("Content-Security-Policy")?.replace("'unsafe-inline'", `'nonce-${nonce}'`)
 
   if (cspWithNonce) {

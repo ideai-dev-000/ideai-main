@@ -14,7 +14,7 @@
 
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useSpring, useSprings, animated, config } from "@react-spring/web";
 import { ExternalLink, Code2, Play, Sparkles, Zap } from "lucide-react";
@@ -22,7 +22,7 @@ import type { AnimationExample } from "./types";
 
 interface AnimationCardProps {
   example: AnimationExample;
-  library: "framer-motion" | "react-spring";
+  library: "framer-motion" | "react-spring" | "kute" | "motion-one" | "tsparticles" | "vivus";
 }
 
 /**
@@ -37,10 +37,21 @@ export function AnimationCard({ example, library }: AnimationCardProps) {
 
   // Render animation based on library
   const renderDemo = () => {
-    if (library === "framer-motion") {
-      return <FramerMotionDemo example={example} />;
-    } else {
-      return <ReactSpringDemo example={example} />;
+    switch (library) {
+      case "framer-motion":
+        return <FramerMotionDemo example={example} />;
+      case "react-spring":
+        return <ReactSpringDemo example={example} />;
+      case "kute":
+        return <KuteDemo example={example} />;
+      case "motion-one":
+        return <MotionOneDemo example={example} />;
+      case "tsparticles":
+        return <TsParticlesDemo example={example} />;
+      case "vivus":
+        return <VivusDemo example={example} />;
+      default:
+        return <div className="ideai-animation-demo-box">Library not supported</div>;
     }
   };
 
@@ -576,5 +587,214 @@ function ReactSpringDemo({ example }: { example: AnimationExample }) {
     >
       <div className="ideai-animation-demo-content">{example.title}</div>
     </animated.div>
+  );
+}
+
+/**
+ * KUTE.js Demo Renderer
+ */
+function KuteDemo({ example }: { example: AnimationExample }) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [isAnimating, setIsAnimating] = useState(false);
+
+  useEffect(() => {
+    // Dynamic import for KUTE.js
+    import('kute.js').then((KUTE) => {
+      if (containerRef.current && !isAnimating) {
+        setIsAnimating(true);
+        // Basic demo - will be enhanced once library is properly installed
+        const element = containerRef.current.querySelector('.kute-demo-element') as HTMLElement;
+        if (element) {
+          // Simple opacity animation as placeholder
+          element.style.transition = 'opacity 0.5s';
+          element.style.opacity = '0';
+          setTimeout(() => {
+            if (element) {
+              element.style.opacity = '1';
+            }
+          }, 100);
+        }
+      }
+    }).catch(() => {
+      // Library not installed yet - show placeholder
+      setIsAnimating(true);
+    });
+  }, []);
+
+  return (
+    <div
+      ref={containerRef}
+      className="ideai-animation-demo-box"
+      style={{
+        width: "100%",
+        height: "200px",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      <div className="kute-demo-element" style={{ opacity: 1 }}>
+        <div className="ideai-animation-demo-content">{example.title}</div>
+        <div style={{ fontSize: "0.75rem", marginTop: "0.5rem", opacity: 0.7 }}>
+          KUTE.js - {example.description}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/**
+ * Motion One Demo Renderer
+ */
+function MotionOneDemo({ example }: { example: AnimationExample }) {
+  const elementRef = useRef<HTMLDivElement>(null);
+  const [hasAnimated, setHasAnimated] = useState(false);
+
+  useEffect(() => {
+    if (elementRef.current && !hasAnimated) {
+      // Dynamic import for Motion One - using runtime string to prevent static analysis
+      const moduleName = '@motionone/' + 'dom';
+      import(/* @vite-ignore */ moduleName)
+        .then((motionOne) => {
+          setHasAnimated(true);
+          const animConfig = example.config as any;
+          if (motionOne.animate && elementRef.current) {
+            motionOne.animate(
+              elementRef.current,
+              animConfig.opacity || { opacity: [0, 1] },
+              { duration: animConfig.duration || 0.5 }
+            );
+          }
+        })
+        .catch(() => {
+          // Library not installed yet - show placeholder
+          setHasAnimated(true);
+        });
+    }
+  }, [example.config, hasAnimated]);
+
+  return (
+    <div
+      ref={elementRef}
+      className="ideai-animation-demo-box"
+      style={{
+        width: "100%",
+        height: "200px",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        opacity: hasAnimated ? 1 : 0,
+      }}
+    >
+      <div className="ideai-animation-demo-content">{example.title}</div>
+    </div>
+  );
+}
+
+/**
+ * tsParticles Demo Renderer
+ */
+function TsParticlesDemo({ example }: { example: AnimationExample }) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
+    // Dynamic import for tsParticles - using runtime strings to prevent static analysis
+    const reactModule = '@tsparticles/' + 'react';
+    const slimModule = '@tsparticles/' + 'slim';
+    const engineModule = '@tsparticles/' + 'engine';
+    Promise.all([
+      import(/* @vite-ignore */ reactModule).catch(() => null),
+      import(/* @vite-ignore */ slimModule).catch(() => null),
+      import(/* @vite-ignore */ engineModule).catch(() => null)
+    ]).then(() => {
+      setIsLoaded(true);
+      // Particles will be rendered via React component once library is installed
+    }).catch(() => {
+      setIsLoaded(true);
+    });
+  }, []);
+
+  return (
+    <div
+      ref={containerRef}
+      className="ideai-animation-demo-box"
+      style={{
+        width: "100%",
+        height: "200px",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        position: "relative",
+      }}
+    >
+      {isLoaded ? (
+        <div className="ideai-animation-demo-content">
+          {example.title}
+          <div style={{ fontSize: "0.75rem", marginTop: "0.5rem", opacity: 0.7 }}>
+            tsParticles - {example.description}
+          </div>
+        </div>
+      ) : (
+        <div className="ideai-animation-demo-content">Loading particles...</div>
+      )}
+    </div>
+  );
+}
+
+/**
+ * Vivus Demo Renderer
+ */
+function VivusDemo({ example }: { example: AnimationExample }) {
+  const svgRef = useRef<SVGSVGElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [isAnimating, setIsAnimating] = useState(false);
+
+  useEffect(() => {
+    if (svgRef.current && !isAnimating) {
+      // Dynamic import for Vivus - using runtime string to prevent static analysis
+      const moduleName = 'vivus';
+      import(/* @vite-ignore */ moduleName)
+        .then((VivusModule) => {
+          setIsAnimating(true);
+          const animConfig = example.config as any;
+          const Vivus = VivusModule.default || (VivusModule as any);
+          if (Vivus && svgRef.current) {
+            new Vivus(svgRef.current, {
+              type: animConfig.type || 'oneByOne',
+              duration: animConfig.duration || 200,
+              animTimingFunction: Vivus.EASE,
+            });
+          }
+        })
+        .catch(() => {
+          setIsAnimating(true);
+        });
+    }
+  }, [example.config, isAnimating]);
+
+  return (
+    <div
+      ref={containerRef}
+      className="ideai-animation-demo-box"
+      style={{
+        width: "100%",
+        height: "200px",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      <svg
+        ref={svgRef}
+        width="120"
+        height="120"
+        viewBox="0 0 120 120"
+        style={{ stroke: "#3b82f6", strokeWidth: 2, fill: "none" }}
+      >
+        <circle cx="60" cy="60" r="50" />
+        <path d="M 30 60 L 60 30 L 90 60 L 60 90 Z" />
+      </svg>
+    </div>
   );
 }

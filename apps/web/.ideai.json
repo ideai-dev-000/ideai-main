@@ -16,7 +16,11 @@
   "localPort": 3000,
   "animationLibraries": [
     "framer-motion",
-    "react-spring"
+    "react-spring",
+    "kute",
+    "motion-one",
+    "tsparticles",
+    "vivus"
   ],
   "vercelProject": {
     "projectName": "ideai-main",

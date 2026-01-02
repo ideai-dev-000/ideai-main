@@ -8,7 +8,7 @@
  */
 
 import type { Config } from "tailwindcss";
-import sharedConfig from "../../packages/ui/tailwind.config";
+import sharedConfig from "../../packages/ui/tailwind.config.js";
 
 const config: Config = {
   ...sharedConfig,

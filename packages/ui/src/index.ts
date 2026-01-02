@@ -77,8 +77,19 @@ export {
 
 // Animation Demos (lazy-loaded)
 // Animation components - all driven by JSON files
-export { AnimationCard, framerMotionExamples, reactSpringExamples } from "./components/animations";
+export { 
+  AnimationCard, 
+  framerMotionExamples, 
+  reactSpringExamples,
+  kuteExamples,
+  motionOneExamples,
+  tsparticlesExamples,
+  vivusExamples
+} from "./components/animations";
 export { AnimationsShowcase } from "./components/animations/animations-showcase";
+
+// Drawing Animations
+export { VivusDraw, SVGArtistaDraw, DrawingsShowcase } from "./components/drawings";
 
 // Page templates - all driven by JSON files
 export { PageTemplatesShowcase, pageTemplates } from "./components/page-templates";

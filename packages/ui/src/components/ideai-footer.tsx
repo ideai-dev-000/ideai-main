@@ -49,7 +49,7 @@ export const IdeAIFooter = ({
   },
   phone = "+1 (555) 123-4567",
   email = "hello@ideai.space",
-  copyright = `© ${new Date().getFullYear()} IdeaI. All rights reserved.`,
+  copyright: copyrightProp,
   footerNav = [
     { label: "Home", href: "/" },
     { label: "About", href: "/about" },
@@ -69,6 +69,11 @@ export const IdeAIFooter = ({
     { label: "Dashboard", href: "/dashboard" },
   ],
 }: IdeAIFooterProps) => {
+  // Compute copyright at render time (not in default param) to avoid build issues
+  // Use static year 2025 for SSR safety (will be updated dynamically if needed)
+  const currentYear = typeof window !== "undefined" ? new Date().getFullYear() : 2025;
+  const copyright = copyrightProp ?? `© ${currentYear} IdeaI. All rights reserved.`;
+  
   return (
     <footer
       className="ideai-footer"

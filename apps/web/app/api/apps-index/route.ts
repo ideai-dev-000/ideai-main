@@ -69,7 +69,7 @@ async function readIdeaiMetadata(
         const stats = await stat(ideaiJsonPath);
         if (stats.isFile()) {
           const content = await readFile(ideaiJsonPath, "utf-8");
-          const config = JSON.parse(content) as any;
+          const config = JSON.parse(content) as Record<string, unknown>;
           
           // Extract metadata from config
           metadata = {
@@ -110,8 +110,8 @@ async function readIdeaiMetadata(
   return apps.sort((a, b) => (a.port || 0) - (b.port || 0));
 }
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
+// Note: dynamic and revalidate removed - incompatible with cacheComponents in Next.js 16
+// This route will use default caching behavior
 
 export async function GET(): Promise<NextResponse<AppMetadata[] | { error: string; details?: string }>> {
   try {

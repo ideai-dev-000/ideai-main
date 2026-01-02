@@ -17,8 +17,9 @@ import type { Metadata } from "next"
 import localFont from "next/font/local"
 import { getIdeAIFaviconMetadata } from "@repo/ui/lib/favicon-metadata"
 import { ThemeProvider } from "@repo/ui/components/theme-provider"
-import { Analytics } from "@repo/monitoring/analytics"
-import { SpeedInsights } from "@repo/monitoring/speed-insights"
+// TODO: Re-enable after fixing package linking
+// import { Analytics } from "@repo/monitoring/analytics"
+// import { SpeedInsights } from "@repo/monitoring/speed-insights"
 import "./globals.css"
 
 const geistSans = localFont({
@@ -46,8 +47,9 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           {children}
-          <Analytics />
-          <SpeedInsights />
+          {/* TODO: Re-enable after fixing package linking */}
+          {/* <Analytics /> */}
+          {/* <SpeedInsights /> */}
         </ThemeProvider>
       </body>
     </html>

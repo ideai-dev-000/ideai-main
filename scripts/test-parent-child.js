@@ -82,3 +82,5 @@ allChildren.forEach((app) => {
 console.log("\n✅ Defaults working correctly!");
 console.log("   - web defaults to parent");
 console.log("   - All other apps default to children");
+
+

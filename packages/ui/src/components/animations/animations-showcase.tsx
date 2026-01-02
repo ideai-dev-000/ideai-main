@@ -17,7 +17,14 @@
 import { useState, useMemo } from "react";
 import { IdeAIPageTemplate } from "../ideai-page-template";
 import { AnimationCard } from "./ideai-animations/animation-card";
-import { framerMotionExamples, reactSpringExamples } from "./ideai-animations/index";
+import { 
+  framerMotionExamples, 
+  reactSpringExamples,
+  kuteExamples,
+  motionOneExamples,
+  tsparticlesExamples,
+  vivusExamples
+} from "./ideai-animations/index";
 import type { AnimationExample } from "./ideai-animations/types";
 import { useIdeAIAnimations } from "../../lib/ideai-animations";
 import { readIdeAIConfigSync } from "../../lib/ideai-config";
@@ -46,6 +53,10 @@ export function AnimationsShowcase() {
   const allLibraries = [
     { id: "framer-motion", name: "Framer Motion", count: framerMotionExamples.length },
     { id: "react-spring", name: "React Spring", count: reactSpringExamples.length },
+    { id: "kute", name: "KUTE.js", count: kuteExamples.length },
+    { id: "motion-one", name: "Motion One", count: motionOneExamples.length },
+    { id: "tsparticles", name: "tsParticles", count: tsparticlesExamples.length },
+    { id: "vivus", name: "Vivus", count: vivusExamples.length },
   ];
   
   const availableLibraries = allLibraries.filter((lib) => 
@@ -67,6 +78,18 @@ export function AnimationsShowcase() {
     }
     if (availableLibraryIds.includes("react-spring")) {
       examples.push(...reactSpringExamples.map((ex) => ({ ...ex, libraryId: "react-spring" })));
+    }
+    if (availableLibraryIds.includes("kute")) {
+      examples.push(...kuteExamples.map((ex) => ({ ...ex, libraryId: "kute" })));
+    }
+    if (availableLibraryIds.includes("motion-one")) {
+      examples.push(...motionOneExamples.map((ex) => ({ ...ex, libraryId: "motion-one" })));
+    }
+    if (availableLibraryIds.includes("tsparticles")) {
+      examples.push(...tsparticlesExamples.map((ex) => ({ ...ex, libraryId: "tsparticles" })));
+    }
+    if (availableLibraryIds.includes("vivus")) {
+      examples.push(...vivusExamples.map((ex) => ({ ...ex, libraryId: "vivus" })));
     }
     return examples;
   }, [availableLibraryIds]);

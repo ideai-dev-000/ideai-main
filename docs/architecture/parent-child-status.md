@@ -139,3 +139,5 @@ Create `.ideai.json` in app directory to override:
 - **One App**: Parent embeds children seamlessly
 - **CSS Isolation**: Iframes prevent conflicts
 - **Easy Switching**: Change `.ideai.json` to switch roles
+
+

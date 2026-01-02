@@ -1,0 +1,35 @@
+{
+  "role": "child",
+  "name": "IdeaI Docs",
+  "description": "IdeaI documentation site",
+  "localPort": 3001,
+  "animationLibraries": [
+    "framer-motion",
+    "react-spring",
+    "kute",
+    "motion-one",
+    "tsparticles",
+    "vivus"
+  ],
+  "vercelProject": {
+    "projectName": "ideai-docs",
+    "orgId": "team_vhjzlMi6CfNow0IfBXnv2Yn2",
+    "forkToNew": false
+  },
+  "metadata": {
+    "id": "docs",
+    "port": 3001,
+    "css": [
+      "Tailwind CSS",
+      "IdeaI Design System"
+    ],
+    "capabilities": [
+      "Documentation",
+      "ContentLayer",
+      "MDX support"
+    ],
+    "path": "/docs",
+    "category": "documentation"
+  }
+}
+

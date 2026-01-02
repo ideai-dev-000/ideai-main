@@ -2,26 +2,15 @@ import type { NextConfig } from "next"
 
 const nextConfig: NextConfig = {
   experimental: {
-    // Enable React Compiler for automatic memoization
-    reactCompiler: true,
-
-    // Enable Partial Prerendering for better performance
-    ppr: true,
-
     // Optimize package imports to reduce bundle size
     optimizePackageImports: ["@repo/ui", "lucide-react", "@radix-ui/react-dialog", "@radix-ui/react-tooltip"],
 
-    // Enable cache components (Next.js 16 feature)
-    cacheComponents: true,
+    // Enable cache components (Next.js 16 feature - includes PPR)
+    // Note: Temporarily disabled due to ThemeProvider compatibility issues
+    // cacheComponents: true,
   },
 
   transpilePackages: ["@repo/ui"],
-
-  turbo: {
-    resolveAlias: {
-      "@repo/ui": "../packages/ui/src",
-    },
-  },
 
   images: {
     formats: ["image/avif", "image/webp"],
@@ -38,10 +27,6 @@ const nextConfig: NextConfig = {
 
   typescript: {
     ignoreBuildErrors: false,
-  },
-
-  eslint: {
-    ignoreDuringBuilds: false,
   },
 }
 

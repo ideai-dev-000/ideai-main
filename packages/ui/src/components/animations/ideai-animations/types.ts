@@ -21,4 +21,8 @@ export interface AnimationExample {
 export interface AnimationExamplesData {
   "framer-motion": AnimationExample[];
   "react-spring": AnimationExample[];
+  "kute": AnimationExample[];
+  "motion-one": AnimationExample[];
+  "tsparticles": AnimationExample[];
+  "vivus": AnimationExample[];
 }

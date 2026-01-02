@@ -47,3 +47,5 @@ export const IdeAICardBody = ({
     </div>
   );
 };
+
+

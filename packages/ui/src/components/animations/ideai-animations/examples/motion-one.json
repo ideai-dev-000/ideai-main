@@ -1,0 +1,47 @@
+[
+  {
+    "id": "motion-one-1",
+    "title": "Fade In Animation",
+    "description": "Ultra-lightweight fade in using Motion One",
+    "library": "Motion One",
+    "category": "Basic",
+    "tags": ["fade", "opacity", "lightweight"],
+    "source": "https://motion.dev/",
+    "code": "import { animate } from '@motionone/dom';\n\nanimate('#element', { opacity: [0, 1] }, { duration: 0.5 });",
+    "config": {
+      "opacity": [0, 1],
+      "duration": 0.5,
+      "easing": "easeOut"
+    }
+  },
+  {
+    "id": "motion-one-2",
+    "title": "Spring Animation",
+    "description": "Physics-based spring animation with Motion One",
+    "library": "Motion One",
+    "category": "Physics",
+    "tags": ["spring", "physics", "bounce"],
+    "source": "https://motion.dev/",
+    "code": "import { animate } from '@motionone/dom';\n\nanimate('#element', \n  { scale: [1, 1.2, 1] },\n  { duration: 0.6, easing: 'spring()' }\n);",
+    "config": {
+      "scale": [1, 1.2, 1],
+      "duration": 0.6,
+      "easing": "spring()"
+    }
+  },
+  {
+    "id": "motion-one-3",
+    "title": "Scroll Triggered",
+    "description": "Animation triggered on scroll with Motion One",
+    "library": "Motion One",
+    "category": "Scroll",
+    "tags": ["scroll", "trigger", "reveal"],
+    "source": "https://motion.dev/",
+    "code": "import { animate, scroll } from '@motionone/dom';\n\nscroll(animate('#element', { opacity: [0, 1] }), {\n  target: '#element',\n  offset: ['start end', 'start center']\n});",
+    "config": {
+      "opacity": [0, 1],
+      "offset": ["start end", "start center"]
+    }
+  }
+]
+

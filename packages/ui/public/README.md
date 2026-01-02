@@ -44,3 +44,5 @@ All brand assets are stored centrally in `packages/ui/public`. For deployment:
 - SVG format ensures scalability and crisp rendering
 - Structured data included in logo component for SEO
 - Proper semantic HTML (h1, img with alt text)
+
+
