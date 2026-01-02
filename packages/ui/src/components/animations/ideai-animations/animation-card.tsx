@@ -1142,12 +1142,15 @@ function MotionOneDemo({
           }
 
           if (!motionOneModule || !motionOneModule.animate) {
-            console.error(
-              "Motion One import failed. Module:",
-              motionOneModule,
-              "Error:",
-              importError,
-            );
+            // Log error only in development
+            if (process.env.NODE_ENV === "development") {
+              console.error(
+                "Motion One import failed. Module:",
+                motionOneModule,
+                "Error:",
+                importError,
+              );
+            }
             setError("Package not installed. Run: pnpm add @motionone/dom");
             setHasAnimated(true);
             return;
@@ -1418,9 +1421,11 @@ function TsParticlesDemo({ example }: { example: AnimationExample }) {
     ])
       .then(([Particles, Slim]) => {
         if (Particles && Slim) {
-          const ParticlesComp = Particles.default || Particles.Particles;
-          const initEngine = Particles.initParticlesEngine;
-          const loadSlim = Slim.default || Slim.loadSlim;
+          // @tsparticles/react exports default Particles component and named exports
+          const ParticlesComp =
+            (Particles as any).default || (Particles as any).Particles;
+          const initEngine = (Particles as any).initParticlesEngine;
+          const loadSlim = (Slim as any).default || (Slim as any).loadSlim;
 
           if (ParticlesComp && loadSlim && initEngine) {
             setParticlesComponent(() => ParticlesComp);
@@ -1429,7 +1434,9 @@ function TsParticlesDemo({ example }: { example: AnimationExample }) {
 
             // Initialize engine - only once
             initEngine(async (engine: any) => {
-              await loadSlim(engine);
+              if (typeof loadSlim === "function") {
+                await loadSlim(engine);
+              }
             })
               .then(() => {
                 setInit(true);

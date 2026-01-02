@@ -1,6 +1,6 @@
 /**
  * @fileoverview Semantic IdeaI header component with best practices
- * 
+ *
  * @module IdeaIHeader
  * @description
  * Semantic header with logo/brand (left), navigation (middle), and accounts (right).
@@ -14,7 +14,12 @@
 import { useState, useEffect, lazy, Suspense } from "react";
 import { IdeAILogo } from "./ideai-logo";
 // Lazy load IdeAIDiagnostics to prevent framer-motion from blocking compilation
-const IdeAIDiagnostics = lazy(() => import("./ideai-diagnostics").then(module => ({ default: module.IdeAIDiagnostics })));
+// @ts-expect-error - Dynamic import path resolution for Next.js (moduleResolution NodeNext requires explicit extensions)
+const IdeAIDiagnostics = lazy(() =>
+  import("./ideai-diagnostics").then((module) => ({
+    default: module.IdeAIDiagnostics,
+  })),
+);
 import { ThemeToggle } from "./theme-toggle";
 import { MobileNav } from "./mobile-nav";
 
@@ -109,10 +114,13 @@ export const IdeaIHeader = ({
         {/* IdeaI Diagnostics - First element in header DOM */}
         {diagnosticsAppName && (
           <Suspense fallback={null}>
-            <IdeAIDiagnostics appName={diagnosticsAppName} position="top-right" />
+            <IdeAIDiagnostics
+              appName={diagnosticsAppName}
+              position="top-right"
+            />
           </Suspense>
         )}
-        
+
         <div className="ideai-header__container">
           {/* Left: Logo/Brand */}
           <div className="ideai-header__brand">
@@ -137,7 +145,10 @@ export const IdeaIHeader = ({
                         aria-haspopup="true"
                       >
                         {item.label}
-                        <span className="ideai-header__nav-arrow" aria-hidden="true">
+                        <span
+                          className="ideai-header__nav-arrow"
+                          aria-hidden="true"
+                        >
                           ▼
                         </span>
                       </button>
@@ -192,11 +203,11 @@ export const IdeaIHeader = ({
                 </li>
                 {/* Desktop Account Links */}
                 {accountLinks.map((link) => (
-                  <li key={link.href} className="ideai-header__accounts-item ideai-header__accounts-item--desktop">
-                    <a
-                      href={link.href}
-                      className="ideai-header__accounts-link"
-                    >
+                  <li
+                    key={link.href}
+                    className="ideai-header__accounts-item ideai-header__accounts-item--desktop"
+                  >
+                    <a href={link.href} className="ideai-header__accounts-link">
                       {link.label}
                     </a>
                   </li>

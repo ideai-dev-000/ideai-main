@@ -1,7 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  transpilePackages: ["@repo/ui", "@motionone/dom"],
+  transpilePackages: ["@repo/ui", "@motionone/dom", "vivus"],
   experimental: {
     // Optimize package imports to reduce bundle size
     optimizePackageImports: [
@@ -15,8 +15,6 @@ const nextConfig: NextConfig = {
     // Note: Temporarily disabled due to ThemeProvider compatibility issues
     // cacheComponents: true,
   },
-
-  transpilePackages: ["@repo/ui"],
 
   // Turbopack config (Next.js 16 uses Turbopack by default)
   turbopack: {},
