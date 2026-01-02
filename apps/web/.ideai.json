@@ -1,0 +1,48 @@
+{
+  "role": "parent",
+  "name": "IdeaI",
+  "description": "Main IdeaI web application with full styling stack",
+  "childApps": [
+    "docs",
+    "all",
+    "nocss",
+    "mvp",
+    "tailwind",
+    "allcss",
+    "bootstrap",
+    "unocss",
+    "shadcn"
+  ],
+  "localPort": 3000,
+  "animationLibraries": [
+    "framer-motion",
+    "react-spring"
+  ],
+  "vercelProject": {
+    "projectName": "ideai-main",
+    "orgId": "team_vhjzlMi6CfNow0IfBXnv2Yn2",
+    "forkToNew": false
+  },
+  "metadata": {
+    "id": "web",
+    "port": 3000,
+    "css": [
+      "MVP.css",
+      "Tailwind CSS",
+      "IdeaI Design System"
+    ],
+    "capabilities": [
+      "Full UI components",
+      "Shared design tokens",
+      "Dark mode support"
+    ],
+    "path": "/",
+    "category": "production"
+  },
+  "build": {
+    "includeChildDependencies": true,
+    "verifyDependencies": true,
+    "securityCheck": true,
+    "trackBuilds": true
+  }
+}

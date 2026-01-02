@@ -1,0 +1,166 @@
+/**
+ * @fileoverview Base Theme System - Combined Common Assets and UI Patterns
+ * 
+ * @module BaseTheme
+ * @description
+ * Unified base theme combining common assets and UI patterns.
+ * Built on Tailwind CSS and shadcn/ui design tokens.
+ * 
+ * This theme provides:
+ * - Consistent color system (light/dark)
+ * - Typography scale
+ * - Spacing system
+ * - Component tokens
+ * - Animation utilities
+ * 
+ * @example
+ * ```css
+ * @import "@repo/ui/styles/base-theme.css";
+ * ```
+ */
+
+/**
+ * Base Theme Variables
+ * These are the foundation for all IdeaI apps
+ */
+
+:root {
+  /* Color System - Light Mode */
+  --ideai-background: 0 0% 100%;
+  --ideai-foreground: 222.2 84% 4.9%;
+  
+  /* Card Colors */
+  --ideai-card: 0 0% 100%;
+  --ideai-card-foreground: 222.2 84% 4.9%;
+  
+  /* Primary Colors */
+  --ideai-primary: 222.2 47.4% 11.2%;
+  --ideai-primary-foreground: 210 40% 98%;
+  
+  /* Secondary Colors */
+  --ideai-secondary: 210 40% 96.1%;
+  --ideai-secondary-foreground: 222.2 47.4% 11.2%;
+  
+  /* Muted Colors */
+  --ideai-muted: 210 40% 96.1%;
+  --ideai-muted-foreground: 215.4 16.3% 46.9%;
+  
+  /* Accent Colors */
+  --ideai-accent: 210 40% 96.1%;
+  --ideai-accent-foreground: 222.2 47.4% 11.2%;
+  
+  /* Destructive Colors */
+  --ideai-destructive: 0 84.2% 60.2%;
+  --ideai-destructive-foreground: 210 40% 98%;
+  
+  /* Border & Input */
+  --ideai-border: 214.3 31.8% 91.4%;
+  --ideai-input: 214.3 31.8% 91.4%;
+  --ideai-ring: 222.2 84% 4.9%;
+  
+  /* Radius */
+  --ideai-radius: 0.5rem;
+  
+  /* Spacing Scale (Tailwind-based) */
+  --ideai-spacing-xs: 0.25rem;   /* 4px */
+  --ideai-spacing-sm: 0.5rem;    /* 8px */
+  --ideai-spacing-md: 1rem;      /* 16px */
+  --ideai-spacing-lg: 1.5rem;    /* 24px */
+  --ideai-spacing-xl: 2rem;      /* 32px */
+  --ideai-spacing-2xl: 3rem;     /* 48px */
+  
+  /* Typography Scale */
+  --ideai-font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --ideai-font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  
+  /* Animation Durations */
+  --ideai-duration-fast: 150ms;
+  --ideai-duration-normal: 200ms;
+  --ideai-duration-slow: 300ms;
+  
+  /* Animation Easing */
+  --ideai-ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --ideai-ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ideai-ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dark {
+  /* Color System - Dark Mode */
+  --ideai-background: 222.2 84% 4.9%;
+  --ideai-foreground: 210 40% 98%;
+  
+  /* Card Colors */
+  --ideai-card: 222.2 84% 4.9%;
+  --ideai-card-foreground: 210 40% 98%;
+  
+  /* Primary Colors */
+  --ideai-primary: 210 40% 98%;
+  --ideai-primary-foreground: 222.2 47.4% 11.2%;
+  
+  /* Secondary Colors */
+  --ideai-secondary: 217.2 32.6% 17.5%;
+  --ideai-secondary-foreground: 210 40% 98%;
+  
+  /* Muted Colors */
+  --ideai-muted: 217.2 32.6% 17.5%;
+  --ideai-muted-foreground: 215 20.2% 65.1%;
+  
+  /* Accent Colors */
+  --ideai-accent: 217.2 32.6% 17.5%;
+  --ideai-accent-foreground: 210 40% 98%;
+  
+  /* Destructive Colors */
+  --ideai-destructive: 0 62.8% 30.6%;
+  --ideai-destructive-foreground: 210 40% 98%;
+  
+  /* Border & Input */
+  --ideai-border: 217.2 32.6% 17.5%;
+  --ideai-input: 217.2 32.6% 17.5%;
+  --ideai-ring: 212.7 26.8% 83.9%;
+}
+
+/**
+ * Base Theme Utilities
+ * Utility classes for common patterns
+ */
+
+.ideai-theme-transition {
+  transition: background-color var(--ideai-duration-normal) var(--ideai-ease-in-out),
+              color var(--ideai-duration-normal) var(--ideai-ease-in-out),
+              border-color var(--ideai-duration-normal) var(--ideai-ease-in-out);
+}
+
+.ideai-focus-ring {
+  outline: none;
+  ring: 2px;
+  ring-color: hsl(var(--ideai-ring));
+  ring-offset: 2px;
+  ring-offset-color: hsl(var(--ideai-background));
+}
+
+/**
+ * Base Typography
+ */
+.ideai-text-base {
+  font-family: var(--ideai-font-sans);
+  font-size: 1rem;
+  line-height: 1.5;
+  color: hsl(var(--ideai-foreground));
+}
+
+.ideai-text-mono {
+  font-family: var(--ideai-font-mono);
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+/**
+ * Base Spacing Utilities
+ */
+.ideai-spacing-xs { padding: var(--ideai-spacing-xs); }
+.ideai-spacing-sm { padding: var(--ideai-spacing-sm); }
+.ideai-spacing-md { padding: var(--ideai-spacing-md); }
+.ideai-spacing-lg { padding: var(--ideai-spacing-lg); }
+.ideai-spacing-xl { padding: var(--ideai-spacing-xl); }
+.ideai-spacing-2xl { padding: var(--ideai-spacing-2xl); }
+

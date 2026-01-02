@@ -1,3 +1,21 @@
+/**
+ * @fileoverview ESLint configuration for React libraries
+ * 
+ * @module ReactInternalESLintConfig
+ * @description
+ * A custom ESLint configuration for libraries that use React.
+ * Extends the base config and adds React-specific rules and hooks support.
+ * 
+ * @example
+ * ```js
+ * import { config } from "@repo/eslint-config/react-internal";
+ * export default config;
+ * ```
+ * 
+ * @see {@link ./base.js} - Base ESLint configuration
+ * @see {@link ./next.js} - Next.js specific config
+ */
+
 import js from "@eslint/js";
 import eslintConfigPrettier from "eslint-config-prettier";
 import tseslint from "typescript-eslint";
@@ -7,9 +25,8 @@ import globals from "globals";
 import { config as baseConfig } from "./base.js";
 
 /**
- * A custom ESLint configuration for libraries that use React.
- *
- * @type {import("eslint").Linter.Config[]} */
+ * @type {import("eslint").Linter.Config[]}
+ */
 export const config = [
   ...baseConfig,
   js.configs.recommended,

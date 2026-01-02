@@ -1,0 +1,1635 @@
+/**
+ * @fileoverview IdeaI shared component styles
+ * 
+ * @module IdeAISharedComponentStyles
+ * @description
+ * CSS for shared IdeaI components (header, footer, etc.).
+ * These styles are used across all IdeaI applications.
+ * 
+ * All apps import this via @repo/ui/styles/ideai.css
+ * 
+ * COMPREHENSIVE UI TEST SUITE:
+ * Footer contains all element types from pages with same classes
+ * to verify perfect consistency across both apps.
+ */
+
+/**
+ * IdeaI Logo Styles
+ * Shared logo/branding styles for all apps
+ * Includes semantic HTML for SEO
+ * Logo displays icon to left of text
+ */
+.ideai-logo {
+  @apply flex items-center justify-center;
+  width: 100%;
+}
+
+.ideai-logo__container {
+  @apply flex items-center gap-4;
+  width: 100%;
+  justify-content: center;
+}
+
+.ideai-logo__icon {
+  flex-shrink: 0;
+  /* Logo icon has explicit colors (yellow background, white gear) */
+  /* Ensure icon is visible in both light and dark modes */
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+@media (prefers-color-scheme: dark) {
+  .ideai-logo__icon {
+    filter: drop-shadow(0 2px 4px rgba(255, 255, 255, 0.1));
+  }
+}
+
+.ideai-logo__text {
+  font-family: var(--font-geist-sans);
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  @apply m-0;
+  text-align: center;
+  color: rgb(15 23 42); /* slate-900 - explicit */
+}
+
+.ideai-logo__brand {
+  color: rgb(15 23 42); /* slate-900 */
+}
+
+.ideai-logo__site {
+  color: rgb(100 116 139); /* slate-500 */
+  font-weight: 400;
+  font-size: 0.6em;
+  vertical-align: middle;
+}
+
+/**
+ * IdeaI Header Styles
+ * Semantic header with three-column layout: logo (left), nav (middle), accounts (right)
+ * Includes bounce-down extra navigation menu
+ * Sticky header that shrinks on scroll (best practice)
+ * 
+ * NOTE: Old header styles removed - this is now the only header implementation
+ */
+
+/**
+ * IdeaI Footer Styles
+ * Semantic footer with three-column layout: address/copyright (left), nav (middle), social/accounts (right)
+ */
+
+/**
+ * IdeaI Button Styles
+ * CRITICAL: Centralized button styles - used by IdeaIButton component
+ * NO app-specific CSS classes - guaranteed identical
+ */
+.ideai-button-secondary {
+  @apply border-slate-300;
+  @apply bg-transparent;
+  @apply transition-all duration-200;
+  @apply min-w-[180px] rounded-[128px] h-12 px-5;
+  @apply font-medium text-base leading-5;
+  @apply flex items-center justify-center cursor-pointer;
+  border: 1px solid;
+  appearance: none;
+  font-family: var(--font-geist-sans);
+  text-align: center;
+  color: rgb(15 23 42); /* slate-900 - explicit */
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .ideai-button-secondary:hover {
+    @apply bg-slate-100;
+    border-color: transparent;
+  }
+}
+
+/* 3. Button element - from .secondary / button.secondary */
+.ideai-footer__button {
+  @apply border-slate-300;
+  @apply bg-transparent;
+  @apply transition-all duration-200;
+  @apply min-w-[180px] rounded-[128px] h-12 px-5;
+  @apply font-medium text-base leading-5;
+  @apply flex items-center justify-center cursor-pointer;
+  border: 1px solid;
+  appearance: none;
+  font-family: var(--font-geist-sans);
+  text-align: center;
+  color: rgb(15 23 42); /* slate-900 - explicit */
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .ideai-footer__button:hover {
+    @apply bg-slate-100;
+    border-color: transparent;
+  }
+}
+
+/* 4. Span/Badge element */
+.ideai-footer__badge {
+  font-family: var(--font-geist-mono);
+  font-size: 12px;
+  @apply px-2 py-1;
+  @apply bg-slate-100;
+  @apply rounded;
+  color: rgb(51 65 85); /* slate-700 - explicit */
+}
+
+/* 5. Div element */
+.ideai-footer__div {
+  font-family: var(--font-geist-sans);
+  font-size: 14px;
+  color: rgb(71 85 105); /* slate-600 - explicit */
+}
+
+/* 6. Strong element */
+.ideai-footer__strong {
+  font-family: var(--font-geist-sans);
+  font-size: 14px;
+  font-weight: 700;
+  color: rgb(15 23 42); /* slate-900 - explicit */
+}
+
+/* 7. Small element */
+.ideai-footer__small {
+  font-family: var(--font-geist-sans);
+  font-size: 12px;
+  color: rgb(100 116 139); /* slate-500 - explicit */
+}
+
+/* 8. List elements (ul/li) */
+.ideai-footer__list {
+  @apply flex gap-4;
+  @apply list-none;
+  @apply m-0 p-0;
+  font-family: var(--font-geist-sans);
+}
+
+.ideai-footer__list-item {
+  font-family: var(--font-geist-sans);
+  font-size: 14px;
+  @apply cursor-pointer;
+  @apply transition-colors duration-200;
+  color: rgb(71 85 105); /* slate-600 - explicit */
+}
+
+.ideai-footer__list-item:hover {
+  color: rgb(15 23 42); /* slate-900 */
+}
+
+/* 9. Code element - from .main code */
+.ideai-footer__code {
+  font-family: var(--font-geist-mono);
+  background: rgba(0, 0, 0, 0.05);
+  padding: 2px 4px;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 12px;
+  color: rgb(15 23 42); /* slate-900 - explicit */
+}
+
+/* 10. Heading element (h3) */
+.ideai-footer__heading {
+  font-family: var(--font-geist-sans);
+  font-size: 16px;
+  font-weight: 600;
+  @apply m-0;
+  color: rgb(15 23 42); /* slate-900 - explicit */
+}
+
+/* 11. Heading h1 - from .main h1 / .ideai-header__title */
+.ideai-footer__h1 {
+  font-family: var(--font-geist-sans);
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  @apply m-0;
+  color: rgb(15 23 42); /* slate-900 - explicit */
+}
+
+/* 12. Ordered list (ol) - from .main ol */
+.ideai-footer__ol {
+  font-family: var(--font-geist-mono);
+  padding-left: 0;
+  margin: 0;
+  font-size: 14px;
+  line-height: 24px;
+  letter-spacing: -0.01em;
+  list-style-position: inside;
+  color: rgb(15 23 42); /* slate-900 - explicit */
+}
+
+.ideai-footer__ol-item {
+  font-family: var(--font-geist-mono);
+  margin-bottom: 8px;
+  color: rgb(15 23 42); /* slate-900 - explicit */
+}
+
+/* 13. List item (li) - from .main li */
+.ideai-footer__li {
+  font-family: var(--font-geist-mono);
+  font-size: 14px;
+  list-style: none;
+  color: rgb(15 23 42); /* slate-900 - explicit */
+}
+
+/* 14. Em element */
+.ideai-footer__em {
+  font-family: var(--font-geist-sans);
+  font-size: 14px;
+  font-style: italic;
+  color: rgb(51 65 85); /* slate-700 - explicit */
+}
+
+/* 15. Mark element */
+.ideai-footer__mark {
+  font-family: var(--font-geist-sans);
+  font-size: 14px;
+  @apply bg-yellow-200;
+  padding: 2px 4px;
+  border-radius: 2px;
+  color: rgb(15 23 42); /* slate-900 - explicit */
+}
+
+/* 16. Blockquote element */
+.ideai-footer__blockquote {
+  font-family: var(--font-geist-sans);
+  font-size: 14px;
+  @apply border-l-4 border-slate-300;
+  @apply pl-4 italic;
+  @apply m-0;
+  color: rgb(51 65 85); /* slate-700 - explicit */
+}
+
+/* 17. Pre element */
+.ideai-footer__pre {
+  font-family: var(--font-geist-mono);
+  font-size: 12px;
+  @apply bg-slate-100;
+  @apply p-2 rounded;
+  @apply overflow-x-auto;
+  @apply m-0;
+  color: rgb(15 23 42); /* slate-900 - explicit */
+}
+
+/* 18. Kbd element */
+.ideai-footer__kbd {
+  font-family: var(--font-geist-mono);
+  font-size: 12px;
+  @apply px-2 py-1;
+  @apply bg-slate-200;
+  @apply border border-slate-300;
+  @apply rounded shadow-sm;
+  color: rgb(15 23 42); /* slate-900 - explicit */
+}
+
+/* 19. Abbr element */
+.ideai-footer__abbr {
+  font-family: var(--font-geist-sans);
+  font-size: 14px;
+  @apply underline decoration-dotted cursor-help;
+  color: rgb(15 23 42); /* slate-900 - explicit */
+}
+
+/* 20. Time element */
+.ideai-footer__time {
+  font-family: var(--font-geist-sans);
+  font-size: 14px;
+  color: rgb(71 85 105); /* slate-600 - explicit */
+}
+
+/**
+ * IdeaI Content Styles
+ * Shared content area styles for all apps
+ * Same styles as docs app for perfect consistency
+ */
+.ideai-content {
+  margin-top: 48px;
+  text-align: left;
+  width: 100%;
+  max-width: 100%; /* Ensure consistent width */
+}
+
+.ideai-content__prose {
+  max-width: 100%;
+  width: 100%; /* Explicit width for consistency */
+  font-family: var(--font-geist-sans);
+  /* Explicit colors - no dark mode classes that could cause inconsistencies */
+  color: rgb(15 23 42); /* slate-900 */
+}
+
+.ideai-content__prose h1,
+.ideai-content__prose h2,
+.ideai-content__prose h3 {
+  font-family: var(--font-geist-sans);
+  color: rgb(15 23 42); /* slate-900 - explicit */
+  font-weight: 700;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+.ideai-content__prose h1 {
+  font-size: 2rem;
+  line-height: 1.2;
+}
+
+.ideai-content__prose h2 {
+  font-size: 1.5rem;
+  line-height: 1.3;
+}
+
+.ideai-content__prose h3 {
+  font-size: 1.25rem;
+  line-height: 1.4;
+}
+
+.ideai-content__prose p {
+  font-family: var(--font-geist-sans);
+  color: rgb(15 23 42); /* slate-900 - explicit */
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+
+.ideai-content__prose ul,
+.ideai-content__prose ol {
+  font-family: var(--font-geist-sans);
+  color: rgb(15 23 42); /* slate-900 - explicit */
+  margin-bottom: 1rem;
+  padding-left: 1.5rem;
+}
+
+.ideai-content__prose li {
+  font-family: var(--font-geist-sans);
+  color: rgb(15 23 42); /* slate-900 - explicit */
+  margin-bottom: 0.5rem;
+  line-height: 1.6;
+}
+
+.ideai-content__prose code {
+  font-family: var(--font-geist-mono);
+  background: rgba(0, 0, 0, 0.05);
+  padding: 2px 4px;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 0.875em;
+  color: rgb(15 23 42); /* slate-900 - explicit */
+}
+
+.ideai-content__prose strong {
+  font-weight: 700;
+  color: rgb(15 23 42); /* slate-900 - explicit */
+}
+
+.ideai-content__link {
+  color: rgb(15 23 42); /* slate-900 - explicit */
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  transition: color 200ms;
+}
+
+.ideai-content__link:hover {
+  color: rgb(51 65 85); /* slate-700 */
+}
+
+.ideai-content__prose a:not(.ideai-content__link) {
+  color: rgb(15 23 42); /* slate-900 - explicit */
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  transition: color 200ms;
+}
+
+.ideai-content__prose a:not(.ideai-content__link):hover {
+  color: rgb(51 65 85); /* slate-700 */
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  .ideai-header__title {
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
+  }
+  
+  .ideai-header__subtitle {
+    font-size: clamp(0.875rem, 2vw, 1rem);
+  }
+  
+  .ideai-button-secondary {
+    @apply min-w-0 text-sm h-10 px-4;
+  }
+  
+  .ideai-footer {
+    padding: 16px 0;
+  }
+  
+  .ideai-footer__content {
+    @apply gap-2;
+    @apply px-2;
+  }
+  
+  .ideai-footer__button {
+    @apply min-w-0 text-sm h-10 px-4;
+  }
+  
+  .ideai-footer__h1 {
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
+  }
+  
+  .ideai-footer__text,
+  .ideai-footer__link,
+  .ideai-footer__div,
+  .ideai-footer__strong,
+  .ideai-footer__small,
+  .ideai-footer__list-item,
+  .ideai-footer__code,
+  .ideai-footer__heading,
+  .ideai-footer__ol-item,
+  .ideai-footer__li,
+  .ideai-footer__em,
+  .ideai-footer__time {
+    font-size: 12px;
+  }
+  
+  .ideai-content {
+    margin-top: 32px;
+  }
+  
+  .ideai-content__prose h1 {
+    font-size: 1.5rem;
+  }
+  
+  .ideai-content__prose h2 {
+    font-size: 1.25rem;
+  }
+  
+  .ideai-content__prose h3 {
+    font-size: 1.125rem;
+  }
+}
+
+/**
+ * IdeaI New Header Styles
+ * Semantic header with three-column layout: logo (left), nav (middle), accounts (right)
+ * Includes bounce-down extra navigation menu
+ * Sticky header that shrinks on scroll (best practice)
+ */
+.ideai-header-extra {
+  @apply bg-slate-50 dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700;
+  padding: 0.75rem 0;
+  animation: slideDown 0.3s ease-out;
+  margin: 0;
+  width: 100vw;
+  max-width: 100%;
+  box-sizing: border-box;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  z-index: 101;
+}
+
+/* Ensure no gap between extra nav and header */
+.ideai-header-extra + .ideai-header {
+  margin-top: 0;
+  border-top: none;
+}
+
+/* When extra nav is open, header should be below it */
+.ideai-header-extra ~ .ideai-header--sticky {
+  top: 0;
+}
+
+.ideai-header-extra--full-width {
+  width: 100%;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.ideai-header-extra__container {
+  @apply max-w-7xl mx-auto px-4;
+  width: 100%;
+}
+
+.ideai-header-extra__list {
+  @apply flex flex-wrap items-center justify-center gap-4;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.ideai-header-extra__item {
+  margin: 0;
+}
+
+.ideai-header-extra__link {
+  @apply text-sm font-medium text-slate-700 dark:text-slate-300;
+  text-decoration: none;
+  transition: color 0.2s;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+}
+
+.ideai-header-extra__link:hover {
+  @apply text-slate-900 dark:text-slate-100 bg-slate-100 dark:bg-slate-800;
+}
+
+.ideai-header {
+  @apply bg-white dark:bg-slate-950 border-b border-slate-200 dark:border-slate-800;
+  padding: 1rem 0;
+  margin: 0;
+  width: 100vw;
+  max-width: 100%;
+  box-sizing: border-box;
+  transition: padding 0.3s ease, box-shadow 0.3s ease;
+}
+
+.ideai-header--full-width {
+  width: 100vw;
+  max-width: 100%;
+}
+
+.ideai-header--sticky {
+  position: -webkit-sticky !important;
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 100 !important;
+  background-color: white !important;
+  will-change: transform;
+  width: 100vw !important;
+  max-width: 100% !important;
+}
+
+@media (prefers-color-scheme: dark) {
+  .ideai-header--sticky {
+    background-color: rgb(2 6 23); /* slate-950 */
+  }
+}
+
+/* When extra nav is open, header should be below it */
+.ideai-header-extra ~ .ideai-header--sticky {
+  top: 0;
+}
+
+.ideai-header--scrolled {
+  padding: 0.5rem 0;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+}
+
+.ideai-header--scrolled .ideai-header__brand .ideai-logo__icon {
+  width: 24px;
+  height: 24px;
+}
+
+.ideai-header--scrolled .ideai-header__brand .ideai-logo__text {
+  font-size: 1rem;
+}
+
+.ideai-header__container {
+  @apply max-w-7xl mx-auto px-4;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 2rem;
+  align-items: center;
+  width: 100%;
+}
+
+.ideai-header__brand {
+  display: flex;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+.ideai-header__brand .ideai-logo__container {
+  justify-content: flex-start;
+}
+
+.ideai-header__brand .ideai-logo__icon {
+  width: 32px;
+  height: 32px;
+  transition: width 0.3s ease, height 0.3s ease;
+}
+
+.ideai-header__brand .ideai-logo__text {
+  font-size: 1.25rem;
+  transition: font-size 0.3s ease;
+}
+
+.ideai-footer__brand .ideai-logo__icon {
+  width: 48px;
+  height: 48px;
+}
+
+.ideai-footer__brand .ideai-logo__text {
+  font-size: 1.5rem;
+}
+
+.ideai-header__nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.ideai-header__nav-list {
+  @apply flex items-center gap-6;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.ideai-header__nav-item {
+  margin: 0;
+  position: relative;
+}
+
+.ideai-header__nav-link {
+  @apply text-sm font-medium text-slate-700 dark:text-slate-300;
+  text-decoration: none;
+  transition: color 0.2s;
+  padding: 0.5rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.ideai-header__nav-link:hover {
+  @apply text-slate-900 dark:text-slate-100;
+}
+
+.ideai-header__nav-arrow {
+  font-size: 0.625rem;
+  transition: transform 0.2s;
+}
+
+.ideai-header__nav-dropdown:hover .ideai-header__nav-arrow {
+  transform: rotate(180deg);
+}
+
+.ideai-header__nav-dropdown-menu {
+  @apply absolute top-full left-0 mt-1 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-md shadow-lg;
+  list-style: none;
+  margin: 0;
+  padding: 0.5rem 0;
+  min-width: 200px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: all 0.2s;
+  z-index: 50;
+}
+
+.ideai-header__nav-dropdown:hover .ideai-header__nav-dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.ideai-header__nav-dropdown-link {
+  @apply block px-4 py-2 text-sm text-slate-700 dark:text-slate-300;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+
+.ideai-header__nav-dropdown-link:hover {
+  @apply bg-slate-50 dark:bg-slate-800;
+}
+
+.ideai-header__menu-toggle {
+  @apply flex items-center gap-2 px-3 py-2 text-sm font-medium text-slate-700 dark:text-slate-300;
+  background: none;
+  border: 1px solid rgb(226 232 240); /* slate-200 */
+  border-radius: 0.375rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-left: 1rem;
+}
+
+.ideai-header__menu-toggle:hover {
+  @apply bg-slate-50 dark:bg-slate-800;
+  border-color: rgb(148 163 184); /* slate-400 */
+}
+
+.ideai-header__menu-icon {
+  font-size: 0.75rem;
+  transition: transform 0.3s;
+}
+
+.ideai-header__menu-toggle[aria-expanded="true"] .ideai-header__menu-icon {
+  transform: rotate(180deg);
+}
+
+.ideai-header__accounts {
+  display: flex;
+  align-items: center;
+}
+
+.ideai-header__accounts-list {
+  @apply flex items-center gap-2;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.ideai-header__accounts-item {
+  margin: 0;
+}
+
+.ideai-header__accounts-item--desktop {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .ideai-header__accounts-item--desktop {
+    display: list-item;
+  }
+  .ideai-header__mobile-nav-item {
+    display: none;
+  }
+}
+
+.ideai-header__mobile-nav-item {
+  display: list-item;
+}
+
+@media (min-width: 768px) {
+  .ideai-header__mobile-nav-item {
+    display: none;
+  }
+}
+
+.ideai-header__accounts-link {
+  @apply text-sm font-medium text-slate-700 dark:text-slate-300;
+  text-decoration: none;
+  transition: color 0.2s;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+}
+
+.ideai-header__accounts-link:hover {
+  @apply text-slate-900 dark:text-slate-100 bg-slate-50 dark:bg-slate-800;
+}
+
+/* Prevent header link styles from affecting footer */
+.ideai-footer .ideai-header__accounts-link:hover,
+.ideai-footer.ideai-header__accounts-link:hover {
+  background-color: transparent !important;
+}
+
+@media (max-width: 768px) {
+  .ideai-header__container {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .ideai-header__nav {
+    justify-content: flex-start;
+  }
+
+  .ideai-header__nav-list {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .ideai-header__accounts {
+    justify-content: flex-start;
+  }
+}
+
+/**
+ * IdeaI New Footer Styles
+ * Semantic footer with three-column layout: address/copyright (left), nav (middle), social/accounts (right)
+ */
+.ideai-footer {
+  /* Force opacity variables to 1 FIRST to prevent Tailwind opacity issues */
+  --tw-bg-opacity: 1 !important;
+  --tw-border-opacity: 1 !important;
+  
+  /* Explicit white background - NO opacity variables in the value */
+  background-color: rgb(255 255 255) !important;
+  border-top: 1px solid rgb(226 232 240) !important;
+  
+  padding: 3rem 0 1.5rem;
+  margin-top: auto;
+  width: 100vw;
+  max-width: 100%;
+  box-sizing: border-box;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  padding-left: calc(50vw - 50%);
+  padding-right: calc(50vw - 50%);
+}
+
+/* Override any Tailwind background classes - must come after base rule */
+.ideai-footer.bg-slate-50,
+.ideai-footer.bg-slate-900,
+.ideai-footer[class*="bg-"] {
+  --tw-bg-opacity: 1 !important;
+  background-color: rgb(255 255 255) !important;
+}
+
+/* Override any combined selectors that might affect footer background */
+.ideai-footer.ideai-header__accounts-link,
+.ideai-footer.ideai-header__accounts-link:hover,
+.ideai-footer .ideai-header__accounts-link,
+.ideai-footer .ideai-header__accounts-link:hover {
+  --tw-bg-opacity: 1 !important;
+  background-color: rgb(255 255 255) !important;
+}
+
+@media (prefers-color-scheme: dark) {
+  .ideai-footer {
+    /* Remove Tailwind opacity variables completely */
+    --tw-bg-opacity: 1 !important;
+    --tw-border-opacity: 1 !important;
+    /* Use explicit RGB without opacity variables */
+    background-color: rgb(15 23 42) !important;
+    border-top-color: rgb(51 65 85) !important;
+  }
+  
+  /* Override any Tailwind classes */
+  .ideai-footer.bg-slate-900,
+  .ideai-footer.bg-slate-50,
+  .ideai-footer[class*="bg-"] {
+    --tw-bg-opacity: 1 !important;
+    background-color: rgb(15 23 42) !important;
+  }
+  
+  /* Override combined selectors in dark mode */
+  .ideai-footer.ideai-header__accounts-link,
+  .ideai-footer.ideai-header__accounts-link:hover,
+  .ideai-footer .ideai-header__accounts-link,
+  .ideai-footer .ideai-header__accounts-link:hover {
+    --tw-bg-opacity: 1 !important;
+    background-color: rgb(15 23 42) !important;
+  }
+}
+
+.ideai-footer__container {
+  @apply max-w-7xl mx-auto px-4;
+}
+
+.ideai-footer__brand {
+  @apply mb-8 text-center;
+}
+
+.ideai-footer__columns {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
+
+.ideai-footer__column {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.ideai-footer__column-title {
+  @apply text-sm font-semibold text-slate-900 dark:text-slate-100;
+  margin: 0 0 0.5rem 0;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.ideai-footer__address {
+  @apply text-sm text-slate-600 dark:text-slate-400;
+  font-style: normal;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.ideai-footer__address-line {
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+.ideai-footer__contact {
+  @apply text-sm text-slate-600 dark:text-slate-400;
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.ideai-footer__contact-label {
+  font-weight: 600;
+  color: rgb(15 23 42); /* slate-900 */
+}
+
+@media (prefers-color-scheme: dark) {
+  .ideai-footer__contact-label {
+    color: rgb(248 250 252); /* slate-50 */
+  }
+}
+
+.ideai-footer__contact-link {
+  @apply text-slate-600 dark:text-slate-400;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.ideai-footer__contact-link:hover {
+  @apply text-slate-900 dark:text-slate-100;
+}
+
+.ideai-footer__copyright {
+  @apply text-xs text-slate-500 dark:text-slate-500;
+  margin: 1rem 0 0 0;
+}
+
+.ideai-footer__nav-list,
+.ideai-footer__social-list,
+.ideai-footer__accounts-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.ideai-footer__nav-item,
+.ideai-footer__social-item,
+.ideai-footer__accounts-item {
+  margin: 0;
+}
+
+.ideai-footer__nav-link,
+.ideai-footer__accounts-link {
+  @apply text-sm text-slate-600 dark:text-slate-400;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.ideai-footer__nav-link:hover,
+.ideai-footer__accounts-link:hover {
+  @apply text-slate-900 dark:text-slate-100;
+}
+
+.ideai-footer__social-link {
+  @apply flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.ideai-footer__social-link:hover {
+  @apply text-slate-900 dark:text-slate-100;
+}
+
+.ideai-footer__social-icon {
+  font-size: 1.25rem;
+}
+
+.ideai-footer__social-label {
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .ideai-footer__columns {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .ideai-footer__brand {
+    margin-bottom: 2rem;
+  }
+}
+
+/**
+ * IdeaI CSS Summary Component Styles
+ * Info box displaying CSS framework summary
+ * Clean, compact layout at top of page
+ * INVERTED COLORS: Dark background in light mode, light in dark mode
+ * MINIMAL COLOR PALETTE: Only slate-900, slate-50, slate-700, slate-200
+ */
+.ideai-css-summary {
+  @apply mb-6 p-5 rounded-xl border border-slate-700 dark:border-slate-200;
+  @apply bg-slate-900 dark:bg-slate-50;
+  @apply shadow-sm;
+  width: 100%;
+  max-width: 100%;
+}
+
+.ideai-css-summary__content {
+  @apply space-y-3;
+}
+
+.ideai-css-summary__grid {
+  @apply grid grid-cols-1 md:grid-cols-2 gap-6 items-start;
+}
+
+/* Stack the two cards vertically when below UF component */
+.ideai-css-summary--stacked .ideai-css-summary__grid {
+  @apply grid-cols-1 gap-4;
+}
+
+.ideai-css-summary__info {
+  @apply space-y-3;
+}
+
+.ideai-css-summary__demo {
+  @apply flex items-center justify-center;
+}
+
+.ideai-css-summary__title {
+  @apply text-lg font-semibold m-0 leading-tight;
+  color: rgb(248 250 252); /* slate-50 */
+}
+
+.ideai-css-summary__description {
+  @apply text-sm m-0 leading-relaxed;
+  color: rgb(203 213 225); /* slate-300 */
+}
+
+.ideai-css-summary__frameworks {
+  @apply text-sm flex flex-wrap items-center gap-2;
+  color: rgb(248 250 252); /* slate-50 */
+}
+
+.ideai-css-summary__frameworks strong {
+  @apply font-medium mr-1;
+  color: rgb(226 232 240); /* slate-200 */
+}
+
+.ideai-css-summary__code {
+  @apply px-2.5 py-1 rounded-md font-medium;
+  background-color: rgb(248 250 252); /* slate-50 */
+  border: 1px solid rgb(51 65 85); /* slate-700 */
+  color: rgb(15 23 42); /* slate-900 */
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  font-size: 0.8125em;
+  line-height: 1.4;
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.1);
+}
+
+@media (prefers-color-scheme: dark) {
+  .ideai-css-summary {
+    @apply border-slate-200;
+    background-color: rgb(248 250 252); /* slate-50 */
+  }
+  
+  .ideai-css-summary__title {
+    color: rgb(15 23 42); /* slate-900 */
+  }
+  
+  .ideai-css-summary__description {
+    color: rgb(51 65 85); /* slate-700 */
+  }
+  
+  .ideai-css-summary__frameworks {
+    color: rgb(15 23 42); /* slate-900 */
+  }
+  
+  .ideai-css-summary__frameworks strong {
+    color: rgb(51 65 85); /* slate-700 */
+  }
+  
+  .ideai-css-summary__code {
+    background-color: rgb(15 23 42); /* slate-900 */
+    border-color: rgb(226 232 240); /* slate-200 */
+    color: rgb(248 250 252); /* slate-50 */
+    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.1);
+  }
+}
+
+/**
+ * Theme Toggle Component Styles
+ * Dark/light mode toggle button
+ */
+.ideai-theme-toggle {
+  @apply p-2 rounded-md text-slate-700 dark:text-slate-300;
+  @apply hover:bg-slate-100 dark:hover:bg-slate-800;
+  @apply transition-colors;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ideai-theme-toggle:focus-visible {
+  @apply outline-none ring-2 ring-slate-400 ring-offset-2;
+}
+
+/**
+ * Mobile Navigation Component Styles
+ * Touch-optimized mobile menu using Radix UI Sheet
+ */
+.ideai-mobile-nav-trigger {
+  @apply p-2 rounded-md text-slate-700 dark:text-slate-300;
+  @apply hover:bg-slate-100 dark:hover:bg-slate-800;
+  @apply transition-colors;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ideai-mobile-nav-trigger:focus-visible {
+  @apply outline-none ring-2 ring-slate-400 ring-offset-2;
+}
+
+.ideai-mobile-nav-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background-color: rgba(0, 0, 0, 0.5);
+  animation: overlayShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ideai-mobile-nav-content {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 300px;
+  max-width: 85vw;
+  z-index: 50;
+  background-color: rgb(255 255 255);
+  box-shadow: -4px 0 24px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  animation: slideInRight 200ms cubic-bezier(0.16, 1, 0.3, 1);
+  padding: 0;
+}
+
+@media (prefers-color-scheme: dark) {
+  .ideai-mobile-nav-content {
+    background-color: rgb(15 23 42);
+  }
+}
+
+.ideai-mobile-nav-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid rgb(226 232 240);
+}
+
+@media (prefers-color-scheme: dark) {
+  .ideai-mobile-nav-header {
+    border-bottom-color: rgb(51 65 85);
+  }
+}
+
+.ideai-mobile-nav-title {
+  @apply text-lg font-semibold text-slate-900 dark:text-slate-100;
+  margin: 0;
+}
+
+.ideai-mobile-nav-close {
+  @apply p-2 rounded-md text-slate-500 dark:text-slate-400;
+  @apply hover:bg-slate-100 dark:hover:bg-slate-800;
+  @apply transition-colors;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ideai-mobile-nav-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem 0;
+}
+
+.ideai-mobile-nav-list ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.ideai-mobile-nav-list li {
+  margin: 0;
+}
+
+.ideai-mobile-nav-link {
+  @apply block px-6 py-3 text-base text-slate-700 dark:text-slate-300;
+  @apply hover:bg-slate-50 dark:hover:bg-slate-800;
+  @apply transition-colors;
+  text-decoration: none;
+  display: block;
+  width: 100%;
+  text-align: left;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.ideai-mobile-nav-link--nested {
+  @apply px-12 text-sm;
+}
+
+.ideai-mobile-nav-group {
+  @apply px-6 py-2 text-xs font-semibold text-slate-500 dark:text-slate-400;
+  @apply uppercase tracking-wider;
+  margin-top: 0.5rem;
+}
+
+@keyframes overlayShow {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+/**
+ * IdeaI Diagnostics Component Styles
+ * Dashboard-style diagnostics panel that inherits parent CSS framework
+ */
+.ideai-diagnostics {
+  position: fixed;
+  z-index: 9999;
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  font-size: 0.75rem;
+}
+
+.ideai-diagnostics--top-right {
+  top: 1rem;
+  right: 1rem;
+}
+
+.ideai-diagnostics--top-left {
+  top: 1rem;
+  left: 1rem;
+}
+
+.ideai-diagnostics--bottom-right {
+  bottom: 1rem;
+  right: 1rem;
+}
+
+.ideai-diagnostics--bottom-left {
+  bottom: 1rem;
+  left: 1rem;
+}
+
+.ideai-diagnostics__toggle {
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 700;
+  transition: background-color 0.2s;
+  cursor: pointer;
+  border: none;
+}
+
+.ideai-diagnostics__panel {
+  position: absolute;
+  right: 0;
+  width: 900px;
+  max-width: 95vw;
+  border-radius: 0.5rem;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  padding: 1.25rem;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+/* Side Menu Mode - Full Height, Right Side */
+.ideai-diagnostics__panel--side-menu {
+  position: fixed;
+  top: 0;
+  left: auto;
+  right: 0;
+  bottom: 0;
+  width: 400px;
+  max-width: 85vw;
+  max-height: 100vh;
+  height: 100vh;
+  border-radius: 0;
+  margin: 0;
+  z-index: 10000;
+}
+
+.ideai-diagnostics__overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 9999;
+  backdrop-filter: blur(2px);
+}
+
+/* Panel positioning based on button position */
+.ideai-diagnostics--top-right .ideai-diagnostics__panel,
+.ideai-diagnostics--top-left .ideai-diagnostics__panel {
+  top: 100%;
+  margin-top: 0.5rem;
+}
+
+.ideai-diagnostics--bottom-right .ideai-diagnostics__panel,
+.ideai-diagnostics--bottom-left .ideai-diagnostics__panel {
+  bottom: 100%;
+  margin-bottom: 0.5rem;
+}
+
+.ideai-diagnostics__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.75rem;
+  border-bottom-width: 1px;
+}
+
+.ideai-diagnostics__header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.ideai-diagnostics__toggle-view {
+  padding: 0.5rem;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.1);
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: inherit;
+  min-width: 2rem;
+  min-height: 2rem;
+}
+
+.ideai-diagnostics__toggle-view:hover {
+  background-color: rgba(0, 0, 0, 0.15);
+  border-color: rgba(0, 0, 0, 0.2);
+  transform: scale(1.05);
+}
+
+.ideai-diagnostics__toggle-view:active {
+  transform: scale(0.95);
+}
+
+@media (prefers-color-scheme: dark) {
+  .ideai-diagnostics__toggle-view {
+    border-color: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  .ideai-diagnostics__toggle-view:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.3);
+  }
+}
+
+.ideai-diagnostics__title {
+  font-weight: 700;
+  font-size: 1rem;
+  margin: 0;
+}
+
+.ideai-diagnostics__subtitle {
+  font-size: 0.75rem;
+  margin-top: 0.125rem;
+  margin-bottom: 0;
+}
+
+.ideai-diagnostics__close {
+  padding: 0.25rem;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  transition: background-color 0.2s;
+}
+
+.ideai-diagnostics__grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 1rem;
+  font-size: 0.75rem;
+}
+
+.ideai-diagnostics__card {
+  border-radius: 0.5rem;
+  padding: 1rem;
+  border-width: 1px;
+}
+
+.ideai-diagnostics__card-title {
+  font-weight: 600;
+  font-size: 0.875rem;
+  margin-bottom: 0.75rem;
+  margin-top: 0;
+}
+
+.ideai-diagnostics__card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.ideai-diagnostics__row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ideai-diagnostics__label {
+  font-size: 0.75rem;
+}
+
+.ideai-diagnostics__value {
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  font-weight: 500;
+  font-size: 0.75rem;
+}
+
+.ideai-diagnostics__tools-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.ideai-diagnostics__tool-button {
+  text-align: left;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.25rem;
+  border-width: 1px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  border-style: solid;
+}
+
+.ideai-diagnostics__tool-title {
+  font-weight: 500;
+  font-size: 0.75rem;
+  margin-bottom: 0.125rem;
+}
+
+.ideai-diagnostics__tool-desc {
+  font-size: 0.75rem;
+}
+
+/* Light mode defaults */
+.ideai-diagnostics__toggle {
+  background-color: rgb(15 23 42); /* slate-900 */
+  color: rgb(255 255 255);
+}
+
+.ideai-diagnostics__toggle:hover {
+  background-color: rgb(30 41 59); /* slate-800 */
+}
+
+.ideai-diagnostics__panel {
+  background-color: rgb(255 255 255);
+  border-color: rgb(226 232 240); /* slate-200 */
+}
+
+.ideai-diagnostics__header {
+  border-color: rgb(226 232 240); /* slate-200 */
+}
+
+.ideai-diagnostics__title {
+  color: rgb(15 23 42); /* slate-900 */
+}
+
+.ideai-diagnostics__subtitle {
+  color: rgb(100 116 139); /* slate-500 */
+}
+
+.ideai-diagnostics__close {
+  color: rgb(100 116 139); /* slate-500 */
+}
+
+.ideai-diagnostics__close:hover {
+  background-color: rgb(241 245 249); /* slate-100 */
+  color: rgb(51 65 85); /* slate-700 */
+}
+
+.ideai-diagnostics__card {
+  background-color: rgb(248 250 252); /* slate-50 */
+  border-color: rgb(226 232 240); /* slate-200 */
+}
+
+.ideai-diagnostics__card-title {
+  color: rgb(15 23 42); /* slate-900 */
+}
+
+.ideai-diagnostics__label {
+  color: rgb(100 116 139); /* slate-500 */
+}
+
+.ideai-diagnostics__value {
+  color: rgb(51 65 85); /* slate-700 */
+}
+
+.ideai-diagnostics__tool-button {
+  background-color: rgb(255 255 255);
+  border-color: rgb(226 232 240); /* slate-200 */
+  color: rgb(51 65 85); /* slate-700 */
+}
+
+.ideai-diagnostics__tool-button:hover {
+  background-color: rgb(248 250 252); /* slate-50 */
+}
+
+.ideai-diagnostics__tool-desc {
+  color: rgb(100 116 139); /* slate-500 */
+}
+
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+  .ideai-diagnostics__toggle {
+    background-color: rgb(241 245 249); /* slate-100 */
+    color: rgb(15 23 42); /* slate-900 */
+  }
+
+  .ideai-diagnostics__toggle:hover {
+    background-color: rgb(226 232 240); /* slate-200 */
+  }
+
+  .ideai-diagnostics__panel {
+    background-color: rgb(15 23 42); /* slate-900 */
+    border-color: rgb(51 65 85); /* slate-700 */
+  }
+
+  .ideai-diagnostics__header {
+    border-color: rgb(51 65 85); /* slate-700 */
+  }
+
+  .ideai-diagnostics__title {
+    color: rgb(248 250 252); /* slate-50 */
+  }
+
+  .ideai-diagnostics__subtitle {
+    color: rgb(148 163 184); /* slate-400 */
+  }
+
+  .ideai-diagnostics__close {
+    color: rgb(148 163 184); /* slate-400 */
+  }
+
+  .ideai-diagnostics__close:hover {
+    background-color: rgb(30 41 59); /* slate-800 */
+    color: rgb(226 232 240); /* slate-200 */
+  }
+
+  .ideai-diagnostics__card {
+    background-color: rgb(30 41 59); /* slate-800 */
+    border-color: rgb(51 65 85); /* slate-700 */
+  }
+
+  .ideai-diagnostics__card-title {
+    color: rgb(248 250 252); /* slate-50 */
+  }
+
+  .ideai-diagnostics__label {
+    color: rgb(148 163 184); /* slate-400 */
+  }
+
+  .ideai-diagnostics__value {
+    color: rgb(226 232 240); /* slate-200 */
+  }
+
+  .ideai-diagnostics__tool-button {
+    background-color: rgb(15 23 42); /* slate-900 */
+    border-color: rgb(51 65 85); /* slate-700 */
+    color: rgb(226 232 240); /* slate-200 */
+  }
+
+  .ideai-diagnostics__tool-button:hover {
+    background-color: rgb(30 41 59); /* slate-800 */
+  }
+
+  .ideai-diagnostics__tool-desc {
+    color: rgb(148 163 184); /* slate-400 */
+  }
+}

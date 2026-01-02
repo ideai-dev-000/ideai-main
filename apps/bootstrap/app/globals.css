@@ -1,0 +1,20 @@
+/**
+ * @fileoverview Bootstrap CSS only - Component-based styling
+ * 
+ * This app uses Bootstrap CSS exclusively for component-based styling.
+ * NO Tailwind, NO MVP.css - frameworks are mutually exclusive.
+ * 
+ * Framework: Bootstrap only
+ * Base: Normalize
+ */
+
+/* Normalize/Reset - Base styles for consistent rendering */
+@import "../../../packages/ui/src/styles/normalize.css";
+
+/* Bootstrap CSS (EXCLUSIVE - no Tailwind, no MVP.css) */
+@import "bootstrap/dist/css/bootstrap.min.css";
+
+/* Bootstrap JS (loaded via script tag in layout) */
+
+
+

@@ -1,0 +1,20 @@
+/**
+ * @fileoverview Global styles for the IdeaI /all demo application
+ * 
+ * @module AllAppGlobalStyles
+ * @description
+ * Uses Tailwind CSS exclusively. NO MVP.css - frameworks are mutually exclusive.
+ * 
+ * Framework: Tailwind CSS only
+ * Base: Tailwind Preflight (includes normalize - no separate normalize.css needed)
+ */
+
+/* Tailwind CSS - Utility-first framework (EXCLUSIVE - no MVP.css) */
+/* Note: @tailwind base includes Preflight (normalize/reset) - no separate normalize.css */
+@import "../../../packages/ui/src/styles/globals.css";
+
+/* IdeaI custom layer */
+@import "../../../packages/ui/src/styles/ideai.css";
+
+
+

@@ -36,5 +36,13 @@ yarn-error.log*
 # Misc
 .DS_Store
 *.pem
+
+# Code Context (Kotlin/Gradle build artifacts)
 /tools/code-context/.codecontext
 /tools/code-context/.gradle
+tools/code-context/build/
+tools/code-context/.gradle/
+tools/code-context/output/
+tools/code-context/*.log
+tools/code-context/*.tar
+tools/code-context/*.zip

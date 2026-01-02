@@ -1,0 +1,16 @@
+/**
+ * @fileoverview MVP.css only - Semantic HTML styling
+ * 
+ * This app uses MVP.css exclusively for clean, minimal styling of semantic HTML.
+ * NO Tailwind - frameworks are mutually exclusive.
+ * 
+ * Framework: MVP.css only
+ * Base: Normalize
+ */
+
+/* Normalize/Reset - Base styles for consistent rendering */
+@import "../../../packages/ui/src/styles/normalize.css";
+
+/* MVP.css - Minimalist stylesheet for semantic HTML (~10KB) (EXCLUSIVE - no Tailwind) */
+@import "../../../packages/ui/src/styles/mvp.css";
+

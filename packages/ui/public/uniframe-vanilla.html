@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UniFrame by IdeaI - Vanilla HTML5 Reference</title>
+  <style>
+    /**
+     * UniFrame Vanilla HTML5 Styles
+     * Tailwind-inspired utility classes written as regular CSS
+     * No framework dependencies - pure CSS for IdeaI targeting
+     */
+
+    /* Reset and Base */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      line-height: 1.5;
+      color: rgb(15, 23, 42); /* slate-900 */
+      background-color: rgb(255, 255, 255);
+      padding: 2rem;
+    }
+
+    /* Dark mode support */
+    @media (prefers-color-scheme: dark) {
+      body {
+        color: rgb(241, 245, 249); /* slate-100 */
+        background-color: rgb(15, 23, 42); /* slate-900 */
+      }
+    }
+
+    /* Container */
+    .uniframe-container {
+      max-width: 48rem; /* max-w-6xl */
+      margin: 0 auto;
+    }
+
+    /* Spacing Utilities */
+    .mb-4 { margin-bottom: 1rem; }
+    .mb-6 { margin-bottom: 1.5rem; }
+    .mb-8 { margin-bottom: 2rem; }
+    .mt-1 { margin-top: 0.25rem; }
+    .mt-4 { margin-top: 1rem; }
+    .p-6 { padding: 1.5rem; }
+    .px-2 { padding-left: 0.5rem; padding-right: 0.5rem; }
+    .px-3 { padding-left: 0.75rem; padding-right: 0.75rem; }
+    .px-4 { padding-left: 1rem; padding-right: 1rem; }
+    .py-1 { padding-top: 0.25rem; padding-bottom: 0.25rem; }
+    .py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
+    .pt-4 { padding-top: 1rem; }
+    .space-y-2 > * + * { margin-top: 0.5rem; }
+    .space-y-4 > * + * { margin-top: 1rem; }
+
+    /* Flexbox Utilities */
+    .flex { display: flex; }
+    .items-center { align-items: center; }
+    .justify-between { justify-content: space-between; }
+    .flex-wrap { flex-wrap: wrap; }
+    .gap-2 { gap: 0.5rem; }
+
+    /* Typography */
+    .text-sm { font-size: 0.875rem; line-height: 1.25rem; }
+    .text-xs { font-size: 0.75rem; line-height: 1rem; }
+    .text-2xl { font-size: 1.5rem; line-height: 2rem; }
+    .font-medium { font-weight: 500; }
+    .font-bold { font-weight: 700; }
+    .text-left { text-align: left; }
+
+    /* Colors - Light Mode */
+    .text-slate-600 { color: rgb(71, 85, 105); }
+    .text-slate-700 { color: rgb(51, 65, 85); }
+    .text-slate-900 { color: rgb(15, 23, 42); }
+    .text-blue-600 { color: rgb(37, 99, 235); }
+    .text-blue-700 { color: rgb(29, 78, 216); }
+    .text-blue-800 { color: rgb(30, 64, 175); }
+    .bg-white { background-color: rgb(255, 255, 255); }
+    .bg-slate-100 { background-color: rgb(241, 245, 249); }
+    .bg-slate-200 { background-color: rgb(226, 232, 240); }
+    .bg-blue-50 { background-color: rgb(239, 246, 255); }
+    .bg-blue-100 { background-color: rgb(219, 234, 254); }
+    .bg-blue-600 { background-color: rgb(37, 99, 235); }
+    .border-slate-200 { border-color: rgb(226, 232, 240); }
+    .border-slate-300 { border-color: rgb(203, 213, 225); }
+    .border-slate-700 { border-color: rgb(51, 65, 85); }
+
+    /* Colors - Dark Mode */
+    @media (prefers-color-scheme: dark) {
+      .text-slate-400 { color: rgb(148, 163, 184); }
+      .text-slate-300 { color: rgb(203, 213, 225); }
+      .text-slate-100 { color: rgb(241, 245, 249); }
+      .text-blue-200 { color: rgb(191, 219, 254); }
+      .text-blue-300 { color: rgb(147, 197, 253); }
+      .text-blue-400 { color: rgb(96, 165, 250); }
+      .bg-slate-800 { background-color: rgb(30, 41, 59); }
+      .bg-slate-900 { background-color: rgb(15, 23, 42); }
+      .bg-blue-900 { background-color: rgb(30, 58, 138); }
+      .border-slate-600 { border-color: rgb(71, 85, 105); }
+      .border-slate-700 { border-color: rgb(51, 65, 85); }
+    }
+
+    /* Borders */
+    .border { border-width: 1px; border-style: solid; }
+    .border-t { border-top-width: 1px; border-top-style: solid; }
+    .rounded { border-radius: 0.25rem; }
+    .rounded-md { border-radius: 0.375rem; }
+    .rounded-lg { border-radius: 0.5rem; }
+
+    /* Shadows */
+    .shadow-sm { box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05); }
+    .shadow-md { box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); }
+    .shadow-lg { box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1); }
+
+    /* Interactive States */
+    .hover\:bg-blue-700:hover { background-color: rgb(29, 78, 216); }
+    .hover\:bg-slate-200:hover { background-color: rgb(226, 232, 240); }
+    .transition-colors { transition-property: color, background-color, border-color; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); transition-duration: 150ms; }
+
+    /* Focus States */
+    .focus\:outline-none:focus { outline: 2px solid transparent; outline-offset: 2px; }
+    .focus\:ring-2:focus { box-shadow: 0 0 0 2px rgb(59, 130, 246); }
+
+    /* Width */
+    .w-full { width: 100%; }
+
+    /* Display */
+    .block { display: block; }
+    .relative { position: relative; }
+    .absolute { position: absolute; }
+    .fixed { position: fixed; }
+    .z-10 { z-index: 10; }
+    .z-20 { z-index: 20; }
+
+    /* Overflow */
+    .overflow-y-auto { overflow-y: auto; }
+    .max-h-64 { max-height: 16rem; }
+
+    /* IdeaI Specific Classes */
+    .ideai-uniframe-menu {
+      /* IdeaI menu styling */
+    }
+
+    .ideai-uniframe-card {
+      /* IdeaI card container */
+    }
+
+    .ideai-uniframe-header {
+      /* IdeaI card header */
+    }
+
+    .ideai-uniframe-body {
+      /* IdeaI card body */
+    }
+
+    .ideai-uniframe-footer {
+      /* IdeaI card footer */
+    }
+
+    .ideai-uniframe-button {
+      /* IdeaI button styling */
+    }
+
+    .ideai-uniframe-input {
+      /* IdeaI input styling */
+    }
+
+    .ideai-uniframe-badge {
+      /* IdeaI badge styling */
+    }
+  </style>
+</head>
+<body>
+  <div class="uniframe-container">
+    <!-- Self-created Hot-Toggle Menu -->
+    <div class="mb-6 relative">
+      <button
+        type="button"
+        class="ideai-uniframe-menu w-full px-4 py-2 bg-slate-100 border border-slate-300 rounded-md text-left flex items-center justify-between hover:bg-slate-200 transition-colors"
+        aria-expanded="false"
+        aria-haspopup="true"
+        aria-label="Select CSS framework"
+      >
+        <span class="font-medium">
+          <span class="text-slate-600 text-sm">Framework: </span>
+          <span class="text-slate-900">Tailwind CSS</span>
+        </span>
+        <svg
+          class="w-5 h-5 text-blue-600 transition-transform"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+
+      <!-- Dropdown Menu (hidden by default) -->
+      <div class="absolute z-20 mt-1 w-full bg-white border border-slate-300 rounded-md shadow-lg max-h-64 overflow-y-auto" style="display: none;">
+        <!-- Framework options would be here -->
+      </div>
+    </div>
+
+    <!-- Framework Info Badge -->
+    <div class="mb-4">
+      <span class="ideai-uniframe-badge px-2 py-1 bg-blue-100 text-blue-800 rounded text-sm">
+        Tailwind CSS - Utility-first CSS framework
+      </span>
+    </div>
+
+    <!-- Pure HTML Card with IdeaI Classes -->
+    <article class="ideai-uniframe-card bg-white border border-slate-200 rounded-lg shadow-md p-6">
+      <!-- Header -->
+      <header class="ideai-uniframe-header">
+        <h2 class="ideai-uniframe-title text-2xl font-bold text-slate-900 mb-2">
+          UniFrame by IdeaI
+        </h2>
+        <p class="ideai-uniframe-description text-slate-600 mb-4">
+          This card uses pure HTML and dynamically injects CSS classes for
+          <strong>Tailwind CSS</strong>. Switch frameworks using the menu above to see
+          the styling change in real-time.
+        </p>
+      </header>
+
+      <!-- Body -->
+      <div class="ideai-uniframe-body space-y-4">
+        <!-- Form Field -->
+        <div>
+          <label for="uniframe-input" class="ideai-uniframe-label block text-sm font-medium mb-1 text-slate-700">
+            Sample Input
+          </label>
+          <input
+            id="uniframe-input"
+            type="text"
+            value="Sample input text"
+            class="ideai-uniframe-input w-full px-3 py-2 border border-slate-300 rounded-md bg-white text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Type something..."
+          />
+        </div>
+
+        <!-- Button Group -->
+        <div class="ideai-uniframe-button-group flex gap-2 flex-wrap">
+          <button
+            type="button"
+            class="ideai-uniframe-button px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md font-medium transition-colors"
+          >
+            Primary Button
+          </button>
+          <button
+            type="button"
+            class="ideai-uniframe-button px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md font-medium transition-colors"
+          >
+            Secondary Action
+          </button>
+        </div>
+
+        <!-- Badge Display -->
+        <div class="ideai-uniframe-badge-group flex gap-2 flex-wrap items-center">
+          <span class="ideai-uniframe-badge px-2 py-1 bg-blue-100 text-blue-800 rounded text-sm">
+            Framework
+          </span>
+          <span class="ideai-uniframe-badge px-2 py-1 bg-blue-100 text-blue-800 rounded text-sm">
+            Tailwind CSS
+          </span>
+          <span class="ideai-uniframe-badge px-2 py-1 bg-blue-100 text-blue-800 rounded text-sm">
+            IdeaI
+          </span>
+        </div>
+
+        <!-- Info Text -->
+        <p class="ideai-uniframe-text text-sm text-slate-600">
+          All styling is applied via framework-specific CSS classes injected at runtime. The HTML
+          structure remains the same across all frameworks.
+        </p>
+      </div>
+
+      <!-- Footer -->
+      <footer class="ideai-uniframe-footer mt-6 pt-4 border-t border-slate-200">
+        <p class="ideai-uniframe-footer-text text-xs text-slate-500">
+          Created by <strong>IdeaI</strong> • Universal Framework Component • 2026
+        </p>
+      </footer>
+    </article>
+  </div>
+</body>
+</html>
+
+
+

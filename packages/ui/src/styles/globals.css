@@ -1,0 +1,56 @@
+/**
+ * @fileoverview Global styles for the IdeaI design system
+ * 
+ * @module GlobalStyles
+ * @description
+ * Standard Tailwind CSS setup with minimal custom CSS.
+ * Uses only standard Tailwind colors and utilities.
+ * 
+ * IMPORTANT: This file contains Tailwind CSS ONLY.
+ * MVP.css is NOT included here - frameworks are mutually exclusive.
+ * Use either Tailwind (this file) OR MVP.css, never both.
+ * 
+ * @example
+ * Normalize plus Tailwind CSS:
+ * @import "@repo/ui/styles/normalize.css";
+ * @import "@repo/ui/styles/globals.css";
+ * 
+ * @see ./mvp.css - For MVP.css (use instead of this file)
+ */
+
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply border-slate-200;
+  }
+  
+  html {
+    @apply bg-white;
+    color-scheme: light;
+  }
+  
+  body {
+    @apply bg-white text-slate-900;
+    color: rgb(15 23 42); /* slate-900 - explicit for consistency */
+    background-color: rgb(255 255 255); /* white - explicit for consistency */
+  }
+  
+  .dark * {
+    @apply border-slate-800;
+  }
+  
+  .dark html {
+    @apply bg-slate-950;
+    color-scheme: dark;
+  }
+  
+  .dark body {
+    @apply bg-slate-950 text-slate-50;
+    color: rgb(248 250 252); /* slate-50 - explicit for consistency */
+    background-color: rgb(2 6 23); /* slate-950 - explicit for consistency */
+  }
+}

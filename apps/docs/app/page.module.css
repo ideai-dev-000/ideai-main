@@ -1,37 +1,47 @@
+/**
+ * @fileoverview Styles for the main landing page
+ * 
+ * @module DocsAppPageStyles
+ * @description
+ * CSS module for the home page component.
+ * IDENTICAL to web app except for .docsContent section.
+ * Uses centralized IdeaI CSS from @repo/ui/styles/ideai.css.
+ * All shared styles use standard Tailwind classes for perfect consistency.
+ */
+
 .page {
-  --gray-rgb: 0, 0, 0;
-  --gray-alpha-200: rgba(var(--gray-rgb), 0.08);
-  --gray-alpha-100: rgba(var(--gray-rgb), 0.05);
-
-  --button-primary-hover: #383838;
-  --button-secondary-hover: #f2f2f2;
-
-  display: grid;
+  @apply grid items-center justify-items-center min-h-screen p-20 gap-16;
   grid-template-rows: 20px 1fr 20px;
-  align-items: center;
-  justify-items: center;
-  min-height: 100svh;
-  padding: 80px;
-  gap: 64px;
   font-synthesis: none;
-}
-
-@media (prefers-color-scheme: dark) {
-  .page {
-    --gray-rgb: 255, 255, 255;
-    --gray-alpha-200: rgba(var(--gray-rgb), 0.145);
-    --gray-alpha-100: rgba(var(--gray-rgb), 0.06);
-
-    --button-primary-hover: #ccc;
-    --button-secondary-hover: #1a1a1a;
-  }
+  width: 100%; /* Explicit width for consistency */
+  max-width: 100%; /* Ensure full width */
 }
 
 .main {
-  display: flex;
-  flex-direction: column;
-  gap: 32px;
+  @apply flex flex-col gap-8 items-center text-center;
+  @apply max-w-[600px] w-full;
   grid-row-start: 2;
+  width: 100%; /* Explicit width for consistency */
+  max-width: 600px; /* Explicit max-width for consistency */
+}
+
+/* Button centering handled by ideai-header__actions */
+
+.main h1 {
+  font-family: var(--font-geist-sans);
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  @apply m-0 text-slate-900 dark:text-slate-50;
+}
+
+.main p {
+  font-family: var(--font-geist-sans);
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  line-height: 1.6;
+  opacity: 0.7;
+  @apply m-0 text-slate-900 dark:text-slate-50;
 }
 
 .main ol {
@@ -50,64 +60,21 @@
 
 .main code {
   font-family: inherit;
-  background: var(--gray-alpha-100);
+  background: rgba(0, 0, 0, 0.05);
   padding: 2px 4px;
   border-radius: 4px;
   font-weight: 600;
 }
 
-.ctas {
-  display: flex;
-  gap: 16px;
+@media (prefers-color-scheme: dark) {
+  .main code {
+    background: rgba(255, 255, 255, 0.06);
+  }
 }
 
-.ctas a {
-  appearance: none;
-  border-radius: 128px;
-  height: 48px;
-  padding: 0 20px;
-  font-family: var(--font-geist-sans);
-  border: 1px solid transparent;
-  transition: background 0.2s, color 0.2s, border-color 0.2s;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 16px;
-  line-height: 20px;
-  font-weight: 500;
-}
+/* Button styles now in centralized ideai-button-secondary class */
 
-a.primary {
-  background: var(--foreground);
-  color: var(--background);
-  gap: 8px;
-}
-
-a.secondary {
-  border-color: var(--gray-alpha-200);
-  min-width: 180px;
-}
-
-button.secondary {
-  appearance: none;
-  border-radius: 128px;
-  height: 48px;
-  padding: 0 20px;
-  font-family: var(--font-geist-sans);
-  border: 1px solid transparent;
-  transition: background 0.2s, color 0.2s, border-color 0.2s;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 16px;
-  line-height: 20px;
-  font-weight: 500;
-  background: transparent;
-  border-color: var(--gray-alpha-200);
-  min-width: 180px;
-}
+/* App-specific: docs content area - now using shared IdeAIContent component */
 
 .footer {
   font-family: var(--font-geist-sans);
@@ -126,27 +93,12 @@ button.secondary {
   flex-shrink: 0;
 }
 
-/* Enable hover only on non-touch devices */
-@media (hover: hover) and (pointer: fine) {
-  a.primary:hover {
-    background: var(--button-primary-hover);
-    border-color: transparent;
-  }
+/* Hover states handled by centralized CSS */
 
-  a.secondary:hover {
-    background: var(--button-secondary-hover);
-    border-color: transparent;
-  }
-
-  .footer a:hover {
-    text-decoration: underline;
-    text-underline-offset: 4px;
-  }
-}
-
+/* Responsive - IDENTICAL across all apps */
 @media (max-width: 600px) {
   .page {
-    padding: 32px;
+    @apply p-8;
     padding-bottom: 80px;
   }
 
@@ -158,19 +110,7 @@ button.secondary {
     text-align: center;
   }
 
-  .ctas {
-    flex-direction: column;
-  }
-
-  .ctas a {
-    font-size: 14px;
-    height: 40px;
-    padding: 0 16px;
-  }
-
-  a.secondary {
-    min-width: auto;
-  }
+  /* Button responsive handled by centralized CSS */
 
   .footer {
     flex-wrap: wrap;

@@ -1,3 +1,21 @@
+/**
+ * @fileoverview ESLint configuration for Next.js applications
+ * 
+ * @module NextJSEslintConfig
+ * @description
+ * A custom ESLint configuration for libraries and applications that use Next.js.
+ * Extends the base config and adds Next.js specific rules and React hooks support.
+ * 
+ * @example
+ * ```js
+ * import { nextJsConfig } from "@repo/eslint-config/next-js";
+ * export default nextJsConfig;
+ * ```
+ * 
+ * @see {@link ./base.js} - Base ESLint configuration
+ * @see {@link ./react-internal.js} - React specific config
+ */
+
 import js from "@eslint/js";
 import { globalIgnores } from "eslint/config";
 import eslintConfigPrettier from "eslint-config-prettier";
@@ -9,10 +27,8 @@ import pluginNext from "@next/eslint-plugin-next";
 import { config as baseConfig } from "./base.js";
 
 /**
- * A custom ESLint configuration for libraries that use Next.js.
- *
  * @type {import("eslint").Linter.Config[]}
- * */
+ */
 export const nextJsConfig = [
   ...baseConfig,
   js.configs.recommended,

@@ -1,0 +1,7 @@
+{
+  "role": "child",
+  "name": "All CSS",
+  "description": "MVP.css + Tailwind CSS - complete styling",
+  "parentApp": "web",
+  "localPort": 3006
+}

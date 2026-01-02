@@ -1,4 +1,72 @@
-# Cursor AI Rules for IDEAI Monorepo
+# Cursor AI Rules for IdeaI Monorepo
+
+## Brand and Naming Standards
+
+### Brand Name: IdeaI
+**CRITICAL**: The product/brand name must ALWAYS be written as **IdeaI** (exact capitalization: capital I, lowercase dea, capital I):
+- ✅ Correct: `IdeaI`, `IdeaI web app`, `Welcome to IdeaI`, `IdeaI.Space`
+- ❌ Incorrect: `IDEAI`, `Ideai`, `ideai`, `IDEAi`, `Idea I`, or any other variation
+
+**Why this capitalization matters:**
+- "Idea" (the word)
+- "Ide" (part of idea)
+- "An AI Ide" (an AI idea)
+- "an ai idea engine"
+- Also visually resembles "ideal" which is excellent for branding
+- The URL `IdeaI.Space` works perfectly and looks sublime as text
+
+**When to use IdeaI:**
+- Product/brand name in UI text
+- Documentation references to the product
+- Code comments mentioning the brand
+- User-facing content
+- URLs and domain references
+
+**Note**: Repository names, GitHub orgs, and technical identifiers may use lowercase (e.g., `ideai-main`, `ideai-dev-000`) for technical reasons, but the **brand name itself is always IdeaI** (exact capitalization).
+
+### Semantic File Naming
+**CRITICAL**: Semantic, descriptive file names are essential:
+- ✅ Good: `user-profile-card.tsx`, `api-auth-handler.ts`, `deployment-checklist.md`
+- ❌ Bad: `component1.tsx`, `utils.ts`, `file.md`, `temp.js`
+
+**File naming principles:**
+- Use kebab-case for file names
+- Be descriptive and specific
+- Include the purpose/type in the name
+- Avoid abbreviations unless widely understood
+- Group related files with consistent prefixes
+
+### UniFrame (UF) Naming Standard
+**CRITICAL**: UniFrame is the brand name. File names use `uf-` prefix. Code can use `uf` or `uniframe`.
+
+**Brand Name**: UniFrame (capital U, capital F)
+- ✅ Correct: "UniFrame by IdeaI", "UniFrame Component", "UniFrame Card"
+- ❌ Incorrect: "Uni Frame", "uniframe", "UF" (when referring to brand)
+
+**File Naming Rules:**
+- File names: `uf.tsx`, `uf-code-viewer.tsx`, `uf-card.tsx` (kebab-case with "uf-" prefix)
+- Directory names: `uf-card/`, `uf-components/` (kebab-case with "uf-" prefix)
+- ✅ Correct: `uf.tsx`, `uf-code-viewer.tsx`
+- ❌ Incorrect: `uniframe.tsx`, `UniFrame.tsx`
+
+**Code/Import Naming Rules:**
+- Component names: `UF`, `UFCodeViewer`, `UFCard` (PascalCase with "UF" prefix)
+- Interface names: `UFProps`, `UFCodeViewerProps` (PascalCase with "UF" prefix)
+- Import paths: Can use `uf` or `uniframe` - both work: `@repo/ui/components/uf` or `@repo/ui/components/uniframe`
+- CSS classes: `uf-container`, `uf-card`, `uf-button` (kebab-case with "uf-" prefix)
+
+**Documentation/Headers:**
+- Headers and user-facing text: Use "UniFrame" (brand name)
+- Code comments: Can use "UniFrame" or "UF" - both acceptable
+- File headers: Use "UniFrame" in @fileoverview
+
+**Why this matters:**
+- Brand consistency: "UniFrame" in user-facing content
+- Code efficiency: `uf` is shorter in code
+- Flexibility: Both `uf` and `uniframe` work in imports
+- Professional code quality requires strict naming discipline
+
+**NEVER be sloppy with naming - it's a sign of unprofessional code.**
 
 ## Code Standards
 
@@ -18,10 +86,29 @@ All code files must include rich, descriptive headers with:
 - Error handling for async operations
 - Comments for complex logic
 
+### No Legacy Support Policy
+**CRITICAL**: IdeaI is building a future framework, not maintaining legacy code.
+
+**Rules**:
+- ❌ **NO legacy file format support** (e.g., `.ideai` files - only `.ideai.json`)
+- ❌ **NO backward compatibility code** for deprecated formats
+- ❌ **NO fallback to old formats** - if format changes, migrate immediately
+- ❌ **NO "legacy mode" flags** or feature toggles for old behavior
+- ✅ **ONLY current formats** - use `.ideai.json`, not `.ideai`
+- ✅ **Clean migration scripts** - migrate once, then remove old format
+- ✅ **Future-focused** - build for 2026+ best practices, not 2020 compatibility
+
+**Why**: Legacy support is bloat. We're building a modern framework, not maintaining old systems. If a format changes, migrate and remove the old format immediately.
+
+**Example**:
+- ❌ Bad: `if (legacyFile) { readLegacy(); } else { readNew(); }`
+- ✅ Good: `readNew();` (only new format supported)
+
 ## Commit Standards
 
 ### Commit Messages
-All commits must be detailed:
+**CRITICAL**: All commits must follow this exact format with ticket reference:
+
 ```
 type(scope): detailed subject line
 
@@ -30,6 +117,49 @@ Detailed explanation of what changed and why.
 - Specific change 1
 - Specific change 2
 - Specific change 3
+
+Related: TICKET-XXX
+```
+
+**Commit Types**:
+- `fix`: Bug fixes
+- `feat`: New features
+- `docs`: Documentation changes
+- `refactor`: Code refactoring
+- `test`: Test additions/changes
+- `chore`: Maintenance tasks
+- `deploy`: Deployment changes
+- `style`: Code style changes (formatting, etc.)
+
+**Scope Examples**:
+- `web`: Main web app
+- `docs`: Documentation site
+- `ui`: Shared UI package
+- `deploy`: Deployment scripts
+- `config`: Configuration files
+- `vercel`: Vercel configuration
+
+**Ticket Reference**: Every commit must include `Related: TICKET-XXX` at the end, where XXX is the ticket number (e.g., TICKET-0.1, TICKET-1.2).
+
+**Example Good Commit**:
+```
+fix(web): resolve sub-folder route 404 issue
+
+Fixed Next.js App Router catch-all route that was returning 404
+in production. Converted client component to use React's use() hook
+for async params handling.
+
+- Updated page.tsx to use use() hook instead of useEffect
+- Fixed async params resolution
+- Added error handling for route matching
+- Updated TypeScript types for params
+
+Related: TICKET-0.1
+```
+
+**Example Bad Commit (DON'T DO THIS)**:
+```
+fix: stuff
 ```
 
 ### Commit Signing in Non-Interactive Environment
@@ -76,12 +206,135 @@ Before committing:
 
 Never skip CI checks. All PRs must pass CI before merge.
 
+## UI Consistency Standards
+
+### CRITICAL: Centralized CSS Architecture
+
+**ALL IdeaI apps MUST use centralized CSS from @repo/ui. NO custom CSS in apps.**
+
+#### Centralized CSS Architecture
+
+1. **Two-Layer System**:
+   - **Base Layer**: `@repo/ui/src/styles/globals.css` - Tailwind base + standard utilities
+   - **IdeaI Layer**: `@repo/ui/src/styles/ideai.css` - Custom IdeaI finesse and polish
+   - **Both imported in every app's globals.css**
+
+2. **Import Pattern** (MANDATORY for all apps):
+   ```css
+   /* In apps/*/app/globals.css */
+   @import "../../../packages/ui/src/styles/globals.css";
+   @import "../../../packages/ui/src/styles/ideai.css";
+   ```
+
+3. **NO Custom CSS in Apps**:
+   - ❌ NO custom button styles in app CSS modules
+   - ❌ NO custom hover states in app CSS modules
+   - ❌ NO custom typography in app CSS modules
+   - ❌ NO custom colors in app CSS modules
+   - ✅ ONLY use standard Tailwind classes + CSS variables from `ideai.css`
+   - ✅ CSS modules should be minimal - only app-specific layout adjustments
+
+4. **CSS Modules Usage**:
+   - CSS modules ONLY for app-specific layout adjustments
+   - Use standard Tailwind classes directly (not custom ideai-* classes)
+   - Use CSS variables from `ideai.css` for shared values
+   - Example: `.button { @apply border-slate-300 dark:border-slate-700; }`
+
+5. **Adding New IdeaI Styles**:
+   - Add CSS variables to `packages/ui/src/styles/ideai.css` (NOT app CSS)
+   - Use `@layer utilities` for reusable utility classes
+   - All apps automatically get the new styles via imports
+   - Document new utilities in `docs/architecture/ui-consistency.md`
+
+6. **Before Committing UI Changes**:
+   - [ ] All shared styles added to centralized `ideai.css` (not app CSS)
+   - [ ] All apps use identical Tailwind classes
+   - [ ] CSS modules are minimal (only app-specific adjustments)
+   - [ ] No duplicate CSS between apps
+   - [ ] Test in all apps side-by-side to verify perfect consistency
+   - [ ] Update documentation if adding new IdeaI utilities
+
+7. **Documentation**:
+   - See `docs/architecture/ui-consistency.md` for full standards
+   - All IdeaI classes documented in `ideai.css` file header
+
+## Debugging and DOM Inspection Standards
+
+### CRITICAL: Always Check the DOM, Not Just Code
+
+**Many issues are only visible in the rendered DOM, not in source code.**
+
+#### DOM Inspection Workflow (MANDATORY for UI debugging)
+
+1. **Before Making Changes**:
+   - Navigate to both pages in browser (use `mcp_cursor-ide-browser_browser_navigate`)
+   - Take full-page screenshots of both pages (use `browser_take_screenshot` with `fullPage: true`)
+   - Capture DOM snapshots (use `browser_snapshot`)
+   - Compare visually side-by-side
+
+2. **During Debugging**:
+   - Extract and compare HTML from both pages:
+     ```bash
+     curl -s http://localhost:3000 | grep -o 'class="[^"]*"' | sort | uniq > /tmp/web-classes.txt
+     curl -s http://localhost:3001 | grep -o 'class="[^"]*"' | sort | uniq > /tmp/docs-classes.txt
+     comm -23 /tmp/web-classes.txt /tmp/docs-classes.txt  # Classes in web but not docs
+     comm -13 /tmp/web-classes.txt /tmp/docs-classes.txt  # Classes in docs but not web
+     ```
+   - Check rendered CSS by inspecting specific elements:
+     ```bash
+     curl -s http://localhost:3000 | grep -A 50 'class="ideai-footer'  # Footer HTML
+     curl -s http://localhost:3001 | grep -A 50 'class="ideai-footer'  # Footer HTML
+     ```
+   - Compare CSS files loaded:
+     ```bash
+     curl -s http://localhost:3000 | grep -o 'href="[^"]*\.css[^"]*"'
+     curl -s http://localhost:3001 | grep -o 'href="[^"]*\.css[^"]*"'
+     ```
+
+3. **After Making Changes**:
+   - **ALWAYS** take new screenshots to verify visual consistency
+   - **ALWAYS** check the DOM again to ensure classes match
+   - **ALWAYS** verify rendered CSS is identical
+   - Compare before/after screenshots
+
+4. **Visual Testing Checklist**:
+   - [ ] Both pages render identically
+   - [ ] All classes match (except CSS module hashes)
+   - [ ] All CSS files loaded are from same source
+   - [ ] Footer renders identically
+   - [ ] Header renders identically
+   - [ ] Content renders identically
+   - [ ] Button hover states match
+   - [ ] Text colors match
+   - [ ] Spacing/padding matches
+   - [ ] Font sizes match
+
+5. **Common Issues Found Only in DOM**:
+   - CSS module hash differences (expected, but verify styles are same)
+   - Browser-specific CSS differences
+   - Dark mode auto-detection differences
+   - CSS specificity conflicts
+   - Missing or duplicate CSS imports
+   - Incorrect CSS class names in rendered HTML
+   - Browser default styles interfering
+
+6. **Tools to Use**:
+   - `mcp_cursor-ide-browser_browser_navigate` - Navigate to pages
+   - `mcp_cursor-ide-browser_browser_snapshot` - Get DOM structure
+   - `mcp_cursor-ide-browser_browser_take_screenshot` - Visual comparison
+   - `curl` commands - Extract HTML/CSS for comparison
+   - Browser DevTools - Inspect computed styles
+
+**NEVER assume code is correct without checking the rendered DOM.**
+
 ## Workflow
 
 1. Make changes
-2. Run checks: `pnpm lint && pnpm check-types && pnpm build`
-3. Update documentation if code changed (ensure OCD accuracy)
-4. Write detailed commit message
-5. If in non-interactive environment, disable auto-sign, commit, re-enable
-6. Push and verify CI passes
+2. **ALWAYS check DOM** - Navigate, screenshot, compare HTML/CSS
+3. **Verify UI consistency** - Check both apps side-by-side visually
+4. Run checks: `pnpm lint && pnpm check-types && pnpm build`
+5. Update documentation if code changed (ensure OCD accuracy)
+6. Write detailed commit message
+7. If in non-interactive environment, disable auto-sign, commit, re-enable
+8. Push and verify CI passes
 

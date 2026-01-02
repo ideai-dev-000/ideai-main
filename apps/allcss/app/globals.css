@@ -1,0 +1,17 @@
+/**
+ * @fileoverview Tailwind CSS only - Complete styling
+ * 
+ * NOTE: This app was previously "allcss" (MVP + Tailwind), but frameworks
+ * are now mutually exclusive. This app now uses Tailwind CSS only.
+ * 
+ * Framework: Tailwind CSS only
+ * Base: Tailwind Preflight (includes normalize - no separate normalize.css needed)
+ */
+
+/* Tailwind CSS - Utility-first framework (EXCLUSIVE - no MVP.css) */
+/* Note: @tailwind base includes Preflight (normalize/reset) - no separate normalize.css */
+@import "../../../packages/ui/src/styles/globals.css";
+
+/* IdeaI custom layer */
+@import "../../../packages/ui/src/styles/ideai.css";
+

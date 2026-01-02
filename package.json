@@ -1,12 +1,17 @@
 {
-  "name": "my-turborepo",
+  "name": "ideai-monorepo",
   "private": true,
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
+    "dev:status": "node scripts/dev-manager.mjs status",
+    "dev:start": "node scripts/dev-manager.mjs start",
+    "dev:stop": "node scripts/dev-manager.mjs stop",
+    "dev:restart": "node scripts/dev-manager.mjs restart",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "check-types": "turbo run check-types"
+    "check-types": "turbo run check-types",
+    "sync-docs": "./scripts/sync-docs.sh"
   },
   "devDependencies": {
     "prettier": "^3.7.4",
@@ -16,5 +21,10 @@
   "packageManager": "pnpm@9.0.0",
   "engines": {
     "node": ">=18"
+  },
+  "dependencies": {
+    "@radix-ui/react-popover": "^1.1.15",
+    "@radix-ui/react-tooltip": "^1.2.8",
+    "tailwindcss-animate": "^1.0.7"
   }
 }

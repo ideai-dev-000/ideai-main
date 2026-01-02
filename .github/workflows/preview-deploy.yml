@@ -13,11 +13,13 @@ jobs:
   deploy-preview:
     name: Deploy to Preview
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Fetch full history for commit verification
 
       - name: Install pnpm
         uses: pnpm/action-setup@v4
@@ -39,14 +41,22 @@ jobs:
       - name: Run type checking
         run: pnpm check-types
 
-      - name: Deploy to Vercel
-        id: deploy
-        uses: amondnet/vercel-action@v25
-        with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          scope: ${{ secrets.VERCEL_ORG_ID }}
+      - name: Install Vercel CLI
+        run: npm install --global vercel@latest
+
+      - name: Authenticate with Vercel
+        run: |
+          echo "${{ secrets.VERCEL_TOKEN }}" | vercel login --token
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+
+      - name: Deploy all apps to Preview
+        run: |
+          chmod +x ./deploy.sh
+          ./deploy.sh
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
 
       - name: Comment Preview URL
         if: github.event_name == 'pull_request'
@@ -57,6 +67,5 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: '🚀 Preview deployment ready!\n\n**Web App:** ${{ steps.deploy.outputs.url }}'
+              body: '🚀 Preview deployments ready!\n\nAll apps have been deployed to Vercel preview. Check the Vercel dashboard for URLs.'
             })
-

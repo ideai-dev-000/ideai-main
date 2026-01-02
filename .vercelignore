@@ -1,0 +1,56 @@
+# Dependencies - should be installed fresh
+node_modules
+.pnp
+.pnp.js
+
+# Build caches
+.turbo
+.next
+out
+build
+dist
+
+# Code Context build artifacts (Kotlin/Gradle)
+tools/code-context/build/
+tools/code-context/.gradle/
+tools/code-context/output/
+tools/code-context/*.log
+tools/code-context/*.tar
+tools/code-context/*.zip
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Testing
+coverage
+
+# Debug logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS files
+.DS_Store
+*.pem
+
+# Git
+.git
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+
+# Large binary files
+*.node
+*.dylib
+*.so
+*.dll
+
+
+
+

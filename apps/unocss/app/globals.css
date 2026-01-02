@@ -1,0 +1,46 @@
+/**
+ * @fileoverview UnoCSS only - Atomic CSS styling
+ * 
+ * This app uses UnoCSS exclusively for atomic CSS styling.
+ * NO Tailwind, NO MVP.css - frameworks are mutually exclusive.
+ * 
+ * Framework: UnoCSS only
+ * Base: Normalize
+ * 
+ * Note: UnoCSS integration with Next.js App Router requires additional setup.
+ * For now, using basic styling. UnoCSS can be added via Vite plugin or webpack config.
+ */
+
+/* Normalize/Reset - Base styles for consistent rendering */
+@import "../../../packages/ui/src/styles/normalize.css";
+
+@layer base {
+  * {
+    border-color: rgb(226 232 240); /* slate-200 */
+  }
+  
+  html {
+    background-color: rgb(255 255 255);
+    color-scheme: light;
+  }
+  
+  body {
+    background-color: rgb(255 255 255);
+    color: rgb(15 23 42); /* slate-900 */
+  }
+  
+  .dark * {
+    border-color: rgb(30 41 59); /* slate-800 */
+  }
+  
+  .dark html {
+    background-color: rgb(2 6 23); /* slate-950 */
+    color-scheme: dark;
+  }
+  
+  .dark body {
+    background-color: rgb(2 6 23);
+    color: rgb(248 250 252); /* slate-50 */
+  }
+}
+
