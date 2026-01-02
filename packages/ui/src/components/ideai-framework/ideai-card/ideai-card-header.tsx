@@ -18,7 +18,8 @@
 
 import { ReactNode, HTMLAttributes } from "react";
 import { cn } from "../../../lib/utils";
-import type { Framework, frameworkConfigs } from "./ideai-card-types";
+import type { Framework } from "./ideai-card-types";
+import { frameworkConfigs } from "./ideai-card-types";
 
 interface IdeAICardHeaderProps extends HTMLAttributes<HTMLElement> {
   /** Framework to use for styling */

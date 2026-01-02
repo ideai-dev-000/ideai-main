@@ -66,18 +66,21 @@ export async function loadChildAppPage(appName: string): Promise<ComponentType<a
   // Unified mode: Try to import child app page
   // Note: This requires child apps to be built into parent
   // For now, we'll use a registry approach (see apps/web/app/apps/[app]/registry.ts)
-  try {
-    // Try importing from a registry that maps app names to components
-    // This registry should be created at build time
-    const registry = await import("../../../../apps/web/app/apps/[app]/registry");
-    const loader = registry.getChildAppComponent;
-    if (loader) {
-      return await loader(appName);
-    }
-  } catch (error) {
-    // Registry not found - fall back to iframe or placeholder
-    console.warn(`Child app registry not found for ${appName}, using fallback`);
-  }
+  // NOTE: This import is commented out because it's outside the package rootDir.
+  // The registry should be accessed from the parent app, not from this shared package.
+  // TODO: Implement proper registry pattern that works within package boundaries
+  // try {
+  //   // Try importing from a registry that maps app names to components
+  //   // This registry should be created at build time
+  //   const registry = await import("../../../../apps/web/app/apps/[app]/registry.js");
+  //   const loader = registry.getChildAppComponent;
+  //   if (loader) {
+  //     return await loader(appName);
+  //   }
+  // } catch (error) {
+  //   // Registry not found - fall back to iframe or placeholder
+  //   console.warn(`Child app registry not found for ${appName}, using fallback`);
+  // }
   
   return null;
 }
