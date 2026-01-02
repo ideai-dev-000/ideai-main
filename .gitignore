@@ -38,8 +38,6 @@ yarn-error.log*
 *.pem
 
 # Code Context (Kotlin/Gradle build artifacts)
-/tools/code-context/.codecontext
-/tools/code-context/.gradle
 tools/code-context/build/
 tools/code-context/.gradle/
 tools/code-context/output/
