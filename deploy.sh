@@ -60,11 +60,11 @@ for app in "${APPS_TO_DEPLOY[@]}"; do
     echo -e "${YELLOW}⚠️  Project not linked: apps/${app}${NC}"
     echo -e "${BLUE}Attempting to link based on .ideai.json config...${NC}"
     
-    # Try to link using ideai-vercel-link script
-    if [ -f "scripts/ideai-vercel-link.mjs" ]; then
-      node scripts/ideai-vercel-link.mjs "$app" || {
+    # Try to link using ideai-develop-vercel-link script
+    if [ -f "scripts/ideai-develop-vercel-link.mjs" ]; then
+      node scripts/ideai-develop-vercel-link.mjs "$app" || {
         echo -e "${RED}❌ Failed to link project${NC}"
-        echo -e "${YELLOW}Run manually: node scripts/ideai-vercel-link.mjs ${app}${NC}"
+        echo -e "${YELLOW}Run manually: node scripts/ideai-develop-vercel-link.mjs ${app}${NC}"
         exit 1
       }
     else
