@@ -2,8 +2,10 @@
 
 **Version**: 1.0.0  
 **Last Updated**: January 3, 2026  
-**Status**: Decision Required  
+**Status**: ⚠️ SUPERSEDED - See Integrated Strategy  
 **Priority**: High (Second Priority Task)
+
+> **NOTE**: This document recommended separate Vercel projects. However, the **integrated approach** is now the recommended strategy. See `submodule-deployment-strategy-integrated.md` for the current approach.
 
 ---
 
