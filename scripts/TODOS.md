@@ -15,6 +15,17 @@
   - Create guidelines for submodule integration and standards compliance
   - Establish workflow for syncing v0 changes back to IdeaI-aligned submodules
 
+- [ ] **CRITICAL**: Submodule deployment strategy decision and implementation
+  - **Decision needed**: How should submodules be deployed to Vercel?
+    - Option A: Create separate Vercel projects for each submodule (independent deployments)
+    - Option B: Deploy submodules as folders within ideai-main project (unified deployment)
+  - Research pros/cons of each approach
+  - Document decision and rationale
+  - Implement chosen strategy
+  - Update deployment scripts to handle submodules correctly
+  - Ensure submodules don't conflict with main app deployments
+  - Align with IdeaI parent-child architecture patterns
+
 ### Build System
 
 - [ ] Real-time memory monitoring display in build UI
