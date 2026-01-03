@@ -1,21 +1,34 @@
 /**
  * @fileoverview Type declarations for vivus library
- * @module vivus
  */
 
 declare module "vivus" {
   export interface VivusOptions {
-    type?: "delayed" | "sync" | "oneByOne" | "scenario" | "scenario-sync";
+    type?:
+      | "delayed"
+      | "sync"
+      | "async"
+      | "oneByOne"
+      | "scenario"
+      | "scenario-sync";
     duration?: number;
-    animTimingFunction?: (input: number) => number;
-    start?: "inViewport" | "manual" | "autostart";
-    delay?: number;
+    animTimingFunction?: string;
+    pathTimingFunction?: string;
     file?: string;
+    start?: "inViewport" | "manual" | "autostart";
+    dashGap?: number;
+    forceRender?: boolean;
+    reverseStack?: boolean;
+    selfDestroy?: boolean;
     onReady?: (vivus: Vivus) => void;
   }
 
   export default class Vivus {
-    constructor(element: string | HTMLElement, options?: VivusOptions);
+    constructor(
+      element: string | HTMLElement | SVGElement,
+      options?: VivusOptions,
+      callback?: (vivus: Vivus) => void,
+    );
     play(speed?: number): Vivus;
     stop(): Vivus;
     reset(): Vivus;
@@ -23,10 +36,5 @@ declare module "vivus" {
     setFrameProgress(progress: number): Vivus;
     getStatus(): "start" | "progress" | "end";
     destroy(): void;
-    static EASE: (input: number) => number;
-    static EASE_OUT: (input: number) => number;
-    static EASE_IN: (input: number) => number;
-    static EASE_IN_OUT: (input: number) => number;
-    static LINEAR: (input: number) => number;
   }
 }
