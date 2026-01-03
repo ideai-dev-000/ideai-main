@@ -13,7 +13,6 @@
     "dev:restart": "node scripts/dev-manager.mjs restart",
     "dev:start": "node scripts/dev-manager.mjs start",
     "dev:status": "node scripts/dev-manager.mjs status",
-    "dev:stop": "node scripts/dev-manager.mjs stop",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "lint": "turbo run lint",
     "prepare": "husky install",
