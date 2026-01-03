@@ -13,7 +13,7 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "lint": "turbo run lint",
     "prepare": "husky install",
-    "sync-docs": "./scripts/sync-docs.sh",
+    "sync-docs": "./scripts/ideai-develop-sync-docs.sh",
     "test": "turbo run test",
     "test:watch": "turbo run test:watch"
   },

@@ -9,12 +9,17 @@
 
 import { assertDevelopment } from "../utils/dev-check.mjs";
 
+interface DeveloperUIOptions {
+  mode?: "build" | "boot" | "develop";
+  port?: number;
+}
+
 /**
  * Start the developer UI
  *
  * @param options CLI options
  */
-export async function startDeveloperUI(options = {}) {
+export async function startDeveloperUI(options: DeveloperUIOptions = {}) {
   assertDevelopment();
 
   // TODO: Implement web-based UI
