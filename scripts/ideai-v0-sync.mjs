@@ -40,6 +40,7 @@ const REPO_ROOT = join(__dirname, "..");
 
 const V0_SOURCE = join(REPO_ROOT, "apps/v0-ideai");
 const WEB_DEST = join(REPO_ROOT, "apps/web");
+const V0_STAGING = join(WEB_DEST, "components/v0-staging");
 
 // Colors for output
 const colors = {
@@ -111,12 +112,13 @@ function shouldSync(filePath, relativePath) {
     return false; // Config files handled separately
   }
 
-  // Only sync from specific directories
-  const syncDirs = ["components", "app", "lib", "hooks", "blocks"];
+  // Sync all relevant directories (like-for-like structure)
+  const syncDirs = ["components", "app", "lib", "hooks", "blocks", "pages"];
   const hasSyncDir = syncDirs.some(dir => relativePath.includes(`/${dir}/`) || relativePath.startsWith(`${dir}/`));
   
+  // Allow app/ files and all component-related files
   if (!hasSyncDir && !relativePath.startsWith("app/")) {
-    return false; // Only sync from components/, app/, lib/, hooks/, blocks/
+    return false; // Only sync from components/, app/, lib/, hooks/, blocks/, pages/
   }
 
   return true;
@@ -140,10 +142,14 @@ function toIdeAIFileName(fileName) {
 }
 
 /**
- * Apply IdeaI alignment to file content
+ * Apply IdeaI alignment to file content (Full Auto - Scalable)
  */
 function applyIdeAIAlignment(content, filePath, fileName) {
   let aligned = content;
+  const fileBase = basename(fileName, extname(fileName));
+  const fileExt = extname(fileName);
+  const isTSX = fileExt === ".tsx" || fileExt === ".ts";
+  const isComponent = isTSX && (fileBase[0] === fileBase[0].toUpperCase() || fileBase.includes("component"));
 
   // 1. Update imports to use @/components/ui/* for shadcn components
   aligned = aligned.replace(
@@ -157,57 +163,108 @@ function applyIdeAIAlignment(content, filePath, fileName) {
     "from '@repo/ui/components/$1'"
   );
 
-  // 3. Replace brand references (basic - can be enhanced)
+  // 3. Update relative imports to use @/ alias (if in trials, adjust paths)
+  aligned = aligned.replace(
+    /from\s+['"]\.\.\/\.\.\/components\/([^'"]+)['"]/g,
+    "from '@/components/$1'"
+  );
+  aligned = aligned.replace(
+    /from\s+['"]\.\.\/components\/([^'"]+)['"]/g,
+    "from '@/components/$1'"
+  );
+
+  // 4. Replace brand references (comprehensive)
   aligned = aligned.replace(/\bIDEAI\b/g, "IdeaI");
   aligned = aligned.replace(/\bIdeai\b/g, "IdeaI");
   aligned = aligned.replace(/\bideai\b(?!-)/g, "IdeaI");
+  aligned = aligned.replace(/\bIDEA\s*I\b/gi, "IdeaI");
+  aligned = aligned.replace(/\bIdea\s*I\b/g, "IdeaI");
 
-  // 4. Add code header if missing (for .tsx/.ts files)
-  if ((fileName.endsWith(".tsx") || fileName.endsWith(".ts")) && !aligned.includes("@fileoverview")) {
+  // 5. Fix TypeScript types (remove 'any', add proper types)
+  aligned = aligned.replace(/:\s*any\b/g, ": unknown");
+  aligned = aligned.replace(/:\s*any\[\]/g, ": unknown[]");
+  
+  // 6. Ensure React imports are correct
+  if (isTSX && aligned.includes("React") && !aligned.includes("import") && !aligned.includes("from 'react'")) {
+    // Add React import if component uses React but no import
+    if (aligned.match(/\b(useState|useEffect|useCallback|useMemo|forwardRef|React\.)/)) {
+      aligned = "import * as React from 'react';\n\n" + aligned;
+    }
+  }
+
+  // 7. Add comprehensive code header (for .tsx/.ts files)
+  if (isTSX && !aligned.includes("@fileoverview")) {
+    const moduleName = fileBase
+      .replace(/([a-z])([A-Z])/g, "$1 $2")
+      .replace(/-/g, " ")
+      .split(" ")
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join("");
+    
+    const description = isComponent 
+      ? `Component auto-synced from v0. Ready for review and promotion to production.`
+      : `File auto-synced from v0. Ready for review and promotion to production.`;
+
     const header = `/**
- * @fileoverview ${basename(fileName, extname(fileName))}
+ * @fileoverview ${moduleName}
  * 
- * @module ${basename(fileName, extname(fileName))}
+ * @file ${fileName}
+ * @module ${moduleName}
  * @description
- * Auto-synced from v0. Apply IdeaI standards as needed.
+ * ${description}
  * 
  * @see {@link ../../v0-ideai/${relative(V0_SOURCE, filePath)}}
+ * @since ${new Date().toISOString().split("T")[0]}
+ * @version 0.1.0
+ * 
+ * @todo Review and apply IdeaI standards
+ * @todo Test functionality
+ * @todo Promote to production when ready
  */
 
 `;
     aligned = header + aligned;
   }
 
+  // 8. Ensure proper file naming in exports (kebab-case)
+  const exportName = fileBase
+    .replace(/([a-z])([A-Z])/g, "$1-$2")
+    .toLowerCase();
+  
+  // Update default exports to match file name pattern
+  if (aligned.includes("export default")) {
+    aligned = aligned.replace(
+      /export\s+default\s+function\s+(\w+)/,
+      (match, name) => {
+        const kebabName = name.replace(/([a-z])([A-Z])/g, "$1-$2").toLowerCase();
+        return `export default function ${kebabName}`;
+      }
+    );
+  }
+
+  // 9. Fix common v0 patterns
+  // Remove console.logs (optional - can be configurable)
+  // aligned = aligned.replace(/console\.(log|warn|error)\([^)]*\);?\n?/g, "");
+  
+  // 10. Ensure proper spacing and formatting
+  aligned = aligned.replace(/\n{3,}/g, "\n\n"); // Max 2 newlines
+
   return aligned;
 }
 
 /**
- * Determine destination path for a file
+ * Determine destination path for a file (v0-staging - like-for-like structure)
+ * 
+ * Mirrors apps/v0-ideai/ structure exactly in apps/web/components/v0-staging/
+ * This allows v0 to edit directly in staging area with identical paths
  */
 function getDestinationPath(sourcePath, relativePath) {
-  const ext = extname(sourcePath);
-  const fileName = basename(sourcePath);
+  // Mirror the exact structure from v0-ideai to v0-staging
+  // apps/v0-ideai/components/ui/button.tsx → apps/web/components/v0-staging/components/ui/button.tsx
+  // apps/v0-ideai/app/page.tsx → apps/web/components/v0-staging/app/page.tsx
   
-  // Components go to components/
-  if (relativePath.includes("components/")) {
-    const componentPath = relativePath.replace("components/", "");
-    return join(WEB_DEST, "components", componentPath);
-  }
-  
-  // UI components go to components/ui/
-  if (relativePath.includes("components/ui/")) {
-    const uiPath = relativePath.replace("components/ui/", "");
-    return join(WEB_DEST, "components/ui", uiPath);
-  }
-  
-  // App pages go to app/
-  if (relativePath.startsWith("app/")) {
-    const appPath = relativePath.replace("app/", "");
-    return join(WEB_DEST, "app", appPath);
-  }
-  
-  // Default: same structure
-  return join(WEB_DEST, relativePath);
+  // Keep exact same structure, just change base path
+  return join(V0_STAGING, relativePath);
 }
 
 /**
@@ -288,7 +345,7 @@ function syncFile(fileInfo, options = {}) {
 function sync(options = {}) {
   const { preview = false, force = false } = options;
 
-  log("🔄 V0 → IdeaI Sync", "cyan");
+  log("🔄 V0 → IdeaI Sync (Staging Area)", "cyan");
   log("");
 
   if (!existsSync(V0_SOURCE)) {
@@ -297,8 +354,15 @@ function sync(options = {}) {
     process.exit(1);
   }
 
+  // Ensure v0-staging directory exists (mirrors v0-ideai structure)
+  if (!existsSync(V0_STAGING)) {
+    mkdirSync(V0_STAGING, { recursive: true });
+  }
+
   info(`Source: ${relative(REPO_ROOT, V0_SOURCE)}`);
-  info(`Destination: ${relative(REPO_ROOT, WEB_DEST)}`);
+  info(`Destination: ${relative(REPO_ROOT, V0_STAGING)} (v0-staging - like-for-like)`);
+  info(`Note: Structure mirrors v0-ideai exactly. v0 can edit directly here.`);
+  info(`      Use 'pnpm v0:promote' to move approved components to production.`);
   log("");
 
   // Scan for files
