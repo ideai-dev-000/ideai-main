@@ -10,6 +10,8 @@
     "v0:sync": "node scripts/ideai-v0-sync.mjs",
     "v0:sync:preview": "node scripts/ideai-v0-sync.mjs --preview",
     "v0:watch": "node scripts/ideai-v0-sync.mjs --watch",
+    "v0:export": "node scripts/ideai-v0-export.mjs",
+    "v0:export:watch": "node scripts/ideai-v0-export.mjs --watch",
     "v0:promote": "node scripts/ideai-v0-promote.mjs",
     "check-types": "turbo run check-types",
     "dev": "turbo run dev --concurrency=20",

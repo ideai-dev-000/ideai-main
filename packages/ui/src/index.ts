@@ -97,4 +97,9 @@ export { getIdeAIFaviconMetadata } from "./lib/favicon-metadata";
 export { readIdeAIConfig, readIdeAIConfigSync, getChildAppConfig, getChildApps, type IdeAIConfig, type VercelProjectConfig } from "./lib/ideai-config";
 export { getAppMode, loadChildAppPage, shouldUseUnifiedMode, type AppMode } from "./lib/ideai-app-loader";
 export { getVercelProjectConfig, getVercelProjectName, shouldForkToNewProject, type VercelProjectConfig as IdeAIVercelProjectConfig } from "./lib/ideai-vercel";
+
+// V0 Components - Auto-exported from v0-staging
+// Available immediately in all apps via: import { ComponentName } from "@repo/ui"
+export { TestButton } from "./components/v0/test-button";
+// End V0 Components
 export { getAllDependencies, verifyDependencies, generateBuildMetadata, checkSecurity, readPackageDependencies, type IdeAIBuildConfig, type ChildDependency, type BuildMetadata } from "./lib/ideai-build";
