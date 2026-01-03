@@ -64,3 +64,4 @@ tools/code-context/output/
 tools/code-context/*.log
 tools/code-context/*.tar
 tools/code-context/*.zip
+.DS_Store
