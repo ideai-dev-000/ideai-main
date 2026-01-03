@@ -52,6 +52,12 @@ node scripts/dev-manager.mjs
 # Specific apps
 pnpm --filter web dev
 pnpm --filter docs dev
+
+# Cold refresh (clean everything and rebuild)
+pnpm build:cold
+
+# Clean only (no rebuild)
+pnpm build:clean
 ```
 
 ### Subdomain Setup

@@ -93,6 +93,12 @@ pnpm dev
 # Build all apps
 pnpm build
 
+# Cold refresh (stop servers, clean caches, rebuild)
+pnpm build:cold
+
+# Clean only (no rebuild)
+pnpm build:clean
+
 # Deploy all apps
 ./deploy.sh
 
