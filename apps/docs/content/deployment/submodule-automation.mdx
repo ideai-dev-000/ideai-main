@@ -23,6 +23,7 @@ pnpm build
 ```
 
 **Implementation**: Updated `package.json` build script:
+
 ```json
 "build": "node scripts/ideai-build-sync-submodules.mjs --init --quiet && turbo run build"
 ```
@@ -36,6 +37,7 @@ Submodules are automatically updated when deploying:
 ```
 
 **Implementation**: Added to `deploy.sh` before deployment:
+
 ```bash
 # Update submodules to latest commits before deployment
 node scripts/ideai-build-sync-submodules.mjs --init
@@ -121,7 +123,7 @@ This suppresses output and only reports errors.
 ✅ **Always Up to Date**: Submodules automatically sync before build/deploy  
 ✅ **No Manual Steps**: Automation eliminates human error  
 ✅ **CI/CD Ready**: Works seamlessly in automated pipelines  
-✅ **Safe**: Handles optional submodules gracefully  
+✅ **Safe**: Handles optional submodules gracefully
 
 ---
 
@@ -134,4 +136,3 @@ This suppresses output and only reports errors.
 ---
 
 **Last Updated**: January 3, 2026
-

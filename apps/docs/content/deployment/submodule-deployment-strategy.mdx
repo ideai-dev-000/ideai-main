@@ -2,8 +2,10 @@
 
 **Version**: 1.0.0  
 **Last Updated**: January 3, 2026  
-**Status**: Decision Required  
+**Status**: ⚠️ SUPERSEDED - See Integrated Strategy  
 **Priority**: High (Second Priority Task)
+
+> **NOTE**: This document recommended separate Vercel projects. However, the **integrated approach** is now the recommended strategy. See `submodule-deployment-strategy-integrated.md` for the current approach.
 
 ---
 
@@ -111,6 +113,7 @@ This document analyzes deployment strategies for Git submodules in the IdeaI mon
 #### Implementation Steps
 
 1. **Create Vercel Project**
+
    ```bash
    # In submodule repository
    cd apps/ideai-designer
@@ -126,15 +129,19 @@ This document analyzes deployment strategies for Git submodules in the IdeaI mon
    - Include files outside root: ✅ Enabled (if needed)
 
 3. **Add Deployment Script**
+
    ```bash
    # In submodule repository
    # Add deploy.sh similar to ideai-main
    ```
 
 4. **Update IdeaI Integration**
+
    ```typescript
    // In IdeaI apps that use submodule
-   const DESIGNER_URL = process.env.NEXT_PUBLIC_DESIGNER_URL || 'https://ideai-designer-idea-i.vercel.app';
+   const DESIGNER_URL =
+     process.env.NEXT_PUBLIC_DESIGNER_URL ||
+     "https://ideai-designer-idea-i.vercel.app";
    ```
 
 5. **Documentation**
@@ -292,16 +299,16 @@ This document analyzes deployment strategies for Git submodules in the IdeaI mon
 
 ## Decision Matrix
 
-| Factor | Option A (Separate) | Option B (Folders) |
-|--------|---------------------|-------------------|
-| **Architectural Alignment** | ✅ Matches IdeaI patterns | ❌ Breaks separation |
-| **Consistency** | ✅ Same as current apps | ❌ Different pattern |
-| **Flexibility** | ✅ Independent | ❌ Coupled |
-| **Development Workflow** | ✅ Clear separation | ❌ More complex |
-| **Maintainability** | ✅ Easier | ❌ Harder |
-| **Deployment Speed** | ✅ Fast (isolated) | ❌ Slow (full deploy) |
-| **Scaling** | ✅ Independent | ❌ Shared |
-| **Complexity** | ✅ Simple | ❌ Complex routing |
+| Factor                      | Option A (Separate)       | Option B (Folders)    |
+| --------------------------- | ------------------------- | --------------------- |
+| **Architectural Alignment** | ✅ Matches IdeaI patterns | ❌ Breaks separation  |
+| **Consistency**             | ✅ Same as current apps   | ❌ Different pattern  |
+| **Flexibility**             | ✅ Independent            | ❌ Coupled            |
+| **Development Workflow**    | ✅ Clear separation       | ❌ More complex       |
+| **Maintainability**         | ✅ Easier                 | ❌ Harder             |
+| **Deployment Speed**        | ✅ Fast (isolated)        | ❌ Slow (full deploy) |
+| **Scaling**                 | ✅ Independent            | ❌ Shared             |
+| **Complexity**              | ✅ Simple                 | ❌ Complex routing    |
 
 **Winner**: Option A (Separate Vercel Projects)
 
@@ -314,6 +321,7 @@ This document analyzes deployment strategies for Git submodules in the IdeaI mon
 #### For Submodule Repository
 
 **Project Settings**:
+
 - **Project Name**: `ideai-designer`
 - **Root Directory**: `apps/ideai-designer` (or root if submodule is at root)
 - **Framework**: Next.js
@@ -323,6 +331,7 @@ This document analyzes deployment strategies for Git submodules in the IdeaI mon
 - **Include files outside root**: ✅ Enabled (if accessing shared packages)
 
 **Environment Variables**:
+
 ```env
 NEXT_PUBLIC_VERCEL_PROJECT_NAME=ideai-designer
 NEXT_PUBLIC_VERCEL_ORG_ID=idea-i
@@ -331,6 +340,7 @@ NEXT_PUBLIC_VERCEL_ORG_ID=idea-i
 #### For IdeaI Integration
 
 **Environment Variables** (in IdeaI apps):
+
 ```env
 NEXT_PUBLIC_DESIGNER_URL=https://ideai-designer-idea-i.vercel.app
 ```
@@ -368,11 +378,11 @@ In IdeaI apps that embed submodule:
 ```typescript
 // apps/web/app/designer/page.tsx
 export default function DesignerPage() {
-  const designerUrl = process.env.NEXT_PUBLIC_DESIGNER_URL || 
+  const designerUrl = process.env.NEXT_PUBLIC_DESIGNER_URL ||
     'https://ideai-designer-idea-i.vercel.app';
-  
+
   return (
-    <iframe 
+    <iframe
       src={designerUrl}
       className="w-full h-screen"
       title="IdeaI Designer"
@@ -447,4 +457,3 @@ Deployment strategy is successful when:
 **Last Updated**: January 3, 2026  
 **Status**: Awaiting decision approval  
 **Recommended**: Option A (Separate Vercel Projects)
-

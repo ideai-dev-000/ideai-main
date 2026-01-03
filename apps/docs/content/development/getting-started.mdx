@@ -31,10 +31,13 @@ pnpm install
 ### 3. Start Development Server
 
 \`\`\`bash
+
 # Start all apps (web: 3000, docs: 3001, all: 3002)
+
 pnpm dev
 
 # Start specific app
+
 pnpm dev --filter=web
 pnpm dev --filter=docs
 pnpm dev --filter=@repo/all
@@ -64,14 +67,14 @@ All three apps share identical design and styling, with site names displayed in 
 \`\`\`
 ideai-main/
 ├── apps/
-│   ├── web/          # Main web application (port 3000)
-│   ├── docs/         # Documentation site (port 3001)
-│   └── all/           # UI showcase/test page (port 3002)
+│ ├── web/ # Main web application (port 3000)
+│ ├── docs/ # Documentation site (port 3001)
+│ └── all/ # UI showcase/test page (port 3002)
 ├── packages/
-│   ├── ui/           # Shared UI components
-│   ├── eslint-config/ # Shared ESLint config
-│   └── typescript-config/ # Shared TypeScript config
-└── docs/             # Documentation
+│ ├── ui/ # Shared UI components
+│ ├── eslint-config/ # Shared ESLint config
+│ └── typescript-config/ # Shared TypeScript config
+└── docs/ # Documentation
 \`\`\`
 
 ## Available Scripts
@@ -80,6 +83,8 @@ ideai-main/
 
 - `pnpm dev` - Start all development servers
 - `pnpm build` - Build all applications
+- `pnpm build:cold` - **Cold refresh**: Stop all servers, clean caches, sync submodules, rebuild
+- `pnpm build:clean` - Clean only (no rebuild): Stop servers, clean caches
 - `pnpm lint` - Lint all packages
 - `pnpm check-types` - Type check all packages
 - `pnpm format` - Format code with Prettier
@@ -110,13 +115,17 @@ Each app has its own scripts (run from app directory or with `--filter`):
 Before committing:
 
 \`\`\`bash
+
 # Lint code
+
 pnpm lint
 
 # Type check
+
 pnpm check-types
 
 # Format code
+
 pnpm format
 \`\`\`
 
@@ -125,6 +134,7 @@ pnpm format
 ### Turborepo
 
 This project uses Turborepo for:
+
 - Fast builds with caching
 - Parallel task execution
 - Dependency graph management
@@ -142,7 +152,9 @@ This project uses Turborepo for:
 Apps can use environment variables via `.env.local`:
 
 \`\`\`bash
+
 # Example
+
 cd apps/web
 cp .env.example .env.local
 \`\`\`
@@ -161,10 +173,13 @@ vercel env pull .env.local
 ### Run Tests
 
 \`\`\`bash
+
 # All tests
+
 pnpm test
 
 # Specific package
+
 pnpm test --filter=web
 \`\`\`
 
@@ -179,6 +194,7 @@ pnpm build
 ### Production Build
 
 Builds are optimized for production:
+
 - Code minification
 - Tree shaking
 - Static optimization (Next.js)
@@ -188,19 +204,24 @@ Builds are optimized for production:
 ### Port Already in Use
 
 \`\`\`bash
+
 # Find and kill processes on all ports
+
 lsof -ti:3000,3001,3002 | xargs kill -9
 
 # Or kill specific port
-lsof -ti:3000 | xargs kill -9  # web
-lsof -ti:3001 | xargs kill -9  # docs
-lsof -ti:3002 | xargs kill -9  # all
+
+lsof -ti:3000 | xargs kill -9 # web
+lsof -ti:3001 | xargs kill -9 # docs
+lsof -ti:3002 | xargs kill -9 # all
 \`\`\`
 
 ### Dependency Issues
 
 \`\`\`bash
+
 # Clean install
+
 rm -rf node_modules
 pnpm install
 \`\`\`
@@ -208,7 +229,9 @@ pnpm install
 ### Type Errors
 
 \`\`\`bash
+
 # Regenerate types
+
 pnpm check-types
 \`\`\`
 

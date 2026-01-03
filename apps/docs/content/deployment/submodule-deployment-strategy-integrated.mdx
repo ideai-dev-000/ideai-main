@@ -134,6 +134,7 @@ Update `apps/ideai-designer/package.json`:
 ```
 
 **Key Changes**:
+
 - Use `@repo/ui` instead of individual Radix components
 - Use workspace dependencies
 - Match IdeaI versions (Next.js 16, React 19)
@@ -182,10 +183,11 @@ Update `apps/ideai-designer/app/globals.css`:
 After v0 export, align components:
 
 1. **Use `@repo/ui` components** instead of local copies
+
    ```tsx
    // ❌ Before (v0 export)
    import { Button } from "@/components/ui/button";
-   
+
    // ✅ After (IdeaI aligned)
    import { Button } from "@repo/ui/components/button";
    ```
@@ -206,12 +208,14 @@ After v0 export, align components:
 **Deployment Strategy**: Deploy v0 submodule as part of `web` app
 
 **Vercel Configuration**:
+
 - **Project**: `web` (main IdeaI project)
 - **Root Directory**: `apps/web`
 - **Include files outside root**: ✅ Enabled
 - **v0 submodule**: Included automatically (Git submodule)
 
 **How It Works**:
+
 1. Deploy `web` app to Vercel
 2. Vercel includes submodules (if configured)
 3. v0 submodule accessible at: `myui.space/apps/ideai-designer`
@@ -224,20 +228,23 @@ After v0 export, align components:
 ### Daily Workflow: v0 → IdeaI Integration
 
 1. **Develop in v0**
+
    ```
    v0 → Generate design/code → Export
    ```
 
 2. **Align with IdeaI Standards**
+
    ```
    Export → Apply IdeaI alignment checklist → Commit to submodule
    ```
 
 3. **Test in IdeaI Context**
+
    ```bash
    # Start IdeaI dev servers
    pnpm dev
-   
+
    # Access v0 submodule
    # http://localhost:3000/apps/ideai-designer (unified)
    # or http://localhost:3013 (individual)
@@ -274,6 +281,7 @@ After v0 export, align components:
    - Refine with IdeaI standards
 
 **Workflow**:
+
 ```
 v0 Design → IdeaI Alignment → Integration → Testing → Deployment
 ```
@@ -295,6 +303,7 @@ v0 Design → IdeaI Alignment → Integration → Testing → Deployment
 **Install Command**: `pnpm install` (from repo root)
 
 **Environment Variables**:
+
 ```env
 NEXT_PUBLIC_IDEAI_APP_MODE=unified
 NEXT_PUBLIC_VERCEL_PROJECT_NAME=web
@@ -377,6 +386,7 @@ If currently using separate deployment:
 ### Issue: Submodule Not Included in Build
 
 **Solution**: Ensure Git submodule is initialized
+
 ```bash
 git submodule update --init --recursive
 ```
@@ -384,6 +394,7 @@ git submodule update --init --recursive
 ### Issue: @repo/ui Not Found
 
 **Solution**: Install workspace dependencies
+
 ```bash
 pnpm install
 ```
@@ -391,6 +402,7 @@ pnpm install
 ### Issue: Port Conflicts
 
 **Solution**: Assign unique port in `.ideai.json`
+
 ```json
 {
   "localPort": 3013
@@ -400,6 +412,7 @@ pnpm install
 ### Issue: CSS Conflicts
 
 **Solution**: Use centralized CSS imports
+
 ```css
 @import "../../../packages/ui/src/styles/globals.css";
 @import "../../../packages/ui/src/styles/ideai.css";
@@ -433,4 +446,3 @@ Integrated deployment is successful when:
 **Last Updated**: January 3, 2026  
 **Status**: Recommended Strategy  
 **Next Step**: Implement integration (Steps 1-6)
-

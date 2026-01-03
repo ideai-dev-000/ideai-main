@@ -48,17 +48,20 @@ Before syncing v0 code to IdeaI, ensure compliance with these standards:
 ### 1. Brand and Naming Standards
 
 #### Brand Name: IdeaI
+
 - ✅ **CRITICAL**: Always use **IdeaI** (capital I, lowercase dea, capital I)
 - ❌ Never: `IDEAI`, `Ideai`, `ideai`, `IDEAi`, `Idea I`
 - **Check**: All UI text, documentation, code comments
 
 #### Semantic File Naming
+
 - ✅ Use kebab-case: `user-profile-card.tsx`, `api-auth-handler.ts`
 - ✅ Be descriptive and specific
 - ✅ Include purpose/type in name
 - ❌ Never: `component1.tsx`, `utils.ts`, `file.md`, `temp.js`
 
 #### UniFrame (UF) Naming
+
 - **Brand name**: "UniFrame" (capital U, capital F)
 - **File names**: `uf.tsx`, `uf-code-viewer.tsx` (kebab-case with "uf-" prefix)
 - **Component names**: `UF`, `UFCodeViewer`, `UFCard` (PascalCase with "UF" prefix)
@@ -67,7 +70,9 @@ Before syncing v0 code to IdeaI, ensure compliance with these standards:
 ### 2. Code Standards
 
 #### Code Headers
+
 All code files must include:
+
 ```typescript
 /**
  * @fileoverview Brief description
@@ -80,6 +85,7 @@ All code files must include:
 ```
 
 #### Code Quality
+
 - ✅ TypeScript strict mode
 - ✅ All functions typed
 - ❌ No `any` types
@@ -87,6 +93,7 @@ All code files must include:
 - ✅ Comments for complex logic
 
 #### No Legacy Support
+
 - ❌ NO legacy file format support
 - ❌ NO backward compatibility code
 - ✅ ONLY current formats
@@ -95,6 +102,7 @@ All code files must include:
 ### 3. Architecture Standards
 
 #### Composability and Parent-Child Semantics
+
 - ✅ Components must be composable
 - ✅ Clear parent-child relationships
 - ✅ Use UniFrame structure: wrapper → header/body/footer → content
@@ -102,11 +110,13 @@ All code files must include:
 - ❌ Monolithic components that can't be broken down
 
 #### Naming Patterns
+
 - **Scripts**: `ideai-[parent]-[child].mjs`
 - **Components**: `[parent]-[child].tsx`
 - **Directories**: `[parent]/[child]/`
 
 **Example**:
+
 - ✅ `ideai-build-verify.mjs`
 - ✅ `uf-card-header.tsx`
 - ✅ `uf-card/uf-header/`
@@ -115,12 +125,14 @@ All code files must include:
 ### 4. UI Consistency Standards
 
 #### Centralized CSS Architecture
+
 - ✅ Import from `@repo/ui/src/styles/globals.css`
 - ✅ Import from `@repo/ui/src/styles/ideai.css`
 - ❌ NO custom CSS in apps (only app-specific layout adjustments)
 - ✅ Use standard Tailwind classes + CSS variables from `ideai.css`
 
 #### Import Pattern (MANDATORY)
+
 ```css
 /* In apps/*/app/globals.css */
 @import "../../../packages/ui/src/styles/globals.css";
@@ -130,12 +142,14 @@ All code files must include:
 ### 5. Documentation Standards
 
 #### File Organization
+
 - ✅ All documentation in `docs/` directory
 - ✅ Semantic naming: kebab-case
 - ❌ NO MD files in root (except README.md, SECURITY.md, .ideai-rules.md)
 - ❌ NO temporary files in root
 
 #### Accuracy Requirements
+
 - ✅ 100% accuracy - all information current
 - ✅ All code examples tested and working
 - ✅ All file paths verified
@@ -226,6 +240,7 @@ After getting code from v0, apply IdeaI standards:
 ### Step 3: Sync to IdeaI
 
 1. **Commit to submodule repository**
+
    ```bash
    cd apps/ideai-designer
    git add .
@@ -242,6 +257,7 @@ After getting code from v0, apply IdeaI standards:
    ```
 
 2. **Update submodule reference in IdeaI**
+
    ```bash
    cd /path/to/ideai-main
    git submodule update --remote apps/ideai-designer
@@ -258,6 +274,7 @@ After getting code from v0, apply IdeaI standards:
    ```
 
 3. **Verify integration**
+
    ```bash
    # Build to ensure no errors
    pnpm build
@@ -276,6 +293,7 @@ After getting code from v0, apply IdeaI standards:
 ### Daily Development Cycle
 
 1. **Morning: Pull latest**
+
    ```bash
    # In IdeaI monorepo
    git submodule update --remote apps/ideai-designer
@@ -290,6 +308,7 @@ After getting code from v0, apply IdeaI standards:
    - Apply all required changes
 
 4. **Test locally**
+
    ```bash
    # In submodule directory
    cd apps/ideai-designer
@@ -324,6 +343,7 @@ Before deploying submodule:
    - Document any exceptions (with justification)
 
 2. **Build Verification**
+
    ```bash
    pnpm build
    pnpm lint
@@ -331,6 +351,7 @@ Before deploying submodule:
    ```
 
 3. **Documentation Verification**
+
    ```bash
    node scripts/ideai-build.mjs verify --docs
    ```
@@ -421,21 +442,27 @@ Before deploying submodule:
 ### Common Issues
 
 #### Issue: File naming violations
+
 **Solution**: Rename files to semantic kebab-case immediately after v0 export
 
 #### Issue: Missing code headers
+
 **Solution**: Add headers template to all files. Consider script to auto-add.
 
 #### Issue: TypeScript `any` types
+
 **Solution**: Replace with proper types. Use IdeaI type definitions where available.
 
 #### Issue: Brand name inconsistencies
+
 **Solution**: Use find/replace: `IDEAI|Ideai|ideai` → `IdeaI` (case-sensitive)
 
 #### Issue: CSS conflicts
+
 **Solution**: Remove custom CSS, use centralized imports from `@repo/ui`
 
 #### Issue: Component structure violations
+
 **Solution**: Refactor to parent-child patterns. Use UniFrame structure.
 
 ---
@@ -468,4 +495,3 @@ A submodule is considered IdeaI-aligned when:
 
 **Last Updated**: January 3, 2026  
 **Next Step**: Research submodule deployment strategy (second priority task)
-
