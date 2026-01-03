@@ -1,0 +1,137 @@
+# Submodule Automation
+
+**Version**: 1.0.0  
+**Last Updated**: January 3, 2026  
+**Purpose**: Automatic submodule updates before build and deployment
+
+---
+
+## Overview
+
+IdeaI automatically updates all Git submodules to their latest commits before building or deploying. This ensures submodules are always up to date with their remote repositories.
+
+---
+
+## Automation Points
+
+### 1. Build Process
+
+Submodules are automatically updated when running:
+
+```bash
+pnpm build
+```
+
+**Implementation**: Updated `package.json` build script:
+```json
+"build": "node scripts/ideai-build-sync-submodules.mjs --init --quiet && turbo run build"
+```
+
+### 2. Deployment Process
+
+Submodules are automatically updated when deploying:
+
+```bash
+./deploy.sh --prod
+```
+
+**Implementation**: Added to `deploy.sh` before deployment:
+```bash
+# Update submodules to latest commits before deployment
+node scripts/ideai-build-sync-submodules.mjs --init
+```
+
+### 3. Build Verification
+
+Submodules are automatically synced when running verification:
+
+```bash
+node scripts/ideai-build.mjs verify
+```
+
+---
+
+## Manual Usage
+
+### Update All Submodules
+
+```bash
+node scripts/ideai-build-sync-submodules.mjs
+```
+
+### Initialize and Update
+
+```bash
+node scripts/ideai-build-sync-submodules.mjs --init
+```
+
+### Quiet Mode (for CI/CD)
+
+```bash
+node scripts/ideai-build-sync-submodules.mjs --quiet
+```
+
+---
+
+## How It Works
+
+1. **Reads `.gitmodules`**: Parses submodule configuration
+2. **Checks Initialization**: Verifies submodules are initialized
+3. **Updates to Latest**: Runs `git submodule update --remote --recursive`
+4. **Reports Status**: Shows which submodules were updated and their commit hashes
+
+---
+
+## Current Submodules
+
+1. **`apps/ideai-designer`**
+   - Repository: https://github.com/ideai-dev-000/ideai-designer.git
+   - **Required**: Yes (integrated child app)
+   - **Auto-updated**: ✅ Yes
+
+2. **`tools/code-context`**
+   - Repository: https://github.com/ideai-dev/ideai-codecontext.git
+   - **Required**: No (local development only)
+   - **Auto-updated**: ⚠️ Optional (may fail if not initialized)
+
+---
+
+## Error Handling
+
+- **Non-critical failures**: Script continues if optional submodules fail
+- **Critical failures**: Script exits with error if required submodules fail
+- **Initialization**: Use `--init` flag to initialize submodules automatically
+
+---
+
+## CI/CD Integration
+
+For CI/CD pipelines, use quiet mode:
+
+```bash
+node scripts/ideai-build-sync-submodules.mjs --init --quiet
+```
+
+This suppresses output and only reports errors.
+
+---
+
+## Benefits
+
+✅ **Always Up to Date**: Submodules automatically sync before build/deploy  
+✅ **No Manual Steps**: Automation eliminates human error  
+✅ **CI/CD Ready**: Works seamlessly in automated pipelines  
+✅ **Safe**: Handles optional submodules gracefully  
+
+---
+
+## Related Documentation
+
+- **`docs/development/submodule-development-workflow.md`**: v0 → IdeaI alignment process
+- **`docs/deployment/submodule-deployment-strategy-integrated.md`**: Integrated deployment strategy
+- **`scripts/ideai-build-sync-submodules.mjs`**: Implementation script
+
+---
+
+**Last Updated**: January 3, 2026
+

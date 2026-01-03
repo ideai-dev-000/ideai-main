@@ -430,6 +430,19 @@ async function setup(options) {
 async function verify(options) {
   log("\n🔍 Verifying IdeaI project setup...", "bright");
   
+  // Sync submodules before verification
+  log("\n📦 Syncing submodules...", "blue");
+  try {
+    const { syncSubmodules } = await import("./ideai-build-sync-submodules.mjs");
+    const exitCode = syncSubmodules();
+    if (exitCode !== 0) {
+      warn("Some submodules failed to sync, continuing anyway...");
+    }
+  } catch (err) {
+    warn(`Submodule sync failed: ${err.message}`);
+    warn("Continuing with verification anyway...");
+  }
+  
   // Import verification modules
   const docsVerifierPath = join(__dirname, "ideai-build", "docs-verifier.mjs");
   const buildUIPath = join(__dirname, "ideai-build", "build-ui.mjs");

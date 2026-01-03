@@ -45,6 +45,15 @@ echo ""
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$REPO_ROOT"
 
+# Update submodules to latest commits before deployment
+echo -e "${BLUE}Updating submodules to latest commits...${NC}"
+if node scripts/ideai-build-sync-submodules.mjs --init; then
+  echo -e "${GREEN}✅ Submodules updated${NC}"
+else
+  echo -e "${YELLOW}⚠️  Submodule update had issues, continuing anyway...${NC}"
+fi
+echo ""
+
 # Deploy each app
 for app in "${APPS_TO_DEPLOY[@]}"; do
   echo -e "${YELLOW}Deploying ${app}...${NC}"
