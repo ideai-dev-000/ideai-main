@@ -1,0 +1,22 @@
+{
+  "role": "child",
+  "name": "V0 Prototype",
+  "description": "Minimal V0 boilerplate for IdeaI-compatible prototypes",
+  "parentApp": "web",
+  "localPort": 3014,
+  "v0Integration": true,
+  "sharedLibraries": true,
+  "metadata": {
+    "id": "v0-prototype",
+    "port": 3014,
+    "css": ["Tailwind CSS", "IdeaI Design System"],
+    "capabilities": [
+      "Minimal boilerplate",
+      "V0 compatible",
+      "IdeaI standards"
+    ],
+    "path": "/v0-prototype",
+    "category": "prototype"
+  }
+}
+

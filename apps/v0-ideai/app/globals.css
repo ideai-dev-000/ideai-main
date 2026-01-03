@@ -1,0 +1,16 @@
+/**
+ * @fileoverview Global styles for V0 prototype
+ * 
+ * @module V0PrototypeGlobalStyles
+ * @description
+ * Global styles using centralized IdeaI CSS.
+ * Minimal setup for V0 prototyping.
+ */
+
+/* Tailwind CSS 4 */
+@import "tailwindcss";
+
+/* IdeaI centralized CSS */
+@import "../../../packages/ui/src/styles/globals.css";
+@import "../../../packages/ui/src/styles/ideai.css";
+
