@@ -423,6 +423,144 @@ Never skip CI checks. All PRs must pass CI before merge.
 8. If in non-interactive environment, disable auto-sign, commit, re-enable
 9. Push and verify CI passes
 
+## Development Server Management
+
+**CRITICAL**: Starting dev servers must follow a clear, predictable workflow to avoid confusion.
+
+### Primary Method: Turbo (All Apps)
+
+**Command**: `pnpm dev`
+
+**What it does**:
+- Runs `turbo run dev --concurrency=20` from root
+- Starts all 13 apps in parallel via Turbo
+- Each app runs on its configured port (3000-3012)
+
+**When to use**:
+- ✅ Starting all apps at once
+- ✅ Normal development workflow
+- ✅ First time setup
+
+**If Turbo fails**:
+- One app failure may stop Turbo or leave some apps not started
+- Check which apps failed: Look for error messages in output
+- Use fallback method (individual apps) to start remaining apps
+
+### Fallback Method: Individual Apps
+
+**Command**: `pnpm --filter <app-name> dev`
+
+**What it does**:
+- Starts a single app in foreground
+- Use `&` to run in background: `pnpm --filter web dev &`
+
+**When to use**:
+- ✅ Turbo failed and some apps didn't start
+- ✅ Need to start specific apps only
+- ✅ Debugging a specific app
+
+**Example**:
+```bash
+# Start web app
+pnpm --filter web dev &
+
+# Start all apps individually (if turbo fails)
+for app in web docs all nocss mvp tailwind allcss bootstrap unocss shadcn material chakra radix; do
+  pnpm --filter $app dev &
+done
+```
+
+### Checking Server Status
+
+**Method 1: Port Check** (Recommended)
+```bash
+# Check all ports
+for port in 3000 3001 3002 3003 3004 3005 3006 3007 3008 3009 3010 3011 3012; do
+  if lsof -ti:$port >/dev/null 2>&1; then
+    echo "✅ Port $port: Running"
+  else
+    echo "❌ Port $port: Not running"
+  fi
+done
+```
+
+**Method 2: Process Check**
+```bash
+# Check for running Next.js processes
+ps aux | grep -E "next dev|turbo.*dev" | grep -v grep
+```
+
+**Method 3: HTTP Check**
+```bash
+# Test if app responds
+curl -s http://localhost:3000 >/dev/null && echo "✅ Web app responding" || echo "❌ Web app not responding"
+```
+
+### Stopping Dev Servers
+
+**Graceful Shutdown** (Recommended):
+```bash
+pnpm dev:stop
+# Uses scripts/ideai-develop-graceful-shutdown.mjs
+```
+
+**Force Kill** (If graceful fails):
+```bash
+pnpm dev:stop:force
+# Immediately kills all processes
+```
+
+**Manual Kill**:
+```bash
+# Kill all processes on dev ports
+lsof -ti:3000,3001,3002,3003,3004,3005,3006,3007,3008,3009,3010,3011,3012 | xargs kill -9 2>/dev/null
+```
+
+### Important Notes
+
+1. **`dev-manager.mjs` doesn't exist**: Documentation may reference `scripts/dev-manager.mjs`, but this script does not exist. Use `pnpm dev` (Turbo) or individual `pnpm --filter` commands instead.
+
+2. **Turbo concurrency**: The `dev` script uses `--concurrency=20` to handle all 13 apps. This is required because Turbo's default is 10, which is insufficient.
+
+3. **App ports**: Each app has a fixed port defined in its `package.json` dev script:
+   - web: 3000, docs: 3001, all: 3002, nocss: 3003, mvp: 3004, tailwind: 3005, allcss: 3006, bootstrap: 3007, unocss: 3008, shadcn: 3009, material: 3010, chakra: 3011, radix: 3012
+
+4. **Submodules**: `apps/ideai-designer` is a submodule and is excluded from `pnpm dev`. Start it separately if needed: `cd apps/ideai-designer && pnpm dev` (runs on port 3013).
+
+5. **Background processes**: When starting apps individually, always use `&` to run in background, or they will block the terminal.
+
+### Troubleshooting
+
+**Problem**: Turbo fails with "command exited (1)"
+- **Solution**: Check which app failed, fix the error, then start remaining apps individually
+
+**Problem**: Some apps not starting
+- **Solution**: Use port check to identify missing apps, then start them individually
+
+**Problem**: Port already in use
+- **Solution**: Use `pnpm dev:stop` to gracefully stop all servers, or manually kill processes on that port
+
+**Problem**: Apps start but don't respond
+- **Solution**: Wait 10-15 seconds for Next.js to compile, then check again. Check logs for compilation errors.
+
+### Workflow Checklist
+
+**Before starting dev servers**:
+- [ ] All dependencies installed (`pnpm install`)
+- [ ] No processes on ports 3000-3012 (or stop existing ones)
+- [ ] Submodules synced (if using ideai-designer)
+
+**Starting dev servers**:
+- [ ] Try `pnpm dev` first (Turbo method)
+- [ ] Wait 15-20 seconds for all apps to start
+- [ ] Check port status to verify all apps running
+- [ ] If some apps failed, start them individually
+
+**After starting**:
+- [ ] Verify all 13 apps running (ports 3000-3012)
+- [ ] Test at least web (3000) and docs (3001) in browser
+- [ ] Check for compilation errors in terminal
+
 ## Build Verification System
 
 IdeaI includes a comprehensive build verification system:
