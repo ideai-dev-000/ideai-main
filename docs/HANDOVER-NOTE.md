@@ -30,11 +30,13 @@
    - ✅ Ensure submodules maintain IdeaI standards
    - **Documentation**: `docs/development/submodule-development-workflow.md`
 
-2. **Submodule Deployment Strategy** ✅ **COMPLETED** (Decision: Option A - Separate Vercel Projects)
+2. **Submodule Deployment Strategy** ✅ **COMPLETED** (Decision: Integrated Approach)
    - ✅ Research and document pros/cons
-   - ✅ **Recommendation**: Separate Vercel projects (matches current IdeaI pattern)
-   - ⚠️ **Implementation pending**: Create Vercel project and deploy
-   - **Documentation**: `docs/deployment/submodule-deployment-strategy.md`
+   - ✅ **Revised Strategy**: Integrated as child app within IdeaI monorepo
+   - ✅ **Rationale**: v0 apps work within IdeaI, share libraries, act as developer/designer tool
+   - ✅ **Implementation**: Created `.ideai.json`, updated parent app config
+   - ⚠️ **Next Step**: Align package.json to use workspace dependencies
+   - **Documentation**: `docs/deployment/submodule-deployment-strategy-integrated.md`
 
 3. **Deployment Status**:
    - ✅ 3 apps deployed: `web`, `docs`, `all`
