@@ -3,6 +3,8 @@
   "private": true,
   "scripts": {
     "build": "node scripts/ideai-build-sync-submodules.mjs --init --quiet && turbo run build",
+    "build:cold": "node scripts/ideai-build-cold-refresh.mjs",
+    "build:clean": "node scripts/ideai-build-cold-refresh.mjs --no-build",
     "check-types": "turbo run check-types",
     "dev": "turbo run dev --concurrency=20",
     "dev:build-check": "node scripts/dev-manager.mjs build-check",
