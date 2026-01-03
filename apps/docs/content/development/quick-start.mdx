@@ -1,11 +1,13 @@
 # Quick Start - Use New Features in 5 Minutes
 
 ## 1. Install Dependencies (30 seconds)
+
 ```bash
 pnpm install
 ```
 
 ## 2. Run Your App (same as before)
+
 ```bash
 pnpm dev
 ```
@@ -31,8 +33,8 @@ const date = formatDate(new Date(), 'PP')
 
 ```tsx
 // In apps/docs/app/layout.tsx (or any other app)
-import { Analytics } from '@repo/monitoring/analytics'
-import { SpeedInsights } from '@repo/monitoring/speed-insights'
+import { Analytics } from "@repo/monitoring/analytics";
+import { SpeedInsights } from "@repo/monitoring/speed-insights";
 
 export default function RootLayout({ children }) {
   return (
@@ -43,7 +45,7 @@ export default function RootLayout({ children }) {
         <SpeedInsights />
       </body>
     </html>
-  )
+  );
 }
 ```
 
@@ -53,12 +55,12 @@ export default function RootLayout({ children }) {
 // Copy apps/web/proxy.js to apps/docs/proxy.js
 // Or import from the package:
 
-import { applySecurityHeaders } from '@repo/security'
+import { applySecurityHeaders } from "@repo/security";
 
 export function middleware(request: NextRequest) {
-  const response = NextResponse.next()
-  applySecurityHeaders(response.headers)
-  return response
+  const response = NextResponse.next();
+  applySecurityHeaders(response.headers);
+  return response;
 }
 ```
 

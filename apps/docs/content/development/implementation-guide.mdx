@@ -27,10 +27,12 @@ pnpm test
 **Status:** ✅ Implemented
 
 **Files:**
+
 - `apps/web/proxy.js` - Next.js 16 proxy with comprehensive security headers
 - `packages/security/` - Reusable security package
 
 **What it does:**
+
 - Content Security Policy with nonce support
 - XSS Protection headers
 - MIME type sniffing prevention
@@ -39,6 +41,7 @@ pnpm test
 - Modern Permissions Policy
 
 **Usage in other apps:**
+
 ```typescript
 // Copy proxy.js to any app
 cp apps/web/proxy.js apps/docs/proxy.js
@@ -49,10 +52,12 @@ cp apps/web/proxy.js apps/docs/proxy.js
 **Status:** ✅ Implemented
 
 **Files:**
+
 - `packages/monitoring/` - Monitoring package
 - `apps/web/app/layout.tsx` - Analytics integration
 
 **What it does:**
+
 - Automatic page view tracking
 - Web Vitals monitoring (CLS, FID, LCP, FCP, TTFB)
 - Real user monitoring
@@ -66,9 +71,11 @@ Visit your Vercel dashboard to see analytics data flowing in.
 **Status:** ✅ Implemented
 
 **Files:**
+
 - `apps/web/next.config.ts` - Enhanced configuration
 
 **Features enabled:**
+
 - **React Compiler:** Automatic memoization (`reactCompiler: true`)
 - **Partial Prerendering (PPR):** Instant loading UIs (`ppr: true`)
 - **Cache Components:** Next.js 16 caching (`cacheComponents: true`)
@@ -97,11 +104,13 @@ export async function ProductList() {
 ```
 
 **Where to use:**
+
 - Data-heavy components (product lists, blog posts)
 - Expensive computations
 - External API calls
 
 **Files to update:**
+
 - Any component fetching data
 - API route handlers
 - Server actions
@@ -112,28 +121,31 @@ export async function ProductList() {
 **Estimated Time:** 1-2 hours
 
 **Before:**
+
 ```typescript
 export default function Page({ params, searchParams }) {
-  const { id } = params
-  const { query } = searchParams
+  const { id } = params;
+  const { query } = searchParams;
 }
 ```
 
 **After:**
+
 ```typescript
 export default async function Page({
   params,
   searchParams,
 }: {
-  params: Promise<{ id: string }>
-  searchParams: Promise<{ query?: string }>
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{ query?: string }>;
 }) {
-  const { id } = await params
-  const { query } = await searchParams
+  const { id } = await params;
+  const { query } = await searchParams;
 }
 ```
 
 **Files to update:**
+
 - All page.tsx files with dynamic routes
 - All route.ts API handlers
 
@@ -143,19 +155,19 @@ export default async function Page({
 **Estimated Time:** 1 hour
 
 ```typescript
-import { revalidateTag, updateTag } from 'next/cache'
+import { revalidateTag, updateTag } from "next/cache";
 
 // Server Action
 export async function updateProduct(id: string) {
-  'use server'
-  
-  await database.products.update(id, data)
-  
+  "use server";
+
+  await database.products.update(id, data);
+
   // Use updateTag for read-your-writes
-  updateTag(`product-${id}`)
-  
+  updateTag(`product-${id}`);
+
   // Or revalidateTag with cacheLife
-  revalidateTag('products', 'max')
+  revalidateTag("products", "max");
 }
 ```
 
@@ -168,15 +180,18 @@ export async function updateProduct(id: string) {
 **Status:** ✅ Implemented
 
 **Files:**
+
 - `.husky/pre-commit` - Pre-commit linting
 - `package.json` - lint-staged configuration
 
 **What happens:**
+
 - Code is automatically linted and formatted before commit
 - Type errors are caught early
 - Consistent code style enforced
 
 **Test it:**
+
 ```bash
 git add .
 git commit -m "test: git hooks"
@@ -188,21 +203,23 @@ git commit -m "test: git hooks"
 **Status:** ✅ Configured (needs test files)
 
 **Next steps:**
+
 1. Create test files for utilities
 2. Add integration tests for components
 3. Setup Playwright for e2e tests
 
 **Example test:**
+
 ```typescript
 // packages/utils/src/format.test.ts
-import { describe, it, expect } from 'vitest'
-import { formatCurrency, formatDate } from './format'
+import { describe, it, expect } from "vitest";
+import { formatCurrency, formatDate } from "./format";
 
-describe('formatCurrency', () => {
-  it('formats USD correctly', () => {
-    expect(formatCurrency(1234.56)).toBe('$1,234.56')
-  })
-})
+describe("formatCurrency", () => {
+  it("formats USD correctly", () => {
+    expect(formatCurrency(1234.56)).toBe("$1,234.56");
+  });
+});
 ```
 
 ### 3.3 Changesets for Versioning
@@ -210,6 +227,7 @@ describe('formatCurrency', () => {
 **Status:** ✅ Configured
 
 **Usage:**
+
 ```bash
 # Create a changeset
 pnpm changeset
@@ -232,8 +250,8 @@ pnpm changeset publish
 
 ```typescript
 // env.mjs
-import { createEnv } from "@t3-oss/env-nextjs"
-import { z } from "zod"
+import { createEnv } from "@t3-oss/env-nextjs";
+import { z } from "zod";
 
 export const env = createEnv({
   server: {
@@ -248,7 +266,7 @@ export const env = createEnv({
     API_KEY: process.env.API_KEY,
     NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
   },
-})
+});
 ```
 
 ### 4.2 Bundle Analysis
@@ -270,6 +288,7 @@ export default withBundleAnalyzer(nextConfig)
 ### 4.3 Authentication Package
 
 **If needed, create:**
+
 - `packages/auth/` with NextAuth.js v5
 - Pluggable providers (credentials, OAuth, magic link)
 - Session management utilities
@@ -277,6 +296,7 @@ export default withBundleAnalyzer(nextConfig)
 ### 4.4 Database Package
 
 **If needed, create:**
+
 - `packages/database/` with Drizzle ORM
 - Connection pooling
 - Migration utilities
@@ -287,18 +307,21 @@ export default withBundleAnalyzer(nextConfig)
 ## Verification Checklist
 
 ### Security ✅
+
 - [ ] Security headers visible in browser DevTools (Network tab)
 - [ ] CSP not blocking legitimate resources
 - [ ] HTTPS redirect working (in production)
 - [ ] No console warnings about insecure resources
 
 ### Performance ✅
+
 - [ ] Vercel Analytics showing data
 - [ ] Speed Insights tracking Web Vitals
 - [ ] Build times improved with Turbo cache
 - [ ] No unnecessary re-renders (React DevTools)
 
 ### Developer Experience ✅
+
 - [ ] Git hooks run on commit
 - [ ] Linting catches errors
 - [ ] TypeScript strict mode passes
@@ -311,16 +334,20 @@ export default withBundleAnalyzer(nextConfig)
 ### Issue: CSP blocking inline styles
 
 **Solution:**
+
 ```typescript
 // Use nonce for inline styles
-const nonce = crypto.randomUUID()
-response.headers.set('Content-Security-Policy', 
-  `style-src 'self' 'nonce-${nonce}'`)
+const nonce = crypto.randomUUID();
+response.headers.set(
+  "Content-Security-Policy",
+  `style-src 'self' 'nonce-${nonce}'`,
+);
 ```
 
 ### Issue: Analytics not showing
 
 **Solution:**
+
 - Verify Analytics is enabled in Vercel dashboard
 - Check components are client-side (`'use client'`)
 - Ensure NEXT_PUBLIC_VERCEL_ANALYTICS_ID is set (auto in Vercel)
@@ -328,6 +355,7 @@ response.headers.set('Content-Security-Policy',
 ### Issue: Turbo cache not working
 
 **Solution:**
+
 ```bash
 # Clear cache and rebuild
 pnpm turbo clean
