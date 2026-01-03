@@ -4,9 +4,13 @@
 
 "use client";
 
+import { lazy, Suspense } from "react";
 import { IdeAIPageTemplate } from "@repo/ui/components/ideai-page-template";
 import { IdeAICSSSummary } from "@repo/ui/components/ideai-css-summary";
-import { UF } from "@repo/ui/components/uf";
+// Lazy load UF component to prevent compilation hang and memory issues
+const UF = lazy(() =>
+  import("@repo/ui/components/uf").then((module) => ({ default: module.UF })),
+);
 import { IdeaIButton } from "@repo/ui/components/ideai-button";
 import { useIFrameContext } from "@repo/ui";
 import * as Separator from "@radix-ui/react-separator";
@@ -14,8 +18,10 @@ import * as Tooltip from "@radix-ui/react-tooltip";
 import * as Dialog from "@radix-ui/react-dialog";
 
 export default function Home() {
-  const vercelProjectName = process.env.NEXT_PUBLIC_VERCEL_PROJECT_NAME || "radix";
-  const vercelOrgId = process.env.NEXT_PUBLIC_VERCEL_ORG_ID || "team_vhjzlMi6CfNow0IfBXnv2Yn2";
+  const vercelProjectName =
+    process.env.NEXT_PUBLIC_VERCEL_PROJECT_NAME || "radix";
+  const vercelOrgId =
+    process.env.NEXT_PUBLIC_VERCEL_ORG_ID || "team_vhjzlMi6CfNow0IfBXnv2Yn2";
 
   return (
     <IdeAIPageTemplate
@@ -27,19 +33,30 @@ export default function Home() {
     >
       <div className="max-w-6xl mx-auto p-8 space-y-12">
         <IdeAICSSSummary
-          frameworks={["Radix UI Primitives", "Tailwind CSS", "IdeaI Design System"]}
+          frameworks={[
+            "Radix UI Primitives",
+            "Tailwind CSS",
+            "IdeaI Design System",
+          ]}
           description="Radix UI provides unstyled, accessible component primitives. You style them yourself with CSS or Tailwind. Perfect for building custom design systems."
         />
 
-        {/* UniFrame - Second UI element */}
+        {/* UniFrame - Lazy loaded to prevent compilation hang and memory issues */}
         <div className="mt-6">
-          <UF />
+          <Suspense
+            fallback={
+              <div className="text-center p-4">Loading UniFrame...</div>
+            }
+          >
+            <UF />
+          </Suspense>
         </div>
 
         <section>
           <h2 className="text-3xl font-bold mb-6">Radix UI Primitives</h2>
           <p className="text-slate-600 dark:text-slate-400 mb-8">
-            All components are unstyled primitives - fully accessible and customizable.
+            All components are unstyled primitives - fully accessible and
+            customizable.
           </p>
         </section>
 
@@ -56,7 +73,10 @@ export default function Home() {
             <button className="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700">
               Secondary
             </button>
-            <button disabled className="px-4 py-2 bg-gray-300 text-gray-500 rounded cursor-not-allowed">
+            <button
+              disabled
+              className="px-4 py-2 bg-gray-300 text-gray-500 rounded cursor-not-allowed"
+            >
               Disabled
             </button>
           </div>
@@ -74,7 +94,10 @@ export default function Home() {
             </div>
             <div className="flex gap-4 h-20">
               <p>Vertical separator:</p>
-              <Separator.Root orientation="vertical" className="w-px bg-slate-200 dark:bg-slate-700" />
+              <Separator.Root
+                orientation="vertical"
+                className="w-px bg-slate-200 dark:bg-slate-700"
+              />
               <p>Content on the right</p>
             </div>
           </div>
@@ -140,9 +163,12 @@ export default function Home() {
             <Dialog.Portal>
               <Dialog.Overlay className="fixed inset-0 bg-black/50" />
               <Dialog.Content className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white dark:bg-slate-900 p-6 rounded-lg shadow-xl max-w-md w-full">
-                <Dialog.Title className="text-xl font-bold mb-2">Dialog Title</Dialog.Title>
+                <Dialog.Title className="text-xl font-bold mb-2">
+                  Dialog Title
+                </Dialog.Title>
                 <Dialog.Description className="text-slate-600 dark:text-slate-400 mb-4">
-                  This is a dialog built with Radix UI primitives. It's fully accessible and unstyled by default.
+                  This is a dialog built with Radix UI primitives. It's fully
+                  accessible and unstyled by default.
                 </Dialog.Description>
                 <div className="flex justify-end gap-2">
                   <Dialog.Close asChild>

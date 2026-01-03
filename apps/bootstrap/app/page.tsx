@@ -3,16 +3,22 @@
  * @fileoverview Bootstrap CSS page - Component-based styling only
  */
 
+import { lazy, Suspense } from "react";
 import { IdeAIPageTemplate } from "@repo/ui/components/ideai-page-template";
 import { IdeAIHTMLTest } from "@repo/ui/components/ideai-html-test";
 import { IdeAICSSSummary } from "@repo/ui/components/ideai-css-summary";
-import { UF } from "@repo/ui/components/uf";
+// Lazy load UF component to prevent compilation hang and memory issues
+const UF = lazy(() =>
+  import("@repo/ui/components/uf").then((module) => ({ default: module.UF })),
+);
 import { IdeaIButton } from "@repo/ui/components/ideai-button";
 import { useIFrameContext } from "@repo/ui";
 
 export default function Home() {
-  const vercelProjectName = process.env.NEXT_PUBLIC_VERCEL_PROJECT_NAME || "bootstrap";
-  const vercelOrgId = process.env.NEXT_PUBLIC_VERCEL_ORG_ID || "team_vhjzlMi6CfNow0IfBXnv2Yn2";
+  const vercelProjectName =
+    process.env.NEXT_PUBLIC_VERCEL_PROJECT_NAME || "bootstrap";
+  const vercelOrgId =
+    process.env.NEXT_PUBLIC_VERCEL_ORG_ID || "team_vhjzlMi6CfNow0IfBXnv2Yn2";
 
   return (
     <IdeAIPageTemplate
@@ -27,10 +33,16 @@ export default function Home() {
           frameworks={["Bootstrap CSS"]}
           description="Bootstrap CSS framework for component-based styling. No Tailwind, no MVP.css - just Bootstrap components and utilities."
         />
-        
-        {/* UniFrame - Second UI element */}
+
+        {/* UniFrame - Lazy loaded to prevent compilation hang and memory issues */}
         <div className="mt-6">
-          <UF />
+          <Suspense
+            fallback={
+              <div className="text-center p-4">Loading UniFrame...</div>
+            }
+          >
+            <UF />
+          </Suspense>
         </div>
 
         <IdeAIHTMLTest />

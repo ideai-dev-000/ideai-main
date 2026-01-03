@@ -4,14 +4,27 @@
 
 "use client";
 
+import { lazy, Suspense } from "react";
 import { IdeAIPageTemplate } from "@repo/ui/components/ideai-page-template";
 import { IdeAICSSSummary } from "@repo/ui/components/ideai-css-summary";
-import { UF } from "@repo/ui/components/uf";
+// Lazy load UF component to prevent compilation hang and memory issues
+const UF = lazy(() =>
+  import("@repo/ui/components/uf").then((module) => ({ default: module.UF })),
+);
 import { IdeaIButton } from "@repo/ui/components/ideai-button";
 import { useIFrameContext } from "@repo/ui";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { CssBaseline } from "@mui/material";
-import { Button, Card, CardContent, CardActions, Typography, Box, Stack, Chip } from "@mui/material";
+import {
+  Button,
+  Card,
+  CardContent,
+  CardActions,
+  Typography,
+  Box,
+  Stack,
+  Chip,
+} from "@mui/material";
 
 const theme = createTheme({
   palette: {
@@ -26,8 +39,10 @@ const theme = createTheme({
 });
 
 export default function Home() {
-  const vercelProjectName = process.env.NEXT_PUBLIC_VERCEL_PROJECT_NAME || "material";
-  const vercelOrgId = process.env.NEXT_PUBLIC_VERCEL_ORG_ID || "team_vhjzlMi6CfNow0IfBXnv2Yn2";
+  const vercelProjectName =
+    process.env.NEXT_PUBLIC_VERCEL_PROJECT_NAME || "material";
+  const vercelOrgId =
+    process.env.NEXT_PUBLIC_VERCEL_ORG_ID || "team_vhjzlMi6CfNow0IfBXnv2Yn2";
 
   return (
     <ThemeProvider theme={theme}>
@@ -45,9 +60,15 @@ export default function Home() {
             description="Material UI (MUI) component library implementing Google's Material Design principles. Built with React and Emotion for styling."
           />
 
-          {/* UniFrame - Second UI element */}
+          {/* UniFrame - Lazy loaded to prevent compilation hang and memory issues */}
           <Box sx={{ mt: 3 }}>
-            <UF />
+            <Suspense
+              fallback={
+                <div className="text-center p-4">Loading UniFrame...</div>
+              }
+            >
+              <UF />
+            </Suspense>
           </Box>
 
           <Stack spacing={4} sx={{ mt: 4 }}>
@@ -56,7 +77,8 @@ export default function Home() {
                 Material UI Components
               </Typography>
               <Typography variant="body1" color="text.secondary" paragraph>
-                All components use Material Design principles from the Material UI library.
+                All components use Material Design principles from the Material
+                UI library.
               </Typography>
             </section>
 
@@ -69,7 +91,9 @@ export default function Home() {
                 <Button variant="contained">Contained</Button>
                 <Button variant="outlined">Outlined</Button>
                 <Button variant="text">Text</Button>
-                <Button color="secondary" variant="contained">Secondary</Button>
+                <Button color="secondary" variant="contained">
+                  Secondary
+                </Button>
                 <Button size="small">Small</Button>
                 <Button size="large">Large</Button>
                 <Button disabled>Disabled</Button>
@@ -103,7 +127,8 @@ export default function Home() {
                       Card Title
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                      Card description text. This demonstrates the Material UI card component.
+                      Card description text. This demonstrates the Material UI
+                      card component.
                     </Typography>
                   </CardContent>
                   <CardActions>
@@ -132,7 +157,11 @@ export default function Home() {
                     <Typography variant="h6" component="h4" gutterBottom>
                       Card with Chip
                     </Typography>
-                    <Typography variant="body2" color="text.secondary" paragraph>
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                      paragraph
+                    >
                       Combining multiple Material UI components together.
                     </Typography>
                     <Stack direction="row" spacing={1}>

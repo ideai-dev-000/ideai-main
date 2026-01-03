@@ -4,6 +4,10 @@ const nextConfig = {
   experimental: {
     optimizePackageImports: ["@repo/ui"],
   },
+  turbopack: {},
+  reactStrictMode: true,
+  poweredByHeader: false,
+  compress: true,
 };
 
 export default nextConfig;

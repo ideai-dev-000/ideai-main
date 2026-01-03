@@ -2,15 +2,21 @@
  * @fileoverview MVP.css + Tailwind CSS page - Complete styling
  */
 
+import { lazy, Suspense } from "react";
 import { IdeAIPageTemplate } from "@repo/ui/components/ideai-page-template";
 import { IdeAIHTMLTest } from "@repo/ui/components/ideai-html-test";
 import { IdeAICSSSummary } from "@repo/ui/components/ideai-css-summary";
-import { UF } from "@repo/ui/components/uf";
+// Lazy load UF component to prevent compilation hang and memory issues
+const UF = lazy(() =>
+  import("@repo/ui/components/uf").then((module) => ({ default: module.UF })),
+);
 import { IdeaIButton } from "@repo/ui/components/ideai-button";
 
 export default function Home() {
-  const vercelProjectName = process.env.NEXT_PUBLIC_VERCEL_PROJECT_NAME || "allcss";
-  const vercelOrgId = process.env.NEXT_PUBLIC_VERCEL_ORG_ID || "team_vhjzlMi6CfNow0IfBXnv2Yn2";
+  const vercelProjectName =
+    process.env.NEXT_PUBLIC_VERCEL_PROJECT_NAME || "allcss";
+  const vercelOrgId =
+    process.env.NEXT_PUBLIC_VERCEL_ORG_ID || "team_vhjzlMi6CfNow0IfBXnv2Yn2";
 
   return (
     <IdeAIPageTemplate
@@ -25,10 +31,16 @@ export default function Home() {
           frameworks={["MVP.css", "Tailwind CSS", "IdeaI Design System"]}
           description="Complete styling stack: MVP.css for semantic HTML styling, Tailwind for utility classes, and IdeaI design tokens for consistency."
         />
-        
-        {/* UniFrame - Second UI element */}
+
+        {/* UniFrame - Lazy loaded to prevent compilation hang and memory issues */}
         <div className="mt-6">
-          <UF />
+          <Suspense
+            fallback={
+              <div className="text-center p-4">Loading UniFrame...</div>
+            }
+          >
+            <UF />
+          </Suspense>
         </div>
 
         <IdeAIHTMLTest />
