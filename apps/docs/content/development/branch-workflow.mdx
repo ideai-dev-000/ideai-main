@@ -16,6 +16,7 @@ branch/{app-name}
 \`\`\`
 
 Examples:
+
 - `branch/web` - Web app
 - `branch/docs` - Documentation site
 - `branch/landing` - Landing page
@@ -26,17 +27,22 @@ Examples:
 ### Creating a Branch for an App
 
 \`\`\`bash
+
 # Create and switch to new branch
+
 git checkout -b branch/landing
 
 # Make changes to apps/landing
+
 # ... edit files ...
 
 # Commit changes
+
 git add apps/landing
 git commit -m "feat(landing): add new feature"
 
 # Push branch
+
 git push -u origin branch/landing
 \`\`\`
 
@@ -46,7 +52,9 @@ git push -u origin branch/landing
    \`\`\`bash
    cd apps/landing
    vercel link
+
    # Select existing project: landing
+
    \`\`\`
 
 2. **Configure in Vercel dashboard**:
@@ -62,15 +70,19 @@ git push -u origin branch/landing
 ### Working with Multiple Branches
 
 \`\`\`bash
+
 # Switch between branches
+
 git checkout branch/landing
 git checkout branch/docs
 git checkout main
 
 # See all branches
+
 git branch -a
 
 # Merge shared changes from main
+
 git checkout branch/landing
 git merge main
 \`\`\`
@@ -97,6 +109,7 @@ When changing shared packages (`packages/*`):
 ## Status Monitoring
 
 The landing page automatically shows:
+
 - **Local status**: Is dev server running?
 - **Vercel status**: Latest deployment status
 - **GitHub status**: Branch last commit, protection status

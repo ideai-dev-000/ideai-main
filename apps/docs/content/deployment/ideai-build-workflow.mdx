@@ -57,6 +57,7 @@ Local Machine → Vercel CLI → Vercel Platform → Build & Deploy
    - ✅ Dashboard configured: Root Directory + Include files outside root
 
 2. **Deploy Command**
+
    ```bash
    # From repo root
    ./deploy.sh [--prod] [app1] [app2] ...
@@ -75,6 +76,7 @@ Local Machine → Vercel CLI → Vercel Platform → Build & Deploy
 #### Configuration Requirements
 
 **Vercel Dashboard Settings** (per app):
+
 - **Root Directory**: `apps/{app-name}` (relative to repo root)
 - **Include files outside root directory**: ✅ **Enabled** (required)
 - **Framework Preset**: Next.js (auto-detected)
@@ -83,6 +85,7 @@ Local Machine → Vercel CLI → Vercel Platform → Build & Deploy
 - **Output Directory**: `.next` (Next.js default)
 
 **Project Linking**:
+
 - Each app has `.vercel/project.json` in `apps/{app}/.vercel/`
 - Contains: `projectId`, `orgId`, `projectName`
 - Created via: `node scripts/ideai-vercel-link.mjs {app}`
@@ -119,6 +122,7 @@ Git Push → GitHub Actions → Build & Test → Deploy to Vercel → Status Upd
 **Main CI/CD Pipeline**: `.github/workflows/ci-cd.yml`
 
 **Triggers**:
+
 - Push to `main`, `preview`, or `develop` branches
 - Pull requests to `main`, `preview`, or `develop`
 
@@ -161,6 +165,7 @@ Git Push → GitHub Actions → Build & Test → Deploy to Vercel → Status Upd
    - ✅ Vercel projects linked (same as Method 1)
 
 2. **Trigger Deployment**
+
    ```bash
    # Preview deployment
    git checkout preview
@@ -186,6 +191,7 @@ Git Push → GitHub Actions → Build & Test → Deploy to Vercel → Status Upd
 #### Configuration Requirements
 
 **GitHub Secrets** (Repository Settings → Secrets):
+
 - `VERCEL_TOKEN`: Get from https://vercel.com/account/tokens
 - `VERCEL_ORG_ID`: `team_vhjzlMi6CfNow0IfBXnv2Yn2`
 - `TURBO_TOKEN`: Optional, for Turborepo caching
@@ -227,6 +233,7 @@ Git Push → GitHub Actions → Build & Test → Deploy to Vercel → Status Upd
 #### How to Deploy
 
 **Vercel Direct**:
+
 ```bash
 ./deploy.sh web
 # or
@@ -234,12 +241,14 @@ Git Push → GitHub Actions → Build & Test → Deploy to Vercel → Status Upd
 ```
 
 **GitHub Actions**:
+
 ```bash
 git checkout preview
 git push origin preview
 ```
 
 **Vercel Dashboard**:
+
 - Click "Redeploy" on any deployment
 - Select "Preview" environment
 
@@ -266,6 +275,7 @@ git push origin preview
 #### How to Deploy
 
 **Vercel Direct**:
+
 ```bash
 ./deploy.sh --prod web
 # or
@@ -273,18 +283,21 @@ git push origin preview
 ```
 
 **GitHub Actions**:
+
 ```bash
 git checkout main
 git push origin main
 ```
 
 **Vercel Dashboard**:
+
 - Click "Promote to Production" on preview deployment
 - Or click "Redeploy" → Select "Production"
 
 #### Configuration
 
 **Custom Domain** (optional):
+
 1. Add domain in Vercel dashboard: Project Settings → Domains
 2. Configure DNS at registrar:
    - Type: CNAME
@@ -293,6 +306,7 @@ git push origin main
 3. Wait for DNS propagation (up to 48 hours)
 
 **Environment Variables**:
+
 - Set in Vercel dashboard: Project Settings → Environment Variables
 - Production environment variables used
 
@@ -313,6 +327,7 @@ git push origin main
 #### How to Run
 
 **Single App**:
+
 ```bash
 cd apps/web
 pnpm dev
@@ -320,6 +335,7 @@ pnpm dev
 ```
 
 **All Apps** (via dev manager):
+
 ```bash
 # From repo root
 node scripts/dev-manager.mjs
@@ -327,6 +343,7 @@ node scripts/dev-manager.mjs
 ```
 
 **Specific Apps**:
+
 ```bash
 pnpm --filter web dev
 pnpm --filter docs dev
@@ -335,27 +352,223 @@ pnpm --filter docs dev
 #### Configuration
 
 **Port Configuration**:
-- Defined in `apps/{app}/.ideai.json`:
-  ```json
-  {
-    "localPort": 3000
-  }
-  ```
-- Default ports:
-  - `web`: 3000
-  - `docs`: 3001
-  - `all`: 3002
-  - `nocss`: 3003
-  - `mvp`: 3004
-  - etc.
+
+- Ports are defined in each app's `package.json` dev script: `next dev --port {port}`
+- See [Critical Development Environment Details](#critical-development-environment-details) section below for complete port mapping
+
+**Turbo Concurrency Configuration**:
+
+- **CRITICAL**: Turbo default concurrency is 10, but we have 13 persistent dev tasks
+- **Solution**: `package.json` dev script includes `--concurrency=20`
+- See [Critical Development Environment Details](#critical-development-environment-details) section below for full details
 
 **Environment Variables**:
+
 - Create `.env.local` in app directory
 - Or set in shell: `export NEXT_PUBLIC_APP_MODE=unified`
 
 **App Mode**:
+
 - `NEXT_PUBLIC_IDEAI_APP_MODE=unified` - All apps on port 3000
 - `NEXT_PUBLIC_IDEAI_APP_MODE=individual` - Separate ports (default)
+
+---
+
+## Critical Development Environment Details
+
+**⚠️ IMPORTANT**: This section documents critical configuration details that must be maintained accurately. These settings are essential for the development environment to function correctly.
+
+### Scripts Organization
+
+**Structure**: All IdeaI scripts are in flat structure at `scripts/` root (no nested folders)
+
+**Naming Convention**: `ideai-[main function]-[sub function].[ext]`
+
+**Examples**:
+
+- `ideai-build.mjs` - Main build CLI
+- `ideai-build-checker-dependency.mjs` - Dependency checker
+- `ideai-boot-logger-dev.mjs` - Dev server logger
+- `ideai-develop-vercel-link.mjs` - Vercel project linker
+- `ideai-ui-main.mjs` - Unified UI entry point
+- `ideai-ui-test.mjs` - UI test script
+- `ideai-useful-test-local.mjs` - Local testing utility
+
+**Total Scripts**: 24 ideai scripts in root directory
+
+**Key Scripts**:
+
+- **Build**: `ideai-build.mjs` (main CLI), `ideai-build-*.mjs` (12 build tools)
+- **Boot**: `ideai-boot-logger-*.mjs` (3 boot tools)
+- **Develop**: `ideai-develop-*.mjs` / `ideai-develop-*.sh` (6 develop tools)
+- **UI**: `ideai-ui-main.mjs`, `ideai-ui-test.mjs`
+- **Testing**: `ideai-useful-test-local.mjs`
+
+**Path Updates**: All scripts use `join(__dirname, '..')` for `REPO_ROOT` (scripts are in root, so one level up)
+
+### Turbo Concurrency Configuration
+
+**CRITICAL SETTING**: Must be configured correctly or dev servers won't start
+
+**Problem**:
+
+- Turbo default concurrency: 10
+- Number of apps with dev scripts: 13
+- All dev tasks are persistent (run simultaneously)
+- Error: "You have 13 persistent tasks but `turbo` is configured for concurrency of 10"
+
+**Solution** (in `package.json`):
+
+```json
+{
+  "scripts": {
+    "dev": "turbo run dev --concurrency=20"
+  }
+}
+```
+
+**Why 20?**:
+
+- 13 apps need to run simultaneously
+- Need buffer for other processes
+- 20 provides safe margin
+
+**What Happens Without This**:
+
+- `pnpm dev` fails with concurrency error
+- Cannot start all apps at once
+- Must start apps individually or increase concurrency
+
+**Verification**:
+
+```bash
+# Check if concurrency is set
+grep "concurrency" package.json
+
+# Should show: "dev": "turbo run dev --concurrency=20"
+```
+
+### Complete Port Mapping
+
+**All 13 Apps with Ports** (as of January 2026):
+
+| App         | Port | URL                   | Purpose                |
+| ----------- | ---- | --------------------- | ---------------------- |
+| `web`       | 3000 | http://localhost:3000 | Main IdeaI application |
+| `docs`      | 3001 | http://localhost:3001 | Documentation site     |
+| `all`       | 3002 | http://localhost:3002 | Component showcase     |
+| `nocss`     | 3003 | http://localhost:3003 | No CSS demo            |
+| `mvp`       | 3004 | http://localhost:3004 | MVP.css demo           |
+| `tailwind`  | 3005 | http://localhost:3005 | Tailwind CSS demo      |
+| `allcss`    | 3006 | http://localhost:3006 | All CSS demo           |
+| `bootstrap` | 3007 | http://localhost:3007 | Bootstrap demo         |
+| `unocss`    | 3008 | http://localhost:3008 | UnoCSS demo            |
+| `shadcn`    | 3009 | http://localhost:3009 | Shadcn Components      |
+| `material`  | 3010 | http://localhost:3010 | Material UI demo       |
+| `chakra`    | 3011 | http://localhost:3011 | Chakra UI demo         |
+| `radix`     | 3012 | http://localhost:3012 | Radix UI primitives    |
+
+**Port Configuration**:
+
+- Ports are defined in each app's `package.json` dev script
+- Format: `"dev": "next dev --port {port}"`
+- Ports are sequential but not consecutive (gaps for future apps)
+
+**Checking Port Status**:
+
+```bash
+# Check all dev ports
+lsof -ti:3000,3001,3002,3003,3004,3005,3006,3007,3008,3009,3010,3011,3012
+
+# Check specific port
+lsof -ti:3000
+
+# Kill all dev servers
+lsof -ti:3000,3001,3002,3003,3004,3005,3006,3007,3008,3009,3010,3011,3012 | xargs kill -9
+```
+
+### Development Workflow
+
+**Starting All Apps**:
+
+```bash
+# Start all 13 apps (requires --concurrency=20 in package.json)
+pnpm dev
+
+# Start specific app
+pnpm --filter web dev
+pnpm --filter docs dev
+```
+
+**Stopping All Apps**:
+
+```bash
+# Kill all processes on dev ports
+lsof -ti:3000,3001,3002,3003,3004,3005,3006,3007,3008,3009,3010,3011,3012 | xargs kill -9
+
+# Or stop individual app
+lsof -ti:3000 | xargs kill -9  # Stop web app
+```
+
+**Checking Status**:
+
+```bash
+# Count running servers
+lsof -ti:3000,3001,3002,3003,3004,3005,3006,3007,3008,3009,3010,3011,3012 | wc -l
+
+# Check specific app
+curl -s -o /dev/null -w "%{http_code}" http://localhost:3000
+```
+
+### Scripts Path Structure
+
+**All Scripts Location**: `scripts/` (root level, flat structure)
+
+**No Nested Folders**: All scripts moved to root for simplicity
+
+**Import Paths in Scripts**:
+
+- `REPO_ROOT = join(__dirname, '..')` (scripts are in root, so one level up to repo root)
+- All internal script references use root paths: `scripts/ideai-*.mjs`
+
+**Key Script References**:
+
+- Build CLI: `scripts/ideai-build.mjs`
+- UI Main: `scripts/ideai-ui-main.mjs`
+- Vercel Link: `scripts/ideai-develop-vercel-link.mjs`
+- All follow pattern: `scripts/ideai-[category]-[function].mjs`
+
+### Maintenance Checklist
+
+**When Adding New App**:
+
+- [ ] Add dev script with unique port in `apps/{app}/package.json`
+- [ ] Verify port not in use (3000-3012 range)
+- [ ] Update port mapping table in this document
+- [ ] Test: `pnpm --filter {app} dev`
+- [ ] Verify: `lsof -ti:{port}` shows process
+
+**When Modifying Scripts**:
+
+- [ ] Keep flat structure (no nested folders)
+- [ ] Use naming convention: `ideai-[main]-[sub].[ext]`
+- [ ] Update `REPO_ROOT` paths if moving files
+- [ ] Update all references to moved scripts
+- [ ] Test script imports and paths
+
+**When Updating Turbo**:
+
+- [ ] Verify `--concurrency=20` in `package.json` dev script
+- [ ] Ensure concurrency >= number of apps with dev scripts
+- [ ] Test: `pnpm dev` starts all apps without errors
+
+**Regular Verification**:
+
+- [ ] All 13 apps have dev scripts with ports
+- [ ] Ports are unique and sequential
+- [ ] Turbo concurrency is set correctly
+- [ ] All scripts in flat root structure
+- [ ] All script paths updated correctly
 
 ---
 
@@ -374,17 +587,20 @@ pnpm --filter docs dev
 #### How to Deploy
 
 **Step 1: Deploy App**
+
 ```bash
 ./deploy.sh --prod {app-name}
 ```
 
 **Step 2: Setup Subdomain**
+
 ```bash
 ./scripts/setup-subdomain.sh {app-name} {subdomain} {root-domain}
 # Example: ./scripts/setup-subdomain.sh docs docs myui.space
 ```
 
 **Step 3: Configure DNS**
+
 - Add CNAME record at registrar:
   - Type: CNAME
   - Name: `{subdomain}`
@@ -392,11 +608,13 @@ pnpm --filter docs dev
   - TTL: 3600
 
 **Step 4: Add Domain in Vercel**
+
 - Vercel dashboard: Project Settings → Domains
 - Add: `{subdomain}.{root-domain}`
 - Wait for DNS verification
 
 **Step 5: Update Environment Variables**
+
 - In main `web` app, set:
   ```
   NEXT_PUBLIC_{APP_NAME}_URL=https://{subdomain}.{root-domain}
@@ -406,6 +624,7 @@ pnpm --filter docs dev
 #### Configuration
 
 **Subdomain Script** (`scripts/setup-subdomain.sh`):
+
 - Adds domain to Vercel project
 - Shows DNS instructions
 - Verifies DNS configuration
@@ -413,10 +632,12 @@ pnpm --filter docs dev
 - Redeploys web app
 
 **Environment Variables**:
+
 - `NEXT_PUBLIC_{APP_NAME}_URL` - Standalone URL for app
 - Set in Vercel dashboard: Project Settings → Environment Variables
 
 **Routing Behavior**:
+
 - If `NEXT_PUBLIC_{APP_NAME}_URL` is set, main app redirects to standalone URL
 - If not set, main app serves app via iframe at `/apps/{name}`
 
@@ -446,6 +667,7 @@ pnpm --filter docs dev
 3. **Configuration**
 
 **Parent App** (`apps/web/.ideai.json`):
+
 ```json
 {
   "role": "parent",
@@ -455,6 +677,7 @@ pnpm --filter docs dev
 ```
 
 **Child App** (`apps/docs/.ideai.json`):
+
 ```json
 {
   "role": "child",
@@ -467,12 +690,14 @@ pnpm --filter docs dev
 #### Unified Mode vs Individual Mode
 
 **Unified Mode** (`NEXT_PUBLIC_IDEAI_APP_MODE=unified`):
+
 - All apps run on port 3000
 - Child apps imported as components
 - No branding in child apps
 - Production-ready
 
 **Individual Mode** (`NEXT_PUBLIC_IDEAI_APP_MODE=individual`):
+
 - Each app on separate port
 - Child apps in iframes
 - Complete isolation
@@ -514,11 +739,13 @@ pnpm --filter docs dev
 3. **Configuration**
 
 **Environment Variable** (in main `web` app):
+
 ```
 NEXT_PUBLIC_DOCS_URL=https://docs.myui.space
 ```
 
 **Vercel Project**:
+
 - Each app has its own Vercel project
 - Configured independently
 - Deploys independently
@@ -548,17 +775,20 @@ NEXT_PUBLIC_DOCS_URL=https://docs.myui.space
 **Steps**:
 
 1. **Create App Directory**
+
    ```bash
    mkdir -p apps/{app-name}
    cd apps/{app-name}
    ```
 
 2. **Initialize Next.js App**
+
    ```bash
    npx create-next-app@latest . --typescript --tailwind --app
    ```
 
 3. **Create `.ideai.json`**
+
    ```json
    {
      "role": "child",
@@ -574,6 +804,7 @@ NEXT_PUBLIC_DOCS_URL=https://docs.myui.space
    ```
 
 4. **Link Vercel Project**
+
    ```bash
    node ../../scripts/ideai-vercel-link.mjs {app-name}
    ```
@@ -584,11 +815,13 @@ NEXT_PUBLIC_DOCS_URL=https://docs.myui.space
    - Framework: Next.js (auto-detected)
 
 6. **Test Local**
+
    ```bash
    pnpm dev
    ```
 
 7. **Deploy Preview**
+
    ```bash
    ./deploy.sh {app-name}
    ```
@@ -612,6 +845,7 @@ NEXT_PUBLIC_DOCS_URL=https://docs.myui.space
    - ✅ Dashboard configured
 
 2. **Deploy**
+
    ```bash
    ./deploy.sh --prod {app-name}
    ```
@@ -629,6 +863,7 @@ NEXT_PUBLIC_DOCS_URL=https://docs.myui.space
    - ✅ Project linked
 
 2. **Deploy**
+
    ```bash
    git checkout main
    git add .
@@ -650,6 +885,7 @@ NEXT_PUBLIC_DOCS_URL=https://docs.myui.space
 **Method A: Vercel Direct**
 
 1. **Deploy Preview**
+
    ```bash
    ./deploy.sh {app-name}
    ```
@@ -661,6 +897,7 @@ NEXT_PUBLIC_DOCS_URL=https://docs.myui.space
 **Method B: GitHub Actions**
 
 1. **Create PR**
+
    ```bash
    git checkout -b feature/new-feature
    git push origin feature/new-feature
@@ -684,11 +921,13 @@ NEXT_PUBLIC_DOCS_URL=https://docs.myui.space
 **Goal**: Set up standalone app with custom subdomain
 
 1. **Deploy App**
+
    ```bash
    ./deploy.sh --prod {app-name}
    ```
 
 2. **Run Subdomain Script**
+
    ```bash
    ./scripts/setup-subdomain.sh {app-name} {subdomain} {root-domain}
    # Example: ./scripts/setup-subdomain.sh docs docs myui.space
@@ -727,6 +966,7 @@ NEXT_PUBLIC_DOCS_URL=https://docs.myui.space
 **Goal**: One-button setup for complete new IdeaI project (repo + Vercel project + domain)
 
 **Components**:
+
 1. **IdeaI Build CLI** - Command-line interface
 2. **Setup Wizard** - Interactive configuration
 3. **Automation Scripts** - GitHub, Vercel, DNS automation
@@ -764,28 +1004,33 @@ IdeaI Build CLI
 ### Implementation Plan
 
 **Phase 1: CLI Foundation**
+
 - Create `scripts/ideai-build.mjs`
 - Interactive prompts for configuration
 - Project structure generation
 
 **Phase 2: Vercel Automation**
+
 - Vercel API integration
 - Project creation
 - Dashboard configuration
 - Environment variables
 
 **Phase 3: GitHub Automation**
+
 - GitHub API integration
 - Repository creation
 - Workflow setup
 - Secrets configuration
 
 **Phase 4: DNS Automation**
+
 - Domain provider API integration
 - DNS record creation
 - Verification
 
 **Phase 5: Verification**
+
 - Build verification
 - Deployment testing
 - Health checks
@@ -847,6 +1092,7 @@ node scripts/ideai-build.mjs setup --quick
 ### Pre-Deployment Checklist
 
 **Vercel Direct Deployment**:
+
 - [ ] Vercel CLI installed and authenticated
 - [ ] Project linked (`apps/{app}/.vercel/project.json` exists)
 - [ ] Dashboard configured (Root Directory + Include files outside root)
@@ -857,6 +1103,7 @@ node scripts/ideai-build.mjs setup --quick
 - [ ] Type checking passes (`pnpm check-types`)
 
 **GitHub Actions Deployment**:
+
 - [ ] GitHub Secrets configured (`VERCEL_TOKEN`, `VERCEL_ORG_ID`)
 - [ ] Workflow files present (`.github/workflows/ci-cd.yml`)
 - [ ] Project linked (same as Vercel Direct)
@@ -938,20 +1185,24 @@ pnpm --filter {app-name} dev
 ### Common Issues
 
 **"Command pnpm install exited with 1"**:
+
 - ✅ Check `pnpm-lock.yaml` is up to date
 - ✅ Run `pnpm install` locally and commit lockfile
 - ✅ Verify dashboard setting "Include files outside root directory" is enabled
 
 **"Cannot find module '@repo/ui'"**:
+
 - ✅ Verify "Include files outside root directory" is enabled
 - ✅ Check Root Directory is set to `apps/{app-name}`
 - ✅ Verify workspace dependencies in `package.json`
 
 **"Project not linked"**:
+
 - ✅ Run `node scripts/ideai-vercel-link.mjs {app-name}`
 - ✅ Check `.vercel/project.json` exists in `apps/{app}/.vercel/`
 
 **"Deployment failed"**:
+
 - ✅ Check Vercel dashboard for build logs
 - ✅ Verify all prerequisites are met
 - ✅ Check environment variables are set
@@ -970,5 +1221,3 @@ pnpm --filter {app-name} dev
 ---
 
 **End of Document**
-
-

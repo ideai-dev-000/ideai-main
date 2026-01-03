@@ -81,6 +81,7 @@ Go to: https://vercel.com/idea-i/web/settings/general
 **Goal**: Deploy main web app to preview and production
 
 **Tasks**:
+
 1. ✅ Fix Vercel dashboard setting (blocked - waiting for user)
 2. ⏳ Deploy `apps/web` to Vercel preview
 3. ⏳ Verify `/index` page shows all apps
@@ -90,6 +91,7 @@ Go to: https://vercel.com/idea-i/web/settings/general
 7. ⏳ Test all `/apps/{name}` routes in production
 
 **Expected Result**:
+
 - ✅ `preview-xxx.vercel.app/index` shows all apps
 - ✅ `preview-xxx.vercel.app/apps/{name}` serves apps via iframe
 - ✅ `myui.space/index` shows all apps
@@ -100,6 +102,7 @@ Go to: https://vercel.com/idea-i/web/settings/general
 **Goal**: Deploy one app (docs) as standalone Vercel project
 
 **Tasks**:
+
 1. Create Vercel project for `apps/docs`
 2. Configure Root Directory: `apps/docs`
 3. Enable "Include files outside root"
@@ -113,6 +116,7 @@ Go to: https://vercel.com/idea-i/web/settings/general
 **Goal**: Configure subdomain for standalone app
 
 **Tasks**:
+
 1. Add DNS record: `docs` → CNAME to Vercel
 2. Configure custom domain in Vercel for docs project
 3. Update `NEXT_PUBLIC_DOCS_URL` to `https://docs.myui.space`
@@ -124,6 +128,7 @@ Go to: https://vercel.com/idea-i/web/settings/general
 **Goal**: Full multitenant configuration
 
 **Tasks**:
+
 1. Create Vercel projects for all apps
 2. Configure Root Directory for each
 3. Enable "Include files outside root" for each
@@ -138,6 +143,7 @@ Go to: https://vercel.com/idea-i/web/settings/general
 **Goal**: Final documentation polish
 
 **Tasks**:
+
 1. ✅ Review all deployment docs (mostly done)
 2. ✅ Remove references to deleted `landing` app (done)
 3. ⏳ Consolidate any remaining duplicates
@@ -149,21 +155,26 @@ Go to: https://vercel.com/idea-i/web/settings/general
 ## Current Configuration
 
 ### `apps/web/vercel.json`
+
 \`\`\`json
 {
-  "installCommand": "pnpm install",
-  "buildCommand": "pnpm build"
+"installCommand": "pnpm install",
+"buildCommand": "pnpm build"
 }
 \`\`\`
 
 This configuration should work once "Include files outside root directory" is enabled.
 
 ### Deployment Command
+
 \`\`\`bash
+
 # Preview
+
 ./deploy.sh web
 
 # Production
+
 ./deploy.sh --prod web
 \`\`\`
 

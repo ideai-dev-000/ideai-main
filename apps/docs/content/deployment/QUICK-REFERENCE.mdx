@@ -78,24 +78,26 @@ node scripts/ideai-build.mjs setup --quick --name my-project
 
 ## Deployment Types
 
-| Type | Command | URL Format | Lifetime |
-|------|---------|------------|----------|
-| **Preview** | `./deploy.sh {app}` | `https://{app}-{hash}.vercel.app` | Temporary |
-| **Production** | `./deploy.sh --prod {app}` | `https://{domain}` | Permanent |
-| **Local** | `pnpm --filter {app} dev` | `http://localhost:{port}` | While running |
-| **Subdomain** | `./scripts/setup-subdomain.sh ...` | `https://{subdomain}.{domain}` | Permanent |
+| Type           | Command                            | URL Format                        | Lifetime      |
+| -------------- | ---------------------------------- | --------------------------------- | ------------- |
+| **Preview**    | `./deploy.sh {app}`                | `https://{app}-{hash}.vercel.app` | Temporary     |
+| **Production** | `./deploy.sh --prod {app}`         | `https://{domain}`                | Permanent     |
+| **Local**      | `pnpm --filter {app} dev`          | `http://localhost:{port}`         | While running |
+| **Subdomain**  | `./scripts/setup-subdomain.sh ...` | `https://{subdomain}.{domain}`    | Permanent     |
 
 ---
 
 ## Deployment Methods
 
 ### Method 1: Vercel Direct
+
 - **When**: Quick deployments, testing, manual releases
 - **How**: `./deploy.sh` script
 - **Speed**: Fast
 - **Automation**: Manual
 
 ### Method 2: GitHub Actions
+
 - **When**: Production releases, CI/CD, automatic deployments
 - **How**: Git push triggers workflow
 - **Speed**: Slower (includes build/test)
@@ -106,11 +108,13 @@ node scripts/ideai-build.mjs setup --quick --name my-project
 ## App Architecture Modes
 
 ### Child Apps (Integrated)
+
 - **URL**: `https://{domain}/apps/{app-name}`
 - **Deployment**: Single deployment
 - **Use Case**: Tightly coupled apps, single domain
 
 ### Standalone Apps
+
 - **URL**: `https://{app-domain}` or `https://{subdomain}.{domain}`
 - **Deployment**: Independent deployments
 - **Use Case**: Independent scaling, separate domains
@@ -119,19 +123,20 @@ node scripts/ideai-build.mjs setup --quick --name my-project
 
 ## Configuration Files
 
-| File | Location | Purpose |
-|------|----------|---------|
-| `.ideai.json` | `apps/{app}/.ideai.json` | App configuration |
+| File                   | Location                          | Purpose             |
+| ---------------------- | --------------------------------- | ------------------- |
+| `.ideai.json`          | `apps/{app}/.ideai.json`          | App configuration   |
 | `.vercel/project.json` | `apps/{app}/.vercel/project.json` | Vercel project link |
-| `vercel.json` | `apps/{app}/vercel.json` | Vercel build config |
-| `package.json` | `apps/{app}/package.json` | Dependencies |
-| `next.config.ts` | `apps/{app}/next.config.ts` | Next.js config |
+| `vercel.json`          | `apps/{app}/vercel.json`          | Vercel build config |
+| `package.json`         | `apps/{app}/package.json`         | Dependencies        |
+| `next.config.ts`       | `apps/{app}/next.config.ts`       | Next.js config      |
 
 ---
 
 ## Vercel Dashboard Settings
 
 **Required for each app**:
+
 - ✅ Root Directory: `apps/{app-name}`
 - ✅ Include files outside root directory: **Enabled**
 - ✅ Framework Preset: Next.js
@@ -143,10 +148,12 @@ node scripts/ideai-build.mjs setup --quick --name my-project
 ## GitHub Secrets
 
 **Required**:
+
 - `VERCEL_TOKEN` - Vercel API token
 - `VERCEL_ORG_ID` - Vercel organization ID
 
 **Optional**:
+
 - `TURBO_TOKEN` - Turborepo token
 - `TURBO_TEAM` - Turborepo team
 
@@ -155,15 +162,18 @@ node scripts/ideai-build.mjs setup --quick --name my-project
 ## Troubleshooting
 
 ### "Command pnpm install exited with 1"
+
 - ✅ Update `pnpm-lock.yaml`: `pnpm install` and commit
 - ✅ Verify "Include files outside root directory" is enabled
 
 ### "Cannot find module '@repo/ui'"
+
 - ✅ Verify "Include files outside root directory" is enabled
 - ✅ Check Root Directory is `apps/{app-name}`
 - ✅ Verify workspace dependencies in `package.json`
 
 ### "Project not linked"
+
 - ✅ Run: `node scripts/ideai-vercel-link.mjs {app-name}`
 - ✅ Check `.vercel/project.json` exists
 
@@ -180,5 +190,3 @@ node scripts/ideai-build.mjs setup --quick --name my-project
 ---
 
 **End of Quick Reference**
-
-

@@ -16,16 +16,21 @@ This document outlines a phased approach to deploying IdeaI monorepo apps, from 
 ## Phase 1: Development (All Integrated)
 
 ### Setup
+
 - **No environment variables needed**
 - All apps run locally on different ports
 - Main app serves all sub-apps via iframe
 
 ### Configuration
+
 \`\`\`bash
+
 # No env vars needed - default behavior
+
 \`\`\`
 
 ### Behavior
+
 - Main app: `localhost:3000`
 - Apps index: `localhost:3000/index`
 - Sub-apps: `localhost:3000/apps/{name}`
@@ -33,11 +38,13 @@ This document outlines a phased approach to deploying IdeaI monorepo apps, from 
   - Example: `localhost:3000/apps/all` → iframe to `localhost:3002`
 
 ### Use Case
+
 - Local development
 - Testing all apps together
 - Quick iteration
 
 ### Advantages
+
 - ✅ Simple setup
 - ✅ No configuration needed
 - ✅ All apps accessible from one place
@@ -46,30 +53,39 @@ This document outlines a phased approach to deploying IdeaI monorepo apps, from 
 ## Phase 2: Preview (Hybrid Mode)
 
 ### Setup
+
 - Set standalone URLs for **critical apps only**
 - Other apps remain integrated
 
 ### Configuration
+
 \`\`\`bash
+
 # In Vercel dashboard or .env.local for main web app:
+
 NEXT_PUBLIC_DOCS_URL=https://docs-xxx.vercel.app
 NEXT_PUBLIC_ALL_URL=https://all-xxx.vercel.app
 
 # Other apps (nocss, mvp, etc.) - no env vars
+
 # They'll be served directly via iframe
+
 \`\`\`
 
 ### Behavior
+
 - Critical apps (docs, all) → Redirect to standalone URLs
 - Other apps → Served directly via iframe
 - Main app shows all apps at `/index`
 
 ### Use Case
+
 - Testing deployment strategies
 - Gradual migration
 - Preview deployments
 
 ### Advantages
+
 - ✅ Test standalone deployments
 - ✅ Keep other apps simple
 - ✅ Flexible migration path
@@ -82,6 +98,7 @@ NEXT_PUBLIC_ALL_URL=https://all-xxx.vercel.app
 **Setup**: No environment variables
 
 **Result**:
+
 - All apps served via iframe from main app
 - Single deployment
 - Single domain
@@ -93,6 +110,7 @@ NEXT_PUBLIC_ALL_URL=https://all-xxx.vercel.app
 **Setup**: Set all environment variables
 
 **Result**:
+
 - Each app is separate Vercel project
 - Each app has own URL
 - Main app redirects to standalone URLs
@@ -104,6 +122,7 @@ NEXT_PUBLIC_ALL_URL=https://all-xxx.vercel.app
 **Setup**: Set environment variables only for apps that need standalone
 
 **Result**:
+
 - Critical apps → Standalone
 - Other apps → Integrated
 - Flexible per app
@@ -148,14 +167,14 @@ NEXT_PUBLIC_ALL_URL=https://all-xxx.vercel.app
 
 ## Decision Matrix
 
-| App Type | Recommended Strategy | Reason |
-|----------|---------------------|--------|
-| Main app (web) | Always standalone | Primary app, needs own domain |
-| Documentation | Standalone | Large, independent, custom domain |
-| Component showcase | Integrated | Small, tightly coupled |
-| CSS demos | Integrated | Small, test apps |
-| Production apps | Standalone | Need independent scaling |
-| Dev/test apps | Integrated | Simple, no scaling needed |
+| App Type           | Recommended Strategy | Reason                            |
+| ------------------ | -------------------- | --------------------------------- |
+| Main app (web)     | Always standalone    | Primary app, needs own domain     |
+| Documentation      | Standalone           | Large, independent, custom domain |
+| Component showcase | Integrated           | Small, tightly coupled            |
+| CSS demos          | Integrated           | Small, test apps                  |
+| Production apps    | Standalone           | Need independent scaling          |
+| Dev/test apps      | Integrated           | Simple, no scaling needed         |
 
 ## Best Practices
 
@@ -172,7 +191,9 @@ NEXT_PUBLIC_ALL_URL=https://all-xxx.vercel.app
 Set in Vercel dashboard or `.env.local`:
 
 \`\`\`bash
+
 # Standalone app URLs (only set if deploying standalone)
+
 NEXT_PUBLIC_DOCS_URL=https://docs-xxx.vercel.app
 NEXT_PUBLIC_ALL_URL=https://all-xxx.vercel.app
 NEXT_PUBLIC_NOCSS_URL=https://nocss-xxx.vercel.app
@@ -196,6 +217,7 @@ NEXT_PUBLIC_SHADCN_URL=https://shadcn-xxx.vercel.app
 **Setup**: No env vars
 
 **Result**:
+
 - `localhost:3000/apps/docs` → iframe to `localhost:3001`
 - `localhost:3000/apps/all` → iframe to `localhost:3002`
 - All apps accessible from main app
@@ -205,6 +227,7 @@ NEXT_PUBLIC_SHADCN_URL=https://shadcn-xxx.vercel.app
 **Setup**: Only `NEXT_PUBLIC_DOCS_URL` set
 
 **Result**:
+
 - `preview.myui.space/apps/docs` → redirects to `docs-xxx.vercel.app`
 - `preview.myui.space/apps/all` → iframe (served directly)
 - `preview.myui.space/apps/nocss` → iframe (served directly)
@@ -214,6 +237,7 @@ NEXT_PUBLIC_SHADCN_URL=https://shadcn-xxx.vercel.app
 **Setup**: `NEXT_PUBLIC_DOCS_URL` and `NEXT_PUBLIC_ALL_URL` set
 
 **Result**:
+
 - `myui.space/apps/docs` → redirects to standalone
 - `myui.space/apps/all` → redirects to standalone
 - `myui.space/apps/nocss` → iframe (served directly)

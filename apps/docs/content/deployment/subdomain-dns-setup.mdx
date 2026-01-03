@@ -10,6 +10,7 @@ Complete guide for setting up subdomains (e.g., `docs.myui.space`) for IdeaI app
 ## Overview
 
 This guide covers:
+
 1. **DNS Configuration** - Setting up DNS records at your domain registrar
 2. **Vercel Domain Configuration** - Adding domains in Vercel dashboard
 3. **Automation Script** - Helper script to automate the process
@@ -43,10 +44,13 @@ If you want to keep DNS management at your registrar:
 
 1. **Get Vercel DNS records**:
    \`\`\`bash
+
    # For root domain
+
    vercel domains inspect myui.space
-   
+
    # This will show you the DNS records needed
+
    \`\`\`
 
 2. **Add DNS records at registrar**:
@@ -54,7 +58,6 @@ If you want to keep DNS management at your registrar:
      - Name: `@` or blank
      - Value: `76.76.21.21` (Vercel's IP - verify current IP)
      - TTL: 3600
-   
    - **CNAME Record** (for subdomains):
      - Name: `docs` (or your subdomain)
      - Value: `cname.vercel-dns.com` (verify with Vercel)
@@ -74,11 +77,14 @@ If you want to keep DNS management at your registrar:
 ### Via Vercel CLI
 
 \`\`\`bash
+
 # Add subdomain to docs project
+
 cd apps/docs
 vercel domains add docs.myui.space
 
 # Verify domain is added
+
 vercel domains ls
 \`\`\`
 
@@ -87,21 +93,27 @@ vercel domains ls
 ### Check DNS Propagation
 
 \`\`\`bash
+
 # Check if DNS records are propagated
+
 dig docs.myui.space
 nslookup docs.myui.space
 
 # Check specific record type
+
 dig CNAME docs.myui.space
 \`\`\`
 
 ### Test Domain Resolution
 
 \`\`\`bash
+
 # Test if domain resolves
+
 curl -I https://docs.myui.space
 
 # Should return 200 OK or redirect
+
 \`\`\`
 
 ## Step 4: Update Environment Variables
@@ -112,7 +124,9 @@ After DNS is configured and domain is added to Vercel:
    \`\`\`bash
    cd apps/web
    vercel env add NEXT_PUBLIC_DOCS_URL production
+
    # Enter: https://docs.myui.space
+
    \`\`\`
 
 2. **Redeploy web app**:
@@ -127,7 +141,9 @@ Here's a helper script to automate subdomain setup:
 
 \`\`\`bash
 #!/bin/bash
+
 # scripts/setup-subdomain.sh
+
 # Usage: ./scripts/setup-subdomain.sh <app-name> <subdomain> <root-domain>
 
 set -e
@@ -137,27 +153,29 @@ SUBDOMAIN=$2
 ROOT_DOMAIN=$3
 
 if [ -z "$APP_NAME" ] || [ -z "$SUBDOMAIN" ] || [ -z "$ROOT_DOMAIN" ]; then
-  echo "Usage: $0 <app-name> <subdomain> <root-domain>"
-  echo "Example: $0 docs docs myui.space"
-  exit 1
+echo "Usage: $0 <app-name> <subdomain> <root-domain>"
+echo "Example: $0 docs docs myui.space"
+exit 1
 fi
 
-FULL_DOMAIN="${SUBDOMAIN}.${ROOT_DOMAIN}"
-ENV_VAR_NAME="NEXT_PUBLIC_${APP_NAME^^}_URL"
+FULL*DOMAIN="${SUBDOMAIN}.${ROOT_DOMAIN}"
+ENV_VAR_NAME="NEXT_PUBLIC*${APP_NAME^^}_URL"
 ENV_VAR_VALUE="https://${FULL_DOMAIN}"
 
 echo "🚀 Setting up subdomain: ${FULL_DOMAIN}"
 echo ""
 
 # Step 1: Add domain to Vercel project
+
 echo "📋 Step 1: Adding domain to Vercel project..."
 cd "apps/${APP_NAME}"
 vercel domains add "${FULL_DOMAIN}" || {
-  echo "⚠️  Domain might already be added, continuing..."
+echo "⚠️ Domain might already be added, continuing..."
 }
 cd ../..
 
 # Step 2: Show DNS instructions
+
 echo ""
 echo "📋 Step 2: DNS Configuration Required"
 echo "======================================"
@@ -173,28 +191,31 @@ echo ""
 read -p "Press Enter after DNS is configured..."
 
 # Step 3: Verify DNS
+
 echo ""
 echo "📋 Step 3: Verifying DNS configuration..."
 if dig "${FULL_DOMAIN}" +short | grep -q "."; then
-  echo "✅ DNS is resolving"
+echo "✅ DNS is resolving"
 else
-  echo "⚠️  DNS not yet propagated. This can take up to 48 hours."
-  echo "   Continuing anyway..."
+echo "⚠️ DNS not yet propagated. This can take up to 48 hours."
+echo " Continuing anyway..."
 fi
 
 # Step 4: Update environment variable in web app
+
 echo ""
 echo "📋 Step 4: Updating environment variable in web app..."
 cd apps/web
 vercel env add "${ENV_VAR_NAME}" production <<< "${ENV_VAR_VALUE}" || {
-  echo "⚠️  Environment variable might already exist"
-  echo "   Updating existing variable..."
-  vercel env rm "${ENV_VAR_NAME}" production --yes
+echo "⚠️ Environment variable might already exist"
+echo " Updating existing variable..."
+vercel env rm "${ENV_VAR_NAME}" production --yes
   vercel env add "${ENV_VAR_NAME}" production <<< "${ENV_VAR_VALUE}"
 }
 cd ../..
 
 # Step 5: Redeploy web app
+
 echo ""
 echo "📋 Step 5: Redeploying web app..."
 cd apps/web
@@ -205,23 +226,26 @@ echo ""
 echo "✅ Subdomain setup complete!"
 echo ""
 echo "Summary:"
-echo "  - Domain: ${FULL_DOMAIN}"
+echo " - Domain: ${FULL_DOMAIN}"
 echo "  - App: ${APP_NAME}"
 echo "  - Environment Variable: ${ENV_VAR_NAME}=${ENV_VAR_VALUE}"
 echo ""
 echo "Next steps:"
-echo "  1. Wait for DNS propagation (if not already done)"
-echo "  2. Test: https://${FULL_DOMAIN}"
+echo " 1. Wait for DNS propagation (if not already done)"
+echo " 2. Test: https://${FULL_DOMAIN}"
 echo "  3. Test redirect: https://www.${ROOT_DOMAIN}/apps/${APP_NAME}"
 \`\`\`
 
 ### Usage
 
 \`\`\`bash
+
 # Make script executable
+
 chmod +x scripts/setup-subdomain.sh
 
 # Setup docs subdomain
+
 ./scripts/setup-subdomain.sh docs docs myui.space
 \`\`\`
 
@@ -239,11 +263,13 @@ TTL: 3600
 \`\`\`
 
 **Pros**:
+
 - Easy to manage
 - Automatically updates if Vercel IPs change
 - Recommended by Vercel
 
 **Cons**:
+
 - Cannot use CNAME for root domain (must use A record)
 
 ### A Record (For Root Domain Only)
@@ -273,10 +299,13 @@ TTL: 3600
 
 3. **Clear DNS cache**:
    \`\`\`bash
+
    # macOS
+
    sudo dscacheutil -flushcache
-   
+
    # Linux
+
    sudo systemd-resolve --flush-caches
    \`\`\`
 
@@ -316,19 +345,25 @@ TTL: 3600
 ### Common Commands
 
 \`\`\`bash
+
 # List all domains
+
 vercel domains ls
 
 # Add domain to project
+
 vercel domains add docs.myui.space
 
 # Inspect domain configuration
+
 vercel domains inspect docs.myui.space
 
 # Remove domain
+
 vercel domains rm docs.myui.space
 
 # Check DNS propagation
+
 dig docs.myui.space
 nslookup docs.myui.space
 \`\`\`
@@ -336,15 +371,20 @@ nslookup docs.myui.space
 ### Environment Variables
 
 \`\`\`bash
+
 # Set standalone URL for web app
+
 cd apps/web
 vercel env add NEXT_PUBLIC_DOCS_URL production
+
 # Enter: https://docs.myui.space
 
 # List environment variables
+
 vercel env ls
 
 # Remove environment variable
+
 vercel env rm NEXT_PUBLIC_DOCS_URL production
 \`\`\`
 

@@ -12,6 +12,7 @@ description: Complete design and implementation guide for one-click IdeaI projec
 ## Overview
 
 The IdeaI Build Auto-Setup System automates the complete setup of a new IdeaI project from scratch:
+
 - ✅ Create GitHub repository
 - ✅ Initialize project structure
 - ✅ Create Vercel projects
@@ -73,6 +74,7 @@ IdeaI Build CLI (ideai-build.mjs)
 **File**: `scripts/ideai-build.mjs`
 
 **Features**:
+
 - Interactive CLI with prompts
 - Configuration file support
 - Quick setup mode
@@ -80,6 +82,7 @@ IdeaI Build CLI (ideai-build.mjs)
 - Error handling
 
 **Commands**:
+
 ```bash
 # Interactive setup
 node scripts/ideai-build.mjs setup
@@ -104,6 +107,7 @@ node scripts/ideai-build.mjs update
 **Module**: `scripts/ideai-build/generator.mjs`
 
 **Responsibilities**:
+
 1. Create monorepo directory structure
 2. Initialize Next.js apps with templates
 3. Generate `.ideai.json` files
@@ -112,30 +116,32 @@ node scripts/ideai-build.mjs update
 6. Configure TypeScript and ESLint
 
 **Process**:
+
 ```javascript
 async function generateProject(config) {
   // 1. Create directory structure
   await createDirectories(config.project.name);
-  
+
   // 2. Initialize each app
   for (const app of config.project.apps) {
     await initializeNextApp(app, config);
     await createIdeaiConfig(app, config);
     await setupDependencies(app, config);
   }
-  
+
   // 3. Create shared packages
   await createSharedPackages(config);
-  
+
   // 4. Create root files
   await createRootFiles(config);
-  
+
   // 5. Initialize Git
   await initializeGit(config);
 }
 ```
 
 **Templates**:
+
 - Next.js app template
 - `.ideai.json` template
 - `package.json` template
@@ -149,9 +155,11 @@ async function generateProject(config) {
 **Module**: `scripts/ideai-build/github.mjs`
 
 **Dependencies**:
+
 - `@octokit/rest` - GitHub API client
 
 **Responsibilities**:
+
 1. Create GitHub repository
 2. Setup `.github/workflows` files
 3. Configure GitHub Secrets
@@ -159,38 +167,41 @@ async function generateProject(config) {
 5. Setup branch protection rules
 
 **Process**:
+
 ```javascript
 async function setupGitHub(config) {
   // 1. Authenticate with GitHub
   const octokit = new Octokit({ auth: config.github.token });
-  
+
   // 2. Create repository
   await octokit.repos.createForAuthenticatedUser({
     name: config.github.repo,
     private: config.github.private,
     auto_init: false,
   });
-  
+
   // 3. Create workflow files
   await createWorkflowFiles(config);
-  
+
   // 4. Setup secrets
   await setupSecrets(config);
-  
+
   // 5. Initial commit
   await initialCommit(config);
-  
+
   // 6. Setup branch protection
   await setupBranchProtection(config);
 }
 ```
 
 **Required GitHub Permissions**:
+
 - `repo` - Full repository access
 - `admin:repo_hook` - Repository hooks
 - `admin:org_hook` - Organization hooks (if org)
 
 **Secrets to Configure**:
+
 - `VERCEL_TOKEN`
 - `VERCEL_ORG_ID`
 - `TURBO_TOKEN` (optional)
@@ -203,9 +214,11 @@ async function setupGitHub(config) {
 **Module**: `scripts/ideai-build/vercel.mjs`
 
 **Dependencies**:
+
 - `vercel` - Vercel CLI (or API client)
 
 **Responsibilities**:
+
 1. Create Vercel projects
 2. Link projects to apps
 3. Configure dashboard settings
@@ -213,25 +226,26 @@ async function setupGitHub(config) {
 5. Setup domains
 
 **Process**:
+
 ```javascript
 async function setupVercel(config) {
   // 1. Authenticate with Vercel
   await vercelLogin(config.vercel.token);
-  
+
   // 2. Create projects for each app
   for (const project of config.vercel.projects) {
     // Create project
     const projectId = await createVercelProject(project, config);
-    
+
     // Link to app
     await linkVercelProject(project.app, projectId, config);
-    
+
     // Configure dashboard settings
     await configureDashboardSettings(project, config);
-    
+
     // Set environment variables
     await setEnvironmentVariables(project, config);
-    
+
     // Setup domain (if provided)
     if (project.domain) {
       await setupDomain(project, config);
@@ -241,6 +255,7 @@ async function setupVercel(config) {
 ```
 
 **Dashboard Settings to Configure**:
+
 - Root Directory: `apps/{app-name}`
 - Include files outside root directory: `true`
 - Framework Preset: `nextjs`
@@ -249,6 +264,7 @@ async function setupVercel(config) {
 - Output Directory: `.next`
 
 **API Endpoints**:
+
 - `POST /v9/projects` - Create project
 - `PATCH /v9/projects/{id}` - Update project settings
 - `POST /v9/projects/{id}/domains` - Add domain
@@ -261,42 +277,47 @@ async function setupVercel(config) {
 **Module**: `scripts/ideai-build/dns.mjs`
 
 **Dependencies**:
+
 - Provider-specific APIs (Cloudflare, AWS Route53, etc.)
 
 **Responsibilities**:
+
 1. Verify domain ownership
 2. Create DNS records (CNAME, A, etc.)
 3. Configure subdomains
 4. Verify DNS propagation
 
 **Supported Providers**:
+
 - Cloudflare (primary)
 - AWS Route53
 - Google Cloud DNS
 - Manual (instructions only)
 
 **Process**:
+
 ```javascript
 async function setupDNS(config) {
   // 1. Verify domain ownership
   await verifyDomainOwnership(config.dns.rootDomain, config);
-  
+
   // 2. Create root domain DNS records
   if (config.dns.rootDomain) {
     await createDNSRecords(config.dns.rootDomain, config);
   }
-  
+
   // 3. Create subdomain DNS records
   for (const subdomain of config.dns.subdomains) {
     await createSubdomainRecord(subdomain, config);
   }
-  
+
   // 4. Verify DNS propagation
   await verifyDNSPropagation(config);
 }
 ```
 
 **DNS Records to Create**:
+
 - CNAME: `{subdomain}` → `cname.vercel-dns.com`
 - A: `@` → Vercel IP (if needed)
 - CNAME: `www` → `cname.vercel-dns.com`
@@ -308,45 +329,48 @@ async function setupDNS(config) {
 **Module**: `scripts/ideai-build/verify.mjs`
 
 **Responsibilities**:
+
 1. Build verification
 2. Deployment testing
 3. Health checks
 4. Generate setup report
 
 **Process**:
+
 ```javascript
 async function verifySetup(config) {
   const report = {
-    project: { status: 'pending', errors: [] },
-    github: { status: 'pending', errors: [] },
-    vercel: { status: 'pending', errors: [] },
-    dns: { status: 'pending', errors: [] },
-    deployment: { status: 'pending', errors: [] },
+    project: { status: "pending", errors: [] },
+    github: { status: "pending", errors: [] },
+    vercel: { status: "pending", errors: [] },
+    dns: { status: "pending", errors: [] },
+    deployment: { status: "pending", errors: [] },
   };
-  
+
   // 1. Verify project structure
   report.project = await verifyProjectStructure(config);
-  
+
   // 2. Verify GitHub
   report.github = await verifyGitHubSetup(config);
-  
+
   // 3. Verify Vercel
   report.vercel = await verifyVercelSetup(config);
-  
+
   // 4. Verify DNS
   report.dns = await verifyDNS(config);
-  
+
   // 5. Test deployment
   report.deployment = await testDeployment(config);
-  
+
   // 6. Generate report
   await generateReport(report, config);
-  
+
   return report;
 }
 ```
 
 **Checks**:
+
 - ✅ Project structure exists
 - ✅ All apps build successfully
 - ✅ GitHub repository exists and accessible
@@ -483,6 +507,7 @@ node scripts/ideai-build.mjs setup
 ```
 
 **Prompts**:
+
 1. Project name?
 2. Description?
 3. Which apps to create? (web, docs, etc.)
@@ -522,6 +547,7 @@ node scripts/ideai-build.mjs setup --quick --name my-project
 ```
 
 Uses sensible defaults:
+
 - Apps: `["web"]`
 - GitHub: Same as project name
 - Vercel: Same as project name
@@ -646,5 +672,3 @@ Uses sensible defaults:
 ---
 
 **End of Document**
-
-
