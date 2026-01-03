@@ -11,6 +11,7 @@
 - [ ] Real-time memory monitoring display in build UI
 - [ ] Build history tracking and reporting
 - [ ] Automatic dependency sync on build
+- [ ] Automatic submodule updates before build (ensure all submodules are up to date with their remote repos before building)
 - [ ] Enhanced documentation verification (code snippet testing)
 - [ ] Rules management UI integration
 - [ ] Execute all build commands with output
