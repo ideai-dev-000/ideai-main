@@ -25,6 +25,7 @@ This document provides a comprehensive overview of the project, current status, 
 ### Brand Name: IdeaI
 
 **CRITICAL**: The product/brand name must ALWAYS be written as **IdeaI** (exact capitalization: capital I, lowercase dea, capital I):
+
 - ✅ Correct: `IdeaI`, `IdeaI web app`, `Welcome to IdeaI`, `IdeaI.Space`
 - ❌ Incorrect: `IDEAI`, `Ideai`, `ideai`, `IDEAi`, `Idea I`, or any other variation
 
@@ -59,46 +60,46 @@ See: [Multi-Strategy Deployment Plan](./deployment/MULTI-STRATEGY-DEPLOYMENT-PLA
 
 \`\`\`
 ideai-main/
-├── apps/                    # 13 Next.js applications
-│   ├── web/                # Main IdeaI app (port 3000)
-│   ├── docs/               # Documentation site (port 3001)
-│   ├── all/                # Component showcase (port 3002)
-│   ├── nocss/              # No CSS demo (port 3003)
-│   ├── mvp/                # MVP.css demo (port 3004)
-│   ├── tailwind/           # Tailwind CSS demo (port 3005)
-│   ├── allcss/             # All CSS demo (port 3006)
-│   ├── bootstrap/          # Bootstrap demo (port 3007)
-│   ├── unocss/             # UnoCSS demo (port 3008)
-│   ├── shadcn/             # Shadcn Components (port 3009)
-│   ├── material/           # Material UI demo (port 3010)
-│   ├── chakra/             # Chakra UI demo (port 3011)
-│   └── radix/              # Radix UI demo (port 3012)
-├── packages/               # Shared packages
-│   ├── ui/                 # Shared UI components and styles
-│   ├── eslint-config/      # Shared ESLint config
-│   └── typescript-config/  # Shared TypeScript config
-├── docs/                   # Documentation
-├── scripts/                # Utility scripts
-└── deploy.sh              # Unified deployment script
+├── apps/ # 13 Next.js applications
+│ ├── web/ # Main IdeaI app (port 3000)
+│ ├── docs/ # Documentation site (port 3001)
+│ ├── all/ # Component showcase (port 3002)
+│ ├── nocss/ # No CSS demo (port 3003)
+│ ├── mvp/ # MVP.css demo (port 3004)
+│ ├── tailwind/ # Tailwind CSS demo (port 3005)
+│ ├── allcss/ # All CSS demo (port 3006)
+│ ├── bootstrap/ # Bootstrap demo (port 3007)
+│ ├── unocss/ # UnoCSS demo (port 3008)
+│ ├── shadcn/ # Shadcn Components (port 3009)
+│ ├── material/ # Material UI demo (port 3010)
+│ ├── chakra/ # Chakra UI demo (port 3011)
+│ └── radix/ # Radix UI demo (port 3012)
+├── packages/ # Shared packages
+│ ├── ui/ # Shared UI components and styles
+│ ├── eslint-config/ # Shared ESLint config
+│ └── typescript-config/ # Shared TypeScript config
+├── docs/ # Documentation
+├── scripts/ # Utility scripts
+└── deploy.sh # Unified deployment script
 \`\`\`
 
 ### Apps Overview
 
-| App | Port | Purpose | Status |
-|-----|------|---------|--------|
-| web | 3000 | Main IdeaI application | ✅ Deployed |
-| docs | 3001 | Documentation site | ✅ Deployed |
-| all | 3002 | Complete component showcase | ✅ Built |
-| nocss | 3003 | Pure HTML (no CSS) | ✅ Built |
-| mvp | 3004 | MVP.css framework demo | ✅ Built |
-| tailwind | 3005 | Tailwind CSS demo | ✅ Built |
-| allcss | 3006 | MVP.css + Tailwind | ✅ Built |
-| bootstrap | 3007 | Bootstrap framework demo | ✅ Built |
-| unocss | 3008 | UnoCSS framework demo | ✅ Built |
-| shadcn | 3009 | Shadcn/ui components | ✅ Built |
-| material | 3010 | Material UI demo | ✅ Built |
-| chakra | 3011 | Chakra UI demo | ✅ Built |
-| radix | 3012 | Radix UI primitives | ✅ Built |
+| App       | Port | Purpose                     | Status      |
+| --------- | ---- | --------------------------- | ----------- |
+| web       | 3000 | Main IdeaI application      | ✅ Deployed |
+| docs      | 3001 | Documentation site          | ✅ Deployed |
+| all       | 3002 | Complete component showcase | ✅ Built    |
+| nocss     | 3003 | Pure HTML (no CSS)          | ✅ Built    |
+| mvp       | 3004 | MVP.css framework demo      | ✅ Built    |
+| tailwind  | 3005 | Tailwind CSS demo           | ✅ Built    |
+| allcss    | 3006 | MVP.css + Tailwind          | ✅ Built    |
+| bootstrap | 3007 | Bootstrap framework demo    | ✅ Built    |
+| unocss    | 3008 | UnoCSS framework demo       | ✅ Built    |
+| shadcn    | 3009 | Shadcn/ui components        | ✅ Built    |
+| material  | 3010 | Material UI demo            | ✅ Built    |
+| chakra    | 3011 | Chakra UI demo              | ✅ Built    |
+| radix     | 3012 | Radix UI primitives         | ✅ Built    |
 
 ---
 
@@ -114,42 +115,55 @@ ideai-main/
 ### Initial Setup
 
 \`\`\`bash
+
 # Clone the repository
+
 git clone https://github.com/ideai-dev-000/ideai-main.git
 cd ideai-main
 
 # Install dependencies
+
 pnpm install
 
 # Start all development servers
+
 pnpm dev:start
 
 # Or start individual app
+
 pnpm --filter web dev
 \`\`\`
 
 ### Development Commands
 
 \`\`\`bash
+
 # Start all dev servers
+
 pnpm dev:start
 
 # Check dev server status
+
 pnpm dev:status
 
 # Stop all dev servers
+
 pnpm dev:stop
 
 # Restart all dev servers
+
 pnpm dev:restart
 
 # Build all apps
+
 pnpm build
 
 # Lint all apps
+
 pnpm lint
 
 # Type check all apps
+
 pnpm check-types
 \`\`\`
 
@@ -177,12 +191,10 @@ pnpm check-types
   - Design system
   - UI consistency standards
   - Deployment architecture
-  
 - **Deployment**: `docs/deployment/`
   - Vercel configuration
   - Unified deployment guide
   - CI/CD workflows
-  
 - **Development**: `docs/development/`
   - Getting started
   - Dev server manager
@@ -195,6 +207,7 @@ pnpm check-types
 ### Immediate Priority (Do First)
 
 **TICKET-0.1: Fix Sub-Folder Route 404 Issue** 🔴 CRITICAL
+
 - **Status**: In Progress
 - **Problem**: Routes at `/apps/{name}` return 404 in production
 - **Location**: `apps/web/app/apps/[app]/[[...path]]/page.tsx`
@@ -212,6 +225,7 @@ pnpm check-types
 **See**: [Multi-Strategy Deployment Plan](./deployment/MULTI-STRATEGY-DEPLOYMENT-PLAN.md)
 
 **Total Tickets**: 19
+
 - Critical: 1
 - High: 5
 - Medium: 8
@@ -236,13 +250,17 @@ pnpm check-types
 ### Deployment Commands
 
 \`\`\`bash
+
 # Deploy all apps (preview)
+
 ./deploy.sh
 
 # Deploy all apps (production)
+
 ./deploy.sh --prod
 
 # Deploy specific app (production)
+
 ./deploy.sh --prod web
 \`\`\`
 
@@ -285,7 +303,9 @@ Related: TICKET-XXX
 ### Examples
 
 \`\`\`bash
+
 # Good commit message
+
 fix(web): resolve sub-folder route 404 issue
 
 Fixed Next.js App Router catch-all route that was returning 404
@@ -299,6 +319,7 @@ for async params handling.
 Related: TICKET-0.1
 
 # Bad commit message (DON'T DO THIS)
+
 fix: stuff
 \`\`\`
 
@@ -502,27 +523,34 @@ Related: TICKET-2.3
 ### Bad Examples (DON'T DO THIS)
 
 \`\`\`bash
+
 # Too vague
+
 fix: stuff
 
 # No explanation
+
 fix(web): route fix
 
 # Missing details
+
 fix: 404 error
 
 # No ticket reference
+
 feat: new feature
 \`\`\`
 
 ### Commit Signing
 
 **In non-interactive environments** (Cursor/AI tools):
+
 1. Disable auto-sign: `git config --global --unset commit.gpgsign`
 2. Make commit
 3. Re-enable: `git config --global commit.gpgsign true`
 
 **In interactive environments**:
+
 - Commits are automatically signed with GPG
 
 ---
@@ -543,11 +571,3 @@ feat: new feature
 **Welcome to the team! Let's build something amazing together! 🚀**
 
 **Last Updated**: January 1, 2026
-
-
-
-
-
-
-
-

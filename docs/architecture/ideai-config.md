@@ -10,6 +10,7 @@ Simple configuration system to set app roles (parent/child) using `.ideai.json` 
 ## Overview
 
 Each app in the monorepo can have a `.ideai.json` file that defines:
+
 - **Role**: `parent` or `child`
 - **Name**: Display name
 - **Description**: App description
@@ -25,20 +26,20 @@ Create `.ideai.json` in each app's root directory:
 
 \`\`\`json
 {
-  "role": "parent",
-  "name": "IdeaI",
-  "description": "Main IdeaI application",
-  "childApps": [
-    "docs",
-    "all",
-    "nocss",
-    "mvp",
-    "tailwind",
-    "allcss",
-    "bootstrap",
-    "unocss",
-    "shadcn"
-  ]
+"role": "parent",
+"name": "IdeaI",
+"description": "Main IdeaI application",
+"childApps": [
+"docs",
+"all",
+"nocss",
+"mvp",
+"tailwind",
+"allcss",
+"bootstrap",
+"unocss",
+"shadcn"
+]
 }
 \`\`\`
 
@@ -46,11 +47,11 @@ Create `.ideai.json` in each app's root directory:
 
 \`\`\`json
 {
-  "role": "child",
-  "name": "Documentation",
-  "description": "IdeaI documentation site",
-  "parentApp": "web",
-  "localPort": 3001
+"role": "child",
+"name": "Documentation",
+"description": "IdeaI documentation site",
+"parentApp": "web",
+"localPort": 3001
 }
 \`\`\`
 
@@ -61,17 +62,17 @@ Create `.ideai.json` in each app's root directory:
 1. Create `.ideai.json` in the app directory:
    \`\`\`json
    {
-     "role": "parent",
-     "name": "My Parent App",
-     "childApps": ["child1", "child2"]
+   "role": "parent",
+   "name": "My Parent App",
+   "childApps": ["child1", "child2"]
    }
    \`\`\`
 
 2. Update child apps to reference this parent:
    \`\`\`json
    {
-     "role": "child",
-     "parentApp": "my-parent-app"
+   "role": "child",
+   "parentApp": "my-parent-app"
    }
    \`\`\`
 
@@ -80,24 +81,25 @@ Create `.ideai.json` in each app's root directory:
 1. Create `.ideai.json` in the app directory:
    \`\`\`json
    {
-     "role": "child",
-     "name": "My Child App",
-     "parentApp": "web",
-     "localPort": 3010
+   "role": "child",
+   "name": "My Child App",
+   "parentApp": "web",
+   "localPort": 3010
    }
    \`\`\`
 
 2. Add the child to parent's `childApps` array:
    \`\`\`json
    {
-     "role": "parent",
-     "childApps": ["my-child-app"]
+   "role": "parent",
+   "childApps": ["my-child-app"]
    }
    \`\`\`
 
 ## Default Behavior
 
 If `.ideai.json` is missing:
+
 - `web` app defaults to **parent**
 - All other apps default to **child** with `parentApp: "web"`
 
@@ -112,11 +114,11 @@ const config = getChildAppConfig("docs");
 
 // Check app role
 if (isParentApp("web")) {
-  // Handle parent app logic
+// Handle parent app logic
 }
 
 if (isChildApp("docs")) {
-  // Handle child app logic
+// Handle child app logic
 }
 \`\`\`
 
@@ -132,19 +134,19 @@ To make `docs` the parent instead of `web`:
 1. **Update `apps/docs/.ideai.json`**:
    \`\`\`json
    {
-     "role": "parent",
-     "name": "Documentation Hub",
-     "childApps": ["web", "all"]
+   "role": "parent",
+   "name": "Documentation Hub",
+   "childApps": ["web", "all"]
    }
    \`\`\`
 
 2. **Update `apps/web/.ideai.json`**:
    \`\`\`json
    {
-     "role": "child",
-     "name": "Web App",
-     "parentApp": "docs",
-     "localPort": 3000
+   "role": "child",
+   "name": "Web App",
+   "parentApp": "docs",
+   "localPort": 3000
    }
    \`\`\`
 
@@ -154,11 +156,3 @@ To make `docs` the parent instead of `web`:
 
 - [Parent-Child Architecture](./deployment-architecture.md#parent-child-architecture)
 - [Sub-App Routing](../../apps/web/app/apps/[app]/[[...path]]/page.tsx)
-
-
-
-
-
-
-
-

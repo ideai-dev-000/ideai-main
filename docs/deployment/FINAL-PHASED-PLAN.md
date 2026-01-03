@@ -14,9 +14,11 @@ This document outlines the complete phased plan for deploying the IdeaI monorepo
 ## Phase 1: Main App Deployment (Integrated Mode)
 
 ### Objective
+
 Deploy main web app to preview and production, ensuring `/index` works and all apps are visible on one domain.
 
 ### Tasks
+
 - [ ] Deploy `apps/web` to Vercel preview
 - [ ] Verify `/index` page shows all apps
 - [ ] Test `/apps/{name}` routes work with smart routing
@@ -25,21 +27,25 @@ Deploy main web app to preview and production, ensuring `/index` works and all a
 - [ ] Test all `/apps/{name}` routes in production
 
 ### Expected Result
+
 - ✅ `preview-xxx.vercel.app/index` shows all apps
 - ✅ `preview-xxx.vercel.app/apps/{name}` serves apps via iframe
 - ✅ `myui.space/index` shows all apps
 - ✅ `myui.space/apps/{name}` serves apps via iframe
 
 ### Configuration
+
 - No environment variables needed (integrated mode default)
 - All apps served directly via iframe
 
 ## Phase 2: Standalone App Deployment
 
 ### Objective
+
 Deploy one app (docs) as a standalone Vercel project to test standalone mode.
 
 ### Tasks
+
 - [ ] Create Vercel project for `apps/docs`
 - [ ] Configure Root Directory: `apps/docs`
 - [ ] Enable "Include files outside root"
@@ -49,22 +55,28 @@ Deploy one app (docs) as a standalone Vercel project to test standalone mode.
 - [ ] Test redirect from `myui.space/apps/docs` → standalone URL
 
 ### Expected Result
+
 - ✅ `docs-xxx.vercel.app` works standalone
 - ✅ `myui.space/apps/docs` redirects to standalone URL
 - ✅ Hybrid mode working (docs standalone, others integrated)
 
 ### Configuration
+
 \`\`\`bash
+
 # In main web app Vercel environment variables:
+
 NEXT_PUBLIC_DOCS_URL=https://docs-xxx.vercel.app
 \`\`\`
 
 ## Phase 3: Subdomain Configuration
 
 ### Objective
+
 Configure subdomain for standalone app (docs.myui.space).
 
 ### Tasks
+
 - [ ] Add DNS record: `docs` → CNAME to Vercel
 - [ ] Configure custom domain in Vercel for docs project
 - [ ] Update `NEXT_PUBLIC_DOCS_URL` to `https://docs.myui.space`
@@ -72,24 +84,32 @@ Configure subdomain for standalone app (docs.myui.space).
 - [ ] Test redirect from `myui.space/apps/docs` → `docs.myui.space`
 
 ### Expected Result
+
 - ✅ `docs.myui.space` works
 - ✅ `myui.space/apps/docs` redirects to `docs.myui.space`
 - ✅ Clean subdomain URLs
 
 ### Configuration
+
 \`\`\`bash
+
 # DNS: docs.myui.space → CNAME to Vercel
+
 # Vercel: Add custom domain to docs project
+
 # Environment variable:
+
 NEXT_PUBLIC_DOCS_URL=https://docs.myui.space
 \`\`\`
 
 ## Phase 4: Multitenant Vercel Setup
 
 ### Objective
+
 Set up full multitenant configuration with multiple standalone apps and subdomains.
 
 ### Tasks
+
 - [ ] Create Vercel projects for all apps (docs, all, nocss, mvp, tailwind, allcss, bootstrap, unocss, shadcn)
 - [ ] Configure Root Directory for each project
 - [ ] Enable "Include files outside root" for each
@@ -103,6 +123,7 @@ Set up full multitenant configuration with multiple standalone apps and subdomai
 - [ ] Test hybrid mode: some apps standalone, some integrated
 
 ### Expected Result
+
 - ✅ All apps can be standalone or integrated
 - ✅ Subdomains work for key apps
 - ✅ Main app redirects to standalone URLs when configured
@@ -110,20 +131,27 @@ Set up full multitenant configuration with multiple standalone apps and subdomai
 - ✅ Full flexibility per app
 
 ### Configuration
+
 \`\`\`bash
+
 # In main web app Vercel environment variables:
+
 NEXT_PUBLIC_DOCS_URL=https://docs.myui.space
 NEXT_PUBLIC_ALL_URL=https://all.myui.space
 NEXT_PUBLIC_SHADCN_URL=https://shadcn.myui.space
+
 # ... etc (only set for apps you want standalone)
+
 \`\`\`
 
 ## Phase 5: Documentation and Cleanup
 
 ### Objective
+
 Review, consolidate, and clean up all documentation and legacy files.
 
 ### Tasks
+
 - [ ] Review all deployment docs for accuracy
 - [ ] Remove references to deleted `landing` app
 - [ ] Consolidate duplicate documentation
@@ -133,6 +161,7 @@ Review, consolidate, and clean up all documentation and legacy files.
 - [ ] Update deployment status
 
 ### Expected Result
+
 - ✅ All docs accurate and current
 - ✅ No legacy references
 - ✅ Clean documentation structure
@@ -141,34 +170,46 @@ Review, consolidate, and clean up all documentation and legacy files.
 ## Deployment Commands
 
 ### Phase 1: Main App
+
 \`\`\`bash
+
 # Preview
+
 ./deploy.sh web
 
 # Production
+
 ./deploy.sh --prod web
 \`\`\`
 
 ### Phase 2: Standalone App
+
 \`\`\`bash
+
 # Create Vercel project (first time)
+
 cd apps/docs
 vercel link
 
 # Deploy
+
 ./deploy.sh docs
 ./deploy.sh --prod docs
 \`\`\`
 
 ### Phase 4: All Apps
+
 \`\`\`bash
+
 # Deploy all apps
+
 ./deploy.sh --prod
 \`\`\`
 
 ## Verification Checklist
 
 ### Phase 1
+
 - [ ] `/index` shows all apps on preview
 - [ ] `/index` shows all apps on production
 - [ ] `/apps/{name}` routes work on preview
@@ -176,22 +217,26 @@ vercel link
 - [ ] Apps load via iframe correctly
 
 ### Phase 2
+
 - [ ] Standalone docs app works
 - [ ] Redirect from main app works
 - [ ] Hybrid mode functioning
 
 ### Phase 3
+
 - [ ] Subdomain resolves
 - [ ] SSL certificate active
 - [ ] Redirect works
 
 ### Phase 4
+
 - [ ] All apps can be standalone
 - [ ] All subdomains work
 - [ ] Hybrid mode fully functional
 - [ ] Environment variables correct
 
 ### Phase 5
+
 - [ ] All docs reviewed
 - [ ] No legacy references
 - [ ] All links work
@@ -223,11 +268,3 @@ vercel link
 - [Deployment Phases](./deployment-phases.md) - Phased approach
 - [Unified Deployment](./unified-deployment.md) - Deployment commands
 - [Vercel Setup](./vercel.md) - Vercel configuration
-
-
-
-
-
-
-
-

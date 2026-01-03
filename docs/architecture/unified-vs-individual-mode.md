@@ -18,6 +18,7 @@ IdeaI supports two modes for running child apps:
 - ✅ Production-ready
 
 **How it works**:
+
 - Child app pages are imported into parent at build time
 - Registry maps app names to components
 - `/apps/{name}` routes to child app component directly
@@ -33,6 +34,7 @@ IdeaI supports two modes for running child apps:
 - ✅ Good for development/testing
 
 **How it works**:
+
 - Each child app runs on its own port
 - Parent app embeds child apps via iframe
 - Child apps detect iframe and hide branding
@@ -43,14 +45,18 @@ IdeaI supports two modes for running child apps:
 Set environment variable:
 
 \`\`\`bash
+
 # Unified mode (all on port 3000)
+
 NEXT_PUBLIC_IDEAI_APP_MODE=unified
 
 # Individual mode (separate ports)
+
 NEXT_PUBLIC_IDEAI_APP_MODE=individual
 \`\`\`
 
 **Defaults**:
+
 - Production: `unified` (always)
 - Development: `individual` (can be toggled)
 
@@ -83,12 +89,14 @@ pnpm --filter web dev
 ## Benefits
 
 ### Unified Mode
+
 - ✅ One app, one port
 - ✅ Production-ready
 - ✅ Child apps are services/pages
 - ✅ No iframe overhead
 
 ### Individual Mode
+
 - ✅ Complete isolation
 - ✅ Easy debugging
 - ✅ Test apps independently
@@ -99,20 +107,20 @@ pnpm --filter web dev
 \`\`\`
 Unified Mode:
 ┌─────────────────────────────────┐
-│  Parent App (port 3000)         │
-│  ┌───────────────────────────┐  │
-│  │ /apps/docs → DocsPage     │  │
-│  │ /apps/all → AllPage       │  │
-│  │ /apps/nocss → NoCSSPage   │  │
-│  └───────────────────────────┘  │
+│ Parent App (port 3000) │
+│ ┌───────────────────────────┐ │
+│ │ /apps/docs → DocsPage │ │
+│ │ /apps/all → AllPage │ │
+│ │ /apps/nocss → NoCSSPage │ │
+│ └───────────────────────────┘ │
 └─────────────────────────────────┘
 
 Individual Mode:
-┌─────────────────┐  ┌──────────────┐
-│ Parent (3000)   │  │ Docs (3001)  │
-│  ┌───────────┐  │  │              │
-│  │ <iframe>  │──┼─▶│              │
-│  └───────────┘  │  └──────────────┘
+┌─────────────────┐ ┌──────────────┐
+│ Parent (3000) │ │ Docs (3001) │
+│ ┌───────────┐ │ │ │
+│ │ <iframe> │──┼─▶│ │
+│ └───────────┘ │ └──────────────┘
 └─────────────────┘
 \`\`\`
 
@@ -122,11 +130,3 @@ Individual Mode:
 2. ⏳ Register child apps in registry
 3. ⏳ Test unified mode
 4. ⏳ Update build system for unified mode
-
-
-
-
-
-
-
-

@@ -9,7 +9,7 @@
     "start": "next start",
     "lint": "eslint --max-warnings 0",
     "check-types": "tsc --noEmit",
-    "build:check": "node ../../scripts/ideai-build-check.mjs web",
+    "build:check": "node ../../scripts/ideai-build.mjs verify --no-ui",
     "build:sync": "node ../../scripts/ideai-build-sync.mjs web",
     "build:track": "node ../../scripts/ideai-build-track.mjs web build"
   },

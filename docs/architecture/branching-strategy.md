@@ -26,10 +26,10 @@ The IdeaI monorepo supports flexible branching strategies that work with Vercel'
 \`\`\`json
 // apps/web/.ideai.json (same on all branches)
 {
-  "vercelProject": {
-    "projectName": "ideai-main",
-    "forkToNew": false
-  }
+"vercelProject": {
+"projectName": "ideai-main",
+"forkToNew": false
+}
 }
 \`\`\`
 
@@ -49,15 +49,21 @@ The IdeaI monorepo supports flexible branching strategies that work with Vercel'
 ### Example
 
 \`\`\`bash
+
 # Main branch
+
 git checkout main
 ./deploy.sh --prod web
+
 # → Deploys to ideai-main (production)
 
 # Feature branch
+
 git checkout feature/new-feature
 ./deploy.sh web
+
 # → Deploys to ideai-main (preview)
+
 \`\`\`
 
 ## Strategy 2: Branch-Specific Projects
@@ -69,20 +75,20 @@ git checkout feature/new-feature
 **Main branch** (`apps/web/.ideai.json`):
 \`\`\`json
 {
-  "vercelProject": {
-    "projectName": "ideai-main",
-    "forkToNew": false
-  }
+"vercelProject": {
+"projectName": "ideai-main",
+"forkToNew": false
+}
 }
 \`\`\`
 
 **Develop branch** (`apps/web/.ideai.json`):
 \`\`\`json
 {
-  "vercelProject": {
-    "projectName": "ideai-main-staging",
-    "forkToNew": true
-  }
+"vercelProject": {
+"projectName": "ideai-main-staging",
+"forkToNew": true
+}
 }
 \`\`\`
 
@@ -102,15 +108,21 @@ git checkout feature/new-feature
 ### Example
 
 \`\`\`bash
+
 # Main branch
+
 git checkout main
 ./deploy.sh --prod web
+
 # → Deploys to ideai-main (production)
 
 # Develop branch
+
 git checkout develop
 ./deploy.sh --prod web
+
 # → Deploys to ideai-main-staging (staging production)
+
 \`\`\`
 
 ## Strategy 3: App-Specific Projects
@@ -122,20 +134,20 @@ git checkout develop
 **Web app** (`apps/web/.ideai.json`):
 \`\`\`json
 {
-  "vercelProject": {
-    "projectName": "ideai-main",
-    "forkToNew": false
-  }
+"vercelProject": {
+"projectName": "ideai-main",
+"forkToNew": false
+}
 }
 \`\`\`
 
 **Docs app** (`apps/docs/.ideai.json`):
 \`\`\`json
 {
-  "vercelProject": {
-    "projectName": "docs",
-    "forkToNew": false
-  }
+"vercelProject": {
+"projectName": "docs",
+"forkToNew": false
+}
 }
 \`\`\`
 
@@ -160,32 +172,41 @@ git checkout develop
 \`\`\`json
 // apps/web/.ideai.json (all branches)
 {
-  "vercelProject": {
-    "projectName": "ideai-main",
-    "forkToNew": false
-  }
+"vercelProject": {
+"projectName": "ideai-main",
+"forkToNew": false
+}
 }
 \`\`\`
 
 **Workflow**:
 \`\`\`bash
+
 # Create feature branch
+
 git checkout -b feature/new-feature
 
 # Make changes
+
 # ...
 
 # Deploy preview
+
 ./deploy.sh web
+
 # → Preview URL: https://ideai-main-{hash}-idea-i.vercel.app
 
 # Merge to main
+
 git checkout main
 git merge feature/new-feature
 
 # Deploy production
+
 ./deploy.sh --prod web
+
 # → Production URL: https://www.myui.space
+
 \`\`\`
 
 ### Example 2: Staging Environment
@@ -194,29 +215,37 @@ git merge feature/new-feature
 \`\`\`json
 // apps/web/.ideai.json (develop branch)
 {
-  "vercelProject": {
-    "projectName": "ideai-main-staging",
-    "forkToNew": true
-  }
+"vercelProject": {
+"projectName": "ideai-main-staging",
+"forkToNew": true
+}
 }
 \`\`\`
 
 **Workflow**:
 \`\`\`bash
+
 # Develop branch
+
 git checkout develop
 
 # Deploy staging
+
 ./deploy.sh --prod web
+
 # → Staging URL: https://ideai-main-staging.vercel.app
 
 # Test staging, then merge to main
+
 git checkout main
 git merge develop
 
 # Deploy production
+
 ./deploy.sh --prod web
+
 # → Production URL: https://www.myui.space
+
 \`\`\`
 
 ## Best Practices
@@ -226,10 +255,10 @@ git merge develop
 **Good**: Same config on all branches
 \`\`\`json
 {
-  "vercelProject": {
-    "projectName": "ideai-main",
-    "forkToNew": false
-  }
+"vercelProject": {
+"projectName": "ideai-main",
+"forkToNew": false
+}
 }
 \`\`\`
 
@@ -241,13 +270,13 @@ Add comments or documentation about which branches use which projects:
 
 \`\`\`json
 {
-  "vercelProject": {
-    "projectName": "ideai-main",
-    "forkToNew": false
-    // All branches use ideai-main
-    // Main → production
-    // Feature branches → preview
-  }
+"vercelProject": {
+"projectName": "ideai-main",
+"forkToNew": false
+// All branches use ideai-main
+// Main → production
+// Feature branches → preview
+}
 }
 \`\`\`
 
@@ -256,16 +285,20 @@ Add comments or documentation about which branches use which projects:
 Instead of different projects, use environment variables:
 
 \`\`\`bash
+
 # Production
+
 NEXT_PUBLIC_ENV=production ./deploy.sh --prod web
 
 # Staging
+
 NEXT_PUBLIC_ENV=staging ./deploy.sh --prod web
 \`\`\`
 
 ### 4. Branch Protection
 
 Configure branch protection in Vercel:
+
 - **Main branch**: Require verified commits
 - **Feature branches**: Allow preview deployments
 
@@ -277,10 +310,10 @@ Configure branch protection in Vercel:
 \`\`\`json
 // apps/web/.ideai.json
 {
-  "vercelProject": {
-    "projectName": "web",
-    "forkToNew": false
-  }
+"vercelProject": {
+"projectName": "web",
+"forkToNew": false
+}
 }
 \`\`\`
 
@@ -288,14 +321,15 @@ Configure branch protection in Vercel:
 \`\`\`json
 // apps/web/.ideai.json
 {
-  "vercelProject": {
-    "projectName": "ideai-main",
-    "forkToNew": false
-  }
+"vercelProject": {
+"projectName": "ideai-main",
+"forkToNew": false
+}
 }
 \`\`\`
 
 **Steps**:
+
 1. Update `.ideai.json`
 2. Re-link: `node scripts/ideai-vercel-link.mjs web`
 3. Deploy: `./deploy.sh web`
@@ -305,25 +339,26 @@ Configure branch protection in Vercel:
 **Before**:
 \`\`\`json
 {
-  "vercelProject": {
-    "projectName": "ideai-main",
-    "forkToNew": false
-  }
+"vercelProject": {
+"projectName": "ideai-main",
+"forkToNew": false
+}
 }
 \`\`\`
 
 **After**:
 \`\`\`json
 {
-  "vercelProject": {
-    "projectName": "web",
-    "forkToNew": true,
-    "newProjectName": "web"
-  }
+"vercelProject": {
+"projectName": "web",
+"forkToNew": true,
+"newProjectName": "web"
+}
 }
 \`\`\`
 
 **Steps**:
+
 1. Update `.ideai.json`
 2. Re-link: `node scripts/ideai-vercel-link.mjs web`
 3. Deploy: `./deploy.sh web` (creates new project)
@@ -335,6 +370,7 @@ Configure branch protection in Vercel:
 **Symptom**: Branch deploys to wrong Vercel project
 
 **Solution**:
+
 1. Check `.ideai.json` on that branch
 2. Verify `.vercel/project.json` matches
 3. Re-link: `node scripts/ideai-vercel-link.mjs <app>`
@@ -344,6 +380,7 @@ Configure branch protection in Vercel:
 **Symptom**: Deployment fails with "Project not found"
 
 **Solution**:
+
 1. Check project exists: `vercel projects ls`
 2. Set `forkToNew: true` to auto-create
 3. Or create project manually in Vercel dashboard
@@ -353,6 +390,7 @@ Configure branch protection in Vercel:
 **Symptom**: Git merge conflicts in `.ideai.json`
 
 **Solution**:
+
 1. Decide on strategy (same project vs. separate)
 2. Resolve conflicts
 3. Re-link after merge
@@ -362,11 +400,3 @@ Configure branch protection in Vercel:
 - [Vercel Project Configuration](./vercel-project-config.md)
 - [Branch Workflow](../development/branch-workflow.md)
 - [Vercel Configuration](../deployment/vercel.md)
-
-
-
-
-
-
-
-

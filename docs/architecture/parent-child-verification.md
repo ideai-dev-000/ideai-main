@@ -12,11 +12,14 @@ Complete guide to verify and test the parent/child app architecture.
 ### 1. Test Defaults (No Config Files)
 
 \`\`\`bash
+
 # Test that defaults work without .ideai.json files
+
 node scripts/test-parent-child.js
 \`\`\`
 
 **Expected Output**:
+
 - ✅ Parent App (web): Role: parent, URL: /
 - ✅ Child Apps: Role: child (default), URLs: /apps/{name}
 - ✅ All ports correct (3001-3009)
@@ -24,12 +27,17 @@ node scripts/test-parent-child.js
 ### 2. Check Dependencies
 
 \`\`\`bash
+
 # Verify parent has all child dependencies
+
 pnpm --filter web build:check
+
 # Or: node scripts/ideai-build-check.mjs web
+
 \`\`\`
 
 **Expected Output**:
+
 - Shows parent dependencies count
 - Shows child dependencies per app
 - Lists missing dependencies (if any)
@@ -38,11 +46,14 @@ pnpm --filter web build:check
 ### 3. Build Test
 
 \`\`\`bash
+
 # Build parent app
+
 pnpm --filter web build
 \`\`\`
 
 **Expected**:
+
 - ✅ Build succeeds
 - ✅ Routes generated correctly
 - ✅ No TypeScript errors
@@ -51,13 +62,18 @@ pnpm --filter web build
 ### 4. Track Build
 
 \`\`\`bash
+
 # Track build metadata
+
 pnpm --filter web build:track
+
 # View report
+
 node scripts/ideai-build-track.mjs web report
 \`\`\`
 
 **Expected**:
+
 - Build metadata saved to `.ideai/builds/`
 - Report shows parent and child dependencies
 - Timestamp recorded
@@ -67,16 +83,16 @@ node scripts/ideai-build-track.mjs web report
 ### Configuration Tests
 
 - [ ] Defaults work (no .ideai.json files)
-  \`\`\`bash
-  node scripts/test-parent-child.js
-  \`\`\`
+      \`\`\`bash
+      node scripts/test-parent-child.js
+      \`\`\`
 - [ ] Config files work (with .ideai.json)
-  \`\`\`bash
+      \`\`\`bash
   # Remove some configs, test defaults
   # Add configs back, test custom configs
   \`\`\`
 - [ ] Parent/child detection correct
-  \`\`\`bash
+      \`\`\`bash
   # web = parent ✅
   # All others = child ✅
   \`\`\`
@@ -84,52 +100,52 @@ node scripts/ideai-build-track.mjs web report
 ### Dependency Tests
 
 - [ ] Dependency checker works
-  \`\`\`bash
-  pnpm --filter web build:check
-  \`\`\`
+      \`\`\`bash
+      pnpm --filter web build:check
+      \`\`\`
 - [ ] Dependency sync works (dry-run)
-  \`\`\`bash
-  pnpm --filter web build:sync --dry-run
-  \`\`\`
+      \`\`\`bash
+      pnpm --filter web build:sync --dry-run
+      \`\`\`
 - [ ] Build tracking works
-  \`\`\`bash
-  pnpm --filter web build:track
-  \`\`\`
+      \`\`\`bash
+      pnpm --filter web build:track
+      \`\`\`
 
 ### Build Tests
 
 - [ ] TypeScript compiles
-  \`\`\`bash
-  pnpm --filter web check-types
-  \`\`\`
+      \`\`\`bash
+      pnpm --filter web check-types
+      \`\`\`
 - [ ] Linter passes
-  \`\`\`bash
-  pnpm --filter web lint
-  \`\`\`
+      \`\`\`bash
+      pnpm --filter web lint
+      \`\`\`
 - [ ] Build succeeds
-  \`\`\`bash
-  pnpm --filter web build
-  \`\`\`
+      \`\`\`bash
+      pnpm --filter web build
+      \`\`\`
 - [ ] Routes generated correctly
-  \`\`\`bash
+      \`\`\`bash
   # Check build output for routes
   \`\`\`
 
 ### Runtime Tests (Development)
 
 - [ ] Parent app starts
-  \`\`\`bash
-  pnpm --filter web dev
+      \`\`\`bash
+      pnpm --filter web dev
   # Visit http://localhost:3000
   \`\`\`
 - [ ] Child app routes work
-  \`\`\`bash
+      \`\`\`bash
   # Start child: pnpm --filter docs dev
   # Visit http://localhost:3000/apps/docs
   # Should show child app in iframe
   \`\`\`
 - [ ] Iframe detection works
-  \`\`\`bash
+      \`\`\`bash
   # Child app header/footer should be hidden
   # Only <main> content visible
   \`\`\`
@@ -179,6 +195,7 @@ node scripts/ideai-build-track.mjs web report
 
 \`\`\`bash
 #!/bin/bash
+
 # scripts/verify-all.sh
 
 echo "🧪 Running Full Verification..."
@@ -216,7 +233,8 @@ echo "✅ All verification complete!"
 
 ### Issue: Build Fails
 
-**Solution**: 
+**Solution**:
+
 1. Check TypeScript: `pnpm --filter web check-types`
 2. Check linter: `pnpm --filter web lint`
 3. Check dependencies: `pnpm --filter web build:check`
@@ -231,11 +249,3 @@ echo "✅ All verification complete!"
 - [Build System](./ideai-build-system.md)
 - [Parent-Child Status](./parent-child-status.md)
 - [CSS Compatibility](./parent-child-css.md)
-
-
-
-
-
-
-
-

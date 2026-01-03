@@ -4,7 +4,7 @@
   "scripts": {
     "build": "turbo run build",
     "check-types": "turbo run check-types",
-    "dev": "turbo run dev",
+    "dev": "turbo run dev --concurrency=20",
     "dev:build-check": "node scripts/dev-manager.mjs build-check",
     "dev:restart": "node scripts/dev-manager.mjs restart",
     "dev:start": "node scripts/dev-manager.mjs start",

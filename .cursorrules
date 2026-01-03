@@ -333,7 +333,36 @@ Never skip CI checks. All PRs must pass CI before merge.
 2. **ALWAYS check DOM** - Navigate, screenshot, compare HTML/CSS
 3. **Verify UI consistency** - Check both apps side-by-side visually
 4. Run checks: `pnpm lint && pnpm check-types && pnpm build`
-5. Update documentation if code changed (ensure OCD accuracy)
-6. Write detailed commit message
-7. If in non-interactive environment, disable auto-sign, commit, re-enable
-8. Push and verify CI passes
+5. **Verify documentation** - Run `node scripts/ideai-build.mjs verify --docs` (MANDATORY)
+6. Update documentation if code changed (ensure OCD accuracy)
+7. Write detailed commit message
+8. If in non-interactive environment, disable auto-sign, commit, re-enable
+9. Push and verify CI passes
+
+## Additional Rules
+
+For comprehensive rules usable by all AI tools (Cursor, Claude, ChatGPT, etc.), see:
+- `.ideai-rules.md` - Complete IdeaI development rules and standards
+- Includes enhanced documentation verification requirements
+- Includes build verification system details
+
+## Build Verification System
+
+IdeaI includes a comprehensive build verification system:
+- **Documentation Verification**: Ensures docs are 100% in sync with code
+- **Build UI**: Standalone UI showing build steps with green light indicators
+- **Isolated Code**: Build verification code never goes online (local-only)
+
+**Usage**:
+- `node scripts/ideai-build.mjs verify` - Full build verification with UI
+- `node scripts/ideai-build.mjs verify --docs` - Documentation verification only
+- `node scripts/ideai-build.mjs verify --no-ui` - Silent verification (no UI)
+
+**Documentation Standards**:
+- All documentation must be verified before every build
+- Documentation must match production code exactly
+- All code examples must be tested and working
+- All file paths must be verified
+- All links must be tested
+- All version numbers must be current
+- Terminology must be consistent (IdeaI, not ideai)

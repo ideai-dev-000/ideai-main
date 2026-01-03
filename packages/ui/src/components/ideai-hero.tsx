@@ -1,6 +1,6 @@
 /**
  * @fileoverview IdeaI Hero Component - Centralized hero section
- * 
+ *
  * @module IdeAIHero
  * @description
  * Centralized hero component for landing pages.
@@ -26,7 +26,7 @@ export interface IdeAIHeroProps {
 
 /**
  * IdeaI Hero Component
- * 
+ *
  * Centralized hero section for landing pages.
  */
 export function IdeAIHero({
@@ -61,11 +61,3 @@ export function IdeAIHero({
     </section>
   );
 }
-
-
-
-
-
-
-
-

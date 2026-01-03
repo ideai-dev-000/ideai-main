@@ -24,6 +24,7 @@ description: Essential information for new developers to get started immediately
 **Location**: [TICKET-0.1 Details](./deployment/MULTI-STRATEGY-DEPLOYMENT-PLAN.md#ticket-01-fix-sub-folder-route-404-issue)
 
 **What to do**:
+
 1. Read the ticket completely
 2. Set up your environment (see below)
 3. Investigate the issue
@@ -36,17 +37,23 @@ description: Essential information for new developers to get started immediately
 ## ⚡ Quick Setup
 
 \`\`\`bash
+
 # Clone and setup
+
 git clone https://github.com/ideai-dev-000/ideai-main.git
 cd ideai-main
 pnpm install
 
 # Start development
+
 pnpm dev:start
 
 # Access apps
+
 # Main: http://localhost:3000
+
 # Docs: http://localhost:3001
+
 \`\`\`
 
 ---
@@ -91,6 +98,7 @@ Related: TICKET-0.1
 **See**: [Multi-Strategy Deployment Plan](./deployment/MULTI-STRATEGY-DEPLOYMENT-PLAN.md)
 
 **Total**: 19 tickets
+
 - **Critical**: 1 (TICKET-0.1 - Do this first!)
 - **High**: 5
 - **Medium**: 8
@@ -110,11 +118,3 @@ Related: TICKET-0.1
 ---
 
 **Ready to start?** Begin with [TICKET-0.1](./deployment/MULTI-STRATEGY-DEPLOYMENT-PLAN.md#ticket-01-fix-sub-folder-route-404-issue)!
-
-
-
-
-
-
-
-

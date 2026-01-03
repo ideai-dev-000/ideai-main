@@ -1,11 +1,11 @@
 /**
  * @fileoverview IdeaI Framework Form Field Molecule
- * 
+ *
  * @module IdeAIFrameworkFormField
  * @description
  * Molecular component combining label and input atoms into a complete form field.
  * Follows atomic design principles - molecules are combinations of atoms.
- * 
+ *
  * @example
  * ```tsx
  * <IdeAIFrameworkFormField
@@ -23,7 +23,10 @@ import { IdeAIFrameworkInput } from "../atoms/ideai-framework-input";
 import { cn } from "../../lib/utils";
 import type { Framework } from "../organisms/ideai-framework-card-types";
 
-interface IdeAIFrameworkFormFieldProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "id"> {
+interface IdeAIFrameworkFormFieldProps extends Omit<
+  InputHTMLAttributes<HTMLInputElement>,
+  "id"
+> {
   /** Framework to use for styling */
   framework: Framework;
   /** Input ID (required for accessibility) */
@@ -42,7 +45,7 @@ interface IdeAIFrameworkFormFieldProps extends Omit<InputHTMLAttributes<HTMLInpu
 
 /**
  * IdeaI Framework Form Field Molecule
- * 
+ *
  * Combines label and input atoms into a complete, accessible form field.
  * Uses semantic HTML with proper label-input association.
  */
@@ -56,16 +59,14 @@ export const IdeAIFrameworkFormField = ({
   error,
   ...inputProps
 }: IdeAIFrameworkFormFieldProps) => {
-  const labelClasses = framework === "bootstrap" 
-    ? "form-label" 
-    : "block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2";
+  const labelClasses =
+    framework === "bootstrap"
+      ? "form-label"
+      : "block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2";
 
   return (
     <div className={cn("mb-4", className)}>
-      <label
-        htmlFor={id}
-        className={cn(labelClasses, labelClassName)}
-      >
+      <label htmlFor={id} className={cn(labelClasses, labelClassName)}>
         {label}
       </label>
       <IdeAIFrameworkInput
@@ -96,11 +97,3 @@ export const IdeAIFrameworkFormField = ({
     </div>
   );
 };
-
-
-
-
-
-
-
-

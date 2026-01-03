@@ -10,12 +10,14 @@ description: Complete test results for both unified and individual modes
 ## ✅ Unified Mode (All on Port 3000)
 
 ### Setup
+
 \`\`\`bash
 NEXT_PUBLIC_IDEAI_APP_MODE=unified pnpm --filter web dev
-pnpm --filter docs dev  # In separate terminal
+pnpm --filter docs dev # In separate terminal
 \`\`\`
 
 ### How It Works
+
 1. **Parent app** runs on `http://localhost:3000/` (default)
 2. **Next.js rewrites** proxy child apps:
    - `http://localhost:3000/docs` → `http://localhost:3001/`
@@ -25,6 +27,7 @@ pnpm --filter docs dev  # In separate terminal
    - Child apps detect iframe and hide branding automatically
 
 ### Test Results
+
 - ✅ Parent app running on port 3000
 - ✅ Docs app running on port 3001
 - ✅ Rewrite working (proxying `/docs` to port 3001)
@@ -32,6 +35,7 @@ pnpm --filter docs dev  # In separate terminal
 - ✅ Child app detects iframe and hides branding
 
 ### URLs
+
 - Parent: `http://localhost:3000/`
 - Child (direct): `http://localhost:3000/docs` (proxied)
 - Child (iframe): `http://localhost:3000/apps/docs`
@@ -39,13 +43,17 @@ pnpm --filter docs dev  # In separate terminal
 ## ✅ Individual Mode (Separate Ports)
 
 ### Setup
+
 \`\`\`bash
+
 # Default mode - no env var needed
+
 pnpm --filter web dev
-pnpm --filter docs dev  # In separate terminal
+pnpm --filter docs dev # In separate terminal
 \`\`\`
 
 ### How It Works
+
 1. **Parent app** runs on `http://localhost:3000/`
 2. **Child apps** run on separate ports (3001, 3002, etc.)
 3. **Parent embeds** child apps as iframes pointing to separate ports:
@@ -53,6 +61,7 @@ pnpm --filter docs dev  # In separate terminal
    - Child apps detect iframe and hide branding automatically
 
 ### Test Results
+
 - ✅ Parent app running on port 3000
 - ✅ Docs app running on port 3001
 - ✅ Iframe pointing to separate port (`http://localhost:3001/`)
@@ -60,6 +69,7 @@ pnpm --filter docs dev  # In separate terminal
 - ✅ Child app detects iframe and hides branding
 
 ### URLs
+
 - Parent: `http://localhost:3000/`
 - Child (direct): `http://localhost:3001/`
 - Child (iframe): `http://localhost:3000/apps/docs`
@@ -67,10 +77,12 @@ pnpm --filter docs dev  # In separate terminal
 ## 🌐 Online Testing
 
 ### Preview Deployment
+
 - **URL**: `https://web-*.vercel.app/apps/docs`
 - **Status**: ⏳ Testing...
 
 ### Production Deployment
+
 - **URL**: `https://www.myui.space/apps/docs`
 - **Status**: ⏳ Testing...
 
@@ -82,6 +94,7 @@ Both modes are working correctly:
 2. **Individual Mode**: Each app on separate port, embedded as iframes
 
 **Key Features:**
+
 - ✅ Toggle via `NEXT_PUBLIC_IDEAI_APP_MODE` environment variable
 - ✅ Child apps automatically detect iframe and hide branding
 - ✅ Same routing structure (`/apps/{name}`) for both modes
@@ -94,11 +107,3 @@ Both modes are working correctly:
 3. ⏳ Test preview deployment
 4. ⏳ Test production deployment
 5. ⏳ Document deployment configuration
-
-
-
-
-
-
-
-

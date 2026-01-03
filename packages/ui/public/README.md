@@ -17,12 +17,15 @@ The favicon is automatically copied to each app's `app/icon.svg` directory. Next
 For additional formats (PNG, ICO), generate them from the SVG:
 
 \`\`\`bash
+
 # Using ImageMagick (install: brew install imagemagick)
+
 convert -background none -resize 32x32 favicon.svg favicon-32x32.png
 convert -background none -resize 16x16 favicon.svg favicon-16x16.png
 convert favicon-32x32.png favicon-16x16.png favicon.ico
 
 # Apple touch icon (180x180)
+
 convert -background none -resize 180x180 favicon.svg apple-touch-icon.png
 \`\`\`
 
@@ -44,11 +47,3 @@ All brand assets are stored centrally in `packages/ui/public`. For deployment:
 - SVG format ensures scalability and crisp rendering
 - Structured data included in logo component for SEO
 - Proper semantic HTML (h1, img with alt text)
-
-
-
-
-
-
-
-
