@@ -50,12 +50,9 @@ export { UniFrameCardButtonGroup } from "./components/uniframe/uf-card/uf-button
 export type { Framework, FrameworkConfig } from "./components/uniframe/uf-card/uf-card-types";
 export { frameworkConfigs } from "./components/uniframe/uf-card/uf-card-types";
 
-// shadcn/ui components
-export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent } from "./components/ui/card";
-export { Badge } from "./components/ui/badge";
-export { Button as ShadcnButton } from "./components/ui/button";
-export { Separator } from "./components/ui/separator";
-export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from "./components/ui/tooltip";
+// shadcn/ui components - DEPRECATED: Use @/components/ui/* in apps/web instead
+// These are kept for internal use in packages/ui components only
+// For v0 compatibility, use apps/web/components/ui/* with @/components/ui/* imports
 
 // Theme Components
 export { ThemeProvider } from "./components/theme-provider";
