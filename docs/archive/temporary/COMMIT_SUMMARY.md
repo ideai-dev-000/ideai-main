@@ -10,16 +10,19 @@ Fixed critical hydration errors in iframe-embedded IdeaI sites and cleaned up le
 
 **Problem**: Conditional rendering based on iframe detection caused server/client HTML mismatches, resulting in React hydration errors (red buttons) in all iframes.
 
-**Solution**: 
+**Solution**:
+
 - Always render header/footer (same HTML structure on server/client)
 - Use CSS `display: none` to hide elements instead of conditional rendering
 - Detect iframe context after mount using `useEffect` (prevents server/client mismatch)
 - Start with everything visible (matches server render)
 
 **Files Changed**:
+
 - `packages/ui/src/components/ideai-page-template.tsx` - Switched from conditional rendering to CSS-based hiding
 
-**Result**: 
+**Result**:
+
 - ✅ No more hydration errors
 - ✅ Iframes load correctly
 - ✅ Header/footer hide properly in iframes
@@ -28,6 +31,7 @@ Fixed critical hydration errors in iframe-embedded IdeaI sites and cleaned up le
 ### 🧹 Legacy Code Cleanup
 
 Removed unused legacy component files:
+
 - `packages/ui/src/components/ideai-header-new.tsx` - Unused legacy header
 - `packages/ui/src/components/ideai-footer-new.tsx` - Unused legacy footer
 - `packages/ui/src/components/uniframe.tsx` - Replaced by `uf.tsx`
@@ -36,10 +40,12 @@ Removed unused legacy component files:
 ### 🔧 Build Fixes
 
 Restored accidentally cleared files:
+
 - `packages/ui/src/components/uf.tsx` - Restored from git (402 lines)
 - `packages/ui/src/components/uf-code-viewer.tsx` - Restored from git (122 lines)
 
 Fixed API route:
+
 - `apps/web/app/api/apps-index/route.ts` - Inlined functions to avoid external dependencies
 
 ### 📚 Documentation Updates
@@ -51,6 +57,7 @@ Fixed API route:
 ## Technical Details
 
 ### Before (Problematic)
+
 \`\`\`tsx
 // Conditional rendering - causes hydration mismatch
 {showHeader && <IdeaIHeader />}
@@ -59,8 +66,10 @@ Fixed API route:
 **Issue**: Server renders with header (no `window`), client might hide it (detects iframe) → different HTML structure → hydration error
 
 ### After (Fixed)
+
 \`\`\`tsx
 // Always render, hide with CSS - same HTML structure
+
 <div style={{ display: shouldHideHeader ? "none" : "block" }}>
   <IdeaIHeader />
 </div>

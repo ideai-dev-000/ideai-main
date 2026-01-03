@@ -97,3 +97,4 @@ console.log(colors.cyan + '\n✅ Local testing complete!\n' + colors.reset);
 console.log('To start the UI, run:');
 console.log(colors.cyan + '  node scripts/ideai-ui-main.mjs\n' + colors.reset);
 
+

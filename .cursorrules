@@ -1,5 +1,9 @@
 # Cursor AI Rules for IdeaI Monorepo
 
+**Note**: This file is a Cursor-specific summary. For complete rules usable by all AI tools, see `.ideai-rules.md` - the single source of truth for all IdeaI development standards.
+
+---
+
 ## Brand and Naming Standards
 
 ### Brand Name: IdeaI
@@ -67,6 +71,86 @@
 - Professional code quality requires strict naming discipline
 
 **NEVER be sloppy with naming - it's a sign of unprofessional code.**
+
+### Documentation File Organization
+
+**CRITICAL**: All documentation files must be organized in semantic locations. NO random MD files in root or scattered locations.
+
+**Rules**:
+- ✅ **All documentation in `docs/` directory** - Organized by category
+- ✅ **Root README.md only** - Project overview
+- ✅ **Temporary files archived** - Move to `docs/archive/`
+- ✅ **Semantic naming** - Use kebab-case
+- ❌ **NO MD files in root** (except README.md, SECURITY.md, .ideai-rules.md, .cursorrules)
+- ❌ **NO temporary status files in root** - Archive immediately
+
+**See `.ideai-rules.md` for complete documentation organization standards.**
+
+## Architecture Standards: Composability and Parent-Child Semantics
+
+**CRITICAL**: IdeaI is built on composable patterns that enable infinite extensibility. Every component, app, and system follows strict parent-child semantics.
+
+### Core Principles
+
+1. **Composability First**: All components must be composable
+   - ✅ Components can be nested and combined
+   - ✅ Components have clear parent-child relationships
+   - ✅ Use UniFrame structure: wrapper → header/body/footer → content
+   - ❌ Monolithic components that can't be broken down
+
+2. **Parent-Child Semantics**: Every system has clear hierarchy
+   - **Parent**: Container, orchestrator, or wrapper
+   - **Child**: Content, element, or nested component
+   - **Relationship**: Explicit and documented
+
+3. **Pattern Consistency**: Use established patterns, never invent new ones
+   - ✅ Follow existing patterns in `@repo/ui`
+   - ✅ Use UniFrame structure (wrapper, header, body, footer)
+   - ✅ Use IdeaI app structure (parent app, child apps)
+   - ✅ Script naming: `ideai-[parent]-[child].mjs`
+   - ✅ Component naming: `[parent]-[child].tsx`
+   - ❌ Creating new patterns without justification
+
+### Component Pattern (UniFrame Card Structure)
+
+```
+Card (Parent)
+├── Header (Child)
+│   ├── Title (Child)
+│   └── Badge (Child)
+├── Body (Child)
+│   └── Content (Children)
+└── Footer (Child)
+    └── Actions (Children)
+```
+
+**Rules**:
+- ✅ Always use wrapper → header/body/footer → content pattern
+- ✅ Each level is a composable child of its parent
+- ✅ Children can be nested infinitely
+- ❌ Skipping levels (e.g., content directly in card without body)
+
+### App Architecture Pattern
+
+- **Parent App** (`web`): Container, serves at root, embeds child apps
+- **Child Apps**: Content, serve specific functionality, can be embedded
+- **Configuration**: `.ideai.json` with explicit `role: "parent"` or `role: "child"`
+
+**Rules**:
+- ✅ Parent app embeds child apps, never the reverse
+- ✅ Child apps detect iframe context automatically
+- ✅ Parent-child relationship is explicit in `.ideai.json`
+- ❌ Child apps embedding other child apps (use parent instead)
+
+### Why These Patterns Matter
+
+1. **Predictability**: Developers know where to find things
+2. **Composability**: Components can be combined infinitely
+3. **Maintainability**: Clear hierarchy makes code easier to understand
+4. **Scalability**: Patterns scale to any size
+5. **Onboarding**: New developers understand structure immediately
+
+**See `.ideai-rules.md` for complete architecture standards.**
 
 ## Code Standards
 
@@ -339,13 +423,6 @@ Never skip CI checks. All PRs must pass CI before merge.
 8. If in non-interactive environment, disable auto-sign, commit, re-enable
 9. Push and verify CI passes
 
-## Additional Rules
-
-For comprehensive rules usable by all AI tools (Cursor, Claude, ChatGPT, etc.), see:
-- `.ideai-rules.md` - Complete IdeaI development rules and standards
-- Includes enhanced documentation verification requirements
-- Includes build verification system details
-
 ## Build Verification System
 
 IdeaI includes a comprehensive build verification system:
@@ -366,3 +443,38 @@ IdeaI includes a comprehensive build verification system:
 - All links must be tested
 - All version numbers must be current
 - Terminology must be consistent (IdeaI, not ideai)
+
+## Rules Management
+
+**CRITICAL**: All rules are centralized in `.ideai-rules.md` - the single source of truth.
+
+**Adding Rules via UI**:
+- Propose: `node scripts/ideai-build.mjs rules propose --title "Title" --content "Content" --category "architecture"`
+- List pending: `node scripts/ideai-build.mjs rules list`
+- Approve: `node scripts/ideai-build.mjs rules approve`
+- Sync: `node scripts/ideai-build.mjs rules sync`
+
+**Rule Categories**:
+- `architecture`: Patterns, composability, parent-child semantics
+- `code`: Code quality, TypeScript, functions
+- `docs`: Documentation standards
+- `commit`: Commit message format
+- `ui`: UI consistency, CSS patterns
+- `build`: Build and verification
+
+**Auto-Sync**: Approved rules are automatically synced to:
+- `.cursorrules` (this file - Cursor AI)
+- `.ideai-rules.md` (complete rules - all AI tools)
+
+## Complete Rules Reference
+
+**For comprehensive rules usable by all AI tools (Cursor, Claude, ChatGPT, etc.), see:**
+- **`.ideai-rules.md`** - Complete IdeaI development rules and standards
+  - Includes all sections from this file plus:
+  - Enhanced documentation verification requirements
+  - Build verification system details
+  - Complete architecture standards with examples
+  - Pattern enforcement checklists
+  - Rules manager integration details
+
+**This `.cursorrules` file is a Cursor-specific summary. `.ideai-rules.md` is the authoritative source.**

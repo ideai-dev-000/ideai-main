@@ -1,6 +1,5 @@
-import type { NextConfig } from "next";
-
-const nextConfig: NextConfig = {
+/** @type {import('next').NextConfig} */
+const nextConfig = {
   transpilePackages: ["@repo/ui", "@motionone/dom", "vivus"],
   experimental: {
     // Optimize package imports to reduce bundle size

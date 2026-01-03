@@ -25,12 +25,14 @@ Changed from conditional rendering to CSS-based hiding:
 
 **After** (Fixed):
 \`\`\`tsx
+
 <div style={{ display: shouldHideHeader ? "none" : "block" }}>
   <IdeaIHeader />
 </div>
 \`\`\`
 
 **Key Changes**:
+
 1. Always render header/footer (same HTML structure on server/client)
 2. Use CSS `display: none` to hide (no structural changes)
 3. Detect iframe context after mount with `useEffect` (prevents server/client mismatch)
@@ -39,8 +41,9 @@ Changed from conditional rendering to CSS-based hiding:
 ### Legacy Code Cleanup
 
 Removed unused legacy component files:
+
 - `ideai-header-new.tsx` - Unused legacy header
-- `ideai-footer-new.tsx` - Unused legacy footer  
+- `ideai-footer-new.tsx` - Unused legacy footer
 - `uniframe.tsx` - Replaced by `uf.tsx`
 - `uniframe-code-viewer.tsx` - Replaced by `uf-code-viewer.tsx`
 
@@ -53,16 +56,19 @@ Removed unused legacy component files:
 ## 📝 Changes
 
 ### Modified Files
+
 - `packages/ui/src/components/ideai-page-template.tsx` - Switched to CSS-based hiding
 - `docs/architecture/iframe-detection.md` - Added hydration-safe implementation details
 
 ### Deleted Files
+
 - `packages/ui/src/components/ideai-header-new.tsx`
 - `packages/ui/src/components/ideai-footer-new.tsx`
 - `packages/ui/src/components/uniframe.tsx`
 - `packages/ui/src/components/uniframe-code-viewer.tsx`
 
 ### New Files
+
 - `docs/architecture/iframe-detection.md` - Comprehensive iframe detection documentation
 - `COMMIT_SUMMARY.md` - Detailed commit summary
 - `PR_DESCRIPTION.md` - PR description
