@@ -114,34 +114,12 @@ function killDevServers() {
 
 /**
  * Kill all node/next/pnpm processes
+ * Uses graceful shutdown script for clean termination
  */
 function killNodeProcesses() {
-  log("=== Stopping All Node Processes ===", "bright");
-  
-  try {
-    // Kill pnpm processes
-    execSync(`pkill -f "pnpm.*dev" 2>/dev/null || true`, {
-      stdio: "ignore",
-      cwd: REPO_ROOT,
-    });
-    
-    // Kill next dev processes
-    execSync(`pkill -f "next dev" 2>/dev/null || true`, {
-      stdio: "ignore",
-      cwd: REPO_ROOT,
-    });
-    
-    // Kill turbo processes
-    execSync(`pkill -f "turbo.*dev" 2>/dev/null || true`, {
-      stdio: "ignore",
-      cwd: REPO_ROOT,
-    });
-    
-    success("Stopped all Node.js dev processes");
-  } catch {
-    info("No Node.js processes to stop");
-  }
-  
+  // Graceful shutdown script handles this
+  // This function is kept for compatibility but graceful shutdown
+  // is already called in killDevServers()
   log("");
 }
 
@@ -361,10 +339,10 @@ async function main() {
   }
   log("");
   
-  // Step 1: Kill dev servers
-  killDevServers();
+  // Step 1: Kill dev servers (graceful shutdown)
+  await killDevServers();
   
-  // Step 2: Kill node processes
+  // Step 2: Kill node processes (handled by graceful shutdown)
   killNodeProcesses();
   
   // Step 3: Clean .next directories
