@@ -1,3 +1,6 @@
 [submodule "tools/code-context"]
 	path = tools/code-context
 	url = https://github.com/ideai-dev/ideai-codecontext.git
+[submodule "apps/ideai-designer"]
+	path = apps/ideai-designer
+	url = https://github.com/ideai-dev-000/ideai-designer.git
