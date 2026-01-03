@@ -99,6 +99,12 @@ pnpm build:cold
 # Clean only (no rebuild)
 pnpm build:clean
 
+# Graceful shutdown (stop all dev servers cleanly)
+pnpm dev:stop
+
+# Force kill (immediate shutdown)
+pnpm dev:stop:force
+
 # Deploy all apps
 ./deploy.sh
 
