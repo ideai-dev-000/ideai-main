@@ -2,17 +2,47 @@
 
 **Complete, semantic script organization with flat structure and unified UI.**
 
+## Architecture: Tight Coupling
+
+All scripts are **tightly coupled** to the `@repo/ideai-developer` package:
+
+- **Package** (`packages/ideai-developer/`) - Contains all implementation
+- **Scripts** (`scripts/`) - Thin CLI wrappers that route to package functions
+- **Single Entry Point** - `scripts/ideai-developer.mjs` routes all commands
+
+This ensures:
+
+- ✅ Single source of truth (package)
+- ✅ Scripts are just entry points
+- ✅ Easy to maintain
+- ✅ Type safety where needed
+
+See `packages/ideai-developer/README.md` for package details.
+
 ## Quick Start
 
-### Unified UI (Recommended)
+### Developer Tools (Recommended)
 
-Access all tools through the unified UI:
+Access all developer tools through the single entry point:
+
+```bash
+node scripts/ideai-developer.mjs <command> [subcommand]
+```
+
+**Available Commands:**
+
+- `ui` - Developer UI (web version)
+- `port status|start|stop` - Manage dev server ports
+- `script <name>` - Run build scripts
+- `build status` - Get build status
+
+**Legacy UI (Terminal):**
 
 ```bash
 node scripts/ideai-ui-main.mjs
 ```
 
-The UI provides:
+The terminal UI provides:
 
 - 🔨 **Build**: Verification, testing, documentation
 - 🚀 **Boot**: Dev server management
