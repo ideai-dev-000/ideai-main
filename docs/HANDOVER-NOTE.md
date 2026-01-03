@@ -24,16 +24,17 @@
 
 ### ⚠️ Pending Tasks
 
-1. **Submodule Development Workflow** (HIGH PRIORITY - FIRST TODO)
-   - Research v0 → IdeaI alignment process
-   - Document submodule development guidelines
-   - Ensure submodules maintain IdeaI standards
+1. **Submodule Development Workflow** ✅ **COMPLETED**
+   - ✅ Research v0 → IdeaI alignment process
+   - ✅ Document submodule development guidelines
+   - ✅ Ensure submodules maintain IdeaI standards
+   - **Documentation**: `docs/development/submodule-development-workflow.md`
 
-2. **Submodule Deployment Strategy** (HIGH PRIORITY - SECOND TODO)
-   - **Decision needed**: Separate Vercel projects vs. folders in ideai-main
-   - Research and document pros/cons
-   - Implement chosen strategy
-   - Update deployment scripts
+2. **Submodule Deployment Strategy** ✅ **COMPLETED** (Decision: Option A - Separate Vercel Projects)
+   - ✅ Research and document pros/cons
+   - ✅ **Recommendation**: Separate Vercel projects (matches current IdeaI pattern)
+   - ⚠️ **Implementation pending**: Create Vercel project and deploy
+   - **Documentation**: `docs/deployment/submodule-deployment-strategy.md`
 
 3. **Deployment Status**:
    - ✅ 3 apps deployed: `web`, `docs`, `all`
