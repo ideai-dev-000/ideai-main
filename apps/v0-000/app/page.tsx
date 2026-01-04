@@ -17,6 +17,7 @@ import {
   RocketIcon
 } from "@repo/ui";
 
+export default function Home() {
   return (
     <IdeAIPageTemplate
       siteName="V0-000 Template"
