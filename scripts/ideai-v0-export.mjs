@@ -241,6 +241,12 @@ function exportComponent(component) {
       /from\s+['"]@\/components\/ui\/([^'"]+)['"]/g,
       "from '@/components/ui/$1'"
     );
+    // Fix 'motion' import - should be 'framer-motion' or 'motion' package
+    // Check if motion package is available, otherwise use framer-motion
+    content = content.replace(
+      /from\s+['"]motion['"]/g,
+      "from 'framer-motion'"
+    );
 
     // Add export if missing
     if (!content.includes("export") && content.includes("function")) {
