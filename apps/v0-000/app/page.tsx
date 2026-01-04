@@ -16,8 +16,16 @@ import {
   MusicIcon, 
   RocketIcon
 } from "@repo/ui";
+import { DemoButton } from "@/components/ui/demo-button";
+import { DemoCard } from "@/components/ui/demo-card";
+import { FeatureCardBlock } from "@/components/blocks/feature-card-block";
+import { StatsBlock } from "@/components/blocks/stats-block";
+import { CopyButton } from "@/components/tools/copy-button";
+import { ToggleSwitch } from "@/components/tools/toggle-switch";
+import { useState } from "react";
 
 export default function Home() {
+  const [toggleEnabled, setToggleEnabled] = useState(false);
   return (
     <IdeAIPageTemplate
       siteName="V0-000 Template"
@@ -91,6 +99,110 @@ export default function Home() {
               have dependencies on app-specific shadcn components and are best used in the web app 
               where those components are available. Simple icons work everywhere!
             </p>
+          </div>
+        </section>
+
+        {/* UI Components Demo */}
+        <section className="space-y-4">
+          <h2 className="text-2xl font-semibold">UI Components Demo</h2>
+          <p className="text-muted-foreground">
+            Simple UI elements using <code className="bg-background px-1 rounded">@/components/ui/*</code>
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-4">
+              <h3 className="font-semibold">Buttons</h3>
+              <div className="flex flex-wrap gap-2">
+                <DemoButton label="Default" variant="default" />
+                <DemoButton label="Secondary" variant="secondary" />
+                <DemoButton label="Outline" variant="outline" />
+                <DemoButton label="Destructive" variant="destructive" />
+              </div>
+            </div>
+            <div className="space-y-4">
+              <h3 className="font-semibold">Cards</h3>
+              <DemoCard
+                title="Example Card"
+                description="This is a demo card component"
+                content={<p className="text-sm">Card content goes here</p>}
+                footer={<DemoButton label="Action" size="sm" />}
+              />
+            </div>
+          </div>
+        </section>
+
+        {/* Blocks Demo */}
+        <section className="space-y-4">
+          <h2 className="text-2xl font-semibold">Blocks Demo</h2>
+          <p className="text-muted-foreground">
+            Composite components combining multiple UI elements
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <FeatureCardBlock
+              icon="brain"
+              title="Smart Features"
+              description="AI-powered functionality"
+            />
+            <FeatureCardBlock
+              icon="rocket"
+              title="Fast Performance"
+              description="Lightning-fast execution"
+            />
+            <FeatureCardBlock
+              icon="music"
+              title="Rich Media"
+              description="Audio and video support"
+            />
+            <FeatureCardBlock
+              icon="cat"
+              title="Friendly UX"
+              description="Intuitive user experience"
+            />
+          </div>
+          <div className="mt-4">
+            <h3 className="font-semibold mb-2">Stats Block</h3>
+            <StatsBlock
+              stats={[
+                { label: "Components", value: "24" },
+                { label: "Blocks", value: "8" },
+                { label: "Tools", value: "12" },
+              ]}
+            />
+          </div>
+        </section>
+
+        {/* Tools Demo */}
+        <section className="space-y-4">
+          <h2 className="text-2xl font-semibold">Tools Demo</h2>
+          <p className="text-muted-foreground">
+            Interactive utility components with behavior
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-4">
+              <h3 className="font-semibold">Copy Button</h3>
+              <p className="text-sm text-muted-foreground">
+                Click to copy text to clipboard:
+              </p>
+              <div className="flex items-center gap-2">
+                <code className="bg-background px-2 py-1 rounded text-sm">import {"{ DemoButton }"} from "@/components/ui/demo-button"</code>
+                <CopyButton text='import { DemoButton } from "@/components/ui/demo-button"' />
+              </div>
+            </div>
+            <div className="space-y-4">
+              <h3 className="font-semibold">Toggle Switch</h3>
+              <p className="text-sm text-muted-foreground">
+                Interactive toggle control:
+              </p>
+              <ToggleSwitch
+                label="Enable Feature"
+                checked={toggleEnabled}
+                onCheckedChange={setToggleEnabled}
+              />
+              {toggleEnabled && (
+                <p className="text-sm text-green-600 dark:text-green-400">
+                  ✓ Feature is enabled!
+                </p>
+              )}
+            </div>
           </div>
         </section>
 
