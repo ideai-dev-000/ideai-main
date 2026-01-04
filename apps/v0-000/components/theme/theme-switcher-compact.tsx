@@ -38,12 +38,17 @@ export function ThemeSwitcherCompact() {
       
       console.log('[ThemeSwitcher] Updating theme:', currentTheme, 'isDark:', isDark);
       
+      // Set CSS variables with !important to override CSS file definitions
       Object.entries(colors).forEach(([key, value]) => {
         const cssVarName = key.replace(/([A-Z])/g, '-$1').toLowerCase();
         const cssValue = value.replace(/^hsl\(|\)$/g, '');
-        root.style.setProperty(`--${cssVarName}`, cssValue);
-        console.log(`[ThemeSwitcher] Set --${cssVarName} = ${cssValue}`);
+        // Use setProperty with important flag to ensure it overrides CSS
+        root.style.setProperty(`--${cssVarName}`, cssValue, 'important');
+        console.log(`[ThemeSwitcher] Set --${cssVarName} = ${cssValue} (important)`);
       });
+      
+      // Force a repaint to ensure changes are visible
+      void root.offsetHeight;
     };
 
     // Initial update
