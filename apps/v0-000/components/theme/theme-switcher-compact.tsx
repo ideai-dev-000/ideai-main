@@ -84,23 +84,15 @@ export function ThemeSwitcherCompact() {
       mutations.forEach((mutation) => {
         if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
           console.log('[ThemeSwitcher] Dark mode class changed via MutationObserver');
-          // Small delay to ensure next-themes has finished updating
-          setTimeout(updateTheme, 10);
+          // Update immediately when class changes - no delay needed
+          updateTheme();
         }
       });
     });
     observer.observe(root, { attributes: true, attributeFilter: ['class'] });
     
-    // Also update when currentMode changes (for immediate response)
-    // Use a small timeout to let next-themes update the DOM first
-    const timeoutId = setTimeout(() => {
-      console.log('[ThemeSwitcher] Mode changed, updating theme');
-      updateTheme();
-    }, 50);
-    
     return () => {
       observer.disconnect();
-      clearTimeout(timeoutId);
     };
   }, [currentTheme, actualMode, mounted]);
 
