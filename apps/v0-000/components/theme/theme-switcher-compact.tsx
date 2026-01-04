@@ -95,9 +95,18 @@ export function ThemeSwitcherCompact() {
         <>
           <div 
             className="fixed inset-0 z-40" 
-            onClick={() => setIsOpen(false)}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              setIsOpen(false);
+            }}
           />
-          <div className="absolute right-0 top-full mt-2 w-48 rounded-lg border bg-card shadow-lg z-50">
+          <div 
+            className="absolute right-0 top-full mt-2 w-48 rounded-lg border bg-card shadow-lg z-50"
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
+          >
             <div className="p-2 space-y-1">
               <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground">
                 Themes
