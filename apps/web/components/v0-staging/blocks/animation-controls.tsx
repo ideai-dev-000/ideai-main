@@ -44,7 +44,7 @@ const animationTypes: Record<string, string[]> = {
 }
 
 export function AnimationControls({ config, onChange, library }: AnimationControlsProps) {
-  const types = animationTypes[library] || animationTypes["framer-motion"]
+  const types = animationTypes[library] || animationTypes["framer-motion"] || []
 
   return (
     <Card className="p-6 bg-card">
@@ -77,7 +77,7 @@ export function AnimationControls({ config, onChange, library }: AnimationContro
           </div>
           <Slider
             value={[config.duration]}
-            onValueChange={([value]) => onChange({ ...config, duration: value })}
+            onValueChange={([value]: number[]) => onChange({ ...config, duration: value })}
             min={0.1}
             max={5}
             step={0.1}
@@ -93,7 +93,7 @@ export function AnimationControls({ config, onChange, library }: AnimationContro
           </div>
           <Slider
             value={[config.delay]}
-            onValueChange={([value]) => onChange({ ...config, delay: value })}
+            onValueChange={([value]: number[]) => onChange({ ...config, delay: value })}
             min={0}
             max={3}
             step={0.1}
