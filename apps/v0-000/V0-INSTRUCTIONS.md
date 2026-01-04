@@ -11,7 +11,7 @@
    - All v0-exported components (BrainIcon, LogoPreview, etc.)
 
 2. **@/components/ui/*** - Shadcn/UI components
-   - `Button`, `Card`, `Label`, `RadioGroup`, `Slider`, `Switch`, `Separator`, `Tooltip`
+   - `Button`, `Card`, `Label`, `RadioGroup`, `Slider`, `Switch`, `Separator`, `Tooltip`, `Badge`
 
 3. **framer-motion** - Animation library
    - `import { motion } from "framer-motion"`
@@ -26,6 +26,52 @@
 - ❌ Don't use `@/components/svgs/*` - Use `@repo/ui` instead
 - ❌ Don't use `@/components/logos/*` - Use `@repo/ui` instead
 
+## 🎨 Theming System
+
+**Themes work independently of UI components!**
+
+### How Theming Works
+
+1. **Themes are defined** in `themes/*.ts` files
+2. **CSS variables are set** dynamically (--primary, --secondary, etc.)
+3. **UI components automatically adapt** - no code changes needed
+4. **Works with v0** - just use standard Tailwind color classes
+
+### Using Theme Colors in Components
+
+```tsx
+// ✅ Correct - Uses theme colors automatically
+<Button className="bg-primary text-primary-foreground">
+  Click me
+</Button>
+
+// ❌ Incorrect - Hardcoded colors don't respect themes
+<Button className="bg-blue-500 text-white">
+  Click me
+</Button>
+```
+
+### Available Theme Classes
+
+Use these Tailwind classes - they automatically use theme colors:
+- `bg-primary`, `text-primary-foreground`
+- `bg-secondary`, `text-secondary-foreground`
+- `bg-accent`, `text-accent-foreground`
+- `bg-muted`, `text-muted-foreground`
+- `bg-destructive`, `text-destructive-foreground`
+- `bg-background`, `text-foreground`
+- `bg-card`, `text-card-foreground`
+- `border-border`
+
+### Creating Themes in v0
+
+When v0 creates a new theme:
+1. Define colors in HSL format
+2. Include both `colors` (light) and `dark` variants
+3. Use standard color tokens (primary, secondary, etc.)
+4. Add to `themes/index.ts` registry
+5. All components automatically use the new theme!
+
 ## 📝 Component Creation Guidelines
 
 ### 1. Function Names
@@ -38,6 +84,7 @@
 - **UI Elements**: `components/ui/your-component.tsx`
 - **Blocks**: `blocks/your-block.tsx`
 - **Pages**: `app/your-page/page.tsx`
+- **Themes**: `themes/your-theme.ts`
 
 ### 3. Component Types
 
@@ -61,8 +108,8 @@ import { Button } from "@/components/ui/button";
 
 export function MyBlock() {
   return (
-    <Card>
-      <Button>Click me</Button>
+    <Card className="bg-card text-card-foreground">
+      <Button className="bg-primary text-primary-foreground">Click me</Button>
     </Card>
   );
 }
@@ -71,8 +118,9 @@ export function MyBlock() {
 ## 🎨 Styling
 
 - Use Tailwind CSS classes
-- Use CSS variables from IdeaI design system
+- Use theme color classes (`bg-primary`, `text-foreground`, etc.)
 - Dark mode is automatic via ThemeProvider
+- Themes are applied via CSS variables
 
 ## 🚀 After Creating Components
 
@@ -86,9 +134,10 @@ export function MyBlock() {
 - [ ] Imports use correct paths (`@repo/ui` or `@/components/ui/*`)
 - [ ] Components are properly typed
 - [ ] Uses Tailwind CSS for styling
+- [ ] Uses theme color classes (not hardcoded colors)
 - [ ] Works in both light and dark mode
+- [ ] Works with all themes
 
 ---
 
-**Follow these guidelines and your components will work perfectly in IdeaI!**
-
+**Follow these guidelines and your components will work perfectly in IdeaI with any theme!**

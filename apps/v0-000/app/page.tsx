@@ -22,6 +22,8 @@ import { FeatureCardBlock } from "@/components/blocks/feature-card-block";
 import { StatsBlock } from "@/components/blocks/stats-block";
 import { CopyButton } from "@/components/tools/copy-button";
 import { ToggleSwitch } from "@/components/tools/toggle-switch";
+import { ThemeSelector } from "@/components/theme/theme-selector";
+import { ThemePreview } from "@/components/theme/theme-preview";
 import { useState } from "react";
 
 export default function Home() {
@@ -203,6 +205,30 @@ export default function Home() {
                 </p>
               )}
             </div>
+          </div>
+        </section>
+
+        {/* Theming Demo */}
+        <section className="space-y-4">
+          <h2 className="text-2xl font-semibold">Theming System</h2>
+          <p className="text-muted-foreground">
+            Themes work independently of UI components via CSS variables.
+            Change themes and see all components update automatically.
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <ThemeSelector />
+            <ThemePreview />
+          </div>
+          <div className="p-4 bg-muted/50 rounded-lg">
+            <h3 className="font-semibold mb-2">How Theming Works</h3>
+            <ul className="text-sm text-muted-foreground space-y-1">
+              <li>• Themes are defined in <code className="bg-background px-1 rounded">themes/</code> directory</li>
+              <li>• Each theme has light and dark variants</li>
+              <li>• Themes use CSS variables (--primary, --secondary, etc.)</li>
+              <li>• UI components automatically use theme colors</li>
+              <li>• Themes are independent - can be created without touching UI code</li>
+              <li>• Works seamlessly with v0 - just define colors, components adapt</li>
+            </ul>
           </div>
         </section>
 
