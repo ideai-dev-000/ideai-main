@@ -73,7 +73,6 @@ export const IdeAIPageTemplate = ({
   // Suppress unused variable warnings - these props are kept for backward compatibility
   void _subtitle;
   void _vercelOrgId;
-  void _headerActions;
 
   // Use state to prevent hydration mismatches
   // Start with everything visible (matches server render)
@@ -140,6 +139,7 @@ export const IdeAIPageTemplate = ({
           shrinkOnScroll={true}
           fullWidth={true}
           diagnosticsAppName={vercelProjectName}
+          headerActions={_headerActions}
         />
       </div>
 

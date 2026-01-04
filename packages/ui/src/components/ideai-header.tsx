@@ -40,6 +40,7 @@ interface IdeaIHeaderProps {
   shrinkOnScroll?: boolean;
   fullWidth?: boolean;
   diagnosticsAppName?: string;
+  headerActions?: React.ReactNode;
 }
 
 export const IdeaIHeader = ({
@@ -63,6 +64,7 @@ export const IdeaIHeader = ({
   shrinkOnScroll = true,
   fullWidth = true,
   diagnosticsAppName,
+  headerActions,
 }: IdeaIHeaderProps) => {
   const [isExtraNavOpen, setIsExtraNavOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -192,6 +194,12 @@ export const IdeaIHeader = ({
           <div className="ideai-header__accounts">
             <nav aria-label="Account navigation" role="navigation">
               <ul className="ideai-header__accounts-list">
+                {/* Header Actions - Custom actions (e.g., theme switcher) */}
+                {headerActions && (
+                  <li className="ideai-header__accounts-item">
+                    {headerActions}
+                  </li>
+                )}
                 {/* Theme Toggle - Top Right */}
                 <li className="ideai-header__accounts-item">
                   <ThemeToggle />
