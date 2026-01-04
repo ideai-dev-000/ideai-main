@@ -57,7 +57,7 @@ export function ThemeSwitcherCompact() {
       const isDark = root.classList.contains('dark');
       const colors = isDark ? theme.dark : theme.colors;
       
-      console.log('[ThemeSwitcher] Updating theme:', currentTheme, 'isDark:', isDark, 'currentMode:', currentMode);
+      console.log('[ThemeSwitcher] Updating theme:', currentTheme, 'isDark:', isDark, 'currentMode:', currentMode, 'actualMode:', actualMode);
       
       // Set CSS variables - inline styles on root should override CSS
       // Note: CSS variables don't support !important, but inline styles have highest specificity
@@ -99,7 +99,7 @@ export function ThemeSwitcherCompact() {
       observer.disconnect();
       clearTimeout(timeoutId);
     };
-  }, [currentTheme, currentMode, mounted]);
+  }, [currentTheme, actualMode, mounted]);
 
   if (!mounted) {
     return (
@@ -198,19 +198,18 @@ export function ThemeSwitcherCompact() {
                   e.preventDefault();
                   e.stopPropagation();
                   console.log('[ThemeSwitcher] Mode clicked: dark');
-                  await setMode("dark");
-                  // Force immediate update after mode change
-                  setTimeout(() => {
-                    const root = document.documentElement;
-                    const theme = themes[currentTheme];
-                    const colors = theme.dark; // Dark mode colors
-                    Object.entries(colors).forEach(([key, value]) => {
-                      const cssVarName = key.replace(/([A-Z])/g, '-$1').toLowerCase();
-                      const cssValue = value.replace(/^hsl\(|\)$/g, '');
-                      root.style.setProperty(`--${cssVarName}`, cssValue);
-                    });
-                    console.log('[ThemeSwitcher] Force updated to dark mode');
-                  }, 100);
+                  setMode("dark");
+                  // Force immediate update - don't wait for next-themes
+                  const root = document.documentElement;
+                  root.classList.add('dark');
+                  const theme = themes[currentTheme];
+                  const colors = theme.dark; // Dark mode colors
+                  Object.entries(colors).forEach(([key, value]) => {
+                    const cssVarName = key.replace(/([A-Z])/g, '-$1').toLowerCase();
+                    const cssValue = value.replace(/^hsl\(|\)$/g, '');
+                    root.style.setProperty(`--${cssVarName}`, cssValue);
+                  });
+                  console.log('[ThemeSwitcher] Force updated to dark mode immediately');
                   setIsOpen(false);
                 }}
                 className={`w-full text-left px-2 py-1.5 text-sm rounded-md hover:bg-accent flex items-center justify-between ${
