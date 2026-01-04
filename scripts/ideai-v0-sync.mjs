@@ -142,9 +142,42 @@ function toIdeAIFileName(fileName) {
 }
 
 /**
+ * Fix function names (convert kebab-case to PascalCase)
+ */
+function fixFunctionNames(content) {
+  // Fix default export function names
+  content = content.replace(
+    /export\s+default\s+function\s+([a-z-]+)\s*\(/gi,
+    (match, funcName) => {
+      const fixedName = funcName
+        .split("-")
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join("");
+      return `export default function ${fixedName}(`;
+    }
+  );
+  
+  // Fix named export function names
+  content = content.replace(
+    /export\s+function\s+([a-z-]+)\s*\(/gi,
+    (match, funcName) => {
+      const fixedName = funcName
+        .split("-")
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join("");
+      return `export function ${fixedName}(`;
+    }
+  );
+  
+  return content;
+}
+
+/**
  * Apply IdeaI alignment to file content (Full Auto - Scalable)
  */
 function applyIdeAIAlignment(content, filePath, fileName) {
+  // Fix function names first
+  content = fixFunctionNames(content);
   let aligned = content;
   const fileBase = basename(fileName, extname(fileName));
   const fileExt = extname(fileName);
