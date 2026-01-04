@@ -472,7 +472,7 @@ Before deploying submodule:
 - **`.ideai-rules.md`**: Complete IdeaI development standards
 - **`docs/architecture/`**: Architecture patterns and design standards
 - **`docs/HANDOVER-NOTE.md`**: Current project status and priorities
-- **`scripts/TODOS.md`**: All pending tasks
+- **`TODOS.md`**: All pending tasks
 
 ---
 

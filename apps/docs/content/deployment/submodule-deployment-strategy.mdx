@@ -450,7 +450,7 @@ Deployment strategy is successful when:
 - **`docs/development/submodule-development-workflow.md`**: v0 → IdeaI alignment process
 - **`docs/deployment/unified-deployment.md`**: Current IdeaI deployment strategy
 - **`docs/HANDOVER-NOTE.md`**: Current project status
-- **`scripts/TODOS.md`**: All pending tasks
+- **`TODOS.md`**: All pending tasks
 
 ---
 

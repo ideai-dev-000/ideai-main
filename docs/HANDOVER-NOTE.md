@@ -186,13 +186,13 @@ git submodule update --init --recursive
 
 1. **Rules**: `.ideai-rules.md` - Complete IdeaI development standards
 2. **Cursor Rules**: `.cursorrules` - Cursor-specific rules (references `.ideai-rules.md`)
-3. **TODOs**: `scripts/TODOS.md` - All pending tasks and priorities
+3. **TODOs**: `TODOS.md` - All pending tasks and priorities
 4. **Architecture**: `docs/architecture/` - Design patterns and standards
 
 ### Important Files
 
 - `.ideai-rules.md`: Single source of truth for all rules
-- `scripts/TODOS.md`: Master task list
+- `TODOS.md`: Master task list
 - `deploy.sh`: Unified deployment script
 - `.gitmodules`: Submodule configuration
 
@@ -212,7 +212,7 @@ git submodule update --init --recursive
 2. Submodule alignment verification
 3. Deployment automation improvements
 
-### See `scripts/TODOS.md` for complete task list
+### See `TODOS.md` for complete task list
 
 ---
 
@@ -244,7 +244,7 @@ git submodule update --init --recursive
 - [ ] Submodule deployment strategy decided and implemented
 - [ ] All 13 apps deployed to Vercel
 - [ ] Automatic submodule updates before build
-- [ ] All TODOs in `scripts/TODOS.md` prioritized and assigned
+- [ ] All TODOs in `TODOS.md` prioritized and assigned
 
 ---
 
@@ -252,7 +252,7 @@ git submodule update --init --recursive
 
 - **Documentation**: See `docs/` directory
 - **Rules**: See `.ideai-rules.md`
-- **TODOs**: See `scripts/TODOS.md`
+- **TODOs**: See `TODOS.md`
 - **Deployment**: See `docs/deployment/`
 
 ---

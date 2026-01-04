@@ -1,4 +1,4 @@
-# IdeaI Scripts - TODOs
+# IdeaI - TODOs
 
 **All pending work, improvements, and future enhancements.**
 
