@@ -18,11 +18,11 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { IdeaiIcon } from "@/components/svgs/IdeaI-icon"
-import { CatIcon } from "@/components/svgs/cat-icon"
-import { RocketIcon } from "@/components/svgs/rocket-icon"
-import { BrainIcon } from "@/components/svgs/brain-icon"
-import { MusicIcon } from "@/components/svgs/music-icon"
+import { IdeaiIcon } from '@repo/ui/components/v0/IdeaI-icon'
+import { CatIcon } from '@repo/ui/components/v0/cat-icon'
+import { RocketIcon } from '@repo/ui/components/v0/rocket-icon'
+import { BrainIcon } from '@repo/ui/components/v0/brain-icon'
+import { MusicIcon } from '@repo/ui/components/v0/music-icon'
 
 interface LogoProps {
   config: {

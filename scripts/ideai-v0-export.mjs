@@ -221,6 +221,12 @@ function exportComponent(component) {
       /from\s+['"]\.\.\/components\/([^'"]+)['"]/g,
       "from '@repo/ui/components/$1'"
     );
+    // Fix @/components/svgs imports - these should import from @repo/ui
+    content = content.replace(
+      /from\s+['"]@\/components\/svgs\/([^'"]+)['"]/g,
+      "from '@repo/ui/components/v0/$1'"
+    );
+    // Fix @/components/ui imports - keep as @/ for app-specific components
     content = content.replace(
       /from\s+['"]@\/components\/ui\/([^'"]+)['"]/g,
       "from '@/components/ui/$1'"

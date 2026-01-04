@@ -19,9 +19,9 @@
 
 import { useEffect } from "react"
 import { useSpring, animated } from "@react-spring/web"
-import { IdeaiIcon } from "@/components/svgs/IdeaI-icon"
-import { GeometricIcon } from "@/components/svgs/geometric-icon"
-import { CircleIcon } from "@/components/svgs/circle-icon"
+import { IdeaiIcon } from '@repo/ui/components/v0/IdeaI-icon'
+import { GeometricIcon } from '@repo/ui/components/v0/geometric-icon'
+import { CircleIcon } from '@repo/ui/components/v0/circle-icon'
 
 interface LogoProps {
   config: {
