@@ -37,6 +37,7 @@ export function ThemeSwitcherCompact() {
       const colors = isDark ? theme.dark : theme.colors;
       
       console.log('[ThemeSwitcher] Updating theme:', currentTheme, 'isDark:', isDark);
+      alert(`Updating theme to: ${currentTheme}, isDark: ${isDark}`);
       
       // Set CSS variables - inline styles on root should override CSS
       // Note: CSS variables don't support !important, but inline styles have highest specificity
@@ -50,6 +51,7 @@ export function ThemeSwitcherCompact() {
       // Verify variables were set
       const testVar = getComputedStyle(root).getPropertyValue('--primary').trim();
       console.log('[ThemeSwitcher] Verified --primary =', testVar);
+      alert(`CSS variable --primary set to: ${testVar}`);
     };
 
     // Initial update
