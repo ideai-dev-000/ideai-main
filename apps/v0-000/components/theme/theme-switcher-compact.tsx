@@ -32,8 +32,11 @@ export function ThemeSwitcherCompact() {
     const theme = themes[currentTheme];
     const colors = currentMode === "dark" ? theme.dark : theme.colors;
 
+    // Set CSS variables - colors are already in HSL format
     Object.entries(colors).forEach(([key, value]) => {
-      root.style.setProperty(`--${key}`, value);
+      // Convert kebab-case to CSS variable format (e.g., primaryForeground -> primary-foreground)
+      const cssVarName = key.replace(/([A-Z])/g, '-$1').toLowerCase();
+      root.style.setProperty(`--${cssVarName}`, value);
     });
   }, [currentTheme, currentMode, mounted]);
 
