@@ -23,14 +23,17 @@ export function ThemeSelector() {
     // Apply theme CSS variables
     const root = document.documentElement;
     const theme = themes[currentTheme];
-    const colors = currentMode === "dark" ? theme.dark : theme.colors;
 
-    // Set CSS variables - colors are already in HSL format
-    Object.entries(colors).forEach(([key, value]) => {
-      // Convert camelCase to kebab-case (e.g., primaryForeground -> primary-foreground)
+    // Set CSS variables on :root (for light mode)
+    Object.entries(theme.colors).forEach(([key, value]) => {
       const cssVarName = key.replace(/([A-Z])/g, '-$1').toLowerCase();
-      // Strip hsl() wrapper if present - CSS variables should just have the values
-      // Tailwind will wrap them in hsl() when used
+      const cssValue = value.replace(/^hsl\(|\)$/g, '');
+      root.style.setProperty(`--${cssVarName}`, cssValue);
+    });
+
+    // Set CSS variables on .dark (for dark mode)
+    Object.entries(theme.dark).forEach(([key, value]) => {
+      const cssVarName = key.replace(/([A-Z])/g, '-$1').toLowerCase();
       const cssValue = value.replace(/^hsl\(|\)$/g, '');
       root.style.setProperty(`--${cssVarName}`, cssValue);
     });
