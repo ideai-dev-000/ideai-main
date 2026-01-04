@@ -85,6 +85,8 @@ ideai-main/
 - `pnpm build` - Build all applications
 - `pnpm build:cold` - **Cold refresh**: Stop all servers, clean caches, sync submodules, rebuild
 - `pnpm build:clean` - Clean only (no rebuild): Stop servers, clean caches
+- `pnpm dev:stop` - **Graceful shutdown**: Cleanly stop all dev servers
+- `pnpm dev:stop:force` - Force kill: Immediately stop all dev servers
 - `pnpm lint` - Lint all packages
 - `pnpm check-types` - Type check all packages
 - `pnpm format` - Format code with Prettier

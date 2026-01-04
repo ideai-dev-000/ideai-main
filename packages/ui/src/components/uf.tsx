@@ -1,19 +1,19 @@
 /**
  * @fileoverview UF - Universal Framework Component by IdeaI
- * 
+ *
  * @file uf.tsx
  * @module UF
  * @description
  * UF (Universal Framework) is a universal framework component created by IdeaI that uses pure HTML
  * and dynamically injects the right CSS classes and styles for each CSS framework.
- * 
+ *
  * Features:
  * - Hot-toggle menu to switch between all CSS frameworks
  * - Pure HTML structure with framework-specific class injection
  * - Automatic CSS loading for frameworks that require external stylesheets
  * - Self-contained in a single file for easy integration
  * - Works on any landing page as a POC
- * 
+ *
  * Supported Frameworks:
  * - Tailwind CSS
  * - Bootstrap
@@ -22,20 +22,21 @@
  * - Radix UI
  * - shadcn/UI
  * - MVP.css
+ * - Pico CSS
  * - UnoCSS
  * - No CSS (pure HTML)
- * 
+ *
  * @author IdeaI Development Team
  * @since 2026-01-01
  * @version 1.0.0
- * 
+ *
  * @example
  * ```tsx
  * import { UF } from "@repo/ui/components/uf";
- * 
+ *
  * <UF />
  * ```
- * 
+ *
  * @todo Add framework transition animations
  * @todo Add framework-specific theme customization
  * @todo Add framework comparison metrics
@@ -57,6 +58,7 @@ export type Framework =
   | "radix"
   | "shadcn"
   | "mvp"
+  | "pico"
   | "unocss"
   | "nocss";
 
@@ -82,17 +84,22 @@ const FRAMEWORKS: Record<Framework, FrameworkInfo> = {
   tailwind: {
     name: "Tailwind CSS",
     description: "Utility-first CSS framework",
-    cardClasses: "bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg shadow-md p-6",
-    buttonClasses: "px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md font-medium transition-colors",
-    inputClasses: "px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-md bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500",
-    badgeClasses: "px-2 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded text-sm font-medium",
+    cardClasses:
+      "bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg shadow-md p-6",
+    buttonClasses:
+      "px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md font-medium transition-colors",
+    inputClasses:
+      "px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-md bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500",
+    badgeClasses:
+      "px-2 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded text-sm font-medium",
     textClasses: "text-slate-700 dark:text-slate-300",
     titleClasses: "text-2xl font-bold text-slate-900 dark:text-slate-100 mb-2",
   },
   bootstrap: {
     name: "Bootstrap",
     description: "Popular CSS framework with components",
-    cssUrl: "https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css",
+    cssUrl:
+      "https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css",
     cardClasses: "card shadow-sm",
     buttonClasses: "btn btn-primary",
     inputClasses: "form-control",
@@ -113,7 +120,8 @@ const FRAMEWORKS: Record<Framework, FrameworkInfo> = {
   chakra: {
     name: "Chakra UI",
     description: "Modular and accessible component library",
-    cssUrl: "https://unpkg.com/@chakra-ui/core@1.0.0/dist/chakra-ui-core.min.css",
+    cssUrl:
+      "https://unpkg.com/@chakra-ui/core@1.0.0/dist/chakra-ui-core.min.css",
     cardClasses: "chakra-card",
     buttonClasses: "chakra-button",
     inputClasses: "chakra-input",
@@ -135,9 +143,12 @@ const FRAMEWORKS: Record<Framework, FrameworkInfo> = {
     name: "shadcn/UI",
     description: "Re-usable components built with Radix UI and Tailwind",
     cardClasses: "rounded-xl border bg-card text-card-foreground shadow p-6",
-    buttonClasses: "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 disabled:pointer-events-none disabled:opacity-50 bg-slate-900 text-white shadow hover:bg-slate-800 h-9 px-4 py-2",
-    inputClasses: "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
-    badgeClasses: "inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-primary text-primary-foreground shadow hover:bg-primary/80",
+    buttonClasses:
+      "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 disabled:pointer-events-none disabled:opacity-50 bg-slate-900 text-white shadow hover:bg-slate-800 h-9 px-4 py-2",
+    inputClasses:
+      "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
+    badgeClasses:
+      "inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-primary text-primary-foreground shadow hover:bg-primary/80",
     textClasses: "text-sm text-muted-foreground",
     titleClasses: "font-semibold leading-none tracking-tight text-2xl",
   },
@@ -151,13 +162,27 @@ const FRAMEWORKS: Record<Framework, FrameworkInfo> = {
     textClasses: "",
     titleClasses: "h2",
   },
+  pico: {
+    name: "Pico CSS",
+    description: "Minimalist stylesheet for semantic HTML",
+    cardClasses: "pico-card",
+    buttonClasses: "button primary",
+    inputClasses: "input",
+    badgeClasses: "badge",
+    textClasses: "",
+    titleClasses: "h2",
+  },
   unocss: {
     name: "UnoCSS",
     description: "Instant atomic CSS engine",
-    cardClasses: "bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg shadow-md p-6",
-    buttonClasses: "px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md font-medium transition-colors",
-    inputClasses: "px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-md bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500",
-    badgeClasses: "px-2 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded text-sm font-medium",
+    cardClasses:
+      "bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg shadow-md p-6",
+    buttonClasses:
+      "px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md font-medium transition-colors",
+    inputClasses:
+      "px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-md bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500",
+    badgeClasses:
+      "px-2 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded text-sm font-medium",
     textClasses: "text-slate-700 dark:text-slate-300",
     titleClasses: "text-2xl font-bold text-slate-900 dark:text-slate-100 mb-2",
   },
@@ -185,16 +210,17 @@ export interface UFProps {
 
 /**
  * UF - Universal Framework Component by IdeaI
- * 
+ *
  * A single-file component that demonstrates hot-toggling between all CSS frameworks
  * available in the IdeaI monorepo. Uses pure HTML and injects framework-specific
  * classes and CSS at runtime.
- * 
+ *
  * @param props - UF component props
  * @returns React component
  */
 export const UF = ({ defaultFramework = "tailwind", className }: UFProps) => {
-  const [selectedFramework, setSelectedFramework] = useState<Framework>(defaultFramework);
+  const [selectedFramework, setSelectedFramework] =
+    useState<Framework>(defaultFramework);
   const [inputValue, setInputValue] = useState("Sample input text");
 
   const currentFramework = FRAMEWORKS[selectedFramework];
@@ -207,12 +233,12 @@ export const UF = ({ defaultFramework = "tailwind", className }: UFProps) => {
     if (frameworkInfo.cssUrl) {
       cssLinks = `<link rel="stylesheet" href="${frameworkInfo.cssUrl}" crossorigin="anonymous">`;
     }
-    
+
     // Load Tailwind CSS only for frameworks that actually use Tailwind
     if (framework === "tailwind" || framework === "unocss") {
       cssLinks += `<script src="https://cdn.tailwindcss.com"></script>`;
     }
-    
+
     // shadcn uses Tailwind + CSS variables
     if (framework === "shadcn") {
       cssLinks += `<script src="https://cdn.tailwindcss.com"></script>`;
@@ -248,7 +274,7 @@ export const UF = ({ defaultFramework = "tailwind", className }: UFProps) => {
       </style>
       `;
     }
-    
+
     // Radix UI - unstyled primitives, minimal default styling (no framework CSS)
     if (framework === "radix") {
       cssLinks += `
@@ -264,7 +290,7 @@ export const UF = ({ defaultFramework = "tailwind", className }: UFProps) => {
       </style>
       `;
     }
-    
+
     // Chakra UI - default Chakra styling (blue theme, not purple)
     if (framework === "chakra") {
       cssLinks += `
@@ -280,7 +306,7 @@ export const UF = ({ defaultFramework = "tailwind", className }: UFProps) => {
       </style>
       `;
     }
-    
+
     // Material UI - Material Design 3 default styling with enhanced visuals
     if (framework === "material") {
       cssLinks += `
@@ -351,7 +377,7 @@ export const UF = ({ defaultFramework = "tailwind", className }: UFProps) => {
       </style>
       `;
     }
-    
+
     if (framework === "mvp") {
       cssLinks = `<link rel="stylesheet" href="https://unpkg.com/mvp.css@1.17.2/mvp.css">`;
       cssLinks += `
@@ -366,7 +392,22 @@ export const UF = ({ defaultFramework = "tailwind", className }: UFProps) => {
       </style>
       `;
     }
-    
+
+    if (framework === "pico") {
+      cssLinks = `<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">`;
+      cssLinks += `
+      <style>
+        /* Pico CSS card with visible 1px border */
+        .pico-card {
+          border: 1px solid #cbd5e1 !important;
+          border-radius: 0.5rem;
+          padding: 1.5rem;
+          box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+        }
+      </style>
+      `;
+    }
+
     // Base CSS for all frameworks
     const baseCSS = `
       <style>
@@ -383,11 +424,11 @@ export const UF = ({ defaultFramework = "tailwind", className }: UFProps) => {
     // Escape HTML entities in code string
     const escapeHtml = (text: string): string => {
       const map: Record<string, string> = {
-        '&': '&amp;',
-        '<': '&lt;',
-        '>': '&gt;',
-        '"': '&quot;',
-        "'": '&#039;',
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#039;",
       };
       return text.replace(/[&<>"']/g, (m) => map[m] || m);
     };
@@ -572,35 +613,42 @@ export const UF = ({ defaultFramework = "tailwind", className }: UFProps) => {
   const frameworkKeys = Object.keys(FRAMEWORKS) as Framework[];
 
   return (
-    <div className={`uf-container w-full ${className || ""}`} style={{ width: "100%", maxWidth: "100%" }}>
+    <div
+      className={`uf-container w-full ${className || ""}`}
+      style={{ width: "100%", maxWidth: "100%" }}
+    >
       {/* Framework List - Top */}
       <div className="mb-6 w-full">
         <nav className="flex flex-wrap gap-2" aria-label="Framework selection">
-                {frameworkKeys.map((framework) => {
-                  const frameworkInfo = FRAMEWORKS[framework];
-                  const isSelected = framework === selectedFramework;
+          {frameworkKeys.map((framework) => {
+            const frameworkInfo = FRAMEWORKS[framework];
+            const isSelected = framework === selectedFramework;
             const logo = frameworkInfo.name.charAt(0).toUpperCase();
-                  return (
-                    <button
-                      key={framework}
-                      type="button"
+            return (
+              <button
+                key={framework}
+                type="button"
                 onClick={() => setSelectedFramework(framework)}
                 className={`px-3 py-2 rounded-md transition-colors flex items-center gap-2 ${
-                        isSelected
+                  isSelected
                     ? "bg-slate-100 dark:bg-slate-800 font-medium"
                     : "hover:bg-slate-50 dark:hover:bg-slate-800/50"
                 }`}
                 aria-current={isSelected ? "page" : undefined}
               >
-                <div className={`w-5 h-5 flex items-center justify-center rounded-full text-xs font-bold ${
-                  isSelected ? "bg-blue-600 text-white" : "bg-slate-300 text-slate-700 dark:bg-slate-600 dark:text-slate-200"
-                }`}>
+                <div
+                  className={`w-5 h-5 flex items-center justify-center rounded-full text-xs font-bold ${
+                    isSelected
+                      ? "bg-blue-600 text-white"
+                      : "bg-slate-300 text-slate-700 dark:bg-slate-600 dark:text-slate-200"
+                  }`}
+                >
                   {logo}
-                            </div>
+                </div>
                 <div className="text-sm">{frameworkInfo.name}</div>
-                    </button>
-                  );
-                })}
+              </button>
+            );
+          })}
         </nav>
       </div>
 
@@ -610,7 +658,12 @@ export const UF = ({ defaultFramework = "tailwind", className }: UFProps) => {
           key={selectedFramework}
           srcDoc={generateIframeContent(selectedFramework)}
           className="w-full border border-slate-200 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-900"
-          style={{ width: "100%", minHeight: "500px", height: "500px", maxWidth: "100%" }}
+          style={{
+            width: "100%",
+            minHeight: "500px",
+            height: "500px",
+            maxWidth: "100%",
+          }}
           title={`UF Card - ${currentFramework.name}`}
           sandbox="allow-same-origin allow-scripts allow-forms"
         />

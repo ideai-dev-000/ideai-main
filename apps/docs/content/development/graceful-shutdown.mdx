@@ -61,6 +61,7 @@ pnpm dev:stop
 ```
 
 **What happens**:
+
 1. ✅ Sends SIGTERM to all dev servers (ports 3000-3013)
 2. ✅ Sends SIGTERM to all Node.js dev processes
 3. ✅ Waits for graceful exit (5 seconds)
@@ -74,6 +75,7 @@ pnpm dev:stop:force
 ```
 
 **What happens**:
+
 1. ✅ Immediately sends SIGKILL to all processes
 2. ✅ No waiting, no graceful shutdown
 3. ✅ Use only if graceful shutdown fails
@@ -165,7 +167,7 @@ Waiting for graceful shutdown (3 seconds)...
 ✅ **Clean Exit**: Connections closed properly  
 ✅ **Fast**: Usually completes in 1-2 seconds  
 ✅ **Reliable**: Falls back to SIGKILL if needed  
-✅ **Integrated**: Works with cold refresh automatically  
+✅ **Integrated**: Works with cold refresh automatically
 
 ---
 
@@ -174,6 +176,7 @@ Waiting for graceful shutdown (3 seconds)...
 ### Issue: Processes don't exit after SIGTERM
 
 **Solution**: Script automatically sends SIGKILL after waiting period. If this fails, use force mode:
+
 ```bash
 pnpm dev:stop:force
 ```
@@ -181,6 +184,7 @@ pnpm dev:stop:force
 ### Issue: Some processes still running
 
 **Solution**: Run again or use force mode:
+
 ```bash
 pnpm dev:stop:force
 ```
@@ -204,14 +208,15 @@ pnpm dev:stop:force
 **Location**: `scripts/ideai-develop-graceful-shutdown.mjs`
 
 **Options**:
+
 - `--force`: Skip graceful shutdown, kill immediately
 - `--quiet`: Suppress output (for CI/CD)
 
 **Exit Codes**:
+
 - `0`: Success (all processes stopped or none running)
 - `1`: Error (should not occur in normal operation)
 
 ---
 
 **Last Updated**: January 3, 2026
-

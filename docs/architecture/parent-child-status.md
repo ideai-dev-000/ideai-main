@@ -75,6 +75,7 @@ Each child app loads in iframe with its own CSS:
 | `all`       | MVP.css + Tailwind + IdeaI | ✅ Isolated |
 | `nocss`     | None (pure HTML)           | ✅ Isolated |
 | `mvp`       | MVP.css only               | ✅ Isolated |
+| `pico`      | Pico CSS only              | ✅ Isolated |
 | `tailwind`  | Tailwind only              | ✅ Isolated |
 | `allcss`    | MVP.css + Tailwind + IdeaI | ✅ Isolated |
 | `bootstrap` | Bootstrap CSS              | ✅ Isolated |

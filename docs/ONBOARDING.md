@@ -60,7 +60,7 @@ See: [Multi-Strategy Deployment Plan](./deployment/MULTI-STRATEGY-DEPLOYMENT-PLA
 
 \`\`\`
 ideai-main/
-├── apps/ # 13 Next.js applications
+├── apps/ # 14 Next.js applications
 │ ├── web/ # Main IdeaI app (port 3000)
 │ ├── docs/ # Documentation site (port 3001)
 │ ├── all/ # Component showcase (port 3002)
@@ -73,7 +73,8 @@ ideai-main/
 │ ├── shadcn/ # Shadcn Components (port 3009)
 │ ├── material/ # Material UI demo (port 3010)
 │ ├── chakra/ # Chakra UI demo (port 3011)
-│ └── radix/ # Radix UI demo (port 3012)
+│ ├── radix/ # Radix UI demo (port 3012)
+│ └── pico/ # Pico CSS demo (port 3013)
 ├── packages/ # Shared packages
 │ ├── ui/ # Shared UI components and styles
 │ ├── eslint-config/ # Shared ESLint config
@@ -100,6 +101,7 @@ ideai-main/
 | material  | 3010 | Material UI demo            | ✅ Built    |
 | chakra    | 3011 | Chakra UI demo              | ✅ Built    |
 | radix     | 3012 | Radix UI primitives         | ✅ Built    |
+| pico      | 3013 | Pico CSS framework demo     | ✅ Built    |
 
 ---
 

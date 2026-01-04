@@ -12,6 +12,7 @@ description: Ensuring parent app has all CSS libraries that child apps need
 ### Framework Exclusivity Rule
 
 **CRITICAL**: CSS frameworks are **mutually exclusive**. Each app uses **ONE framework only**:
+
 - ✅ **MVP.css** OR **Tailwind CSS** (never both)
 - ✅ All frameworks built on top of **normalize.css** for consistent base styles
 - ✅ IdeaI CSS (`ideai.css`) is framework-agnostic and can be used with any framework
@@ -19,27 +20,29 @@ description: Ensuring parent app has all CSS libraries that child apps need
 ### Parent App (`web`)
 
 Currently imports:
+
 - ✅ Normalize.css (base styles)
 - ✅ Tailwind CSS (via globals.css) - **EXCLUSIVE, no MVP.css**
 - ✅ IdeaI CSS (via ideai.css)
 
 ### Child Apps CSS Requirements
 
-| Child App | CSS Framework | Base |
-|-----------|--------------|------|
-| `web` | Tailwind CSS only | Normalize |
-| `docs` | Tailwind CSS only | Normalize |
-| `all` | Tailwind CSS only | Normalize |
-| `nocss` | None (pure HTML) | Normalize only |
-| `mvp` | MVP.css only | Normalize |
-| `tailwind` | Tailwind CSS only | Normalize |
-| `allcss` | Tailwind CSS only | Normalize |
-| `bootstrap` | Bootstrap only | Normalize |
-| `unocss` | UnoCSS only | Normalize |
-| `shadcn` | Tailwind CSS only | Normalize |
-| `radix` | Tailwind CSS only | Normalize |
-| `material` | Material UI only | Normalize |
-| `chakra` | Chakra UI only | Normalize |
+| Child App   | CSS Framework     | Base           |
+| ----------- | ----------------- | -------------- |
+| `web`       | Tailwind CSS only | Normalize      |
+| `docs`      | Tailwind CSS only | Normalize      |
+| `all`       | Tailwind CSS only | Normalize      |
+| `nocss`     | None (pure HTML)  | Normalize only |
+| `mvp`       | MVP.css only      | Normalize      |
+| `pico`      | Pico CSS only     | Normalize      |
+| `tailwind`  | Tailwind CSS only | Normalize      |
+| `allcss`    | Tailwind CSS only | Normalize      |
+| `bootstrap` | Bootstrap only    | Normalize      |
+| `unocss`    | UnoCSS only       | Normalize      |
+| `shadcn`    | Tailwind CSS only | Normalize      |
+| `radix`     | Tailwind CSS only | Normalize      |
+| `material`  | Material UI only  | Normalize      |
+| `chakra`    | Chakra UI only    | Normalize      |
 
 ## CSS Compatibility Strategy
 
@@ -48,29 +51,31 @@ Currently imports:
 Parent app imports ALL CSS that any child might need:
 
 \`\`\`css
-/* apps/web/app/globals.css */
-/* MVP.css - for mvp, allcss, docs, all */
+/_ apps/web/app/globals.css _/
+/_ MVP.css - for mvp, allcss, docs, all _/
 @import "../../../packages/ui/src/styles/mvp.css";
 
-/* Tailwind CSS - for tailwind, allcss, docs, all, shadcn */
+/_ Tailwind CSS - for tailwind, allcss, docs, all, shadcn _/
 @import "../../../packages/ui/src/styles/globals.css";
 
-/* IdeaI CSS - for all apps */
+/_ IdeaI CSS - for all apps _/
 @import "../../../packages/ui/src/styles/ideai.css";
 
-/* Bootstrap CSS - for bootstrap child */
+/_ Bootstrap CSS - for bootstrap child _/
 @import "bootstrap/dist/css/bootstrap.min.css";
 
-/* UnoCSS - for unocss child */
-/* Note: UnoCSS is build-time, may need different approach */
+/_ UnoCSS - for unocss child _/
+/_ Note: UnoCSS is build-time, may need different approach _/
 \`\`\`
 
 **Pros**:
+
 - ✅ All child apps work
 - ✅ No CSS conflicts (if scoped properly)
 - ✅ Unified build
 
 **Cons**:
+
 - ⚠️ Larger bundle size
 - ⚠️ Potential CSS conflicts
 
@@ -79,11 +84,13 @@ Parent app imports ALL CSS that any child might need:
 Each child app loads in iframe with its own CSS.
 
 **Pros**:
+
 - ✅ Complete CSS isolation
 - ✅ No conflicts
 - ✅ Smaller parent bundle
 
 **Cons**:
+
 - ⚠️ Not "one unified app"
 - ⚠️ Iframe overhead
 
@@ -92,11 +99,13 @@ Each child app loads in iframe with its own CSS.
 Parent detects which child is being viewed and loads only needed CSS.
 
 **Pros**:
+
 - ✅ Smaller bundle
 - ✅ No conflicts
 - ✅ Flexible
 
 **Cons**:
+
 - ⚠️ More complex
 - ⚠️ Loading delays
 
