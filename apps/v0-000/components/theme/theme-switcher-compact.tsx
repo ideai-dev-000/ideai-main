@@ -167,23 +167,22 @@ export function ThemeSwitcherCompact() {
               </div>
               <button
                 type="button"
-                onClick={async (e) => {
+                onClick={(e) => {
                   e.preventDefault();
                   e.stopPropagation();
                   console.log('[ThemeSwitcher] Mode clicked: light');
-                  await setMode("light");
-                  // Force immediate update after mode change
-                  setTimeout(() => {
-                    const root = document.documentElement;
-                    const theme = themes[currentTheme];
-                    const colors = theme.colors; // Light mode colors
-                    Object.entries(colors).forEach(([key, value]) => {
-                      const cssVarName = key.replace(/([A-Z])/g, '-$1').toLowerCase();
-                      const cssValue = value.replace(/^hsl\(|\)$/g, '');
-                      root.style.setProperty(`--${cssVarName}`, cssValue);
-                    });
-                    console.log('[ThemeSwitcher] Force updated to light mode');
-                  }, 100);
+                  setMode("light");
+                  // Force immediate update - don't wait for next-themes
+                  const root = document.documentElement;
+                  root.classList.remove('dark');
+                  const theme = themes[currentTheme];
+                  const colors = theme.colors; // Light mode colors
+                  Object.entries(colors).forEach(([key, value]) => {
+                    const cssVarName = key.replace(/([A-Z])/g, '-$1').toLowerCase();
+                    const cssValue = value.replace(/^hsl\(|\)$/g, '');
+                    root.style.setProperty(`--${cssVarName}`, cssValue);
+                  });
+                  console.log('[ThemeSwitcher] Force updated to light mode immediately');
                   setIsOpen(false);
                 }}
                 className={`w-full text-left px-2 py-1.5 text-sm rounded-md hover:bg-accent flex items-center justify-between ${
@@ -223,11 +222,11 @@ export function ThemeSwitcherCompact() {
               </button>
               <button
                 type="button"
-                onClick={async (e) => {
+                onClick={(e) => {
                   e.preventDefault();
                   e.stopPropagation();
                   console.log('[ThemeSwitcher] Mode clicked: system');
-                  await setMode("system");
+                  setMode("system");
                   // Force update after system mode change (will use system preference)
                   setTimeout(() => {
                     const root = document.documentElement;
@@ -240,7 +239,7 @@ export function ThemeSwitcherCompact() {
                       root.style.setProperty(`--${cssVarName}`, cssValue);
                     });
                     console.log('[ThemeSwitcher] Force updated to system mode, isDark:', isDark);
-                  }, 100);
+                  }, 150);
                   setIsOpen(false);
                 }}
                 className={`w-full text-left px-2 py-1.5 text-sm rounded-md hover:bg-accent flex items-center justify-between ${
