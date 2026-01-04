@@ -18,7 +18,7 @@
 "use client"
 
 import { useEffect, useRef } from "react"
-import { IdeaiIcon } from '@repo/ui/components/v0/IdeaI-icon'
+import { IdeaiIcon } from '@repo/ui/components/v0/ideai-icon'
 import { GeometricIcon } from '@repo/ui/components/v0/geometric-icon'
 import { CircleIcon } from '@repo/ui/components/v0/circle-icon'
 

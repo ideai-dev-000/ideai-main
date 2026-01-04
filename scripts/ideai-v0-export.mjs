@@ -222,9 +222,14 @@ function exportComponent(component) {
       "from '@repo/ui/components/$1'"
     );
     // Fix @/components/svgs imports - these should import from @repo/ui
+    // Handle case-insensitive matching for IdeaI-icon -> ideai-icon
     content = content.replace(
-      /from\s+['"]@\/components\/svgs\/([^'"]+)['"]/g,
-      "from '@repo/ui/components/v0/$1'"
+      /from\s+['"]@\/components\/svgs\/([^'"]+)['"]/gi,
+      (match, iconName) => {
+        // Normalize icon name (IdeaI-icon -> ideai-icon)
+        const normalized = iconName.toLowerCase().replace(/^ideai/, 'ideai');
+        return `from '@repo/ui/components/v0/${normalized}'`;
+      }
     );
     // Fix @/components/ui imports - keep as @/ for app-specific components
     content = content.replace(

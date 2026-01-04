@@ -19,7 +19,7 @@
 
 import { useEffect } from "react"
 import { useSpring, animated } from "@react-spring/web"
-import { IdeaiIcon } from '@repo/ui/components/v0/IdeaI-icon'
+import { IdeaiIcon } from '@repo/ui/components/v0/ideai-icon'
 import { GeometricIcon } from '@repo/ui/components/v0/geometric-icon'
 import { CircleIcon } from '@repo/ui/components/v0/circle-icon'
 

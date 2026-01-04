@@ -18,7 +18,7 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { IdeaiIcon } from '@repo/ui/components/v0/IdeaI-icon'
+import { IdeaiIcon } from '@repo/ui/components/v0/ideai-icon'
 import { CatIcon } from '@repo/ui/components/v0/cat-icon'
 import { RocketIcon } from '@repo/ui/components/v0/rocket-icon'
 import { BrainIcon } from '@repo/ui/components/v0/brain-icon'

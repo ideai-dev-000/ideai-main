@@ -106,6 +106,8 @@ export { getVercelProjectConfig, getVercelProjectName, shouldForkToNewProject, t
 
 
 
+
+
 // V0 Components - Auto-exported from v0-staging
 // Available immediately in all apps via: import { ComponentName } from "@repo/ui"
 export { AnimationControls } from "./components/v0/animation-controls";
@@ -117,6 +119,9 @@ export { MotionOneLogo } from "./components/v0/motion-one-logo";
 export { ParticlesLogo } from "./components/v0/particles-logo";
 export { ReactSpringLogo } from "./components/v0/react-spring-logo";
 export { VivusLogo } from "./components/v0/vivus-logo";
+export { CircleIcon } from "./components/v0/circle-icon";
+export { GeometricIcon } from "./components/v0/geometric-icon";
+export { IdeaiIcon } from "./components/v0/ideai-icon";
 export { BrainIcon } from "./components/v0/brain-icon";
 export { CatIcon } from "./components/v0/cat-icon";
 export { MusicIcon } from "./components/v0/music-icon";
