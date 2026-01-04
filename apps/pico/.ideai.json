@@ -1,0 +1,10 @@
+{
+  "name": "pico",
+  "version": "0.1.0",
+  "role": "child",
+  "vercelProject": {
+    "projectName": "pico",
+    "orgId": "team_vhjzlMi6CfNow0IfBXnv2Yn2",
+    "forkToNew": true
+  }
+}
