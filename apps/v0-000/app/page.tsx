@@ -24,6 +24,7 @@ import { CopyButton } from "@/components/tools/copy-button";
 import { ToggleSwitch } from "@/components/tools/toggle-switch";
 import { ThemeSelector } from "@/components/theme/theme-selector";
 import { ThemePreview } from "@/components/theme/theme-preview";
+import { ThemeSwitcherCompact } from "@/components/theme/theme-switcher-compact";
 import { useState } from "react";
 
 export default function Home() {
@@ -33,7 +34,12 @@ export default function Home() {
       siteName="V0-000 Template"
       vercelProjectName="v0-000"
       vercelOrgId={process.env.NEXT_PUBLIC_VERCEL_ORG_ID || "team_vhjzlMi6CfNow0IfBXnv2Yn2"}
-      headerActions={<IdeaIButton appName="v0-000">Get Started</IdeaIButton>}
+      headerActions={
+        <div className="flex items-center gap-2">
+          <ThemeSwitcherCompact />
+          <IdeaIButton appName="v0-000">Get Started</IdeaIButton>
+        </div>
+      }
     >
       <div className="max-w-6xl mx-auto p-8 space-y-12">
         <div className="text-center space-y-4">
