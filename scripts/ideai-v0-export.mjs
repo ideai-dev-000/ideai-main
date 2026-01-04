@@ -81,10 +81,46 @@ function warn(message) {
 function getComponentName(filePath) {
   const base = basename(filePath, extname(filePath));
   // Convert kebab-case to PascalCase
+  // Handle special cases like "root-layout" -> "RootLayout"
   return base
     .split("-")
     .map(word => word.charAt(0).toUpperCase() + word.slice(1))
     .join("");
+}
+
+/**
+ * Fix function names in exported content
+ * Converts invalid function names like "root-layout" to "RootLayout"
+ */
+function fixFunctionNames(content, fileName) {
+  const base = basename(fileName, extname(fileName));
+  const componentName = getComponentName(fileName);
+  
+  // Fix default export function names
+  content = content.replace(
+    /export\s+default\s+function\s+([a-z-]+)\s*\(/gi,
+    (match, funcName) => {
+      const fixedName = funcName
+        .split("-")
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join("");
+      return `export default function ${fixedName}(`;
+    }
+  );
+  
+  // Fix named export function names
+  content = content.replace(
+    /export\s+function\s+([a-z-]+)\s*\(/gi,
+    (match, funcName) => {
+      const fixedName = funcName
+        .split("-")
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join("");
+      return `export function ${fixedName}(`;
+    }
+  );
+  
+  return content;
 }
 
 /**
@@ -154,6 +190,9 @@ function exportComponent(component) {
 
     // Read and update imports in component
     let content = readFileSync(source, "utf-8");
+    
+    // Fix function names (convert kebab-case to PascalCase)
+    content = fixFunctionNames(content, fileName);
     
     // Update relative imports to use @repo/ui or @/ alias
     content = content.replace(

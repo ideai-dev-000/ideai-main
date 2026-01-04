@@ -10,7 +10,7 @@
 import { IdeAIPageTemplate } from "@repo/ui";
 import { IdeaIButton } from "@repo/ui";
 
-export default function home() {
+export default function Home() {
   return (
     <IdeAIPageTemplate
       siteName="V0 Prototype"
