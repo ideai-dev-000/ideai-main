@@ -1488,9 +1488,11 @@ function TsParticlesDemo({ example }: { example: AnimationExample }) {
       .then(([Particles, Slim]) => {
         if (Particles && Slim) {
           // @tsparticles/react exports default Particles component and named exports
-
           const ParticlesComp =
-            (Particles as any).default || (Particles as any).Particles;
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            (Particles as any).default ||
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            (Particles as any).Particles;
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           const initEngine = (Particles as any).initParticlesEngine;
           // eslint-disable-next-line @typescript-eslint/no-explicit-any

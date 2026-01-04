@@ -8,7 +8,6 @@
  */
 
 import type {
-  VercelProjectConfig,
   VercelProjectSettings,
   VercelDeployment,
   VercelApiResponse,
@@ -28,7 +27,8 @@ export class VercelClient {
     this.apiToken =
       apiToken ||
       (typeof window !== "undefined"
-        ? (window as any).__VERCEL_TOKEN__
+        ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          (window as any).__VERCEL_TOKEN__
         : undefined) ||
       process.env.NEXT_PUBLIC_VERCEL_TOKEN ||
       process.env.VERCEL_TOKEN ||

@@ -32,7 +32,13 @@
       "persistent": true
     }
   },
-  "globalEnv": ["NODE_ENV", "VERCEL_ENV", "VERCEL_URL"],
+  "globalEnv": [
+    "NODE_ENV",
+    "VERCEL_ENV",
+    "VERCEL_URL",
+    "NEXT_PUBLIC_VERCEL_TOKEN",
+    "VERCEL_TOKEN"
+  ],
   "remoteCache": {
     "signature": true
   }

@@ -57,9 +57,10 @@ export function getAppMode(): AppMode {
  * @param appName - Child app name (e.g., "docs")
  * @returns Promise resolving to child app page component or null
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
 export async function loadChildAppPage(
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   appName: string,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): Promise<ComponentType<any> | null> {
   const mode = getAppMode();
 

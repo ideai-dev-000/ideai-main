@@ -6,6 +6,25 @@
 
 ## High Priority
 
+### Remaining ESLint Warning (1) - Known Issue
+
+**Status**: 1 warning remaining in `@repo/ui` package  
+**Priority**: Low (false positive, TypeScript provides type safety)  
+**Estimated Effort**: Requires ESLint config investigation
+
+#### Files with Known Issues
+
+- [ ] **`packages/ui/src/components/v0/ideai-icon.tsx`** (1 warning)
+  - Line 7: prop-types warning - `className` is missing in props validation
+  - **Issue**: This is a false positive - TypeScript provides type safety via `IdeaiIconProps` interface
+  - **Attempted fixes**: File-level disable, line-level disable, inline disable - all ineffective
+  - **Root cause**: ESLint prop-types rule configuration issue - rule is checking JSDoc comment line instead of function
+  - **Workaround**: Acceptable to leave as-is since TypeScript provides type safety
+
+**Note**: This appears to be an ESLint configuration issue where the prop-types rule is incorrectly reporting the warning on the JSDoc comment line (line 7) instead of the function declaration. TypeScript already provides type safety, making prop-types redundant for this component.
+
+---
+
 ### Submodule Management & Alignment
 
 - [ ] **RESEARCH FIRST**: Proper submodule development workflow for IdeaI alignment

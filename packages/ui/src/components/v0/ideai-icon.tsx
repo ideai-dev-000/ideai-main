@@ -17,10 +17,10 @@
 
 interface IdeaiIconProps {
   className?: string;
-  className?: string;
   animated?: boolean;
 }
 
+// TypeScript provides type safety, prop-types is redundant
 export function IdeaiIcon({ className = "" }: IdeaiIconProps) {
   return (
     <svg

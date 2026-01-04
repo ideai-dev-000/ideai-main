@@ -45,9 +45,9 @@ export function MotionOneLogo({ config, selectedSvg }: LogoProps) {
       if (logoRef.current && textRef.current) {
         const animateLogo = () => {
           // Animate logo
-
           animate(
             logoRef.current!,
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             { scale: [0, 1], opacity: [0, 1], rotate: [0, 360] } as any,
             {
               duration: config.duration,
@@ -58,9 +58,9 @@ export function MotionOneLogo({ config, selectedSvg }: LogoProps) {
           );
 
           // Animate text
-
           animate(
             textRef.current!,
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             { opacity: [0, 1], y: [20, 0] } as any,
             {
               duration: 0.6,

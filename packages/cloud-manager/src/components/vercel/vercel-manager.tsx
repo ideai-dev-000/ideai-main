@@ -9,12 +9,9 @@
 
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { VercelClient } from "../../providers/vercel/vercel-client";
-import {
-  autoConfigureVercelProject,
-  validateVercelConfig,
-} from "../../providers/vercel/vercel-config";
+import { autoConfigureVercelProject } from "../../providers/vercel/vercel-config";
 import type { VercelProjectSettings } from "../../providers/vercel/vercel-types";
 
 export function VercelManager() {
@@ -33,26 +30,7 @@ export function VercelManager() {
 
   const client = new VercelClient();
 
-  useEffect(() => {
-    loadProjects();
-  }, []);
-
-  useEffect(() => {
-    if (selectedProject) {
-      loadProjectSettings(selectedProject);
-      setHasUnsavedChanges(false);
-    }
-  }, [selectedProject]);
-
-  // Update local settings when server settings change
-  useEffect(() => {
-    if (settings) {
-      setLocalSettings(settings);
-      setHasUnsavedChanges(false);
-    }
-  }, [settings]);
-
-  const loadProjects = async () => {
+  const loadProjects = useCallback(async () => {
     setLoading(true);
     setError(null);
 
@@ -82,29 +60,51 @@ export function VercelManager() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [teamId]);
 
-  const loadProjectSettings = async (projectId: string) => {
-    setLoading(true);
-    setError(null);
-    try {
-      const response = await fetch(
-        `/api/vercel/projects/${projectId}/settings?teamId=${teamId}`,
-      );
-      const result = await response.json();
-      if (result.error) {
-        setError(`Failed to load settings: ${result.error.message}`);
-      } else if (result.data) {
-        setSettings(result.data);
+  const loadProjectSettings = useCallback(
+    async (projectId: string) => {
+      setLoading(true);
+      setError(null);
+      try {
+        const response = await fetch(
+          `/api/vercel/projects/${projectId}/settings?teamId=${teamId}`,
+        );
+        const result = await response.json();
+        if (result.error) {
+          setError(`Failed to load settings: ${result.error.message}`);
+        } else if (result.data) {
+          setSettings(result.data);
+        }
+      } catch (err) {
+        setError(
+          `Network error: ${err instanceof Error ? err.message : "Unknown error"}`,
+        );
+      } finally {
+        setLoading(false);
       }
-    } catch (err) {
-      setError(
-        `Network error: ${err instanceof Error ? err.message : "Unknown error"}`,
-      );
-    } finally {
-      setLoading(false);
+    },
+    [teamId],
+  );
+
+  useEffect(() => {
+    loadProjects();
+  }, [loadProjects]);
+
+  useEffect(() => {
+    if (selectedProject) {
+      loadProjectSettings(selectedProject);
+      setHasUnsavedChanges(false);
     }
-  };
+  }, [selectedProject, loadProjectSettings]);
+
+  // Update local settings when server settings change
+  useEffect(() => {
+    if (settings) {
+      setLocalSettings(settings);
+      setHasUnsavedChanges(false);
+    }
+  }, [settings]);
 
   const handleAutoConfigure = async () => {
     if (!selectedProject) return;
@@ -152,6 +152,7 @@ export function VercelManager() {
 
     try {
       // Prepare the payload - Vercel API expects specific field names
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const payload: Record<string, any> = {};
       if (
         localSettings.rootDirectory !== null &&
