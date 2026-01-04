@@ -167,11 +167,23 @@ export function ThemeSwitcherCompact() {
               </div>
               <button
                 type="button"
-                onClick={(e) => {
+                onClick={async (e) => {
                   e.preventDefault();
                   e.stopPropagation();
                   console.log('[ThemeSwitcher] Mode clicked: light');
-                  setMode("light");
+                  await setMode("light");
+                  // Force immediate update after mode change
+                  setTimeout(() => {
+                    const root = document.documentElement;
+                    const theme = themes[currentTheme];
+                    const colors = theme.colors; // Light mode colors
+                    Object.entries(colors).forEach(([key, value]) => {
+                      const cssVarName = key.replace(/([A-Z])/g, '-$1').toLowerCase();
+                      const cssValue = value.replace(/^hsl\(|\)$/g, '');
+                      root.style.setProperty(`--${cssVarName}`, cssValue);
+                    });
+                    console.log('[ThemeSwitcher] Force updated to light mode');
+                  }, 100);
                   setIsOpen(false);
                 }}
                 className={`w-full text-left px-2 py-1.5 text-sm rounded-md hover:bg-accent flex items-center justify-between ${
@@ -183,11 +195,23 @@ export function ThemeSwitcherCompact() {
               </button>
               <button
                 type="button"
-                onClick={(e) => {
+                onClick={async (e) => {
                   e.preventDefault();
                   e.stopPropagation();
                   console.log('[ThemeSwitcher] Mode clicked: dark');
-                  setMode("dark");
+                  await setMode("dark");
+                  // Force immediate update after mode change
+                  setTimeout(() => {
+                    const root = document.documentElement;
+                    const theme = themes[currentTheme];
+                    const colors = theme.dark; // Dark mode colors
+                    Object.entries(colors).forEach(([key, value]) => {
+                      const cssVarName = key.replace(/([A-Z])/g, '-$1').toLowerCase();
+                      const cssValue = value.replace(/^hsl\(|\)$/g, '');
+                      root.style.setProperty(`--${cssVarName}`, cssValue);
+                    });
+                    console.log('[ThemeSwitcher] Force updated to dark mode');
+                  }, 100);
                   setIsOpen(false);
                 }}
                 className={`w-full text-left px-2 py-1.5 text-sm rounded-md hover:bg-accent flex items-center justify-between ${
@@ -199,11 +223,24 @@ export function ThemeSwitcherCompact() {
               </button>
               <button
                 type="button"
-                onClick={(e) => {
+                onClick={async (e) => {
                   e.preventDefault();
                   e.stopPropagation();
                   console.log('[ThemeSwitcher] Mode clicked: system');
-                  setMode("system");
+                  await setMode("system");
+                  // Force update after system mode change (will use system preference)
+                  setTimeout(() => {
+                    const root = document.documentElement;
+                    const theme = themes[currentTheme];
+                    const isDark = root.classList.contains('dark');
+                    const colors = isDark ? theme.dark : theme.colors;
+                    Object.entries(colors).forEach(([key, value]) => {
+                      const cssVarName = key.replace(/([A-Z])/g, '-$1').toLowerCase();
+                      const cssValue = value.replace(/^hsl\(|\)$/g, '');
+                      root.style.setProperty(`--${cssVarName}`, cssValue);
+                    });
+                    console.log('[ThemeSwitcher] Force updated to system mode, isDark:', isDark);
+                  }, 100);
                   setIsOpen(false);
                 }}
                 className={`w-full text-left px-2 py-1.5 text-sm rounded-md hover:bg-accent flex items-center justify-between ${
