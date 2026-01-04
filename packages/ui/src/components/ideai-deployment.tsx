@@ -61,7 +61,8 @@ export interface IdeAIDeploymentProps {
 export const IdeAIDeployment = ({
   appName,
   appConfig,
-  currentPath,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  currentPath: _currentPath,
   showLogs = true,
 }: IdeAIDeploymentProps) => {
   const [deploymentOptions, setDeploymentOptions] = useState<DeploymentOption[]>([]);
@@ -166,23 +167,18 @@ export const IdeAIDeployment = ({
       const testMethods = [
         async () => {
           // Method 1: Try HEAD request with CORS (gives us status code)
-          try {
-            const response = await fetch(option.testUrl!, {
-              method: "HEAD",
-              mode: "cors",
-              cache: "no-store",
-              signal: AbortSignal.timeout(5000), // 5 second timeout
-            });
-            return { 
-              success: response.ok, 
-              status: response.status, 
-              method: "HEAD (CORS)",
-              headers: Object.fromEntries(response.headers.entries()),
-            };
-          } catch (error) {
-            // CORS might fail, that's okay - try next method
-            throw error;
-          }
+          const response = await fetch(option.testUrl!, {
+            method: "HEAD",
+            mode: "cors",
+            cache: "no-store",
+            signal: AbortSignal.timeout(5000), // 5 second timeout
+          });
+          return { 
+            success: response.ok, 
+            status: response.status, 
+            method: "HEAD (CORS)",
+            headers: Object.fromEntries(response.headers.entries()),
+          };
         },
         async () => {
           // Method 2: Try GET request with no-cors (always succeeds but doesn't give details)

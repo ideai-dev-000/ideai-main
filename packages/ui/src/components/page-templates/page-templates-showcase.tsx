@@ -42,15 +42,12 @@ import {
 export function PageTemplatesShowcase() {
   const templates = pageTemplatesData as PageTemplate[];
   
-  // Get app name from environment or default to "web"
-  const appName = process.env.NEXT_PUBLIC_VERCEL_PROJECT_NAME || "web";
-  
   const vercelProjectName = process.env.NEXT_PUBLIC_VERCEL_PROJECT_NAME || "web";
   const vercelOrgId = process.env.NEXT_PUBLIC_VERCEL_ORG_ID || "team_vhjzlMi6CfNow0IfBXnv2Yn2";
 
   // Get unique template types
-  const allTypes: TemplateType[] = ["dashboard", "blog", "social", "shop", "landing", "portfolio", "docs", "admin"];
   const availableTypes = useMemo(() => {
+    const allTypes: TemplateType[] = ["dashboard", "blog", "social", "shop", "landing", "portfolio", "docs", "admin"];
     const typesInData = new Set(templates.map((t) => t.type));
     return allTypes.filter((type) => typesInData.has(type));
   }, [templates]);

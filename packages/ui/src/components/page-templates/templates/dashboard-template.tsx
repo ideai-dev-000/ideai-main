@@ -40,7 +40,7 @@ export function DashboardTemplate() {
             Analytics Dashboard
           </h1>
           <p className="text-muted-foreground">
-            Welcome back! Here's what's happening today.
+            Welcome back! Here&apos;s what&apos;s happening today.
           </p>
         </header>
 

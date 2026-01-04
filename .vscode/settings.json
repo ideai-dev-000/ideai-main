@@ -1,0 +1,10 @@
+{
+  "git.path": "C:/Users/ricma/AppData/Local/GitHubDesktop/app-3.5.4/resources/app/git/cmd/git.exe",
+  "git.enabled": true,
+  "git.autofetch": true,
+  "terminal.integrated.env.windows": {
+    "PATH": "${env:PATH};C:/Users/ricma/AppData/Local/GitHubDesktop/app-3.5.4/resources/app/git/cmd"
+  }
+}
+
+

@@ -327,14 +327,56 @@ Never skip CI checks. All PRs must pass CI before merge.
 
 **NEVER assume code is correct without checking the rendered DOM.**
 
+## Site Registration Requirements
+
+### CRITICAL: All New Sites Must Be Registered
+
+**MANDATORY**: When creating a new site, route, or page that should appear in the apps index:
+
+1. **Register in routes-registry.json**:
+   - File: `apps/web/app/routes-registry.json`
+   - Add entry with: `id`, `name`, `description`, `path`, `category`, `css`, `capabilities`
+   - Path must match the actual route path (e.g., `/react-flow` for `app/react-flow/page.tsx`)
+
+2. **For Standalone Apps**:
+   - Create `.ideai.json` file in `apps/{app-name}/.ideai.json`
+   - Include all required metadata (see existing apps for format)
+
+3. **Verification Checklist**:
+   - [ ] Route/site registered in `routes-registry.json` OR `.ideai.json` exists
+   - [ ] Route path matches actual file structure
+   - [ ] Site appears in `/index` page
+   - [ ] Site is accessible at the registered path
+
+**Why This Matters**:
+- Index must show all available sites for discovery
+- Prevents orphaned sites that aren't discoverable
+- Ensures consistent metadata across all sites
+- Required for proper navigation and documentation
+
+**Example Registration**:
+```json
+{
+  "id": "react-flow",
+  "name": "React Flow",
+  "description": "Interactive React Flow visualization",
+  "path": "/react-flow",
+  "category": "demo",
+  "css": ["Tailwind CSS", "IdeaI Design System"],
+  "capabilities": ["React Flow", "Semantic Pipeline"]
+}
+```
+
 ## Workflow
 
 1. Make changes
-2. **ALWAYS check DOM** - Navigate, screenshot, compare HTML/CSS
-3. **Verify UI consistency** - Check both apps side-by-side visually
-4. Run checks: `pnpm lint && pnpm check-types && pnpm build`
-5. Update documentation if code changed (ensure OCD accuracy)
-6. Write detailed commit message
-7. If in non-interactive environment, disable auto-sign, commit, re-enable
-8. Push and verify CI passes
+2. **Register new sites** - Add to `routes-registry.json` or create `.ideai.json`
+3. **ALWAYS check DOM** - Navigate, screenshot, compare HTML/CSS
+4. **Verify UI consistency** - Check both apps side-by-side visually
+5. **Verify index** - Check `/index` page shows new site
+6. Run checks: `pnpm lint && pnpm check-types && pnpm build`
+7. Update documentation if code changed (ensure OCD accuracy)
+8. Write detailed commit message
+9. If in non-interactive environment, disable auto-sign, commit, re-enable
+10. Push and verify CI passes
 

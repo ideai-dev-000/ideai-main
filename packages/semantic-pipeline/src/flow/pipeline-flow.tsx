@@ -41,7 +41,8 @@ export function PipelineFlow({
   nodes = createFlowNodes(),
   edges = createFlowEdges(),
   onNodeClick,
-  direction = 'horizontal',
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  direction: _direction = 'horizontal',
 }: PipelineFlowProps) {
   return (
     <div style={{ width: '100%', height: '100vh' }}>

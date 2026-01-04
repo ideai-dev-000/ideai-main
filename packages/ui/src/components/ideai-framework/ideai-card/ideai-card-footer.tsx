@@ -17,7 +17,6 @@
 import { ReactNode, HTMLAttributes } from "react";
 import { cn } from "../../../lib/utils";
 import type { Framework } from "./ideai-card-types";
-import { frameworkConfigs } from "./ideai-card-types";
 
 interface IdeAICardFooterProps extends HTMLAttributes<HTMLElement> {
   /** Framework to use for styling */
@@ -40,7 +39,6 @@ export const IdeAICardFooter = ({
   className,
   ...props
 }: IdeAICardFooterProps) => {
-  const config = frameworkConfigs[framework];
   const footerClasses = framework === "bootstrap"
     ? "card-footer bg-transparent border-top pt-3"
     : "pt-4 border-t border-slate-200 dark:border-slate-700";

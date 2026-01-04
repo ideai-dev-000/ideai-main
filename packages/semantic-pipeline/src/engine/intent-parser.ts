@@ -79,11 +79,11 @@ export class IntentParser {
     
     // Pattern matching for common goal indicators
     const goalPatterns = [
-      /build\s+(?:a|an)\s+([^,\.]+)/gi,
-      /create\s+(?:a|an)\s+([^,\.]+)/gi,
-      /develop\s+(?:a|an)\s+([^,\.]+)/gi,
-      /goal[:\s]+([^\.]+)/gi,
-      /objective[:\s]+([^\.]+)/gi,
+      /build\s+(?:a|an)\s+([^,.]+)/gi,
+      /create\s+(?:a|an)\s+([^,.]+)/gi,
+      /develop\s+(?:a|an)\s+([^,.]+)/gi,
+      /goal[:\s]+([^.]+)/gi,
+      /objective[:\s]+([^.]+)/gi,
     ];
     
     for (const pattern of goalPatterns) {
@@ -97,7 +97,7 @@ export class IntentParser {
     
     // If no patterns found, use the first sentence as primary goal
     if (goals.length === 0) {
-      const firstSentence = rawInput.split(/[\.!?]/)[0]?.trim();
+      const firstSentence = rawInput.split(/[.!?]/)[0]?.trim();
       if (firstSentence) {
         goals.push(firstSentence);
       }
@@ -128,8 +128,8 @@ export class IntentParser {
     } else {
       // Extract from input
       const userPatterns = [
-        /(?:for|targeting|serving)\s+([^,\.]+)\s+(?:users|customers|clients)/gi,
-        /(?:end\s+)?users?\s+(?:are|include|like)\s+([^,\.]+)/gi,
+        /(?:for|targeting|serving)\s+([^,.]+)\s+(?:users|customers|clients)/gi,
+        /(?:end\s+)?users?\s+(?:are|include|like)\s+([^,.]+)/gi,
       ];
       
       for (const pattern of userPatterns) {
@@ -164,7 +164,8 @@ export class IntentParser {
   /**
    * Extract needs for a user type
    */
-  private extractNeeds(rawInput: string, userType: string): string[] {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  private extractNeeds(rawInput: string, _userType: string): string[] {
     // Simple extraction - can be enhanced with LLM
     const needs: string[] = [];
     
@@ -184,7 +185,8 @@ export class IntentParser {
   /**
    * Extract goals for a user type
    */
-  private extractGoals(rawInput: string, userType: string): string[] {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  private extractGoals(rawInput: string, _userType: string): string[] {
     const goals: string[] = [];
     
     if (rawInput.toLowerCase().includes('analytics')) {
@@ -202,7 +204,8 @@ export class IntentParser {
    */
   private mapUserJourneys(
     rawInput: string,
-    personas: UserPersona[]
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    _personas: UserPersona[]
   ): UserJourney[] {
     const journeys: UserJourney[] = [];
     

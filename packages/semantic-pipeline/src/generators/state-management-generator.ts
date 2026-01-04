@@ -27,7 +27,7 @@ export class StateManagementGenerator {
         middleware: this.generateMiddleware(library),
         devtools: { enabled: true, name: 'AppStore' },
       },
-      hooks: this.generateHooks(slices, library),
+      hooks: this.generateHooks(slices),
       persistence: {
         enabled: true,
         storageKey: 'app-state',
@@ -130,8 +130,7 @@ export const use${domain}Error = () => use${domain}Store((state) => state.error)
    * Generate hooks
    */
   private generateHooks(
-    slices: StoreStructure['slices'],
-    library: string
+    slices: StoreStructure['slices']
   ): string[] {
     return slices.flatMap((slice) => [
       `use${slice.name}Data`,

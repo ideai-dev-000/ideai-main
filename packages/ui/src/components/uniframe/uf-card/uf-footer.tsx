@@ -39,7 +39,6 @@
 import { ReactNode, HTMLAttributes } from "react";
 import { cn } from "../../../lib/utils";
 import type { Framework } from "./uf-card-types";
-import { frameworkConfigs } from "./uf-card-types";
 
 interface UniFrameCardFooterProps extends HTMLAttributes<HTMLElement> {
   /** Framework to use for styling */

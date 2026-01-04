@@ -62,15 +62,23 @@ export function detectDevicePerformance(): {
   let performanceScore = 1;
 
   // Check device memory (if available)
+  interface NavigatorWithMemory extends Navigator {
+    deviceMemory?: number;
+  }
   if ("deviceMemory" in navigator) {
-    const memory = (navigator as any).deviceMemory;
-    if (memory < 2) performanceScore -= 0.3; // Low memory
-    if (memory < 4) performanceScore -= 0.1; // Medium memory
+    const memory = (navigator as NavigatorWithMemory).deviceMemory;
+    if (memory && memory < 2) performanceScore -= 0.3; // Low memory
+    if (memory && memory < 4) performanceScore -= 0.1; // Medium memory
   }
 
   // Check connection speed (if available)
+  interface NavigatorWithConnection extends Navigator {
+    connection?: {
+      effectiveType?: string;
+    };
+  }
   if ("connection" in navigator) {
-    const connection = (navigator as any).connection;
+    const connection = (navigator as NavigatorWithConnection).connection;
     if (connection?.effectiveType === "slow-2g" || connection?.effectiveType === "2g") {
       performanceScore -= 0.2;
     }

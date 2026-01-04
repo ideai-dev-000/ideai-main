@@ -19,8 +19,8 @@ export class DesignSystemGenerator {
   ): Promise<DesignSystemConfig> {
     const tokens = this.generateTokens(brandGuidelines);
     const theme = this.generateTheme(tokens);
-    const components = await this.generateBaseComponents(theme);
-    const utilities = this.generateUtilities(tokens);
+    const components = await this.generateBaseComponents();
+    const utilities = this.generateUtilities();
     
     return {
       tokens,
@@ -145,9 +145,7 @@ export class DesignSystemGenerator {
   /**
    * Generate base components
    */
-  private async generateBaseComponents(
-    theme: DesignSystemConfig['theme']
-  ): Promise<DesignSystemConfig['components']> {
+  private async generateBaseComponents(): Promise<DesignSystemConfig['components']> {
     // This would use ComponentGenerator
     return [];
   }
@@ -155,7 +153,7 @@ export class DesignSystemGenerator {
   /**
    * Generate utility classes
    */
-  private generateUtilities(tokens: DesignTokens): string {
+  private generateUtilities(): string {
     return `// Utility classes based on design tokens
 // Generated from design system tokens`;
   }

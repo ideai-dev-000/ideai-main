@@ -18,7 +18,6 @@
  */
 
 import type { ComponentType } from "react";
-import { getChildAppConfig } from "./ideai-config";
 
 export type AppMode = "unified" | "individual";
 
@@ -55,7 +54,8 @@ export function getAppMode(): AppMode {
  * @param appName - Child app name (e.g., "docs")
  * @returns Promise resolving to child app page component or null
  */
-export async function loadChildAppPage(appName: string): Promise<ComponentType<any> | null> {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export async function loadChildAppPage(_appName: string): Promise<ComponentType<Record<string, unknown>> | null> {
   const mode = getAppMode();
   
   if (mode === "individual") {

@@ -5,7 +5,7 @@
  * Generates type-safe API layer with caching, retries, and error handling.
  */
 
-import type { APILayerConfig, APIConfig } from '../types';
+import type { APILayerConfig } from '../types';
 
 /**
  * API Layer Generator

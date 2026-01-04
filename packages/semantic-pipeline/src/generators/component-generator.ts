@@ -22,7 +22,8 @@ export class ComponentGenerator {
     const template = this.selectTemplate(analysis);
     const componentCode = this.generateFromTemplate(template, analysis);
     const optimizedCode = this.optimizeComponent(componentCode, analysis);
-    const supportingFiles = this.generateSupportingFiles(optimizedCode, analysis);
+    // Generate supporting files (tests, stories, etc.)
+    this.generateSupportingFiles(optimizedCode, analysis);
     
     return {
       name: analysis.componentName,
@@ -83,7 +84,6 @@ export class ComponentGenerator {
    */
   private generatePresentationalComponent(analysis: ComponentAnalysis): string {
     const props = analysis.props.map((p) => `  ${p.name}${p.required ? '' : '?'}: ${p.type};`).join('\n');
-    const propsDefaults = analysis.props.filter((p) => p.defaultValue).map((p) => `  ${p.name}: ${p.defaultValue}`).join(',\n');
     
     return `import React from 'react';
 import type { ${analysis.componentName}Props } from './types';

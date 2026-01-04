@@ -77,14 +77,7 @@ export const IdeAIDiagnostics = ({
   visible = true,
   appName,
 }: IdeAIDiagnosticsProps) => {
-  // Only show in development - never in production
-  const isDevelopment = process.env.NODE_ENV === "development" || 
-    (typeof window !== "undefined" && window.location.hostname === "localhost");
-  
-  if (!isDevelopment) {
-    return null;
-  }
-
+  // All hooks must be called before any conditional returns
   const [metrics, setMetrics] = useState<PerformanceMetrics>({
     domContentLoaded: null,
     loadComplete: null,
@@ -103,17 +96,27 @@ export const IdeAIDiagnostics = ({
   });
   const [isOpen, setIsOpen] = useState(false);
   const [isSideMenu, setIsSideMenu] = useState(true); // Default to side menu view
-  const [componentTimes, setComponentTimes] = useState<ComponentRenderTime[]>([]);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [_componentTimes, _setComponentTimes] = useState<ComponentRenderTime[]>([]);
   const observerRef = useRef<PerformanceObserver | null>(null);
   const { animationsEnabled } = useIdeAIAnimations();
 
+  // Only show in development - never in production
+  const isDevelopment = process.env.NODE_ENV === "development" || 
+    (typeof window !== "undefined" && window.location.hostname === "localhost");
+
   useEffect(() => {
-    if (typeof window === "undefined") return;
+    if (!isDevelopment || typeof window === "undefined") return;
 
     // Detect framework
+    interface WindowWithReact extends Window {
+      React?: { version?: string };
+      __NEXT_DATA__?: { buildId?: string };
+    }
     const detectFramework = (): { framework: string; reactVersion: string; nextVersion: string | null } => {
-      const reactVersion = (window as any).React?.version || "unknown";
-      const nextVersion = (window as any).__NEXT_DATA__?.buildId ? "16.1.0" : null;
+      const win = window as WindowWithReact;
+      const reactVersion = win.React?.version || "unknown";
+      const nextVersion = win.__NEXT_DATA__?.buildId ? "16.1.0" : null;
       const framework = nextVersion ? "Next.js" : "React";
       return { framework, reactVersion, nextVersion };
     };
@@ -136,8 +139,11 @@ export const IdeAIDiagnostics = ({
       let image = 0;
       let font = 0;
 
+      interface PerformanceResourceTimingExtended extends PerformanceResourceTiming {
+        transferSize?: number;
+      }
       resources.forEach((entry) => {
-        const size = (entry as any).transferSize || 0;
+        const size = (entry as PerformanceResourceTimingExtended).transferSize || 0;
         const name = entry.name.toLowerCase();
 
         if (name.endsWith(".js") || name.includes("javascript")) {
@@ -166,7 +172,6 @@ export const IdeAIDiagnostics = ({
       if (!perf || !perf.timing) return;
 
       const timing = perf.timing;
-      const navigation = perf.getEntriesByType("navigation")[0] as PerformanceNavigationTiming;
 
       const domContentLoaded = timing.domContentLoadedEventEnd - timing.navigationStart;
       const loadComplete = timing.loadEventEnd - timing.navigationStart;
@@ -190,7 +195,7 @@ export const IdeAIDiagnostics = ({
             }
           });
           lcpObserver.observe({ entryTypes: ["largest-contentful-paint"] });
-        } catch (e) {
+        } catch {
           // LCP not supported
         }
       }
@@ -229,11 +234,14 @@ export const IdeAIDiagnostics = ({
     return () => {
       window.removeEventListener("load", collectMetrics);
       clearTimeout(timeout);
-      if (observerRef.current) {
-        observerRef.current.disconnect();
+      // Copy ref value to avoid stale closure
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      const observer = observerRef.current;
+      if (observer) {
+        observer.disconnect();
       }
     };
-  }, []);
+  }, [isDevelopment]);
 
   const formatBytes = (bytes: number): string => {
     if (bytes === 0) return "0 B";
@@ -412,7 +420,10 @@ export const IdeAIDiagnostics = ({
               <div className="ideai-diagnostics__tools-grid">
                 <button
                   onClick={() => {
-                    if (typeof window !== "undefined" && (window as any).__REACT_DEVTOOLS_GLOBAL_HOOK__) {
+                    interface WindowWithDevTools extends Window {
+                      __REACT_DEVTOOLS_GLOBAL_HOOK__?: unknown;
+                    }
+                    if (typeof window !== "undefined" && (window as WindowWithDevTools).__REACT_DEVTOOLS_GLOBAL_HOOK__) {
                       console.log("React DevTools detected");
                     } else {
                       console.log("React DevTools not detected");

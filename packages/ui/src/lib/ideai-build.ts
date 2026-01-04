@@ -78,7 +78,9 @@ export function readPackageDependencies(
   }
 
   try {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     const fs = require("fs");
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     const path = require("path");
     const packagePath = path.join(process.cwd(), "apps", appName, "package.json");
     
@@ -106,7 +108,8 @@ export function getAllDependencies(parentApp: string): {
   const parentDevDeps = readPackageDependencies(parentApp, "devDependencies");
   
   // Read parent config to get child apps
-  const { readIdeAIConfigSync } = require("./ideai-config");
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const { readIdeAIConfigSync } = require("./ideai-config");
   const parentConfig = readIdeAIConfigSync(parentApp);
   const childApps = parentConfig?.childApps || [];
   
@@ -161,7 +164,8 @@ export function verifyDependencies(parentApp: string): {
  * Generate build metadata
  */
 export function generateBuildMetadata(parentApp: string): BuildMetadata {
-  const { readIdeAIConfigSync } = require("./ideai-config");
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const { readIdeAIConfigSync } = require("./ideai-config");
   const parentConfig = readIdeAIConfigSync(parentApp);
   const deps = getAllDependencies(parentApp);
   
@@ -179,7 +183,8 @@ export function generateBuildMetadata(parentApp: string): BuildMetadata {
  * Check for security vulnerabilities (placeholder for npm audit integration)
  */
 export async function checkSecurity(
-  appName: string
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  _appName: string
 ): Promise<{ secure: boolean; issues: string[] }> {
   // In production, this would run: npm audit --json
   // For now, return safe

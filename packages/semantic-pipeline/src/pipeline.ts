@@ -65,8 +65,8 @@ export class SemanticPipeline {
     // 1. Parse intent
     const parsedIntent = await this.intentParser.parseIntent(input.intent);
     
-    // 2. Build semantic graph
-    const semanticGraph = await this.graphBuilder.buildFromIntent(parsedIntent);
+    // 2. Build semantic graph (for future learning/pattern matching)
+    await this.graphBuilder.buildFromIntent(parsedIntent);
     
     // 3. Analyze framework
     const frameworkRecommendations = await this.frameworkAnalyzer.recommendFramework(

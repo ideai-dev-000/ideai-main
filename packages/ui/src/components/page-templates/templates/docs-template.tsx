@@ -8,7 +8,7 @@
 
 "use client";
 
-import { Search, Book, FileText, Code } from "lucide-react";
+import { Search, Book } from "lucide-react";
 
 export function DocsTemplate() {
   return (

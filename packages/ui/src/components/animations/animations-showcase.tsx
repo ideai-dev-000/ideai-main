@@ -40,7 +40,10 @@ export function AnimationsShowcase() {
   
   // Read config to determine available animation libraries
   const config = readIdeAIConfigSync(appName);
-  const availableLibraryIds = config?.animationLibraries || ["framer-motion", "react-spring"];
+  const availableLibraryIds = useMemo(
+    () => config?.animationLibraries || ["framer-motion", "react-spring"],
+    [config?.animationLibraries]
+  );
   
   // Build available libraries based on config
   const allLibraries = [

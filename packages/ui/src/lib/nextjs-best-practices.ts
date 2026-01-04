@@ -131,6 +131,7 @@ export function getSEOMetadata({
  * Request Middleware Helper
  * Adds security headers to requests
  */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function middleware(_request: NextRequest) {
   const headers = new Headers();
   

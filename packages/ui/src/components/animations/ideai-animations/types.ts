@@ -15,7 +15,7 @@ export interface AnimationExample {
   tags: string[];
   source: string;
   code: string;
-  config: Record<string, any>;
+  config: Record<string, unknown>;
 }
 
 export interface AnimationExamplesData {

@@ -1,0 +1,68 @@
+{
+  "routes": [
+    {
+      "id": "react-flow",
+      "name": "React Flow",
+      "description": "Interactive React Flow visualization of the semantic web development pipeline",
+      "path": "/react-flow",
+      "category": "demo",
+      "css": ["Tailwind CSS", "IdeaI Design System"],
+      "capabilities": ["React Flow", "Semantic Pipeline", "Interactive Visualization"]
+    },
+    {
+      "id": "semantic-pipeline",
+      "name": "Semantic Pipeline",
+      "description": "Test page for the semantic web development pipeline",
+      "path": "/semantic-pipeline",
+      "category": "demo",
+      "css": ["Tailwind CSS", "IdeaI Design System"],
+      "capabilities": ["Semantic Pipeline", "Code Generation", "Framework Analysis"]
+    },
+    {
+      "id": "page-templates",
+      "name": "Page Templates",
+      "description": "Showcase of pre-built page templates",
+      "path": "/page-templates",
+      "category": "showcase",
+      "css": ["Tailwind CSS", "IdeaI Design System"],
+      "capabilities": ["Page Templates", "Template Showcase"]
+    },
+    {
+      "id": "docs",
+      "name": "Documentation",
+      "description": "IdeaI documentation viewer",
+      "path": "/docs",
+      "category": "documentation",
+      "css": ["Tailwind CSS", "IdeaI Design System"],
+      "capabilities": ["Documentation", "Contentlayer", "MDX"]
+    },
+    {
+      "id": "uniframe",
+      "name": "UniFrame",
+      "description": "UniFrame component showcase",
+      "path": "/uniframe",
+      "category": "showcase",
+      "css": ["Tailwind CSS", "IdeaI Design System"],
+      "capabilities": ["UniFrame", "Component Showcase"]
+    },
+    {
+      "id": "framework-card",
+      "name": "Framework Card",
+      "description": "Framework card component demo",
+      "path": "/framework-card",
+      "category": "demo",
+      "css": ["Tailwind CSS", "IdeaI Design System"],
+      "capabilities": ["Framework Card", "Component Demo"]
+    },
+    {
+      "id": "animations",
+      "name": "Animations",
+      "description": "IdeaI animations showcase",
+      "path": "/animations",
+      "category": "showcase",
+      "css": ["Tailwind CSS", "IdeaI Design System"],
+      "capabilities": ["Animations", "Framer Motion", "React Spring"]
+    }
+  ]
+}
+

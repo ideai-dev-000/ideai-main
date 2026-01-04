@@ -44,7 +44,6 @@
 "use client";
 
 import { useState } from "react";
-import { UFCodeViewer } from "./uf-code-viewer";
 
 /**
  * All CSS frameworks available in the IdeaI monorepo
@@ -195,7 +194,8 @@ export interface UFProps {
  */
 export const UF = ({ defaultFramework = "tailwind", className }: UFProps) => {
   const [selectedFramework, setSelectedFramework] = useState<Framework>(defaultFramework);
-  const [inputValue, setInputValue] = useState("Sample input text");
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [_inputValue, _setInputValue] = useState("Sample input text");
 
   const currentFramework = FRAMEWORKS[selectedFramework];
 

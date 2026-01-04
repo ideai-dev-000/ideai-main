@@ -160,7 +160,7 @@ export const UniFrameUniversalCard = ({
         isLoading={isLoading}
       >
         <p className="text-slate-700 dark:text-slate-300">
-          This is sample text content that adapts to the selected framework's typography system.
+          This is sample text content that adapts to the selected framework&apos;s typography system.
           The card demonstrates how a single component can render with different visual styles
           based on runtime framework selection.
         </p>
