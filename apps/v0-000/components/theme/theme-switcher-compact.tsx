@@ -36,10 +36,13 @@ export function ThemeSwitcherCompact() {
       const isDark = root.classList.contains('dark');
       const colors = isDark ? theme.dark : theme.colors;
       
+      console.log('[ThemeSwitcher] Updating theme:', currentTheme, 'isDark:', isDark);
+      
       Object.entries(colors).forEach(([key, value]) => {
         const cssVarName = key.replace(/([A-Z])/g, '-$1').toLowerCase();
         const cssValue = value.replace(/^hsl\(|\)$/g, '');
         root.style.setProperty(`--${cssVarName}`, cssValue);
+        console.log(`[ThemeSwitcher] Set --${cssVarName} = ${cssValue}`);
       });
     };
 
@@ -47,11 +50,18 @@ export function ThemeSwitcherCompact() {
     updateTheme();
     
     // Watch for dark mode class changes (when sun/moon toggle is used)
-    const observer = new MutationObserver(updateTheme);
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+          console.log('[ThemeSwitcher] Dark mode class changed');
+          updateTheme();
+        }
+      });
+    });
     observer.observe(root, { attributes: true, attributeFilter: ['class'] });
     
     return () => observer.disconnect();
-  }, [currentTheme, currentMode, mounted]);
+  }, [currentTheme, mounted]);
 
   if (!mounted) {
     return (
