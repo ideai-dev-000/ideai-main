@@ -12,10 +12,7 @@ import {
   BrainIcon, 
   CatIcon, 
   MusicIcon, 
-  RocketIcon,
-  LogoPreview,
-  SvgSelector,
-  AnimationControls
+  RocketIcon
 } from "@repo/ui";
 import { useState } from "react";
 
@@ -94,6 +91,13 @@ export default function Home() {
               <RocketIcon className="w-16 h-16 mx-auto mb-2" />
               <p className="text-sm font-medium">RocketIcon</p>
             </div>
+          </div>
+          <div className="p-4 bg-muted/50 rounded-lg">
+            <p className="text-sm text-muted-foreground">
+              <strong>Note:</strong> Some v0 components (LogoPreview, SvgSelector, AnimationControls) 
+              have dependencies on app-specific shadcn components and are best used in the web app 
+              where those components are available. Simple icons work everywhere!
+            </p>
           </div>
         </section>
 
