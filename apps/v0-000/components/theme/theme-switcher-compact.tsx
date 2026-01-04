@@ -9,7 +9,7 @@
 
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { themes, type ThemeName } from "@/themes";
 import { useTheme } from "next-themes";
@@ -19,10 +19,31 @@ export function ThemeSwitcherCompact() {
   const [currentTheme, setCurrentTheme] = useState<ThemeName>("default");
   const [mounted, setMounted] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node) &&
+        buttonRef.current &&
+        !buttonRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isOpen]);
 
   // Update theme variables when theme or mode changes
   useEffect(() => {
@@ -82,10 +103,17 @@ export function ThemeSwitcherCompact() {
   return (
     <div className="relative">
       <Button 
+        ref={buttonRef}
         variant="outline" 
         size="sm" 
         className="gap-2"
-        onClick={() => setIsOpen(!isOpen)}
+        type="button"
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          alert('Theme button clicked!');
+          setIsOpen(!isOpen);
+        }}
       >
         <span className="hidden sm:inline">{themes[currentTheme].displayName}</span>
         <span className="sm:hidden">Theme</span>
@@ -94,21 +122,14 @@ export function ThemeSwitcherCompact() {
       </Button>
       
       {isOpen && (
-        <>
-          <div 
-            className="fixed inset-0 z-40" 
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              setIsOpen(false);
-            }}
-          />
-          <div 
-            className="absolute right-0 top-full mt-2 w-48 rounded-lg border bg-card shadow-lg z-50"
-            onClick={(e) => {
-              e.stopPropagation();
-            }}
-          >
+        <div 
+          ref={dropdownRef}
+          className="absolute right-0 top-full mt-2 w-48 rounded-lg border bg-card shadow-lg z-50"
+          onMouseDown={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+          }}
+        >
             <div className="p-2 space-y-1">
               <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground">
                 Themes
@@ -189,8 +210,7 @@ export function ThemeSwitcherCompact() {
                 {currentMode === "system" && <span className="text-xs">✓</span>}
               </button>
             </div>
-          </div>
-        </>
+        </div>
       )}
     </div>
   );
