@@ -81,7 +81,7 @@ export default function V0TestPage() {
               <h3 className="text-lg font-semibold mb-4">AnimationControls Block</h3>
               <AnimationControls 
                 config={animationConfig} 
-                onChange={setAnimationConfig}
+                onChange={(config) => setAnimationConfig(config as typeof animationConfig)}
                 library="framer-motion"
               />
             </div>

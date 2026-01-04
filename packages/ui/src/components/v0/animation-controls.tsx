@@ -44,7 +44,7 @@ const animationTypes: Record<string, string[]> = {
 }
 
 export function AnimationControls({ config, onChange, library }: AnimationControlsProps) {
-  const types = animationTypes[library] || animationTypes["framer-motion"]
+  const types = animationTypes[library] || animationTypes["framer-motion"] || []
 
   return (
     <Card className="p-6 bg-card">
