@@ -17,12 +17,12 @@
 
 "use client"
 import { Card } from '@/components/ui/card'
-import { FramerMotionLogo } from "./logos/framer-motion-logo"
-import { ReactSpringLogo } from "./logos/react-spring-logo"
-import { KuteLogo } from "./logos/kute-logo"
-import { MotionOneLogo } from "./logos/motion-one-logo"
-import { VivusLogo } from "./logos/vivus-logo"
-import { ParticlesLogo } from "./logos/particles-logo"
+import { FramerMotionLogo } from '@/components/logos/framer-motion-logo'
+import { ReactSpringLogo } from '@/components/logos/react-spring-logo'
+import { KuteLogo } from '@/components/logos/kute-logo'
+import { MotionOneLogo } from '@/components/logos/motion-one-logo'
+import { VivusLogo } from '@/components/logos/vivus-logo'
+import { ParticlesLogo } from '@/components/logos/particles-logo'
 
 interface LogoPreviewProps {
   library: string

@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   description: "Minimal V0 boilerplate for IdeaI-compatible prototypes",
 };
 
-export default function RootLayout({
+export default function root-layout({
   children,
 }: Readonly<{
   children: React.ReactNode;
