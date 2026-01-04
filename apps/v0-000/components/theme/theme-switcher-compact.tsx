@@ -175,17 +175,6 @@ export function ThemeSwitcherCompact() {
                   e.stopPropagation();
                   console.log('[ThemeSwitcher] Mode clicked: light');
                   setMode("light");
-                  // Force immediate update - don't wait for next-themes
-                  const root = document.documentElement;
-                  root.classList.remove('dark');
-                  const theme = themes[currentTheme];
-                  const colors = theme.colors; // Light mode colors
-                  Object.entries(colors).forEach(([key, value]) => {
-                    const cssVarName = key.replace(/([A-Z])/g, '-$1').toLowerCase();
-                    const cssValue = value.replace(/^hsl\(|\)$/g, '');
-                    root.style.setProperty(`--${cssVarName}`, cssValue);
-                  });
-                  console.log('[ThemeSwitcher] Force updated to light mode immediately');
                   setIsOpen(false);
                 }}
                 className={`w-full text-left px-2 py-1.5 text-sm rounded-md hover:bg-accent flex items-center justify-between ${
@@ -197,22 +186,11 @@ export function ThemeSwitcherCompact() {
               </button>
               <button
                 type="button"
-                onClick={async (e) => {
+                onClick={(e) => {
                   e.preventDefault();
                   e.stopPropagation();
                   console.log('[ThemeSwitcher] Mode clicked: dark');
                   setMode("dark");
-                  // Force immediate update - don't wait for next-themes
-                  const root = document.documentElement;
-                  root.classList.add('dark');
-                  const theme = themes[currentTheme];
-                  const colors = theme.dark; // Dark mode colors
-                  Object.entries(colors).forEach(([key, value]) => {
-                    const cssVarName = key.replace(/([A-Z])/g, '-$1').toLowerCase();
-                    const cssValue = value.replace(/^hsl\(|\)$/g, '');
-                    root.style.setProperty(`--${cssVarName}`, cssValue);
-                  });
-                  console.log('[ThemeSwitcher] Force updated to dark mode immediately');
                   setIsOpen(false);
                 }}
                 className={`w-full text-left px-2 py-1.5 text-sm rounded-md hover:bg-accent flex items-center justify-between ${
