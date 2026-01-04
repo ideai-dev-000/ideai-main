@@ -27,9 +27,12 @@ export function ThemeSelector() {
 
     // Set CSS variables - colors are already in HSL format
     Object.entries(colors).forEach(([key, value]) => {
-      // Convert kebab-case to CSS variable format (e.g., primaryForeground -> primary-foreground)
+      // Convert camelCase to kebab-case (e.g., primaryForeground -> primary-foreground)
       const cssVarName = key.replace(/([A-Z])/g, '-$1').toLowerCase();
-      root.style.setProperty(`--${cssVarName}`, value);
+      // Strip hsl() wrapper if present - CSS variables should just have the values
+      // Tailwind will wrap them in hsl() when used
+      const cssValue = value.replace(/^hsl\(|\)$/g, '');
+      root.style.setProperty(`--${cssVarName}`, cssValue);
     });
   }, [currentTheme, currentMode]);
 
