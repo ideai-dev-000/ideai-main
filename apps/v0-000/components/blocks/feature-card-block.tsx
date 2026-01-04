@@ -1,6 +1,6 @@
 /**
  * @fileoverview Feature Card Block
- * 
+ *
  * @module FeatureCardBlock
  * @description
  * Composite block component demonstrating how to combine UI elements.
@@ -9,8 +9,14 @@
 
 "use client";
 
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
-import { BrainIcon, CatIcon, MusicIcon, RocketIcon } from "@repo/ui";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from "@/components/ui/card";
+import { Brain, Cat, Music, Rocket } from "lucide-react";
 
 interface FeatureCardBlockProps {
   icon: "brain" | "cat" | "music" | "rocket";
@@ -19,15 +25,19 @@ interface FeatureCardBlockProps {
 }
 
 const iconMap = {
-  brain: BrainIcon,
-  cat: CatIcon,
-  music: MusicIcon,
-  rocket: RocketIcon,
+  brain: Brain,
+  cat: Cat,
+  music: Music,
+  rocket: Rocket,
 };
 
-export function FeatureCardBlock({ icon, title, description }: FeatureCardBlockProps) {
+export function FeatureCardBlock({
+  icon,
+  title,
+  description,
+}: FeatureCardBlockProps) {
   const IconComponent = iconMap[icon];
-  
+
   return (
     <Card className="hover:shadow-lg transition-shadow">
       <CardHeader>
@@ -41,11 +51,9 @@ export function FeatureCardBlock({ icon, title, description }: FeatureCardBlockP
       </CardHeader>
       <CardContent>
         <p className="text-sm text-muted-foreground">
-          This is a complete block component that combines UI elements from both
-          @repo/ui (icons) and @/components/ui/* (shadcn components).
+          This is a complete block component that combines UI elements.
         </p>
       </CardContent>
     </Card>
   );
 }
-

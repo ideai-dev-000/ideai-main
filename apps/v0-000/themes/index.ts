@@ -1,6 +1,6 @@
 /**
  * @fileoverview Theme Registry
- * 
+ *
  * @module ThemeRegistry
  * @description
  * Central registry for all available themes.
@@ -28,4 +28,3 @@ export function getTheme(name: ThemeName): Theme {
 export function getAllThemes(): Theme[] {
   return Object.values(themes);
 }
-

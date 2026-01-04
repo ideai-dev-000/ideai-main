@@ -1,6 +1,6 @@
 /**
  * @fileoverview Stats Block
- * 
+ *
  * @module StatsBlock
  * @description
  * Stats display block demonstrating layout and styling patterns.
@@ -26,11 +26,12 @@ export function StatsBlock({ stats }: StatsBlockProps) {
         <Card key={index}>
           <CardContent className="p-6">
             <div className="text-2xl font-bold">{stat.value}</div>
-            <div className="text-sm text-muted-foreground mt-1">{stat.label}</div>
+            <div className="text-sm text-muted-foreground mt-1">
+              {stat.label}
+            </div>
           </CardContent>
         </Card>
       ))}
     </div>
   );
 }
-

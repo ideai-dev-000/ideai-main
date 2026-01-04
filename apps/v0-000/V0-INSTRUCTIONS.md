@@ -2,6 +2,24 @@
 
 **Instructions for creating components in v0 that work perfectly with IdeaI monorepo.**
 
+## ⚠️ CRITICAL: V0 Preview Limitation
+
+**v0.dev preview cannot resolve workspace dependencies like `@repo/ui`.**
+
+**Error you'll see:**
+\`\`\`
+Failed to load "@repo/ui" from "blob:...". Modules must be served with a valid MIME type.
+\`\`\`
+
+**Solution for v0.dev upload:**
+
+1. **Remove `@repo/ui` imports** before uploading to v0.dev
+2. **Use only standard packages** (shadcn, framer-motion, etc.)
+3. **Copy needed components locally** if required
+4. **See `V0-WORKSPACE-FIX.md`** for detailed instructions
+
+**In monorepo**: `@repo/ui` works perfectly - keep it here!
+
 ## 🎯 What You Can Use
 
 ### Available Libraries
@@ -10,7 +28,7 @@
    - `IdeAIPageTemplate`, `IdeaIButton`, `ThemeProvider`
    - All v0-exported components (BrainIcon, LogoPreview, etc.)
 
-2. **@/components/ui/*** - Shadcn/UI components
+2. **@/components/ui/\*** - Shadcn/UI components
    - `Button`, `Card`, `Label`, `RadioGroup`, `Slider`, `Switch`, `Separator`, `Tooltip`, `Badge`
 
 3. **framer-motion** - Animation library
@@ -39,21 +57,22 @@
 
 ### Using Theme Colors in Components
 
-```tsx
+\`\`\`tsx
 // ✅ Correct - Uses theme colors automatically
 <Button className="bg-primary text-primary-foreground">
-  Click me
+Click me
 </Button>
 
 // ❌ Incorrect - Hardcoded colors don't respect themes
 <Button className="bg-blue-500 text-white">
-  Click me
+Click me
 </Button>
-```
+\`\`\`
 
 ### Available Theme Classes
 
 Use these Tailwind classes - they automatically use theme colors:
+
 - `bg-primary`, `text-primary-foreground`
 - `bg-secondary`, `text-secondary-foreground`
 - `bg-accent`, `text-accent-foreground`
@@ -66,6 +85,7 @@ Use these Tailwind classes - they automatically use theme colors:
 ### Creating Themes in v0
 
 When v0 creates a new theme:
+
 1. Define colors in HSL format
 2. Include both `colors` (light) and `dark` variants
 3. Use standard color tokens (primary, secondary, etc.)
@@ -89,31 +109,31 @@ When v0 creates a new theme:
 ### 3. Component Types
 
 **UI Elements** (Simple, reusable):
-```tsx
+\`\`\`tsx
 // components/ui/my-icon.tsx
 interface MyIconProps {
-  className?: string;
+className?: string;
 }
 
 export function MyIcon({ className = "" }: MyIconProps) {
-  return <div className={className}>...</div>;
+return <div className={className}>...</div>;
 }
-```
+\`\`\`
 
 **Blocks** (Layout + UI):
-```tsx
+\`\`\`tsx
 // blocks/my-block.tsx
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
 export function MyBlock() {
-  return (
-    <Card className="bg-card text-card-foreground">
-      <Button className="bg-primary text-primary-foreground">Click me</Button>
-    </Card>
-  );
+return (
+<Card className="bg-card text-card-foreground">
+<Button className="bg-primary text-primary-foreground">Click me</Button>
+</Card>
+);
 }
-```
+\`\`\`
 
 ## 🎨 Styling
 

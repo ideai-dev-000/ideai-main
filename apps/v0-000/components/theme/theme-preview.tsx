@@ -1,6 +1,6 @@
 /**
  * @fileoverview Theme Preview Component
- * 
+ *
  * @module ThemePreview
  * @description
  * Preview component showing how themes affect UI components.
@@ -9,7 +9,13 @@
 
 "use client";
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 
@@ -27,10 +33,16 @@ export function ThemePreview() {
           <h3 className="text-sm font-semibold mb-2">Colors</h3>
           <div className="flex flex-wrap gap-2">
             <div className="w-16 h-16 rounded-lg bg-primary" title="Primary" />
-            <div className="w-16 h-16 rounded-lg bg-secondary" title="Secondary" />
+            <div
+              className="w-16 h-16 rounded-lg bg-secondary"
+              title="Secondary"
+            />
             <div className="w-16 h-16 rounded-lg bg-accent" title="Accent" />
             <div className="w-16 h-16 rounded-lg bg-muted" title="Muted" />
-            <div className="w-16 h-16 rounded-lg bg-destructive" title="Destructive" />
+            <div
+              className="w-16 h-16 rounded-lg bg-destructive"
+              title="Destructive"
+            />
           </div>
         </div>
         <div>
@@ -61,4 +73,3 @@ export function ThemePreview() {
     </Card>
   );
 }
-

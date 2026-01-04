@@ -1,19 +1,11 @@
-/**
- * @fileoverview Root layout for v0-000
- * 
- * @module V0000Layout
- * @description
- * Root layout for v0-000 template app.
- * Uses IdeaI shared ThemeProvider and styling.
- */
-
 import type { Metadata } from "next";
-import { ThemeProvider } from "@repo/ui";
+import { ThemeProvider } from "next-themes";
 import "./globals.css";
 
 export const metadata: Metadata = {
   title: "V0-000 - IdeaI Template",
   description: "Perfect v0-compatible template for IdeaI monorepo experiments",
+  generator: "v0.app",
 };
 
 export default function RootLayout({
@@ -24,11 +16,15 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
           {children}
         </ThemeProvider>
       </body>
     </html>
   );
 }
-

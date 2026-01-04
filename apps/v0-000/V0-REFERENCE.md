@@ -4,72 +4,73 @@
 
 ## 📁 Component Structure
 
-```
+\`\`\`
 apps/v0-000/
 ├── components/
-│   ├── ui/              # Simple UI elements
-│   │   ├── demo-button.tsx
-│   │   └── demo-card.tsx
-│   ├── blocks/          # Composite layouts
-│   │   ├── feature-card-block.tsx
-│   │   └── stats-block.tsx
-│   └── tools/            # Interactive utilities
-│       ├── copy-button.tsx
-│       └── toggle-switch.tsx
-```
+│ ├── ui/ # Simple UI elements
+│ │ ├── demo-button.tsx
+│ │ └── demo-card.tsx
+│ ├── blocks/ # Composite layouts
+│ │ ├── feature-card-block.tsx
+│ │ └── stats-block.tsx
+│ └── tools/ # Interactive utilities
+│ ├── copy-button.tsx
+│ └── toggle-switch.tsx
+\`\`\`
 
 ## 🎯 Import Patterns
 
 ### ✅ Correct Imports
 
 **Shadcn Components (app-specific):**
-```tsx
+\`\`\`tsx
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
-```
+\`\`\`
 
 **Shared IdeaI Components:**
-```tsx
+\`\`\`tsx
 import { BrainIcon, CatIcon } from "@repo/ui";
 import { IdeAIPageTemplate } from "@repo/ui";
-```
+\`\`\`
 
 **Animation Libraries:**
-```tsx
+\`\`\`tsx
 import { motion } from "framer-motion";
-```
+\`\`\`
 
 ### ❌ Incorrect Imports
 
-```tsx
-// DON'T use @/components/ui/* in packages/ui components
+\`\`\`tsx
+// DON'T use @/components/ui/\* in packages/ui components
 // DON'T use @repo/ui for shadcn components
 // DON'T use relative paths when aliases exist
-```
+\`\`\`
 
 ## 📦 Component Types
 
 ### 1. UI Components (Simple Elements)
 
 **Example: `components/ui/demo-button.tsx`**
-```tsx
+\`\`\`tsx
 "use client";
 
 import { Button } from "@/components/ui/button";
 
 interface DemoButtonProps {
-  label?: string;
-  variant?: "default" | "destructive" | "outline";
+label?: string;
+variant?: "default" | "destructive" | "outline";
 }
 
 export function DemoButton({ label = "Click me", variant = "default" }: DemoButtonProps) {
-  return <Button variant={variant}>{label}</Button>;
+return <Button variant={variant}>{label}</Button>;
 }
-```
+\`\`\`
 
 **Key Points:**
+
 - Use `@/components/ui/*` for shadcn
 - Include TypeScript interfaces
 - Add `"use client"` if using hooks/events
@@ -77,31 +78,32 @@ export function DemoButton({ label = "Click me", variant = "default" }: DemoButt
 ### 2. Blocks (Composite Layouts)
 
 **Example: `components/blocks/feature-card-block.tsx`**
-```tsx
+\`\`\`tsx
 "use client";
 
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
-import { BrainIcon } from "@repo/ui";  // Shared component
+import { BrainIcon } from "@repo/ui"; // Shared component
 
 interface FeatureCardBlockProps {
-  icon: "brain" | "cat" | "music" | "rocket";
-  title: string;
-  description: string;
+icon: "brain" | "cat" | "music" | "rocket";
+title: string;
+description: string;
 }
 
 export function FeatureCardBlock({ icon, title, description }: FeatureCardBlockProps) {
-  return (
-    <Card>
-      <CardHeader>
-        <BrainIcon className="w-6 h-6" />
-        <CardTitle>{title}</CardTitle>
-      </CardHeader>
-    </Card>
-  );
+return (
+<Card>
+<CardHeader>
+<BrainIcon className="w-6 h-6" />
+<CardTitle>{title}</CardTitle>
+</CardHeader>
+</Card>
+);
 }
-```
+\`\`\`
 
 **Key Points:**
+
 - Combine multiple UI elements
 - Mix `@/components/ui/*` and `@repo/ui`
 - Create complete, reusable layouts
@@ -109,35 +111,36 @@ export function FeatureCardBlock({ icon, title, description }: FeatureCardBlockP
 ### 3. Tools (Interactive Utilities)
 
 **Example: `components/tools/copy-button.tsx`**
-```tsx
+\`\`\`tsx
 "use client";
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 
 interface CopyButtonProps {
-  text: string;
-  label?: string;
+text: string;
+label?: string;
 }
 
 export function CopyButton({ text, label = "Copy" }: CopyButtonProps) {
-  const [copied, setCopied] = useState(false);
+const [copied, setCopied] = useState(false);
 
-  const handleCopy = async () => {
-    await navigator.clipboard.writeText(text);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
+const handleCopy = async () => {
+await navigator.clipboard.writeText(text);
+setCopied(true);
+setTimeout(() => setCopied(false), 2000);
+};
 
-  return (
-    <Button onClick={handleCopy}>
-      {copied ? "✓ Copied!" : label}
-    </Button>
-  );
+return (
+<Button onClick={handleCopy}>
+{copied ? "✓ Copied!" : label}
+</Button>
+);
 }
-```
+\`\`\`
 
 **Key Points:**
+
 - Use React hooks (`useState`, `useEffect`)
 - Include interactive behavior
 - Always `"use client"` for tools
@@ -170,4 +173,3 @@ All demo components are live at: **http://localhost:3015**
 ---
 
 **These examples work identically in v0 and the monorepo. Use them as reference!**
-

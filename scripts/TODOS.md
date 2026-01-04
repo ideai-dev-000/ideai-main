@@ -184,5 +184,52 @@
 
 ---
 
+## Centralized Cache Management
+
+**Priority**: Medium  
+**Status**: Proposed  
+**Category**: Infrastructure
+
+### Task: Implement Centralized Caching System
+
+**Goal**: Move from per-app caches to centralized cache location to improve disk space management and cleanup efficiency.
+
+**Current State**:
+- Each app has its own `.next/` cache (can grow to 200MB+ per app)
+- Caches are in `.gitignore` but still take up disk space
+- No centralized cleanup mechanism
+- 13 apps × 200MB = potential 2.6GB+ of cache files
+
+**Proposed Solution**:
+- Create centralized cache location (e.g., `.cache/` at repo root)
+- Configure Next.js/Turbopack to use centralized cache
+- Update cleanup scripts to target centralized location
+- Document cache management workflow
+
+**Benefits**:
+- Single cache location for easier management
+- Shared cache across apps (faster builds)
+- Easier cleanup (one command)
+- Better disk space utilization
+- Clearer separation of source code vs. cache
+
+**Implementation Steps**:
+1. Research Next.js/Turbopack cache configuration options
+2. Create `.cache/` directory structure
+3. Update Next.js configs to use centralized cache
+4. Update cleanup scripts (`pnpm build:cold`)
+5. Test cache sharing across apps
+6. Document new cache management workflow
+7. Update `.ideai-rules.md` with centralized cache standards
+
+**Related**:
+- Cache Management Standards (`.ideai-rules.md`)
+- `pnpm build:cold` script
+- Development Server Management standards
+
+**Estimated Effort**: 4-6 hours
+
+---
+
 **Last Updated**: January 1, 2026  
 **Goal**: Complete coverage with zero bloat

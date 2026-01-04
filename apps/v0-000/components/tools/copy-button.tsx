@@ -1,6 +1,6 @@
 /**
  * @fileoverview Copy Button Tool
- * 
+ *
  * @module CopyButton
  * @description
  * Utility tool component demonstrating interactive functionality.
@@ -31,14 +31,8 @@ export function CopyButton({ text, label = "Copy" }: CopyButtonProps) {
   };
 
   return (
-    <Button 
-      variant="outline" 
-      size="sm"
-      onClick={handleCopy}
-      className="gap-2"
-    >
+    <Button variant="outline" size="sm" onClick={handleCopy} className="gap-2">
       {copied ? "✓ Copied!" : label}
     </Button>
   );
 }
-

@@ -1,6 +1,6 @@
 /**
  * @fileoverview Toggle Switch Tool
- * 
+ *
  * @module ToggleSwitch
  * @description
  * Toggle switch tool demonstrating form controls.
@@ -17,19 +17,19 @@ interface ToggleSwitchProps {
   onCheckedChange?: (checked: boolean) => void;
 }
 
-export function ToggleSwitch({ 
-  label, 
-  checked = false, 
-  onCheckedChange 
+export function ToggleSwitch({
+  label,
+  checked = false,
+  onCheckedChange,
 }: ToggleSwitchProps) {
   return (
     <div className="flex items-center space-x-2">
-      <Switch 
+      <Switch
         id={label.toLowerCase().replace(/\s+/g, "-")}
         checked={checked}
         onCheckedChange={onCheckedChange}
       />
-      <Label 
+      <Label
         htmlFor={label.toLowerCase().replace(/\s+/g, "-")}
         className="cursor-pointer"
       >
@@ -38,4 +38,3 @@ export function ToggleSwitch({
     </div>
   );
 }
-

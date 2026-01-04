@@ -1,6 +1,6 @@
 /**
  * @fileoverview Ocean Theme
- * 
+ *
  * @module OceanTheme
  * @description
  * Ocean-inspired theme with blues and teals.
@@ -49,4 +49,3 @@ export const oceanTheme = {
     cardForeground: "hsl(187 50% 95%)",
   },
 } as const;
-

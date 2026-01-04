@@ -1,6 +1,6 @@
 /**
  * @fileoverview Demo Card UI Component
- * 
+ *
  * @module DemoCard
  * @description
  * Simple card component demonstrating correct import patterns for v0.
@@ -9,7 +9,14 @@
 
 "use client";
 
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
 interface DemoCardProps {
@@ -19,11 +26,11 @@ interface DemoCardProps {
   footer?: React.ReactNode;
 }
 
-export function DemoCard({ 
+export function DemoCard({
   title = "Card Title",
   description = "Card description",
   content,
-  footer
+  footer,
 }: DemoCardProps) {
   return (
     <Card>
@@ -36,4 +43,3 @@ export function DemoCard({
     </Card>
   );
 }
-

@@ -2,6 +2,17 @@
 
 **Perfect v0-compatible template app for IdeaI monorepo experiments.**
 
+## ⚠️ V0 Preview Limitation
+
+**v0.dev preview cannot resolve workspace dependencies (`@repo/ui`).**
+
+**Before uploading to v0.dev:**
+- See `V0-WORKSPACE-FIX.md` for instructions
+- Remove `@repo/ui` imports temporarily
+- Use standard packages only in v0 preview
+
+**In monorepo**: `@repo/ui` works perfectly - keep it here!
+
 This is the base template for all v0 experiments. It's pre-configured with all the correct dependencies, import paths, and structure to work seamlessly with v0 and the IdeaI monorepo.
 
 ## 🎯 Purpose

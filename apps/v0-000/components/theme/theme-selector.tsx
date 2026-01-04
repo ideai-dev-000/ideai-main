@@ -1,6 +1,6 @@
 /**
  * @fileoverview Theme Selector Component
- * 
+ *
  * @module ThemeSelector
  * @description
  * Component for selecting and applying themes.
@@ -11,7 +11,13 @@
 
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { themes, type ThemeName } from "@/themes";
 import { useTheme } from "next-themes";
 
@@ -26,15 +32,15 @@ export function ThemeSelector() {
 
     // Set CSS variables on :root (for light mode)
     Object.entries(theme.colors).forEach(([key, value]) => {
-      const cssVarName = key.replace(/([A-Z])/g, '-$1').toLowerCase();
-      const cssValue = value.replace(/^hsl\(|\)$/g, '');
+      const cssVarName = key.replace(/([A-Z])/g, "-$1").toLowerCase();
+      const cssValue = value.replace(/^hsl\(|\)$/g, "");
       root.style.setProperty(`--${cssVarName}`, cssValue);
     });
 
     // Set CSS variables on .dark (for dark mode)
     Object.entries(theme.dark).forEach(([key, value]) => {
-      const cssVarName = key.replace(/([A-Z])/g, '-$1').toLowerCase();
-      const cssValue = value.replace(/^hsl\(|\)$/g, '');
+      const cssVarName = key.replace(/([A-Z])/g, "-$1").toLowerCase();
+      const cssValue = value.replace(/^hsl\(|\)$/g, "");
       root.style.setProperty(`--${cssVarName}`, cssValue);
     });
   }, [currentTheme, currentMode]);
@@ -91,11 +97,11 @@ export function ThemeSelector() {
         </div>
         <div className="p-3 bg-muted rounded-lg">
           <p className="text-xs text-muted-foreground">
-            <strong>Current:</strong> {themes[currentTheme].displayName} • {currentMode}
+            <strong>Current:</strong> {themes[currentTheme].displayName} •{" "}
+            {currentMode}
           </p>
         </div>
       </CardContent>
     </Card>
   );
 }
-

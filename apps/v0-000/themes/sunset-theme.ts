@@ -1,6 +1,6 @@
 /**
  * @fileoverview Sunset Theme
- * 
+ *
  * @module SunsetTheme
  * @description
  * Warm sunset theme with oranges and purples.
@@ -49,4 +49,3 @@ export const sunsetTheme = {
     cardForeground: "hsl(24 30% 95%)",
   },
 } as const;
-

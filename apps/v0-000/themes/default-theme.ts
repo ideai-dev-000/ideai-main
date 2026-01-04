@@ -1,6 +1,6 @@
 /**
  * @fileoverview Default Theme
- * 
+ *
  * @module DefaultTheme
  * @description
  * Default IdeaI theme with standard colors and styling.
@@ -49,4 +49,3 @@ export const defaultTheme = {
     cardForeground: "hsl(210 40% 98%)",
   },
 } as const;
-
