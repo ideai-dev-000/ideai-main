@@ -86,22 +86,23 @@ ideai-main/
 
 ### Apps Overview
 
-| App       | Port | Purpose                     | Status      |
-| --------- | ---- | --------------------------- | ----------- |
-| web       | 3000 | Main IdeaI application      | ✅ Deployed |
-| docs      | 3001 | Documentation site          | ✅ Deployed |
-| all       | 3002 | Complete component showcase | ✅ Built    |
-| nocss     | 3003 | Pure HTML (no CSS)          | ✅ Built    |
-| mvp       | 3004 | MVP.css framework demo      | ✅ Built    |
-| tailwind  | 3005 | Tailwind CSS demo           | ✅ Built    |
-| allcss    | 3006 | MVP.css + Tailwind          | ✅ Built    |
-| bootstrap | 3007 | Bootstrap framework demo    | ✅ Built    |
-| unocss    | 3008 | UnoCSS framework demo       | ✅ Built    |
-| shadcn    | 3009 | Shadcn/ui components        | ✅ Built    |
-| material  | 3010 | Material UI demo            | ✅ Built    |
-| chakra    | 3011 | Chakra UI demo              | ✅ Built    |
-| radix     | 3012 | Radix UI primitives         | ✅ Built    |
-| pico      | 3013 | Pico CSS framework demo     | ✅ Built    |
+| App       | Port | Purpose                     | Status       |
+| --------- | ---- | --------------------------- | ------------ |
+| web       | 3000 | Main IdeaI application      | ✅ Deployed  |
+| docs      | 3001 | Documentation site          | ✅ Deployed  |
+| all       | 3002 | Complete component showcase | ✅ Built     |
+| nocss     | 3003 | Pure HTML (no CSS)          | ✅ Built     |
+| mvp       | 3004 | MVP.css framework demo      | ✅ Built     |
+| tailwind  | 3005 | Tailwind CSS demo           | ✅ Built     |
+| allcss    | 3006 | Tailwind CSS only           | ✅ Built     |
+| bootstrap | 3007 | Bootstrap framework demo    | ✅ Built     |
+| unocss    | 3008 | UnoCSS framework demo       | ✅ Built     |
+| shadcn    | 3009 | Shadcn/ui components        | ✅ Built     |
+| material  | 3010 | Material UI demo            | ✅ Built     |
+| chakra    | 3011 | Chakra UI demo              | ✅ Built     |
+| radix     | 3012 | Radix UI primitives         | ✅ Built     |
+| pico      | 3013 | Pico CSS framework demo     | ✅ Built     |
+| cloud     | -    | Cloud Manager (in web app)  | ✅ Available |
 
 ---
 
