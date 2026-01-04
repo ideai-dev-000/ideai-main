@@ -44,7 +44,7 @@ Multiple dedicated apps demonstrate different CSS approaches:
 
 ### 4. `/allcss` - Tailwind CSS Only (Port 3006)
 
-- **Purpose**: Tailwind CSS showcase (previously combined MVP + Tailwind)
+- **Purpose**: Tailwind CSS showcase
 - **Use Case**: Production apps with utility-first styling
 - **Styling**: Tailwind CSS + IdeaI custom layer (NO MVP.css - frameworks are exclusive)
 - **URL**: http://localhost:3006
@@ -52,7 +52,6 @@ Multiple dedicated apps demonstrate different CSS approaches:
   - Tailwind for utility classes
   - IdeaI custom layer for brand-specific styles
   - Complete styling solution
-  - **Note**: This app was renamed from "allcss" but now uses Tailwind exclusively
 
 ### 5. `/pico` - Pico CSS Only (Port 3013)
 
@@ -259,20 +258,20 @@ pnpm --filter @repo/allcss dev # Port 3006
 - **No CSS**: http://localhost:3003
 - **MVP.css Only**: http://localhost:3004
 - **Tailwind Only**: http://localhost:3005
-- **MVP.css + Tailwind**: http://localhost:3006
+- **Tailwind CSS**: http://localhost:3006
 
 ## Comparison Matrix
 
-| Feature               | No CSS | MVP.css       | Pico CSS      | Tailwind    | MVP + Tailwind |
-| --------------------- | ------ | ------------- | ------------- | ----------- | -------------- |
-| Semantic HTML styling | ❌     | ✅            | ✅            | ❌          | ✅             |
-| Utility classes       | ❌     | ❌            | ❌            | ✅          | ✅             |
-| Class names required  | ❌     | ❌            | Minimal       | ✅          | ✅             |
-| File size             | 0KB    | ~10KB         | ~11KB         | ~50KB+      | ~60KB+         |
-| Learning curve        | None   | Low           | Low           | Medium      | Medium         |
-| Customization         | None   | CSS variables | CSS variables | Config file | Both           |
-| Mobile-friendly       | ❌     | ✅            | ✅            | ✅          | ✅             |
-| Production ready      | ❌     | ✅            | ✅            | ✅          | ✅             |
+| Feature               | No CSS | MVP.css       | Pico CSS      | Tailwind    |
+| --------------------- | ------ | ------------- | ------------- | ----------- |
+| Semantic HTML styling | ❌     | ✅            | ✅            | ❌          |
+| Utility classes       | ❌     | ❌            | ❌            | ✅          |
+| Class names required  | ❌     | ❌            | Minimal       | ✅          |
+| File size             | 0KB    | ~10KB         | ~11KB         | ~50KB+      |
+| Learning curve        | None   | Low           | Low           | Medium      |
+| Customization         | None   | CSS variables | CSS variables | Config file |
+| Mobile-friendly       | ❌     | ✅            | ✅            | ✅          |
+| Production ready      | ❌     | ✅            | ✅            | ✅          |
 
 ## Recommendations
 
@@ -321,7 +320,7 @@ apps/
 │ │ └── globals.css # Tailwind directives
 │ ├── tailwind.config.ts
 │ └── postcss.config.js
-└── allcss/ # Tailwind CSS only (previously MVP + Tailwind)
+└── allcss/ # Tailwind CSS only
 ├── app/
 │ └── globals.css # Tailwind only (normalize + Tailwind)
 ├── tailwind.config.ts
