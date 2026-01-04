@@ -1,6 +1,6 @@
 /**
  * @fileoverview Tailwind CSS configuration for the web app
- * 
+ *
  * @module WebTailwindConfig
  * @description
  * Extends the shared UI package Tailwind config.
@@ -8,7 +8,7 @@
  */
 
 import type { Config } from "tailwindcss";
-import sharedConfig from "../../packages/ui/tailwind.config.js";
+import sharedConfig from "../../packages/ui/tailwind.config";
 
 const config: Config = {
   ...sharedConfig,
