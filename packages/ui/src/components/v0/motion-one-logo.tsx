@@ -45,6 +45,7 @@ export function MotionOneLogo({ config, selectedSvg }: LogoProps) {
       if (logoRef.current && textRef.current) {
         const animateLogo = () => {
           // Animate logo
+
           animate(
             logoRef.current!,
             { scale: [0, 1], opacity: [0, 1], rotate: [0, 360] } as any,
@@ -52,10 +53,12 @@ export function MotionOneLogo({ config, selectedSvg }: LogoProps) {
               duration: config.duration,
               delay: config.delay,
               easing: "ease-out",
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
             } as any,
           );
 
           // Animate text
+
           animate(
             textRef.current!,
             { opacity: [0, 1], y: [20, 0] } as any,
@@ -63,6 +66,7 @@ export function MotionOneLogo({ config, selectedSvg }: LogoProps) {
               duration: 0.6,
               delay: config.delay + config.duration,
               easing: "ease-out",
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
             } as any,
           );
         };

@@ -14,15 +14,9 @@
 
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  useSpring,
-  useSprings,
-  useTrail,
-  animated,
-  config,
-} from "@react-spring/web";
+import { useSpring, useTrail, animated, config } from "@react-spring/web";
 import { ExternalLink, Code2, Play, Sparkles, Zap } from "lucide-react";
 import type { AnimationExample } from "./types";
 
@@ -244,113 +238,126 @@ export function AnimationCard({ example, library }: AnimationCardProps) {
 }
 
 /**
- * Framer Motion Demo Renderer
+ * Framer Motion - Stagger Children Example
  */
-function FramerMotionDemo({ example }: { example: AnimationExample }) {
-  const animConfig = example.config as any;
-  const [isDragging, setIsDragging] = useState(false);
-
-  // Handle special cases
-  if (example.id === "framer-motion-4") {
-    // Stagger Children - render multiple items
-    const items = [1, 2, 3, 4, 5];
-    const containerVariants = {
-      hidden: { opacity: 0 },
-      visible: {
-        opacity: 1,
-        transition: {
-          staggerChildren: 0.1,
-        },
+function FramerMotionStaggerChildren() {
+  const items = [1, 2, 3, 4, 5];
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
       },
-    };
-    const itemVariants = {
-      hidden: { opacity: 0, y: 20 },
-      visible: { opacity: 1, y: 0 },
-    };
+    },
+  };
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0 },
+  };
 
-    return (
-      <motion.div
-        initial="hidden"
-        animate="visible"
-        variants={containerVariants}
-        className="ideai-animation-demo-box"
-        style={{
-          width: "100%",
-          height: "200px",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          gap: "0.5rem",
-        }}
-      >
+  return (
+    <motion.div
+      initial="hidden"
+      animate="visible"
+      variants={containerVariants}
+      className="ideai-animation-demo-box"
+      style={{
+        width: "100%",
+        height: "200px",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        gap: "0.5rem",
+      }}
+    >
+      {items.map((item) => (
+        <motion.div
+          key={item}
+          variants={itemVariants}
+          style={{
+            width: "40px",
+            height: "40px",
+            background: "rgba(255, 255, 255, 0.3)",
+            borderRadius: "8px",
+          }}
+        />
+      ))}
+    </motion.div>
+  );
+}
+
+/**
+ * Framer Motion - Layout Animation Example
+ */
+function FramerMotionLayout() {
+  const [items, setItems] = useState([1, 2, 3, 4, 5]);
+
+  return (
+    <div
+      style={{
+        width: "100%",
+        height: "200px",
+        display: "flex",
+        flexDirection: "column",
+        gap: "0.5rem",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      <AnimatePresence>
         {items.map((item) => (
           <motion.div
             key={item}
-            variants={itemVariants}
+            layout
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 20 }}
             style={{
-              width: "40px",
-              height: "40px",
-              background: "rgba(255, 255, 255, 0.3)",
-              borderRadius: "8px",
+              padding: "0.5rem 1rem",
+              background: "rgba(255, 255, 255, 0.2)",
+              borderRadius: "4px",
+              minWidth: "100px",
+              textAlign: "center",
             }}
-          />
+          >
+            Item {item}
+          </motion.div>
         ))}
-      </motion.div>
-    );
+      </AnimatePresence>
+      <button
+        onClick={() => setItems([...items].reverse())}
+        style={{
+          marginTop: "0.5rem",
+          padding: "0.5rem 1rem",
+          background: "rgba(255, 255, 255, 0.3)",
+          border: "none",
+          borderRadius: "4px",
+          cursor: "pointer",
+          color: "white",
+        }}
+      >
+        Reverse
+      </button>
+    </div>
+  );
+}
+
+/**
+ * Framer Motion Demo Renderer
+ */
+function FramerMotionDemo({ example }: { example: AnimationExample }) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const animConfig = example.config as any;
+  const [isDragging, setIsDragging] = useState(false);
+
+  // Map example.id to specific components
+  if (example.id === "framer-motion-4") {
+    return <FramerMotionStaggerChildren />;
   }
 
   if (example.id === "framer-motion-6") {
-    // Layout Animation - render list that can be reordered
-    const [items, setItems] = useState([1, 2, 3, 4, 5]);
-
-    return (
-      <div
-        style={{
-          width: "100%",
-          height: "200px",
-          display: "flex",
-          flexDirection: "column",
-          gap: "0.5rem",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <AnimatePresence>
-          {items.map((item) => (
-            <motion.div
-              key={item}
-              layout
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: 20 }}
-              style={{
-                padding: "0.5rem 1rem",
-                background: "rgba(255, 255, 255, 0.2)",
-                borderRadius: "4px",
-                minWidth: "100px",
-                textAlign: "center",
-              }}
-            >
-              Item {item}
-            </motion.div>
-          ))}
-        </AnimatePresence>
-        <button
-          onClick={() => setItems([...items].reverse())}
-          style={{
-            marginTop: "0.5rem",
-            padding: "0.5rem 1rem",
-            background: "rgba(255, 255, 255, 0.3)",
-            border: "none",
-            borderRadius: "4px",
-            cursor: "pointer",
-            color: "white",
-          }}
-        >
-          Reverse
-        </button>
-      </div>
-    );
+    return <FramerMotionLayout />;
   }
 
   // Build motion props from config
@@ -367,6 +374,7 @@ function FramerMotionDemo({ example }: { example: AnimationExample }) {
         : "default",
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const motionProps: any = {
     className: "ideai-animation-demo-box",
     style: baseStyle,
@@ -437,168 +445,94 @@ function FramerMotionDemo({ example }: { example: AnimationExample }) {
 }
 
 /**
- * React Spring Demo Renderer
+ * Helper to resolve config (handle string references like "wobbly")
  */
-function ReactSpringDemo({ example }: { example: AnimationExample }) {
-  const animConfig = example.config as any;
+function resolveConfig(cfg: unknown) {
+  if (!cfg) return config.gentle;
+  if (typeof cfg === "string") {
+    const configKey = cfg as keyof typeof config;
+    return config[configKey] || config.gentle;
+  }
+  return cfg;
+}
+
+/**
+ * React Spring 1: Spring Physics
+ */
+function ReactSpring1({ animConfig }: { animConfig: Record<string, unknown> }) {
   const [toggle, setToggle] = useState(false);
+  const springProps = useSpring({
+    from: animConfig.from || { scale: 0 },
+    to: toggle ? { scale: 1.2, rotate: 180 } : { scale: 1, rotate: 0 },
+    config: resolveConfig(animConfig.config),
+  });
+
+  return (
+    <div
+      style={{
+        width: "100%",
+        height: "200px",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        position: "relative",
+      }}
+      className="ideai-animation-demo-box"
+    >
+      <animated.div
+        style={{
+          ...springProps,
+          width: "100px",
+          height: "100px",
+          backgroundColor: "#3b82f6",
+          borderRadius: "8px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          color: "white",
+          fontWeight: "bold",
+          cursor: "pointer",
+        }}
+        onClick={() => setToggle(!toggle)}
+      >
+        Click
+      </animated.div>
+    </div>
+  );
+}
+
+/**
+ * React Spring 2: Number Animation
+ */
+function ReactSpring2({ animConfig }: { animConfig: Record<string, unknown> }) {
   const [targetNumber, setTargetNumber] = useState(animConfig.number || 100);
+  const { number } = useSpring({
+    number: targetNumber,
+    from: animConfig.from || { number: 0 },
+    config: resolveConfig(animConfig.config),
+  });
 
-  // Helper to resolve config (handle string references like "wobbly")
-  const resolveConfig = (cfg: any) => {
-    if (!cfg) return config.gentle;
-    if (typeof cfg === "string") {
-      const configKey = cfg as keyof typeof config;
-      return config[configKey] || config.gentle;
-    }
-    return cfg;
-  };
-
-  // Spring Physics (react-spring-1)
-  if (example.id === "react-spring-1") {
-    const springProps = useSpring({
-      from: animConfig.from || { scale: 0 },
-      to: toggle ? { scale: 1.2, rotate: 180 } : { scale: 1, rotate: 0 },
-      config: resolveConfig(animConfig.config),
-    });
-
-    return (
-      <div
-        style={{
-          width: "100%",
-          height: "200px",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          position: "relative",
-        }}
-        className="ideai-animation-demo-box"
+  return (
+    <div
+      style={{
+        width: "100%",
+        height: "200px",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        gap: "1rem",
+      }}
+    >
+      <animated.div
+        style={{ fontSize: "3rem", fontWeight: 700, color: "#3b82f6" }}
       >
-        <animated.div
-          style={{
-            ...springProps,
-            width: "100px",
-            height: "100px",
-            backgroundColor: "#3b82f6",
-            borderRadius: "8px",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            color: "white",
-            fontWeight: "bold",
-            cursor: "pointer",
-          }}
-          onClick={() => setToggle(!toggle)}
-        >
-          Click
-        </animated.div>
-      </div>
-    );
-  }
-
-  // Number Animation (react-spring-2)
-  if (example.id === "react-spring-2") {
-    // Number animation
-    const { number } = useSpring({
-      number: targetNumber,
-      from: animConfig.from || { number: 0 },
-      config: resolveConfig(animConfig.config),
-    });
-
-    return (
-      <div
-        style={{
-          width: "100%",
-          height: "200px",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          gap: "1rem",
-        }}
-      >
-        <animated.div
-          style={{ fontSize: "3rem", fontWeight: 700, color: "#3b82f6" }}
-        >
-          {number.to((n: number) => Math.floor(n))}
-        </animated.div>
-        <div style={{ display: "flex", gap: "0.5rem" }}>
-          <button
-            onClick={() => setTargetNumber(100)}
-            style={{
-              padding: "0.5rem 1rem",
-              background: "#3b82f6",
-              color: "white",
-              border: "none",
-              borderRadius: "4px",
-              cursor: "pointer",
-            }}
-          >
-            To 100
-          </button>
-          <button
-            onClick={() => setTargetNumber(0)}
-            style={{
-              padding: "0.5rem 1rem",
-              background: "#ef4444",
-              color: "white",
-              border: "none",
-              borderRadius: "4px",
-              cursor: "pointer",
-            }}
-          >
-            To 0
-          </button>
-        </div>
-      </div>
-    );
-  }
-
-  if (example.id === "react-spring-3") {
-    // Trail animation
-    const itemCount = animConfig.itemCount || 5;
-    const trail = useTrail(itemCount, {
-      from: animConfig.from || { opacity: 0, y: 20 },
-      to: toggle ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 },
-      config: resolveConfig(animConfig.config),
-    });
-
-    return (
-      <div
-        style={{
-          width: "100%",
-          height: "200px",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          gap: "0.5rem",
-        }}
-      >
-        {trail.map((props, i) => (
-          <animated.div
-            key={i}
-            style={{
-              ...props,
-              width: "80px",
-              height: "30px",
-              background: `hsl(${i * 60}, 70%, 60%)`,
-              borderRadius: "4px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              color: "white",
-              fontWeight: "bold",
-              fontSize: "0.875rem",
-            }}
-          >
-            Item {i + 1}
-          </animated.div>
-        ))}
+        {number.to((n: number) => Math.floor(n))}
+      </animated.div>
+      <div style={{ display: "flex", gap: "0.5rem" }}>
         <button
-          onClick={() => setToggle(!toggle)}
+          onClick={() => setTargetNumber(100)}
           style={{
-            marginTop: "0.5rem",
             padding: "0.5rem 1rem",
             background: "#3b82f6",
             color: "white",
@@ -607,130 +541,220 @@ function ReactSpringDemo({ example }: { example: AnimationExample }) {
             cursor: "pointer",
           }}
         >
-          Toggle Trail
+          To 100
+        </button>
+        <button
+          onClick={() => setTargetNumber(0)}
+          style={{
+            padding: "0.5rem 1rem",
+            background: "#ef4444",
+            color: "white",
+            border: "none",
+            borderRadius: "4px",
+            cursor: "pointer",
+          }}
+        >
+          To 0
         </button>
       </div>
-    );
-  }
+    </div>
+  );
+}
 
-  if (example.id === "react-spring-4") {
-    // Parallax - simplified for demo
-    const springProps = useSpring({
-      from: { transform: "translateY(0px)" },
-      to: { transform: toggle ? "translateY(20px)" : "translateY(0px)" },
-      config: resolveConfig(animConfig.config),
-    });
+/**
+ * React Spring 3: Trail Animation
+ */
+function ReactSpring3({ animConfig }: { animConfig: Record<string, unknown> }) {
+  const [toggle, setToggle] = useState(false);
+  const itemCount = animConfig.itemCount || 5;
+  const trail = useTrail(itemCount, {
+    from: animConfig.from || { opacity: 0, y: 20 },
+    to: toggle ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 },
+    config: resolveConfig(animConfig.config),
+  });
 
-    return (
-      <div
-        style={{
-          width: "100%",
-          height: "200px",
-          overflow: "auto",
-          position: "relative",
-        }}
-      >
+  return (
+    <div
+      style={{
+        width: "100%",
+        height: "200px",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        gap: "0.5rem",
+      }}
+    >
+      {trail.map((props, i) => (
         <animated.div
-          style={springProps}
-          className="ideai-animation-demo-box"
-          onClick={() => setToggle(!toggle)}
+          key={i}
+          style={{
+            ...props,
+            width: "80px",
+            height: "30px",
+            background: `hsl(${i * 60}, 70%, 60%)`,
+            borderRadius: "4px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            color: "white",
+            fontWeight: "bold",
+            fontSize: "0.875rem",
+          }}
         >
-          <div className="ideai-animation-demo-content">
-            {example.title}
-            <div
-              style={{ fontSize: "0.75rem", marginTop: "0.5rem", opacity: 0.8 }}
-            >
-              Click to animate
-            </div>
-          </div>
+          Item {i + 1}
         </animated.div>
-      </div>
-    );
-  }
-
-  if (example.id === "react-spring-5") {
-    // Color transition
-    const springProps = useSpring({
-      backgroundColor: toggle ? "#3b82f6" : "#ef4444",
-      config: resolveConfig(animConfig.config),
-    });
-
-    return (
-      <animated.div
+      ))}
+      <button
+        onClick={() => setToggle(!toggle)}
         style={{
-          ...springProps,
-          width: "100%",
-          height: "200px",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
+          marginTop: "0.5rem",
+          padding: "0.5rem 1rem",
+          background: "#3b82f6",
+          color: "white",
+          border: "none",
+          borderRadius: "4px",
           cursor: "pointer",
         }}
+      >
+        Toggle Trail
+      </button>
+    </div>
+  );
+}
+
+/**
+ * React Spring 4: Parallax
+ */
+function ReactSpring4({
+  animConfig,
+  example,
+}: {
+  animConfig: Record<string, unknown>;
+  example: AnimationExample;
+}) {
+  const [toggle, setToggle] = useState(false);
+  const springProps = useSpring({
+    from: { transform: "translateY(0px)" },
+    to: { transform: toggle ? "translateY(20px)" : "translateY(0px)" },
+    config: resolveConfig(animConfig.config),
+  });
+
+  return (
+    <div
+      style={{
+        width: "100%",
+        height: "200px",
+        overflow: "auto",
+        position: "relative",
+      }}
+    >
+      <animated.div
+        style={springProps}
         className="ideai-animation-demo-box"
         onClick={() => setToggle(!toggle)}
       >
-        <div className="ideai-animation-demo-content">{example.title}</div>
-      </animated.div>
-    );
-  }
-
-  if (example.id === "react-spring-6") {
-    // Spring configurations - use variant config if available, otherwise use default
-    const currentConfig = resolveConfig(animConfig.config);
-    const [resetKey, setResetKey] = useState(0);
-
-    const springProps = useSpring({
-      from: animConfig.from || { x: 0 },
-      to: { x: 100 },
-      config: currentConfig,
-      reset: resetKey > 0,
-    });
-
-    // Get all available configs
-    const configs = [
-      { name: "gentle", label: "Gentle" },
-      { name: "wobbly", label: "Wobbly" },
-      { name: "stiff", label: "Stiff" },
-      { name: "slow", label: "Slow" },
-      { name: "molasses", label: "Molasses" },
-    ];
-
-    const handleConfigChange = (cfgName: string) => {
-      // This would need to be handled via variant selection in parent
-      setResetKey((prev) => prev + 1);
-    };
-
-    return (
-      <div
-        style={{
-          width: "100%",
-          height: "200px",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          gap: "1rem",
-        }}
-      >
-        <animated.div
-          style={{
-            ...springProps,
-            width: "80px",
-            height: "80px",
-            background: "#3b82f6",
-            borderRadius: "8px",
-          }}
-        />
-        <div
-          style={{ fontSize: "0.75rem", color: "#64748b", textAlign: "center" }}
-        >
-          Use variant dropdown to change config
+        <div className="ideai-animation-demo-content">
+          {example.title}
+          <div
+            style={{ fontSize: "0.75rem", marginTop: "0.5rem", opacity: 0.8 }}
+          >
+            Click to animate
+          </div>
         </div>
-      </div>
-    );
-  }
+      </animated.div>
+    </div>
+  );
+}
 
-  // Default spring - auto-animate
+/**
+ * React Spring 5: Color Transition
+ */
+function ReactSpring5({
+  animConfig,
+  example,
+}: {
+  animConfig: Record<string, unknown>;
+  example: AnimationExample;
+}) {
+  const [toggle, setToggle] = useState(false);
+  const springProps = useSpring({
+    backgroundColor: toggle ? "#3b82f6" : "#ef4444",
+    config: resolveConfig(animConfig.config),
+  });
+
+  return (
+    <animated.div
+      style={{
+        ...springProps,
+        width: "100%",
+        height: "200px",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        cursor: "pointer",
+      }}
+      className="ideai-animation-demo-box"
+      onClick={() => setToggle(!toggle)}
+    >
+      <div className="ideai-animation-demo-content">{example.title}</div>
+    </animated.div>
+  );
+}
+
+/**
+ * React Spring 6: Spring Configurations
+ */
+function ReactSpring6({ animConfig }: { animConfig: Record<string, unknown> }) {
+  const currentConfig = resolveConfig(animConfig.config);
+  const [resetKey] = useState(0);
+  const springProps = useSpring({
+    from: animConfig.from || { x: 0 },
+    to: { x: 100 },
+    config: currentConfig,
+    reset: resetKey > 0,
+  });
+
+  return (
+    <div
+      style={{
+        width: "100%",
+        height: "200px",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        gap: "1rem",
+      }}
+    >
+      <animated.div
+        style={{
+          ...springProps,
+          width: "80px",
+          height: "80px",
+          background: "#3b82f6",
+          borderRadius: "8px",
+        }}
+      />
+      <div
+        style={{ fontSize: "0.75rem", color: "#64748b", textAlign: "center" }}
+      >
+        Use variant dropdown to change config
+      </div>
+    </div>
+  );
+}
+
+/**
+ * React Spring Default: Auto-animate
+ */
+function ReactSpringDefault({
+  animConfig,
+  example,
+}: {
+  animConfig: Record<string, unknown>;
+  example: AnimationExample;
+}) {
   const springProps = useSpring({
     from: animConfig.from || { opacity: 0, scale: 0.8 },
     to: { opacity: 1, scale: 1 },
@@ -755,23 +779,50 @@ function ReactSpringDemo({ example }: { example: AnimationExample }) {
 }
 
 /**
+ * React Spring Demo Renderer
+ */
+function ReactSpringDemo({ example }: { example: AnimationExample }) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const animConfig = example.config as any;
+
+  // Route to appropriate component based on example.id
+  switch (example.id) {
+    case "react-spring-1":
+      return <ReactSpring1 animConfig={animConfig} />;
+    case "react-spring-2":
+      return <ReactSpring2 animConfig={animConfig} />;
+    case "react-spring-3":
+      return <ReactSpring3 animConfig={animConfig} />;
+    case "react-spring-4":
+      return <ReactSpring4 animConfig={animConfig} example={example} />;
+    case "react-spring-5":
+      return <ReactSpring5 animConfig={animConfig} example={example} />;
+    case "react-spring-6":
+      return <ReactSpring6 animConfig={animConfig} />;
+    default:
+      return <ReactSpringDefault animConfig={animConfig} example={example} />;
+  }
+}
+
+/**
  * KUTE.js Demo Renderer
  */
 function KuteDemo({ example }: { example: AnimationExample }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const svgRef = useRef<SVGSVGElement>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const tweenRef = useRef<any>(null);
   const [isAnimating, setIsAnimating] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [animationKey, setAnimationKey] = useState(0);
 
-  const config = example.config || {};
-  const effectType = example.effectType || "animating";
+  const config = useMemo(() => example.config || {}, [example.config]);
 
   useEffect(() => {
     if (containerRef.current && !isAnimating) {
       const modulePath = "kute" + ".js";
       import(modulePath)
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         .then((KUTEModule: any) => {
           const KUTE = KUTEModule.default || KUTEModule;
 
@@ -920,7 +971,7 @@ function KuteDemo({ example }: { example: AnimationExample }) {
         tweenRef.current.stop();
       }
     };
-  }, [isAnimating, animationKey, config]);
+  }, [isAnimating, animationKey, config]); // config is intentionally dynamic
 
   const handlePlay = () => {
     setAnimationKey((prev) => prev + 1);
@@ -1084,10 +1135,13 @@ function MotionOneDemo({
   animationKey?: number;
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [hasAnimated, setHasAnimated] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const animationRef = useRef<any>(null);
   const [itemOrder, setItemOrder] = useState([0, 1, 2, 3]);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const animConfig = example.config as any;
 
   useEffect(() => {
@@ -1106,7 +1160,9 @@ function MotionOneDemo({
       const loadMotionOne = async () => {
         try {
           // Try importing from @motionone/dom with multiple strategies
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           let motionOneModule: any;
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           let importError: any = null;
 
           // Try multiple import strategies
@@ -1135,6 +1191,7 @@ function MotionOneDemo({
                 motionOneModule = { animate: motionOneModule };
                 break;
               }
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
             } catch (err: any) {
               importError = err;
               continue;
@@ -1160,11 +1217,13 @@ function MotionOneDemo({
 
           // Handle Layout Animation (reordering)
           if (animConfig.layout && animConfig.reorder) {
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             const itemCount = animConfig.itemCount || 4;
             const items =
               containerRef.current?.querySelectorAll(".layout-item");
             if (items && items.length > 0) {
               // Animate each item to its new position
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
               items.forEach((el: any, i: number) => {
                 const newIndex = itemOrder[i];
                 if (newIndex !== undefined) {
@@ -1197,6 +1256,7 @@ function MotionOneDemo({
             }
 
             // Build keyframes object from config
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const keyframes: any = {};
             if (animConfig.opacity) keyframes.opacity = animConfig.opacity;
             if (animConfig.scale) {
@@ -1215,6 +1275,7 @@ function MotionOneDemo({
             if (animConfig.backgroundColor)
               keyframes.backgroundColor = animConfig.backgroundColor;
 
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const options: any = {
               duration: animConfig.duration || 0.5,
             };
@@ -1238,6 +1299,7 @@ function MotionOneDemo({
               options,
             );
           }
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (err: any) {
           console.warn("Motion One error:", err);
           // Check if it's a module not found error
@@ -1265,6 +1327,7 @@ function MotionOneDemo({
         animationRef.current.stop();
       }
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [example.config, example.id, animationKey, itemOrder]); // Include animationKey to reset on play
 
   // Handle layout reordering on click
@@ -1408,8 +1471,11 @@ function MotionOneDemo({
 function TsParticlesDemo({ example }: { example: AnimationExample }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [init, setInit] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [ParticlesComponent, setParticlesComponent] = useState<any>(null);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
   const [initParticlesEngine, setInitParticlesEngine] = useState<any>(null);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
   const [loadSlimFn, setLoadSlimFn] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -1422,9 +1488,12 @@ function TsParticlesDemo({ example }: { example: AnimationExample }) {
       .then(([Particles, Slim]) => {
         if (Particles && Slim) {
           // @tsparticles/react exports default Particles component and named exports
+
           const ParticlesComp =
             (Particles as any).default || (Particles as any).Particles;
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           const initEngine = (Particles as any).initParticlesEngine;
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           const loadSlim = (Slim as any).default || (Slim as any).loadSlim;
 
           if (ParticlesComp && loadSlim && initEngine) {
@@ -1433,6 +1502,7 @@ function TsParticlesDemo({ example }: { example: AnimationExample }) {
             setLoadSlimFn(() => loadSlim);
 
             // Initialize engine - only once
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             initEngine(async (engine: any) => {
               if (typeof loadSlim === "function") {
                 await loadSlim(engine);
@@ -1441,6 +1511,7 @@ function TsParticlesDemo({ example }: { example: AnimationExample }) {
               .then(() => {
                 setInit(true);
               })
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
               .catch((err: any) => {
                 console.warn("Particles init error:", err);
                 setError("Failed to initialize particles engine");
@@ -1546,8 +1617,10 @@ function VivusDemo({ example }: { example: AnimationExample }) {
   useEffect(() => {
     if (svgRef.current && !isAnimating) {
       import("vivus")
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         .then((VivusModule: any) => {
           setIsAnimating(true);
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           const animConfig = example.config as any;
           const Vivus = VivusModule.default || VivusModule;
           if (Vivus && svgRef.current) {

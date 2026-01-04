@@ -111,7 +111,10 @@ export const IdeAIPageTemplate = ({
               : [
                   { label: "Home", href: "/" },
                   { label: "Documentation", href: "/docs" },
-                  { label: "Cloud Manager", href: "/cloud" },
+                  // Cloud Manager - DEVELOPMENT ONLY (never in production for security)
+                  ...(process.env.NODE_ENV === "development"
+                    ? [{ label: "Cloud Manager", href: "/cloud" }]
+                    : []),
                   { label: "Animations", href: "/animations" },
                   { label: "Drawings", href: "/drawings" },
                   { label: "Page Templates", href: "/page-templates" },

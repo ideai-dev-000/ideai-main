@@ -14,11 +14,12 @@
 import { useState, useEffect, lazy, Suspense } from "react";
 import { IdeAILogo } from "./ideai-logo";
 // Lazy load IdeAIDiagnostics to prevent framer-motion from blocking compilation
+import type { IdeAIDiagnosticsProps } from "./ideai-diagnostics.js";
 const IdeAIDiagnostics = lazy(() =>
-  import("./ideai-diagnostics").then((module) => ({
+  import("./ideai-diagnostics.js").then((module) => ({
     default: module.IdeAIDiagnostics,
   })),
-);
+) as React.LazyExoticComponent<React.ComponentType<IdeAIDiagnosticsProps>>;
 import { ThemeToggle } from "./theme-toggle";
 import { MobileNav } from "./mobile-nav";
 
@@ -118,6 +119,7 @@ export const IdeaIHeader = ({
             <IdeAIDiagnostics
               appName={diagnosticsAppName}
               position="top-right"
+              visible={true}
             />
           </Suspense>
         )}

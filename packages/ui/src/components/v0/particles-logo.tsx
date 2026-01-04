@@ -43,6 +43,7 @@ export function ParticlesLogo({ config, selectedSvg }: LogoProps) {
       const { loadSlim } = await import("@tsparticles/slim");
       const tsParticles = tsparticles.default || tsparticles;
 
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       await loadSlim(tsParticles as any);
 
       const particleConfig = {
@@ -82,9 +83,11 @@ export function ParticlesLogo({ config, selectedSvg }: LogoProps) {
       };
 
       if (containerRef.current) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         await (tsParticles as any).load({
           id: "particles-container",
           element: containerRef.current,
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           options: particleConfig as any,
         });
       }

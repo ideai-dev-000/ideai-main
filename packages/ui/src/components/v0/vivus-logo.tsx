@@ -38,7 +38,7 @@ export function VivusLogo({ config, selectedSvg }: LogoProps) {
     if (typeof window === "undefined" || !svgRef.current) return;
 
     const loadVivus = async () => {
-      // @ts-ignore
+      // @ts-expect-error - vivus is an optional dependency
       const Vivus = (await import("vivus")).default;
 
       const animationType =
@@ -51,6 +51,7 @@ export function VivusLogo({ config, selectedSvg }: LogoProps) {
       if (!svgRef.current) return;
 
       const vivus = new Vivus(
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         svgRef.current as any,
         {
           type: animationType,
@@ -63,6 +64,7 @@ export function VivusLogo({ config, selectedSvg }: LogoProps) {
               textRef.current.style.transform = "translateY(0)";
             }
           },
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } as any,
       );
 

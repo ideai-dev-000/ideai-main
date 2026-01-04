@@ -28,6 +28,7 @@ interface VivusDrawProps {
   delay?: number;
   start?: "manual" | "autostart" | "inViewport";
   onComplete?: () => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onVivusReady?: (vivus: any) => void;
   className?: string;
 }
@@ -42,6 +43,7 @@ export function VivusDraw({
   onVivusReady,
   className,
 }: VivusDrawProps) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const vivusRef = useRef<any>(null);
 
   useEffect(() => {
@@ -57,7 +59,9 @@ export function VivusDraw({
       // Dynamic import for Vivus
       import("vivus")
         .then((VivusModule) => {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           const Vivus = VivusModule.default || (VivusModule as any);
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           const options: any = {
             type,
             duration,

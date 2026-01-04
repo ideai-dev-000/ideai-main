@@ -127,7 +127,9 @@ export function readIdeAIConfigSync(appName: string): IdeAIConfig | null {
   // In Node.js, try to read file
   if (typeof window === "undefined") {
     try {
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
       const fs = require("fs");
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
       const path = require("path");
 
       // Try to read from apps/{appName}/.ideai.json

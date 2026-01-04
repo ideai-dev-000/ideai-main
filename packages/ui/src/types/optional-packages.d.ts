@@ -21,10 +21,12 @@ declare module "@motionone/dom" {
     options?: any,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ): any;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   export function scroll(
-    animation: any, // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    animation: any,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     options?: any,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ): any;
 }
 

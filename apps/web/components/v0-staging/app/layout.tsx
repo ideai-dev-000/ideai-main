@@ -1,6 +1,6 @@
 /**
  * @fileoverview Root layout for V0 prototype
- * 
+ *
  * @module V0PrototypeLayout
  * @description
  * Minimal root layout for V0 prototyping.
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   description: "Minimal V0 boilerplate for IdeaI-compatible prototypes",
 };
 
-export default function root-layout({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -25,11 +25,15 @@ export default function root-layout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
           {children}
         </ThemeProvider>
       </body>
     </html>
   );
 }
-

@@ -18,33 +18,8 @@
 "use client";
 
 import { Card } from "../ui/card";
-// Note: Label and RadioGroup are in root components/ui, using type assertions for now
-// TODO: Move these components to packages/ui or configure proper path aliases
-const Label = ({ className, children, htmlFor, ...props }: any) => (
-  <label htmlFor={htmlFor} className={className} {...props}>
-    {children}
-  </label>
-);
-const RadioGroup = ({
-  value,
-  onValueChange,
-  className,
-  children,
-  ...props
-}: any) => (
-  <div className={className} role="radiogroup" {...props}>
-    {children}
-  </div>
-);
-const RadioGroupItem = ({ value: itemValue, id, className, ...props }: any) => (
-  <input
-    type="radio"
-    id={id}
-    value={itemValue}
-    className={className}
-    {...props}
-  />
-);
+import { Label } from "../ui/label";
+import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 
 interface SvgSelectorProps {
   selected: string;

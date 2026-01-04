@@ -1,11 +1,11 @@
 /**
  * @fileoverview IdeaI Build System - Dependency Management
- * 
+ *
  * @module IdeAIBuild
  * @description
  * Secure 2026 best practices for building parent/child apps with dependency tracking.
  * Ensures parent has all dependencies its children need.
- * 
+ *
  * Features:
  * - Reads .ideai.json configs
  * - Tracks all child dependencies
@@ -71,17 +71,24 @@ export interface IdeAIConfigWithBuild extends IdeAIConfig {
  */
 export function readPackageDependencies(
   appName: string,
-  type: "dependencies" | "devDependencies" = "dependencies"
+  type: "dependencies" | "devDependencies" = "dependencies",
 ): Record<string, string> {
   if (typeof window !== "undefined") {
     return {}; // Browser - can't read files
   }
 
   try {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     const fs = require("fs");
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     const path = require("path");
-    const packagePath = path.join(process.cwd(), "apps", appName, "package.json");
-    
+    const packagePath = path.join(
+      process.cwd(),
+      "apps",
+      appName,
+      "package.json",
+    );
+
     if (fs.existsSync(packagePath)) {
       const packageJson = JSON.parse(fs.readFileSync(packagePath, "utf-8"));
       return packageJson[type] || {};
@@ -89,7 +96,7 @@ export function readPackageDependencies(
   } catch {
     // Ignore errors
   }
-  
+
   return {};
 }
 
@@ -104,22 +111,23 @@ export function getAllDependencies(parentApp: string): {
 } {
   const parentDeps = readPackageDependencies(parentApp);
   const parentDevDeps = readPackageDependencies(parentApp, "devDependencies");
-  
+
   // Read parent config to get child apps
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
   const { readIdeAIConfigSync } = require("./ideai-config");
   const parentConfig = readIdeAIConfigSync(parentApp);
   const childApps = parentConfig?.childApps || [];
-  
+
   const childrenDeps: Record<string, Record<string, string>> = {};
   const allDeps: Record<string, string> = { ...parentDeps, ...parentDevDeps };
   const missing: string[] = [];
-  
+
   // Collect all child dependencies
   childApps.forEach((childApp: string) => {
     const childDeps = readPackageDependencies(childApp);
     const childDevDeps = readPackageDependencies(childApp, "devDependencies");
     childrenDeps[childApp] = { ...childDeps, ...childDevDeps };
-    
+
     // Check if parent has all child dependencies
     Object.keys(childDeps).forEach((pkg) => {
       if (!allDeps[pkg] && !parentDeps[pkg]) {
@@ -131,7 +139,7 @@ export function getAllDependencies(parentApp: string): {
       }
     });
   });
-  
+
   return {
     parent: parentDeps,
     children: childrenDeps,
@@ -149,7 +157,7 @@ export function verifyDependencies(parentApp: string): {
   warnings: string[];
 } {
   const deps = getAllDependencies(parentApp);
-  
+
   return {
     valid: deps.missing.length === 0,
     missing: deps.missing,
@@ -161,10 +169,11 @@ export function verifyDependencies(parentApp: string): {
  * Generate build metadata
  */
 export function generateBuildMetadata(parentApp: string): BuildMetadata {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
   const { readIdeAIConfigSync } = require("./ideai-config");
   const parentConfig = readIdeAIConfigSync(parentApp);
   const deps = getAllDependencies(parentApp);
-  
+
   return {
     timestamp: new Date().toISOString(),
     parentApp,
@@ -179,7 +188,8 @@ export function generateBuildMetadata(parentApp: string): BuildMetadata {
  * Check for security vulnerabilities (placeholder for npm audit integration)
  */
 export async function checkSecurity(
-  appName: string
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  appName: string,
 ): Promise<{ secure: boolean; issues: string[] }> {
   // In production, this would run: npm audit --json
   // For now, return safe

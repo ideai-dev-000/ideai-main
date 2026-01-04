@@ -1,6 +1,6 @@
 /**
  * @fileoverview Dashboard Page Template
- * 
+ *
  * @module DashboardTemplate
  * @description
  * Analytics dashboard template with sidebar, header stats, and charts
@@ -8,7 +8,13 @@
 
 "use client";
 
-import { LayoutDashboard, TrendingUp, Users, DollarSign, Activity } from "lucide-react";
+import {
+  LayoutDashboard,
+  TrendingUp,
+  Users,
+  DollarSign,
+  Activity,
+} from "lucide-react";
 
 export function DashboardTemplate() {
   return (
@@ -40,17 +46,37 @@ export function DashboardTemplate() {
             Analytics Dashboard
           </h1>
           <p className="text-muted-foreground">
-            Welcome back! Here's what's happening today.
+            Welcome back! Here&apos;s what&apos;s happening today.
           </p>
         </header>
 
         {/* Stats Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           {[
-            { icon: TrendingUp, label: "Total Revenue", value: "$45,231", change: "+20.1%" },
-            { icon: Users, label: "Active Users", value: "2,350", change: "+12.5%" },
-            { icon: DollarSign, label: "Sales", value: "1,234", change: "+8.2%" },
-            { icon: Activity, label: "Growth", value: "23.5%", change: "+4.3%" },
+            {
+              icon: TrendingUp,
+              label: "Total Revenue",
+              value: "$45,231",
+              change: "+20.1%",
+            },
+            {
+              icon: Users,
+              label: "Active Users",
+              value: "2,350",
+              change: "+12.5%",
+            },
+            {
+              icon: DollarSign,
+              label: "Sales",
+              value: "1,234",
+              change: "+8.2%",
+            },
+            {
+              icon: Activity,
+              label: "Growth",
+              value: "23.5%",
+              change: "+4.3%",
+            },
           ].map((stat) => (
             <div
               key={stat.label}
@@ -58,7 +84,9 @@ export function DashboardTemplate() {
             >
               <div className="flex items-center justify-between mb-4">
                 <stat.icon className="h-5 w-5 text-muted-foreground" />
-                <span className="text-sm text-green-600 dark:text-green-400">{stat.change}</span>
+                <span className="text-sm text-green-600 dark:text-green-400">
+                  {stat.change}
+                </span>
               </div>
               <p className="text-sm text-muted-foreground mb-1">{stat.label}</p>
               <p className="text-2xl font-bold text-foreground">{stat.value}</p>

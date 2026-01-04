@@ -1,5 +1,5 @@
 {
-  "name": "@repo/v0-prototype",
+  "name": "@repo/v0-ideai",
   "version": "0.1.0",
   "type": "module",
   "private": true,
@@ -30,4 +30,3 @@
     "typescript": "5.9.2"
   }
 }
-

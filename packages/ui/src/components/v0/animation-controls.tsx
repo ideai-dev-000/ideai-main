@@ -19,41 +19,9 @@
 
 import { Card } from "../ui/card";
 import { Button } from "../ui/button";
-// Note: Label, Slider, Switch are in root components/ui, using type assertions for now
-// TODO: Move these components to packages/ui or configure proper path aliases
-const Label = ({ className, children, htmlFor, ...props }: any) => (
-  <label htmlFor={htmlFor} className={className} {...props}>
-    {children}
-  </label>
-);
-const Slider = ({
-  value,
-  onValueChange,
-  min,
-  max,
-  step,
-  className,
-  ...props
-}: any) => (
-  <input
-    type="range"
-    value={value?.[0] ?? 0}
-    onChange={(e) => onValueChange?.([Number(e.target.value)])}
-    min={min}
-    max={max}
-    step={step}
-    className={className}
-    {...props}
-  />
-);
-const Switch = ({ checked, onCheckedChange, ...props }: any) => (
-  <input
-    type="checkbox"
-    checked={checked}
-    onChange={(e) => onCheckedChange?.(e.target.checked)}
-    {...props}
-  />
-);
+import { Label } from "../ui/label";
+import { Slider } from "../ui/slider";
+import { Switch } from "../ui/switch";
 
 interface AnimationControlsProps {
   config: {

@@ -1,26 +1,27 @@
 /**
  * @fileoverview IdeaiIcon
- * 
+ *
  * @file ideai-icon.tsx
  * @module IdeaiIcon
  * @description
  * File auto-synced from v0. Ready for review and promotion to production.
- * 
+ *
  * @see {@link ../../v0-ideai/components/svgs/ideai-icon.tsx}
  * @since 2026-01-04
  * @version 0.1.0
- * 
+ *
  * @todo Review and apply IdeaI standards
  * @todo Test functionality
  * @todo Promote to production when ready
  */
 
 interface IdeaiIconProps {
-  className?: string
-  animated?: boolean
+  className?: string;
+  className?: string;
+  animated?: boolean;
 }
 
-export function IdeaiIcon({ className = "", animated = false }: IdeaiIconProps) {
+export function IdeaiIcon({ className = "" }: IdeaiIconProps) {
   return (
     <svg
       id="Layer_1"
@@ -49,5 +50,5 @@ export function IdeaiIcon({ className = "", animated = false }: IdeaiIconProps) 
         </g>
       </g>
     </svg>
-  )
+  );
 }

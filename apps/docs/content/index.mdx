@@ -92,7 +92,13 @@ Welcome to the IdeaI monorepo documentation. This directory contains comprehensi
   - CSS approach comparison (No CSS, MVP.css, Tailwind, Combined)
   - Best practice configurations
   - Hot reload support
-  - Showcase apps (`/nocss`, `/mvp`, `/tailwind`, `/allcss`)
+  - Showcase apps (`/nocss`, `/mvp`, `/tailwind`, `/allcss`, `/pico`)
+
+- **[Cloud Manager Architecture](./architecture/cloud-manager.md)**
+  - Centralized cloud provider management
+  - Vercel project configuration UI
+  - Auto-configuration and validation
+  - Multi-provider support (Vercel MVP, AWS/GCP/Azure/Hostinger planned)
 
 ### Tools
 
@@ -111,9 +117,11 @@ Welcome to the IdeaI monorepo documentation. This directory contains comprehensi
 ## 🚀 Quick Links
 
 ### Setup
+
 1. [Configure GitHub Secrets](./setup/github-secrets.md) - **Start here for CI/CD setup**
 
 ### Deployment
+
 - [Unified Deployment Guide](./deployment/unified-deployment.md) ⭐ **Start here**
 - [Deployment Overview](./deployment/overview.md)
 - [Deployment Architecture](./architecture/deployment-architecture.md)
@@ -121,6 +129,7 @@ Welcome to the IdeaI monorepo documentation. This directory contains comprehensi
 - [Vercel Configuration](./deployment/vercel.md)
 
 ### Development
+
 - [Getting Started](./development/getting-started.md)
 
 ## 📖 Documentation Best Practices
@@ -164,6 +173,7 @@ To improve documentation:
 ## 📧 Support
 
 For questions or issues:
+
 - Check [Troubleshooting](./deployment/troubleshooting.md)
 - Review relevant documentation section
 - Open an issue on GitHub
