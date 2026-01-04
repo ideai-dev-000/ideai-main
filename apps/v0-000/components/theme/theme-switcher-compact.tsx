@@ -109,6 +109,7 @@ export function ThemeSwitcherCompact() {
                   onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
+                    alert(`Theme clicked: ${name}`);
                     console.log('[ThemeSwitcher] Theme clicked:', name);
                     setCurrentTheme(name as ThemeName);
                     setIsOpen(false);
@@ -130,6 +131,7 @@ export function ThemeSwitcherCompact() {
                 onClick={(e) => {
                   e.preventDefault();
                   e.stopPropagation();
+                  alert('Mode clicked: light');
                   console.log('[ThemeSwitcher] Mode clicked: light');
                   setMode("light");
                   setIsOpen(false);
@@ -146,6 +148,7 @@ export function ThemeSwitcherCompact() {
                 onClick={(e) => {
                   e.preventDefault();
                   e.stopPropagation();
+                  alert('Mode clicked: dark');
                   console.log('[ThemeSwitcher] Mode clicked: dark');
                   setMode("dark");
                   setIsOpen(false);
@@ -162,6 +165,7 @@ export function ThemeSwitcherCompact() {
                 onClick={(e) => {
                   e.preventDefault();
                   e.stopPropagation();
+                  alert('Mode clicked: system');
                   console.log('[ThemeSwitcher] Mode clicked: system');
                   setMode("system");
                   setIsOpen(false);
