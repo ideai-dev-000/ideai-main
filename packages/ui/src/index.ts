@@ -98,4 +98,17 @@ export { readIdeAIConfig, readIdeAIConfigSync, getChildAppConfig, getChildApps, 
 export { getAppMode, loadChildAppPage, shouldUseUnifiedMode, type AppMode } from "./lib/ideai-app-loader";
 export { getVercelProjectConfig, getVercelProjectName, shouldForkToNewProject, type VercelProjectConfig as IdeAIVercelProjectConfig } from "./lib/ideai-vercel";
 
+
+// V0 Components - Auto-exported from v0-staging
+// Available immediately in all apps via: import { ComponentName } from "@repo/ui"
+export { Layout } from "./components/v0/layout";
+export { Page } from "./components/v0/page";
+export { AnimationControls } from "./components/v0/animation-controls";
+export { LogoPreview } from "./components/v0/logo-preview";
+export { SvgSelector } from "./components/v0/svg-selector";
+export { BrainIcon } from "./components/v0/brain-icon";
+export { CatIcon } from "./components/v0/cat-icon";
+export { MusicIcon } from "./components/v0/music-icon";
+export { RocketIcon } from "./components/v0/rocket-icon";
+// End V0 Components
 export { getAllDependencies, verifyDependencies, generateBuildMetadata, checkSecurity, readPackageDependencies, type IdeAIBuildConfig, type ChildDependency, type BuildMetadata } from "./lib/ideai-build";
