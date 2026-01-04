@@ -140,6 +140,24 @@ function isComponent(filePath) {
 }
 
 /**
+ * Check if a file should be exported (exclude app-specific Next.js files)
+ */
+function shouldExportFile(filePath) {
+  const fileName = basename(filePath);
+  // Exclude Next.js app-specific files (not reusable components)
+  const appSpecificFiles = ["layout.tsx", "page.tsx", "loading.tsx", "error.tsx", "not-found.tsx", "template.tsx"];
+  if (appSpecificFiles.includes(fileName)) {
+    return false;
+  }
+  // Exclude config files
+  const configFiles = ["globals.css", "package.json", "tsconfig.json", "next.config.js", "tailwind.config.ts"];
+  if (configFiles.includes(fileName)) {
+    return false;
+  }
+  return true;
+}
+
+/**
  * Find all components in v0-staging
  */
 function findComponents(dir = V0_STAGING, baseDir = V0_STAGING, components = []) {
@@ -160,7 +178,7 @@ function findComponents(dir = V0_STAGING, baseDir = V0_STAGING, components = [])
       }
     } else if (entry.isFile() && isComponent(fullPath)) {
       const ext = extname(fullPath);
-      if (ext === ".tsx" || ext === ".ts") {
+      if ((ext === ".tsx" || ext === ".ts") && shouldExportFile(fullPath)) {
         components.push({
           source: fullPath,
           relative: relativePath,

@@ -104,10 +104,9 @@ export { getVercelProjectConfig, getVercelProjectName, shouldForkToNewProject, t
 
 
 
+
 // V0 Components - Auto-exported from v0-staging
 // Available immediately in all apps via: import { ComponentName } from "@repo/ui"
-export { Layout } from "./components/v0/layout";
-export { Page } from "./components/v0/page";
 export { AnimationControls } from "./components/v0/animation-controls";
 export { LogoPreview } from "./components/v0/logo-preview";
 export { SvgSelector } from "./components/v0/svg-selector";
