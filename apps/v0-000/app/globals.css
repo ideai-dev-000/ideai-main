@@ -2,8 +2,10 @@
  * @fileoverview Global styles for v0-000
  * 
  * Imports centralized IdeaI styles from @repo/ui
+ * Note: Using @import for Tailwind CSS 4 compatibility
  */
 
-@import "../../../packages/ui/src/styles/globals.css";
-@import "../../../packages/ui/src/styles/ideai.css";
+@import "tailwindcss";
 
+/* Import IdeaI custom styles */
+@import "../../../packages/ui/src/styles/ideai.css";
