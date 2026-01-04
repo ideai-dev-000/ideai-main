@@ -126,7 +126,7 @@ export function ThemeSwitcherCompact() {
         <span className="hidden sm:inline">{themes[currentTheme].displayName}</span>
         <span className="sm:hidden">Theme</span>
         <span className="text-xs opacity-60">•</span>
-        <span className="text-xs capitalize">{currentMode}</span>
+        <span className="text-xs capitalize">{actualMode || "system"}</span>
       </Button>
       
       {isOpen && (
@@ -186,11 +186,11 @@ export function ThemeSwitcherCompact() {
                   setIsOpen(false);
                 }}
                 className={`w-full text-left px-2 py-1.5 text-sm rounded-md hover:bg-accent flex items-center justify-between ${
-                  currentMode === "light" ? "bg-accent" : ""
+                  actualMode === "light" ? "bg-accent" : ""
                 }`}
               >
                 <span>Light</span>
-                {currentMode === "light" && <span className="text-xs">✓</span>}
+                {actualMode === "light" && <span className="text-xs">✓</span>}
               </button>
               <button
                 type="button"
@@ -214,11 +214,11 @@ export function ThemeSwitcherCompact() {
                   setIsOpen(false);
                 }}
                 className={`w-full text-left px-2 py-1.5 text-sm rounded-md hover:bg-accent flex items-center justify-between ${
-                  currentMode === "dark" ? "bg-accent" : ""
+                  actualMode === "dark" ? "bg-accent" : ""
                 }`}
               >
                 <span>Dark</span>
-                {currentMode === "dark" && <span className="text-xs">✓</span>}
+                {actualMode === "dark" && <span className="text-xs">✓</span>}
               </button>
               <button
                 type="button"
