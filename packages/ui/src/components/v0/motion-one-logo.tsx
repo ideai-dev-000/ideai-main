@@ -40,7 +40,7 @@ export function MotionOneLogo({ config, selectedSvg }: LogoProps) {
     if (typeof window === "undefined") return
 
     const loadMotionOne = async () => {
-      const { animate } = await import("motion")
+      const { animate } = await import('framer-motion')
 
       if (logoRef.current && textRef.current) {
         const animateLogo = () => {

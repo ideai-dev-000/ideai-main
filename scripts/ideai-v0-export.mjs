@@ -243,9 +243,15 @@ function exportComponent(component) {
     );
     // Fix 'motion' import - should be 'framer-motion' or 'motion' package
     // Check if motion package is available, otherwise use framer-motion
+    // Fix static imports
     content = content.replace(
       /from\s+['"]motion['"]/g,
       "from 'framer-motion'"
+    );
+    // Fix dynamic imports (await import("motion"))
+    content = content.replace(
+      /import\(['"]motion['"]\)/g,
+      "import('framer-motion')"
     );
 
     // Add export if missing
