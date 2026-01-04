@@ -6,6 +6,8 @@
  * Example page showing how to use IdeaI components and v0-created components.
  */
 
+"use client";
+
 import { IdeAIPageTemplate } from "@repo/ui";
 import { IdeaIButton } from "@repo/ui";
 import { 
@@ -14,16 +16,6 @@ import {
   MusicIcon, 
   RocketIcon
 } from "@repo/ui";
-import { useState } from "react";
-
-export default function Home() {
-  const [selectedSvg, setSelectedSvg] = useState<string>("ideai");
-  const [animationConfig, setAnimationConfig] = useState({
-    duration: 1,
-    delay: 0,
-    loop: true,
-    animationType: "scale",
-  });
 
   return (
     <IdeAIPageTemplate
