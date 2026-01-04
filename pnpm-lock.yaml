@@ -1306,6 +1306,9 @@ importers:
       "@radix-ui/react-switch":
         specifier: 1.1.2
         version: 1.1.2(@types/react-dom@19.2.2(@types/react@19.2.2))(@types/react@19.2.2)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      "@repo/cloud-manager":
+        specifier: workspace:*
+        version: link:../../packages/cloud-manager
       "@repo/ui":
         specifier: workspace:*
         version: link:../../packages/ui
@@ -1351,6 +1354,37 @@ importers:
         version: 1.0.7(tailwindcss@3.4.19(tsx@4.21.0)(yaml@2.8.2))
       typescript:
         specifier: 5.9.2
+        version: 5.9.2
+
+  packages/cloud-manager:
+    dependencies:
+      react:
+        specifier: ^19.2.0
+        version: 19.2.3
+      react-dom:
+        specifier: ^19.2.0
+        version: 19.2.3(react@19.2.3)
+    devDependencies:
+      "@repo/eslint-config":
+        specifier: workspace:*
+        version: link:../eslint-config
+      "@repo/typescript-config":
+        specifier: workspace:*
+        version: link:../typescript-config
+      "@types/node":
+        specifier: ^22.10.5
+        version: 22.15.3
+      "@types/react":
+        specifier: ^19.2.0
+        version: 19.2.7
+      "@types/react-dom":
+        specifier: ^19.2.0
+        version: 19.2.3(@types/react@19.2.7)
+      eslint:
+        specifier: ^9.18.0
+        version: 9.39.2(jiti@2.6.1)
+      typescript:
+        specifier: ^5.7.2
         version: 5.9.2
 
   packages/eslint-config:
