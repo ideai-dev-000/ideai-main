@@ -24,23 +24,33 @@ export function ThemeSwitcherCompact() {
     setMounted(true);
   }, []);
 
+  // Update theme variables when theme or mode changes
   useEffect(() => {
     if (!mounted) return;
     
-    // Apply theme CSS variables
     const root = document.documentElement;
     const theme = themes[currentTheme];
-    const colors = currentMode === "dark" ? theme.dark : theme.colors;
+    
+    const updateTheme = () => {
+      // Check if dark mode is active (next-themes adds .dark class)
+      const isDark = root.classList.contains('dark');
+      const colors = isDark ? theme.dark : theme.colors;
+      
+      Object.entries(colors).forEach(([key, value]) => {
+        const cssVarName = key.replace(/([A-Z])/g, '-$1').toLowerCase();
+        const cssValue = value.replace(/^hsl\(|\)$/g, '');
+        root.style.setProperty(`--${cssVarName}`, cssValue);
+      });
+    };
 
-    // Set CSS variables - colors are already in HSL format
-    Object.entries(colors).forEach(([key, value]) => {
-      // Convert camelCase to kebab-case (e.g., primaryForeground -> primary-foreground)
-      const cssVarName = key.replace(/([A-Z])/g, '-$1').toLowerCase();
-      // Strip hsl() wrapper if present - CSS variables should just have the values
-      // Tailwind will wrap them in hsl() when used
-      const cssValue = value.replace(/^hsl\(|\)$/g, '');
-      root.style.setProperty(`--${cssVarName}`, cssValue);
-    });
+    // Initial update
+    updateTheme();
+    
+    // Watch for dark mode class changes (when sun/moon toggle is used)
+    const observer = new MutationObserver(updateTheme);
+    observer.observe(root, { attributes: true, attributeFilter: ['class'] });
+    
+    return () => observer.disconnect();
   }, [currentTheme, currentMode, mounted]);
 
   if (!mounted) {
