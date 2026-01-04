@@ -1,37 +1,69 @@
 /**
  * @fileoverview AnimationControls
- * 
+ *
  * @file animation-controls.tsx
  * @module AnimationControls
  * @description
  * File auto-synced from v0. Ready for review and promotion to production.
- * 
+ *
  * @see {@link ../../v0-ideai/blocks/animation-controls.tsx}
  * @since 2026-01-04
  * @version 0.1.0
- * 
+ *
  * @todo Review and apply IdeaI standards
  * @todo Test functionality
  * @todo Promote to production when ready
  */
 
-"use client"
+"use client";
 
-import { Card } from '@/components/ui/card'
-import { Label } from '@/components/ui/label'
-import { Slider } from '@/components/ui/slider'
-import { Switch } from '@/components/ui/switch'
-import { Button } from '@/components/ui/button'
+import { Card } from "../ui/card";
+import { Button } from "../ui/button";
+// Note: Label, Slider, Switch are in root components/ui, using type assertions for now
+// TODO: Move these components to packages/ui or configure proper path aliases
+const Label = ({ className, children, htmlFor, ...props }: any) => (
+  <label htmlFor={htmlFor} className={className} {...props}>
+    {children}
+  </label>
+);
+const Slider = ({
+  value,
+  onValueChange,
+  min,
+  max,
+  step,
+  className,
+  ...props
+}: any) => (
+  <input
+    type="range"
+    value={value?.[0] ?? 0}
+    onChange={(e) => onValueChange?.([Number(e.target.value)])}
+    min={min}
+    max={max}
+    step={step}
+    className={className}
+    {...props}
+  />
+);
+const Switch = ({ checked, onCheckedChange, ...props }: any) => (
+  <input
+    type="checkbox"
+    checked={checked}
+    onChange={(e) => onCheckedChange?.(e.target.checked)}
+    {...props}
+  />
+);
 
 interface AnimationControlsProps {
   config: {
-    duration: number
-    delay: number
-    loop: boolean
-    animationType: string
-  }
-  onChange: (config: unknown) => void
-  library: string
+    duration: number;
+    delay: number;
+    loop: boolean;
+    animationType: string;
+  };
+  onChange: (config: unknown) => void;
+  library: string;
 }
 
 const animationTypes: Record<string, string[]> = {
@@ -41,14 +73,21 @@ const animationTypes: Record<string, string[]> = {
   "motion-one": ["scale", "fade", "slide", "rotate"],
   vivus: ["delayed", "sync", "oneByOne"],
   tsparticles: ["particles", "confetti", "fireworks"],
-}
+};
 
-export function AnimationControls({ config, onChange, library }: AnimationControlsProps) {
-  const types = animationTypes[library] || animationTypes["framer-motion"]
+export function AnimationControls({
+  config,
+  onChange,
+  library,
+}: AnimationControlsProps) {
+  const types =
+    animationTypes[library] || animationTypes["framer-motion"] || [];
 
   return (
     <Card className="p-6 bg-card">
-      <h3 className="text-sm font-semibold text-foreground mb-4">Animation Settings</h3>
+      <h3 className="text-sm font-semibold text-foreground mb-4">
+        Animation Settings
+      </h3>
 
       <div className="space-y-6">
         {/* Animation Type */}
@@ -73,11 +112,15 @@ export function AnimationControls({ config, onChange, library }: AnimationContro
         <div className="space-y-3">
           <div className="flex items-center justify-between">
             <Label className="text-sm text-foreground">Duration</Label>
-            <span className="text-xs text-muted-foreground font-mono">{config.duration}s</span>
+            <span className="text-xs text-muted-foreground font-mono">
+              {config.duration}s
+            </span>
           </div>
           <Slider
             value={[config.duration]}
-            onValueChange={([value]) => onChange({ ...config, duration: value })}
+            onValueChange={(value: number[]) =>
+              onChange({ ...config, duration: value[0] })
+            }
             min={0.1}
             max={5}
             step={0.1}
@@ -89,11 +132,15 @@ export function AnimationControls({ config, onChange, library }: AnimationContro
         <div className="space-y-3">
           <div className="flex items-center justify-between">
             <Label className="text-sm text-foreground">Delay</Label>
-            <span className="text-xs text-muted-foreground font-mono">{config.delay}s</span>
+            <span className="text-xs text-muted-foreground font-mono">
+              {config.delay}s
+            </span>
           </div>
           <Slider
             value={[config.delay]}
-            onValueChange={([value]) => onChange({ ...config, delay: value })}
+            onValueChange={(value: number[]) =>
+              onChange({ ...config, delay: value[0] })
+            }
             min={0}
             max={3}
             step={0.1}
@@ -104,9 +151,12 @@ export function AnimationControls({ config, onChange, library }: AnimationContro
         {/* Loop */}
         <div className="flex items-center justify-between">
           <Label className="text-sm text-foreground">Loop Animation</Label>
-          <Switch checked={config.loop} onCheckedChange={(loop) => onChange({ ...config, loop })} />
+          <Switch
+            checked={config.loop}
+            onCheckedChange={(loop: boolean) => onChange({ ...config, loop })}
+          />
         </div>
       </div>
     </Card>
-  )
+  );
 }
