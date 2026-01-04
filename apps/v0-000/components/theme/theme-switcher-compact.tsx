@@ -105,7 +105,11 @@ export function ThemeSwitcherCompact() {
               {Object.entries(themes).map(([name, theme]) => (
                 <button
                   key={name}
-                  onClick={() => {
+                  type="button"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('[ThemeSwitcher] Theme clicked:', name);
                     setCurrentTheme(name as ThemeName);
                     setIsOpen(false);
                   }}
@@ -122,7 +126,11 @@ export function ThemeSwitcherCompact() {
                 Mode
               </div>
               <button
-                onClick={() => {
+                type="button"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  console.log('[ThemeSwitcher] Mode clicked: light');
                   setMode("light");
                   setIsOpen(false);
                 }}
@@ -134,7 +142,11 @@ export function ThemeSwitcherCompact() {
                 {currentMode === "light" && <span className="text-xs">✓</span>}
               </button>
               <button
-                onClick={() => {
+                type="button"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  console.log('[ThemeSwitcher] Mode clicked: dark');
                   setMode("dark");
                   setIsOpen(false);
                 }}
@@ -146,7 +158,11 @@ export function ThemeSwitcherCompact() {
                 {currentMode === "dark" && <span className="text-xs">✓</span>}
               </button>
               <button
-                onClick={() => {
+                type="button"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  console.log('[ThemeSwitcher] Mode clicked: system');
                   setMode("system");
                   setIsOpen(false);
                 }}
