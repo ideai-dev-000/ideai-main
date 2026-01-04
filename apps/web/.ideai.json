@@ -13,7 +13,8 @@
     "unocss",
     "shadcn",
     "ideai-designer",
-    "v0-prototype"
+    "v0-prototype",
+    "v0-000"
   ],
   "localPort": 3000,
   "animationLibraries": [
