@@ -4,5 +4,5 @@ const nextConfig = {
   transpilePackages: ["@repo/ui"],
 };
 
-module.exports = nextConfig;
+export default nextConfig;
 
