@@ -57,7 +57,7 @@ export function ThemeSwitcherCompact() {
       const isDark = root.classList.contains('dark');
       const colors = isDark ? theme.dark : theme.colors;
       
-      console.log('[ThemeSwitcher] Updating theme:', currentTheme, 'isDark:', isDark);
+      console.log('[ThemeSwitcher] Updating theme:', currentTheme, 'isDark:', isDark, 'currentMode:', currentMode);
       
       // Set CSS variables - inline styles on root should override CSS
       // Note: CSS variables don't support !important, but inline styles have highest specificity
@@ -76,19 +76,30 @@ export function ThemeSwitcherCompact() {
     // Initial update
     updateTheme();
     
-    // Watch for dark mode class changes (when sun/moon toggle is used)
+    // Watch for dark mode class changes (when sun/moon toggle is used OR when dropdown changes mode)
     const observer = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {
         if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
-          console.log('[ThemeSwitcher] Dark mode class changed');
-          updateTheme();
+          console.log('[ThemeSwitcher] Dark mode class changed via MutationObserver');
+          // Small delay to ensure next-themes has finished updating
+          setTimeout(updateTheme, 10);
         }
       });
     });
     observer.observe(root, { attributes: true, attributeFilter: ['class'] });
     
-    return () => observer.disconnect();
-  }, [currentTheme, mounted]);
+    // Also update when currentMode changes (for immediate response)
+    // Use a small timeout to let next-themes update the DOM first
+    const timeoutId = setTimeout(() => {
+      console.log('[ThemeSwitcher] Mode changed, updating theme');
+      updateTheme();
+    }, 50);
+    
+    return () => {
+      observer.disconnect();
+      clearTimeout(timeoutId);
+    };
+  }, [currentTheme, currentMode, mounted]);
 
   if (!mounted) {
     return (
