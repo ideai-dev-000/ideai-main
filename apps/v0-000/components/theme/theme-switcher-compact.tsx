@@ -15,12 +15,15 @@ import { themes, type ThemeName } from "@/themes";
 import { useTheme } from "next-themes";
 
 export function ThemeSwitcherCompact() {
-  const { theme: currentMode, setTheme: setMode } = useTheme();
+  const { theme: currentMode, setTheme: setMode, resolvedTheme } = useTheme();
   const [currentTheme, setCurrentTheme] = useState<ThemeName>("default");
   const [mounted, setMounted] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
+  
+  // Use resolvedTheme if currentMode is undefined or system (for system mode)
+  const actualMode = currentMode === "system" || !currentMode ? resolvedTheme : currentMode;
 
   useEffect(() => {
     setMounted(true);
