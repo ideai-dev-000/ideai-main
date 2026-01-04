@@ -113,9 +113,9 @@ export { getVercelProjectConfig, getVercelProjectName, shouldForkToNewProject, t
 
 // V0 Components - Auto-exported from v0-staging
 // Available immediately in all apps via: import { ComponentName } from "@repo/ui"
-export { AnimationControls } from "./components/v0/animation-controls";
-export { LogoPreview } from "./components/v0/logo-preview";
-export { SvgSelector } from "./components/v0/svg-selector";
+// Note: AnimationControls, LogoPreview, SvgSelector are NOT exported here because
+// they depend on @/components/ui/* which only works in app contexts.
+// Use them directly in apps/web or apps/v0-000 where shadcn components are available.
 export { FramerMotionLogo } from "./components/v0/framer-motion-logo";
 export { KuteLogo } from "./components/v0/kute-logo";
 export { MotionOneLogo } from "./components/v0/motion-one-logo";
