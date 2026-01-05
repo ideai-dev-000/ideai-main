@@ -1,135 +1,146 @@
 /**
- * @fileoverview Workflow Builder page for Capabilities site
+ * @fileoverview Workflow Builder page - Direct component integration (no iframe)
  *
  * @module WorkflowPage
  * @description
- * Page that demonstrates workflow builder as a component.
- * Currently uses iframe bridge, will be replaced with direct component import
- * once workflow is extracted to @repo/workflow package.
+ * Workflow builder page using direct component integration.
+ * This is the merged version - workflow functionality is part of this app.
  */
 
 "use client";
 
-import { useEffect, useState } from "react";
+import { useAtomValue, useSetAtom } from "jotai";
+import { nanoid } from "nanoid";
+import { useRouter } from "next/navigation";
+import { useCallback, useEffect, useRef } from "react";
+import { toast } from "sonner";
+import { api } from "@/lib/api-client";
+import { authClient, useSession } from "@/lib/auth-client";
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Info, Loader2 } from "lucide-react";
+  currentWorkflowNameAtom,
+  edgesAtom,
+  hasSidebarBeenShownAtom,
+  isTransitioningFromHomepageAtom,
+  nodesAtom,
+  type WorkflowNode,
+} from "@/lib/workflow-store";
+
+// Helper function to create a default trigger node
+function createDefaultTriggerNode() {
+  return {
+    id: nanoid(),
+    type: "trigger" as const,
+    position: { x: 0, y: 0 },
+    data: {
+      label: "",
+      description: "",
+      type: "trigger" as const,
+      config: { triggerType: "Manual" },
+      status: "idle" as const,
+    },
+  };
+}
 
 export default function WorkflowPage() {
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
+  const { data: session } = useSession();
+  const nodes = useAtomValue(nodesAtom);
+  const edges = useAtomValue(edgesAtom);
+  const setNodes = useSetAtom(nodesAtom);
+  const setEdges = useSetAtom(edgesAtom);
+  const setCurrentWorkflowName = useSetAtom(currentWorkflowNameAtom);
+  const setHasSidebarBeenShown = useSetAtom(hasSidebarBeenShownAtom);
+  const setIsTransitioningFromHomepage = useSetAtom(
+    isTransitioningFromHomepageAtom,
+  );
+  const hasCreatedWorkflowRef = useRef(false);
+  const currentWorkflowName = useAtomValue(currentWorkflowNameAtom);
 
+  // Reset sidebar animation state when on workflow page
   useEffect(() => {
-    // Check if workflow app is running
-    const checkWorkflowApp = async () => {
-      try {
-        // Try to fetch the workflow app
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 3000);
+    setHasSidebarBeenShown(false);
+  }, [setHasSidebarBeenShown]);
 
-        const response = await fetch("http://localhost:3013", {
-          method: "HEAD",
-          mode: "no-cors",
-          signal: controller.signal,
+  // Update page title when workflow name changes
+  useEffect(() => {
+    document.title = `${currentWorkflowName} - IdeaI Capabilities`;
+  }, [currentWorkflowName]);
+
+  // Helper to create anonymous session if needed
+  const ensureSession = useCallback(async () => {
+    if (!session) {
+      await authClient.signIn.anonymous();
+      await new Promise((resolve) => setTimeout(resolve, 100));
+    }
+  }, [session]);
+
+  // Handler to add the first node (replaces the "add" node)
+  const handleAddNode = useCallback(() => {
+    const newNode: WorkflowNode = createDefaultTriggerNode();
+    // Replace all nodes (removes the "add" node)
+    setNodes([newNode]);
+  }, [setNodes]);
+
+  // Initialize with a temporary "add" node on mount
+  useEffect(() => {
+    const addNodePlaceholder: WorkflowNode = {
+      id: "add-node-placeholder",
+      type: "add",
+      position: { x: 0, y: 0 },
+      data: {
+        label: "",
+        type: "add",
+        onClick: handleAddNode,
+      },
+      draggable: false,
+      selectable: false,
+    };
+    setNodes([addNodePlaceholder]);
+    setEdges([]);
+    setCurrentWorkflowName("New Workflow");
+    hasCreatedWorkflowRef.current = false;
+  }, [setNodes, setEdges, setCurrentWorkflowName, handleAddNode]);
+
+  // Create workflow when first real node is added
+  useEffect(() => {
+    const createWorkflowAndRedirect = async () => {
+      // Filter out the placeholder "add" node
+      const realNodes = nodes.filter((node) => node.type !== "add");
+
+      // Only create when we have at least one real node and haven't created a workflow yet
+      if (realNodes.length === 0 || hasCreatedWorkflowRef.current) {
+        return;
+      }
+      hasCreatedWorkflowRef.current = true;
+
+      try {
+        await ensureSession();
+
+        // Create workflow with all real nodes
+        const newWorkflow = await api.workflow.create({
+          name: "Untitled Workflow",
+          description: "",
+          nodes: realNodes,
+          edges,
         });
-        clearTimeout(timeoutId);
-        setIsLoading(false);
-        setError(null);
-      } catch (err) {
-        setIsLoading(false);
-        setError(
-          "Workflow app is not running. Start it with: pnpm --filter ideai-workflow dev",
-        );
+
+        // Set flags to indicate we're coming from workflow page (for sidebar animation)
+        sessionStorage.setItem("animate-sidebar", "true");
+        setIsTransitioningFromHomepage(true);
+
+        // Redirect to the workflow detail page
+        console.log("[WorkflowPage] Navigating to workflow detail page");
+        router.replace(`/workflow/workflows/${newWorkflow.id}`);
+      } catch (error) {
+        console.error("Failed to create workflow:", error);
+        toast.error("Failed to create workflow");
       }
     };
 
-    // Check immediately and then every 5 seconds
-    checkWorkflowApp();
-    const interval = setInterval(checkWorkflowApp, 5000);
-    return () => clearInterval(interval);
-  }, []);
+    createWorkflowAndRedirect();
+  }, [nodes, edges, router, ensureSession, setIsTransitioningFromHomepage]);
 
-  return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="mb-6">
-        <div className="mb-2 flex items-center gap-2">
-          <h1 className="text-3xl font-bold">Workflow Builder</h1>
-          <Badge variant="outline">Component Test</Badge>
-        </div>
-        <p className="text-slate-600 dark:text-slate-400">
-          This page demonstrates the workflow builder as a component. Currently
-          using iframe bridge, will be replaced with direct component import
-          once extracted to @repo/workflow package.
-        </p>
-      </div>
-
-      {error && (
-        <Alert className="mb-6" variant="destructive">
-          <Info className="h-4 w-4" />
-          <AlertTitle>Workflow App Not Running</AlertTitle>
-          <AlertDescription>{error}</AlertDescription>
-        </Alert>
-      )}
-
-      {isLoading && (
-        <div className="flex items-center justify-center py-16">
-          <Loader2 className="h-8 w-8 animate-spin text-slate-400" />
-        </div>
-      )}
-
-      {!isLoading && !error && (
-        <Card>
-          <CardHeader>
-            <CardTitle>Workflow Canvas</CardTitle>
-            <CardDescription>
-              Interactive workflow builder running automatically
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="p-0">
-            <div className="relative h-[800px] w-full overflow-hidden rounded-lg border">
-              <iframe
-                src="http://localhost:3013?i=1&h=0&f=0&n=0"
-                className="h-full w-full border-0"
-                title="Workflow Builder"
-                sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-modals"
-              />
-            </div>
-          </CardContent>
-        </Card>
-      )}
-
-      {/* Architecture Note */}
-      <Card className="mt-6">
-        <CardHeader>
-          <CardTitle>Architecture Note</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p className="text-sm text-slate-600 dark:text-slate-400">
-            <strong>Current</strong>: Using iframe bridge to workflow app (port
-            3013). This demonstrates the concept while workflow extraction is in
-            progress.
-          </p>
-          <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">
-            <strong>Future</strong>: Once workflow is extracted to
-            `@repo/workflow` package, this page will import `WorkflowBuilder`
-            component directly:
-          </p>
-          <pre className="mt-2 rounded bg-slate-100 p-3 text-xs dark:bg-slate-900">
-            {`import { WorkflowBuilder } from "@repo/workflow";
-
-export default function WorkflowPage() {
-  return <WorkflowBuilder />;
-}`}
-          </pre>
-        </CardContent>
-      </Card>
-    </div>
-  );
+  // Canvas and toolbar are rendered by PersistentCanvas in the layout
+  // This page just handles the workflow creation logic
+  return null;
 }
