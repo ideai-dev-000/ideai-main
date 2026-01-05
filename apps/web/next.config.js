@@ -3,7 +3,12 @@ const nextConfig = {
   // SECURITY NOTE: Cloud Manager route (/cloud) is protected at the page level
   // It returns 404 (notFound()) in production via runtime NODE_ENV check
   // Navigation link is also hidden in production
-  transpilePackages: ["@repo/ui", "@motionone/dom", "vivus"],
+  transpilePackages: [
+    "@repo/ui",
+    "@repo/ideai-db-manager",
+    "@motionone/dom",
+    "vivus",
+  ],
   experimental: {
     // Optimize package imports to reduce bundle size
     optimizePackageImports: [
