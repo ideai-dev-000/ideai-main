@@ -67,6 +67,7 @@ Transform IdeaI from a collection of separate apps into a true shared codebase w
 #### Implementation Steps
 
 1. **Extract Capabilities to Packages**:
+   - [x] **Test Bed Created**: `apps/ideai-capabilities` site demonstrates component extraction pattern
    - [ ] Create `@repo/workflow` package from `ideai-workflow` app
      - Extract workflow builder UI components
      - Extract workflow execution logic
@@ -84,12 +85,14 @@ Transform IdeaI from a collection of separate apps into a true shared codebase w
      - Keep as reusable package
 
 2. **Refactor Apps to Use Packages**:
+   - [x] **Pattern Demonstrated**: `apps/ideai-capabilities` shows how apps can use components
    - [ ] Update `ideai-workflow` app to import from `@repo/workflow`
    - [ ] Update `lead-processing-agent` app to import from `@repo/lead-agent`
    - [ ] Update `ideai-builder` app to import from `@repo/app-builder`
    - [ ] Ensure apps are thin wrappers (routes + minimal app-specific code)
 
 3. **Implement True Unified Mode**:
+   - [x] **Component Import Pattern**: `apps/ideai-capabilities` demonstrates direct component imports (no iframes for future)
    - [ ] Remove Next.js rewrites (dev-only workaround)
    - [ ] Create component registry that imports child app pages as React components
    - [ ] Update `apps/web/app/apps/[app]/[[...path]]/page.tsx` to render components directly
@@ -103,6 +106,8 @@ Transform IdeaI from a collection of separate apps into a true shared codebase w
    - [ ] Remove port-based routing from production builds
 
 5. **Documentation**:
+   - [x] **Example Site Created**: `apps/ideai-capabilities` serves as reference implementation
+   - [x] **Architecture Plan**: `docs/architecture/capabilities-site-plan.md` documents the approach
    - [ ] Document package extraction process
    - [ ] Document how to create new capabilities as packages
    - [ ] Document how to use packages in apps

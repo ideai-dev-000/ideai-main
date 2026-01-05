@@ -1,0 +1,25 @@
+{
+  "role": "child",
+  "name": "IdeaI Capabilities",
+  "description": "Test bed site for shared codebase architecture - demonstrates capabilities as components",
+  "parentApp": "web",
+  "localPort": 3018,
+  "vercelProject": {
+    "projectName": "ideai-capabilities",
+    "orgId": "team_vhjzlMi6CfNow0IfBXnv2Yn2",
+    "forkToNew": false
+  },
+  "metadata": {
+    "id": "ideai-capabilities",
+    "port": 3018,
+    "css": ["Tailwind CSS", "Shadcn/UI"],
+    "capabilities": [
+      "Workflow Builder (as component)",
+      "Lead Agent (as component)",
+      "App Builder (as component)",
+      "Shared Codebase Architecture test bed"
+    ],
+    "path": "/apps/ideai-capabilities",
+    "category": "test-bed"
+  }
+}
