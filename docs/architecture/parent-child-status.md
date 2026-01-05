@@ -10,11 +10,13 @@ description: Current status of parent/child app architecture
 ### Defaults Tested and Working
 
 **Parent App**: `web`
+
 - ✅ Defaults to `parent` role (no config needed)
 - ✅ URL: `/` (root)
 - ✅ Detects all child apps automatically
 
 **Child Apps**: All apps except `web`
+
 - ✅ Default to `child` role (no config needed)
 - ✅ URLs: `/apps/{name}` (e.g., `/apps/docs`, `/apps/all`)
 - ✅ Development ports: 3001-3009
@@ -22,32 +24,34 @@ description: Current status of parent/child app architecture
 
 ### Test Results
 
-```bash
+\`\`\`bash
 $ node scripts/test-parent-child.js
 
 ✅ Parent App (web):
-   Role: parent
-   Name: IdeaI
-   Child Apps: 9
-   URL: / (root)
+Role: parent
+Name: IdeaI
+Child Apps: 9
+URL: / (root)
 
 ✅ Child Apps (testing defaults - no .ideai.json):
-   docs: /apps/docs (port 3001) ✅
-   all: /apps/all (port 3002) ✅
-   nocss: /apps/nocss (port 3003) ✅
-```
+docs: /apps/docs (port 3001) ✅
+all: /apps/all (port 3002) ✅
+nocss: /apps/nocss (port 3003) ✅
+\`\`\`
 
 ## Architecture
 
 ### One Unified App (Same Domain, Same Codebase)
 
 **Current Implementation**:
+
 - Parent app (`web`) serves at root: `myui.space/`
 - Child apps embedded via iframe: `myui.space/apps/{name}`
 - All in same codebase (monorepo)
 - All in same domain
 
 **How It Works**:
+
 1. Parent app has route: `/apps/[app]/[[...path]]`
 2. Child apps run on localhost ports (dev) or same origin (prod)
 3. Child apps detect iframe and hide header/footer automatically
@@ -58,27 +62,30 @@ $ node scripts/test-parent-child.js
 ### Current Approach: Iframe Isolation
 
 Each child app loads in iframe with its own CSS:
+
 - ✅ Complete CSS isolation
 - ✅ No conflicts
 - ✅ Each child can use different CSS frameworks
 
 ### CSS Requirements by Child
 
-| Child | CSS Used | Status |
-|-------|----------|--------|
-| `docs` | MVP.css + Tailwind + IdeaI | ✅ Isolated |
-| `all` | MVP.css + Tailwind + IdeaI | ✅ Isolated |
-| `nocss` | None (pure HTML) | ✅ Isolated |
-| `mvp` | MVP.css only | ✅ Isolated |
-| `tailwind` | Tailwind only | ✅ Isolated |
-| `allcss` | MVP.css + Tailwind + IdeaI | ✅ Isolated |
-| `bootstrap` | Bootstrap CSS | ✅ Isolated |
-| `unocss` | UnoCSS | ✅ Isolated |
-| `shadcn` | Tailwind + IdeaI | ✅ Isolated |
+| Child       | CSS Used                   | Status      |
+| ----------- | -------------------------- | ----------- |
+| `docs`      | MVP.css + Tailwind + IdeaI | ✅ Isolated |
+| `all`       | MVP.css + Tailwind + IdeaI | ✅ Isolated |
+| `nocss`     | None (pure HTML)           | ✅ Isolated |
+| `mvp`       | MVP.css only               | ✅ Isolated |
+| `pico`      | Pico CSS only              | ✅ Isolated |
+| `tailwind`  | Tailwind only              | ✅ Isolated |
+| `allcss`    | MVP.css + Tailwind + IdeaI | ✅ Isolated |
+| `bootstrap` | Bootstrap CSS              | ✅ Isolated |
+| `unocss`    | UnoCSS                     | ✅ Isolated |
+| `shadcn`    | Tailwind + IdeaI           | ✅ Isolated |
 
 ### Future: Unified Build (No Iframes)
 
 If moving to unified build (no iframes), parent would need:
+
 - MVP.css ✅ (already has)
 - Tailwind CSS ✅ (already has)
 - IdeaI CSS ✅ (already has)
@@ -90,10 +97,12 @@ If moving to unified build (no iframes), parent would need:
 ## URLs
 
 ### Parent App
+
 - Root: `/`
 - Apps index: `/index`
 
 ### Child Apps
+
 - `/apps/docs` → Documentation
 - `/apps/all` → All Components
 - `/apps/nocss` → No CSS
@@ -115,13 +124,13 @@ If moving to unified build (no iframes), parent would need:
 
 Create `.ideai.json` in app directory to override:
 
-```json
+\`\`\`json
 {
-  "role": "parent",
-  "name": "My App",
-  "childApps": ["child1", "child2"]
+"role": "parent",
+"name": "My App",
+"childApps": ["child1", "child2"]
 }
-```
+\`\`\`
 
 ## Next Steps
 
@@ -139,5 +148,3 @@ Create `.ideai.json` in app directory to override:
 - **One App**: Parent embeds children seamlessly
 - **CSS Isolation**: Iframes prevent conflicts
 - **Easy Switching**: Change `.ideai.json` to switch roles
-
-

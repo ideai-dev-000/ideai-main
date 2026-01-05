@@ -8,6 +8,7 @@ description: Complete guide to the parent/child app architecture with .ideai.jso
 ## Overview
 
 Simple, powerful parent/child app architecture where:
+
 - **Parent app** (`web`) serves at root: `myui.space/`
 - **Child apps** embedded at: `myui.space/apps/{name}`
 - **One unified app**: Same domain, same codebase
@@ -17,12 +18,15 @@ Simple, powerful parent/child app architecture where:
 
 ### 1. Defaults Work (No Config Needed)
 
-```bash
+\`\`\`bash
+
 # Test defaults
+
 node scripts/test-parent-child.js
-```
+\`\`\`
 
 **Result**:
+
 - ✅ `web` = parent (automatic)
 - ✅ All others = children (automatic)
 - ✅ URLs: `/apps/{name}`
@@ -33,39 +37,44 @@ node scripts/test-parent-child.js
 Create `.ideai.json` in app directory:
 
 **Parent** (`apps/web/.ideai.json`):
-```json
+\`\`\`json
 {
-  "role": "parent",
-  "name": "IdeaI",
-  "childApps": ["docs", "all", "nocss"]
+"role": "parent",
+"name": "IdeaI",
+"childApps": ["docs", "all", "nocss"]
 }
-```
+\`\`\`
 
 **Child** (`apps/docs/.ideai.json`):
-```json
+\`\`\`json
 {
-  "role": "child",
-  "name": "Documentation",
-  "parentApp": "web",
-  "localPort": 3001
+"role": "child",
+"name": "Documentation",
+"parentApp": "web",
+"localPort": 3001
 }
-```
+\`\`\`
 
 ### 3. Build & Test
 
-```bash
+\`\`\`bash
+
 # Check dependencies
+
 pnpm --filter web build:check
 
 # Build
+
 pnpm --filter web build
 
 # Track build
+
 pnpm --filter web build:track
 
 # Full verification
+
 ./scripts/verify-all.sh
-```
+\`\`\`
 
 ## Architecture
 
@@ -89,54 +98,54 @@ pnpm --filter web build:track
 
 ### File Structure
 
-```
+\`\`\`
 apps/
-├── web/                    # Parent app
-│   ├── .ideai.json        # Parent config (optional)
-│   └── app/
-│       └── apps/
-│           └── [app]/
-│               └── [[...path]]/
-│                   └── page.tsx  # Child app router
-├── docs/                   # Child app
-│   ├── .ideai.json        # Child config (optional)
-│   └── app/
-│       └── page.tsx        # Child app page
-└── all/                    # Child app
-    └── app/
-        └── page.tsx
-```
+├── web/ # Parent app
+│ ├── .ideai.json # Parent config (optional)
+│ └── app/
+│ └── apps/
+│ └── [app]/
+│ └── [[...path]]/
+│ └── page.tsx # Child app router
+├── docs/ # Child app
+│ ├── .ideai.json # Child config (optional)
+│ └── app/
+│ └── page.tsx # Child app page
+└── all/ # Child app
+└── app/
+└── page.tsx
+\`\`\`
 
 ## Configuration System
 
 ### `.ideai.json` Format
 
 **Parent App**:
-```json
+\`\`\`json
 {
-  "role": "parent",
-  "name": "IdeaI",
-  "description": "Main IdeaI application",
-  "childApps": ["docs", "all", "nocss"],
-  "build": {
-    "includeChildDependencies": true,
-    "verifyDependencies": true,
-    "securityCheck": true,
-    "trackBuilds": true
-  }
+"role": "parent",
+"name": "IdeaI",
+"description": "Main IdeaI application",
+"childApps": ["docs", "all", "nocss"],
+"build": {
+"includeChildDependencies": true,
+"verifyDependencies": true,
+"securityCheck": true,
+"trackBuilds": true
 }
-```
+}
+\`\`\`
 
 **Child App**:
-```json
+\`\`\`json
 {
-  "role": "child",
-  "name": "Documentation",
-  "description": "IdeaI documentation site",
-  "parentApp": "web",
-  "localPort": 3001
+"role": "child",
+"name": "Documentation",
+"description": "IdeaI documentation site",
+"parentApp": "web",
+"localPort": 3001
 }
-```
+\`\`\`
 
 ### Defaults (No Config Needed)
 
@@ -150,25 +159,28 @@ apps/
 ### Dependency Management
 
 **Check Dependencies**:
-```bash
+\`\`\`bash
 pnpm --filter web build:check
-```
+\`\`\`
 
 **Sync Dependencies** (auto-add missing):
-```bash
+\`\`\`bash
+
 # Dry run first
+
 pnpm --filter web build:sync --dry-run
 
 # Actual sync
+
 pnpm --filter web build:sync
 pnpm install
-```
+\`\`\`
 
 **Track Builds**:
-```bash
+\`\`\`bash
 pnpm --filter web build:track
 node scripts/ideai-build-track.mjs web report
-```
+\`\`\`
 
 ### Security (2026 Best Practices)
 
@@ -181,10 +193,12 @@ node scripts/ideai-build-track.mjs web report
 ## URLs
 
 ### Parent App
+
 - Root: `/`
 - Apps index: `/index`
 
 ### Child Apps
+
 - `/apps/docs` → Documentation
 - `/apps/all` → All Components
 - `/apps/nocss` → No CSS
@@ -200,6 +214,7 @@ node scripts/ideai-build-track.mjs web report
 ### Current: Iframe Isolation
 
 Each child app loads in iframe with its own CSS:
+
 - ✅ Complete isolation
 - ✅ No conflicts
 - ✅ Each child can use different CSS frameworks
@@ -207,6 +222,7 @@ Each child app loads in iframe with its own CSS:
 ### Future: Unified Build
 
 If moving to unified build (no iframes):
+
 - Parent needs all child CSS libraries
 - Use `build:sync` to auto-add dependencies
 - CSS scoping required
@@ -215,11 +231,12 @@ If moving to unified build (no iframes):
 
 ### Complete Verification
 
-```bash
+\`\`\`bash
 ./scripts/verify-all.sh
-```
+\`\`\`
 
 **Checks**:
+
 1. ✅ Defaults working
 2. ✅ Dependencies tracked
 3. ✅ TypeScript compiles
@@ -229,52 +246,59 @@ If moving to unified build (no iframes):
 
 ### Manual Verification
 
-```bash
+\`\`\`bash
+
 # 1. Test defaults
+
 node scripts/test-parent-child.js
 
 # 2. Check dependencies
+
 pnpm --filter web build:check
 
 # 3. TypeScript
+
 pnpm --filter web check-types
 
 # 4. Linter
+
 pnpm --filter web lint
 
 # 5. Build
+
 pnpm --filter web build
 
 # 6. Track
+
 pnpm --filter web build:track
-```
+\`\`\`
 
 ## Switching App Roles
 
 ### Make App a Parent
 
 1. Create `apps/my-app/.ideai.json`:
-   ```json
+   \`\`\`json
    {
-     "role": "parent",
-     "name": "My Parent",
-     "childApps": ["child1", "child2"]
+   "role": "parent",
+   "name": "My Parent",
+   "childApps": ["child1", "child2"]
    }
-   ```
+   \`\`\`
 
 2. Update children to reference new parent
 
 ### Make App a Child
 
 1. Create `apps/my-app/.ideai.json`:
-   ```json
+   \`\`\`json
    {
-     "role": "child",
-     "name": "My Child",
-     "parentApp": "web",
-     "localPort": 3010
+   "role": "child",
+   "name": "My Child",
+   "parentApp": "web",
+   "localPort": 3010
    }
-   ```
+   \`\`\`
 
 2. Add to parent's `childApps` array
 
@@ -290,15 +314,15 @@ pnpm --filter web build:track
 
 ### Package.json Scripts
 
-```json
+\`\`\`json
 {
-  "scripts": {
-    "build:check": "Check dependencies",
-    "build:sync": "Sync dependencies",
-    "build:track": "Track build"
-  }
+"scripts": {
+"build:check": "Check dependencies",
+"build:sync": "Sync dependencies",
+"build:track": "Track build"
 }
-```
+}
+\`\`\`
 
 ## Status
 
@@ -335,5 +359,3 @@ pnpm --filter web build:track
 4. **Secure**: 2026 best practices (pnpm, lock files)
 5. **Tracked**: Build metadata for visibility
 6. **Flexible**: Easy to switch parent/child roles
-
-

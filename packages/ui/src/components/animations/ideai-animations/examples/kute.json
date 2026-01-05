@@ -1,0 +1,242 @@
+[
+  {
+    "id": "kute-1",
+    "title": "SVG Morph",
+    "description": "Smooth morphing between SVG paths - rectangle to star transformation",
+    "library": "KUTE.js",
+    "category": "SVG",
+    "tags": ["svg", "morph", "path", "drawing", "popular"],
+    "source": "https://thednp.github.io/kute.js/svgMorph.html",
+    "code": "import KUTE from 'kute.js';\n\nconst tween = KUTE.fromTo(\n  '#rectangle',\n  { path: '#rectangle' },\n  { path: '#star' }\n);\ntween.start();",
+    "config": {
+      "type": "svgMorph",
+      "fromPath": "M38.01,5.653h526.531c17.905,0,32.422,14.516,32.422,32.422v526.531 c0,17.905-14.517,32.422-32.422,32.422H38.01c-17.906,0-32.422-14.517-32.422-32.422V38.075C5.588,20.169,20.104,5.653,38.01,5.653z",
+      "toPath": "M301.113,12.011l99.25,179.996l201.864,38.778L461.706,380.808 l25.508,203.958l-186.101-87.287L115.01,584.766l25.507-203.958L0,230.785l201.86-38.778L301.113,12.011",
+      "duration": 1000
+    },
+    "effectType": "drawing",
+    "variants": [
+      {
+        "name": "Rectangle to Star",
+        "description": "Basic morph from rectangle to star",
+        "code": "KUTE.fromTo('#path', { path: '#rectangle' }, { path: '#star' }).start();",
+        "config": {
+          "type": "svgMorph",
+          "fromPath": "M38.01,5.653h526.531c17.905,0,32.422,14.516,32.422,32.422v526.531 c0,17.905-14.517,32.422-32.422,32.422H38.01c-17.906,0-32.422-14.517-32.422-32.422V38.075C5.588,20.169,20.104,5.653,38.01,5.653z",
+          "toPath": "M301.113,12.011l99.25,179.996l201.864,38.778L461.706,380.808 l25.508,203.958l-186.101-87.287L115.01,584.766l25.507-203.958L0,230.785l201.86-38.778L301.113,12.011",
+          "duration": 1000
+        }
+      },
+      {
+        "name": "Line to Circle",
+        "description": "Morph from unclosed line to closed circle",
+        "code": "KUTE.fromTo('#line', { path: '#line' }, { path: '#circle' }).start();",
+        "config": {
+          "type": "svgMorph",
+          "fromPath": "M10 300L590 300",
+          "toPath": "M10,300a290,290 0 1,0 580,0a290,290 0 1,0 -580,0z",
+          "duration": 1200
+        }
+      }
+    ]
+  },
+  {
+    "id": "kute-2",
+    "title": "SVG Cubic Morph",
+    "description": "Advanced cubic Bézier path morphing for smoother transitions",
+    "library": "KUTE.js",
+    "category": "SVG",
+    "tags": ["svg", "morph", "cubic", "bezier", "drawing"],
+    "source": "https://thednp.github.io/kute.js/svgCubicMorph.html",
+    "code": "import KUTE from 'kute.js';\n\nconst tween = KUTE.fromTo(\n  '#path1',\n  { path: '#path1' },\n  { path: '#path2' }\n);\ntween.start();",
+    "config": {
+      "type": "svgCubicMorph",
+      "fromPath": "M38.01,5.653h526.531c17.905,0,32.422,14.516,32.422,32.422v526.531 c0,17.905-14.517,32.422-32.422,32.422H38.01c-17.906,0-32.422-14.517-32.422-32.422V38.075C5.588,20.169,20.104,5.653,38.01,5.653z",
+      "toPath": "M301.113,12.011l99.25,179.996l201.864,38.778L461.706,380.808 l25.508,203.958l-186.101-87.287L115.01,584.766l25.507-203.958L0,230.785l201.86-38.778L301.113,12.011",
+      "duration": 1200
+    },
+    "effectType": "drawing"
+  },
+  {
+    "id": "kute-3",
+    "title": "SVG Draw",
+    "description": "Animate SVG path drawing using stroke-dasharray - draw from 0% to 100%",
+    "library": "KUTE.js",
+    "category": "SVG",
+    "tags": ["svg", "draw", "stroke", "path", "drawing", "popular"],
+    "source": "https://thednp.github.io/kute.js/svgDraw.html",
+    "code": "import KUTE from 'kute.js';\n\n// Draw from 0% to 100%\nconst tween = KUTE.fromTo('#path',\n  { draw: '0% 0%' },\n  { draw: '0% 100%' }\n);\ntween.start();",
+    "config": {
+      "type": "svgDraw",
+      "drawFrom": "0% 0%",
+      "drawTo": "0% 100%",
+      "duration": 2000
+    },
+    "effectType": "drawing",
+    "variants": [
+      {
+        "name": "Full Draw",
+        "description": "Draw from 0% to 100%",
+        "code": "KUTE.fromTo('#path', { draw: '0% 0%' }, { draw: '0% 100%' }).start();",
+        "config": {
+          "type": "svgDraw",
+          "drawFrom": "0% 0%",
+          "drawTo": "0% 100%",
+          "duration": 2000
+        }
+      },
+      {
+        "name": "Partial Draw",
+        "description": "Draw from 0-10% to 90-100%",
+        "code": "KUTE.fromTo('#path', { draw: '0% 10%' }, { draw: '90% 100%' }).start();",
+        "config": {
+          "type": "svgDraw",
+          "drawFrom": "0% 10%",
+          "drawTo": "90% 100%",
+          "duration": 2000
+        }
+      },
+      {
+        "name": "Reverse Draw",
+        "description": "Draw from 100% to 50%",
+        "code": "KUTE.fromTo('#path', { draw: '0% 100%' }, { draw: '50% 50%' }).start();",
+        "config": {
+          "type": "svgDraw",
+          "drawFrom": "0% 100%",
+          "drawTo": "50% 50%",
+          "duration": 2000
+        }
+      }
+    ]
+  },
+  {
+    "id": "kute-4",
+    "title": "Transform Functions",
+    "description": "2D and 3D transform functions - translate, rotate, scale, skew",
+    "library": "KUTE.js",
+    "category": "Transform",
+    "tags": [
+      "transform",
+      "translate",
+      "rotate",
+      "scale",
+      "animating",
+      "popular"
+    ],
+    "source": "https://thednp.github.io/kute.js/transformFunctions.html",
+    "code": "import KUTE from 'kute.js';\n\nconst tween = KUTE.to('#element', {\n  translate: [100, 50],\n  rotate: 45,\n  scale: 1.2\n});\ntween.start();",
+    "config": {
+      "type": "transformFunctions",
+      "translate": [100, 50],
+      "rotate": 45,
+      "scale": 1.2,
+      "duration": 600
+    },
+    "effectType": "animating",
+    "variants": [
+      {
+        "name": "2D Translate",
+        "description": "Translate on X and Y axes",
+        "code": "KUTE.fromTo('#element', { translate: 0 }, { translate: 250 }).start();",
+        "config": {
+          "type": "transformFunctions",
+          "translate": [100, 50],
+          "duration": 600
+        }
+      },
+      {
+        "name": "3D Translate",
+        "description": "Translate on X, Y, and Z axes with perspective",
+        "code": "KUTE.fromTo('#element', { perspective: 400, translate3d: [0,0,0] }, { perspective: 200, translate3d: [0,250,0] }).start();",
+        "config": {
+          "type": "transformFunctions",
+          "perspective": 400,
+          "translate3d": [0, 100, 0],
+          "duration": 800
+        }
+      },
+      {
+        "name": "Rotation",
+        "description": "2D and 3D rotations",
+        "code": "KUTE.fromTo('#element', { rotate: 0 }, { rotate: -720 }).start();",
+        "config": {
+          "type": "transformFunctions",
+          "rotate": 360,
+          "duration": 1000
+        }
+      },
+      {
+        "name": "Scale",
+        "description": "Scale transformation",
+        "code": "KUTE.fromTo('#element', { scale: 1 }, { scale: 1.5 }).start();",
+        "config": {
+          "type": "transformFunctions",
+          "scale": 1.5,
+          "duration": 600
+        }
+      },
+      {
+        "name": "Skew",
+        "description": "Skew transformation on X and Y",
+        "code": "KUTE.fromTo('#element', { skew: [0,0] }, { skew: [0,45] }).start();",
+        "config": {
+          "type": "transformFunctions",
+          "skew": [20, 20],
+          "duration": 600
+        }
+      },
+      {
+        "name": "Mixed Transforms",
+        "description": "Combine multiple transforms",
+        "code": "KUTE.fromTo('#element', { perspective: 200, translateX: 0, rotateX: 0, rotateY: 0, rotateZ: 0 }, { perspective: 200, translateX: 250, rotateX: 360, rotateY: 15, rotateZ: 5 }).start();",
+        "config": {
+          "type": "transformFunctions",
+          "perspective": 200,
+          "translateX": 100,
+          "rotateX": 180,
+          "rotateY": 45,
+          "rotateZ": 90,
+          "duration": 1000
+        }
+      }
+    ]
+  },
+  {
+    "id": "kute-5",
+    "title": "SVG Transform",
+    "description": "Transform animations for SVG elements - solves browser inconsistencies",
+    "library": "KUTE.js",
+    "category": "SVG",
+    "tags": ["svg", "transform", "animating"],
+    "source": "https://thednp.github.io/kute.js/svgTransform.html",
+    "code": "import KUTE from 'kute.js';\n\nconst tween = KUTE.to('#svg-element', {\n  svgTransform: { translate: [100, 50], rotate: 45, scale: 1.2 }\n});\ntween.start();",
+    "config": {
+      "type": "svgTransform",
+      "svgTransform": {
+        "translate": [100, 50],
+        "rotate": 45,
+        "scale": 1.2
+      },
+      "duration": 600
+    },
+    "effectType": "animating"
+  },
+  {
+    "id": "kute-6",
+    "title": "Color Properties",
+    "description": "Smooth color transitions for text, background, border, and stroke",
+    "library": "KUTE.js",
+    "category": "Color",
+    "tags": ["color", "transition", "background", "coloring", "popular"],
+    "source": "https://thednp.github.io/kute.js/colorProperties.html",
+    "code": "import KUTE from 'kute.js';\n\nconst tween = KUTE.to('#element', {\n  color: '#3b82f6',\n  backgroundColor: '#f3f4f6',\n  borderColor: '#e5e7eb'\n});\ntween.start();",
+    "config": {
+      "type": "colorProperties",
+      "color": "#3b82f6",
+      "backgroundColor": "#f3f4f6",
+      "borderColor": "#e5e7eb",
+      "duration": 600
+    },
+    "effectType": "coloring"
+  }
+]

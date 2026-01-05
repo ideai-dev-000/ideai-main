@@ -1,6 +1,6 @@
 /**
  * @fileoverview Root layout component for the IdeaI Material UI application
- * 
+ *
  * @module RootLayout
  * @description
  * Defines the root HTML structure, fonts, and metadata for the Material UI app.
@@ -41,6 +41,3 @@ export default function RootLayout({
     </html>
   );
 }
-
-
-

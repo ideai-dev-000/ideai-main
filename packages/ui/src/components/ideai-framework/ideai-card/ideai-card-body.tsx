@@ -1,11 +1,11 @@
 /**
  * @fileoverview IdeaI Card Body Component
- * 
+ *
  * @module IdeAICardBody
  * @description
  * Body component for IdeaI framework cards.
  * Provides semantic body structure for card content.
- * 
+ *
  * @example
  * ```tsx
  * <IdeAICardBody framework="tailwind">
@@ -29,7 +29,7 @@ interface IdeAICardBodyProps extends HTMLAttributes<HTMLElement> {
 
 /**
  * IdeaI Card Body Component
- * 
+ *
  * Semantic body element for card components.
  * Uses proper HTML structure with framework-adaptive styling.
  */
@@ -47,6 +47,3 @@ export const IdeAICardBody = ({
     </div>
   );
 };
-
-
-

@@ -68,4 +68,3 @@ export default makeSource({
   documentTypes: [Doc],
   disableImportAliasWarning: true,
 });
-

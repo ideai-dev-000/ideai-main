@@ -108,13 +108,13 @@ See [Vercel Build Configuration](https://vercel.com/docs/builds/configure-a-buil
 **Symptoms**: `vercel` command fails locally
 
 **Solutions**:
-```bash
+\`\`\`bash
 # Re-authenticate
 vercel login
 
 # Re-link project (from repo root)
 vercel link
-```
+\`\`\`
 
 **Note**: For standard deployments, use GitHub Actions workflows. Vercel CLI is mainly for local testing.
 
@@ -133,9 +133,9 @@ vercel link
 ### "EADDRINUSE: address already in use"
 
 **Solution**: Port is already in use, kill existing process:
-```bash
+\`\`\`bash
 lsof -ti:3000 | xargs kill -9
-```
+\`\`\`
 
 ### "TURBO_TOKEN not found"
 
@@ -146,9 +146,9 @@ lsof -ti:3000 | xargs kill -9
 ### "Project not found"
 
 **Solution**: Verify project is linked (from repo root):
-```bash
+\`\`\`bash
 vercel link
-```
+\`\`\`
 
 ### Deployment Canceled: "Unverified commit"
 
@@ -170,7 +170,7 @@ vercel link
 
 ### Useful Commands
 
-```bash
+\`\`\`bash
 # Check Vercel authentication
 vercel whoami
 
@@ -182,7 +182,7 @@ vercel inspect
 
 # Check GitHub CLI
 gh auth status
-```
+\`\`\`
 
 ### Resources
 
@@ -196,4 +196,3 @@ gh auth status
 - [CI/CD Workflows](./ci-cd.md)
 - [Vercel Configuration](./vercel.md)
 - [GitHub Secrets Setup](../setup/github-secrets.md)
-

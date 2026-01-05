@@ -95,4 +95,3 @@ export function MobileNav({ navItems, className }: MobileNavProps) {
     </Dialog.Root>
   );
 }
-

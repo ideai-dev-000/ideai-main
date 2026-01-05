@@ -1,5 +1,5 @@
 {
-  "name": "web",
+  "name": "@repo/web",
   "version": "0.1.0",
   "type": "module",
   "private": true,
@@ -9,12 +9,18 @@
     "start": "next start",
     "lint": "eslint --max-warnings 0",
     "check-types": "tsc --noEmit",
-    "build:check": "node ../../scripts/ideai-build-check.mjs web",
+    "build:check": "node ../../scripts/ideai-build.mjs verify --no-ui",
     "build:sync": "node ../../scripts/ideai-build-sync.mjs web",
     "build:track": "node ../../scripts/ideai-build-track.mjs web build"
   },
   "dependencies": {
+    "@repo/cloud-manager": "workspace:*",
     "@repo/ui": "workspace:*",
+    "@radix-ui/react-label": "2.1.1",
+    "@radix-ui/react-radio-group": "1.2.2",
+    "@radix-ui/react-slider": "1.2.2",
+    "@radix-ui/react-switch": "1.1.2",
+    "framer-motion": "12.23.26",
     "next": "16.1.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0"

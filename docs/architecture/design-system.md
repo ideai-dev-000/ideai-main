@@ -13,7 +13,7 @@ The IdeaI design system is built on a **centralized, shared component library** 
 
 ## Architecture
 
-```
+\`\`\`
 packages/ui/                    # Centralized design system
 ├── src/
 │   ├── components/
@@ -35,7 +35,7 @@ packages/ui/                    # Centralized design system
 ├── components.json            # shadcn configuration
 ├── tailwind.config.ts         # Shared Tailwind config
 └── package.json               # Includes normalize.css dependency
-```
+\`\`\`
 
 ## Design Tokens
 
@@ -76,17 +76,17 @@ MVP.css is a minimalist stylesheet that styles root HTML elements, so you don't 
 
 shadcn/ui components are installed in `packages/ui/src/components/ui/`:
 
-```bash
+\`\`\`bash
 # Add a new component (from packages/ui directory)
 cd packages/ui
 pnpm dlx shadcn@latest add button
-```
+\`\`\`
 
 Components are then exported from `@repo/ui`:
 
-```tsx
+\`\`\`tsx
 import { Button } from "@repo/ui/components/ui/button";
-```
+\`\`\`
 
 ### Custom IdeaI Components
 
@@ -106,13 +106,13 @@ Custom components live in `packages/ui/src/components/`:
   - Used in `/all` app for UI testing
 
 **Usage**:
-```tsx
+\`\`\`tsx
 import { IdeaIHeader, IdeAIFooter, IdeAIButton } from "@repo/ui";
 
 <IdeaIHeader siteName="/web" subtitle="Welcome to IdeaI">
   <IdeAIButton appName="web">Open alert</IdeAIButton>
 </IdeaIHeader>
-```
+\`\`\`
 
 ## Usage in Apps
 
@@ -120,11 +120,11 @@ import { IdeaIHeader, IdeAIFooter, IdeAIButton } from "@repo/ui";
 
 All apps use the same centralized CSS architecture:
 
-```css
+\`\`\`css
 /* apps/*/app/globals.css */
 @import "../../../packages/ui/src/styles/globals.css";
 @import "../../../packages/ui/src/styles/ideai.css";
-```
+\`\`\`
 
 **Key Points**:
 - Both `globals.css` and `ideai.css` are imported in every app
@@ -137,24 +137,24 @@ All apps use the same centralized CSS architecture:
 
 All apps use shared components:
 
-```tsx
+\`\`\`tsx
 // From @repo/ui package exports
 import { IdeaIHeader, IdeAIFooter, IdeAIButton, IdeAIContent, IdeAILogo, IdeAIHTMLTest } from "@repo/ui";
 
 // Or direct imports
 import { IdeaIHeader } from "@repo/ui/components/ideai-header";
 import { Button } from "@repo/ui/components/ui/button"; // shadcn component
-```
+\`\`\`
 
 **All three apps** (`/web`, `/docs`, `/all`) use the same shared components for perfect consistency.
 
 ### Using Shared Utilities
 
-```tsx
+\`\`\`tsx
 import { cn } from "@repo/ui/lib/utils";
 
 <div className={cn("base-class", conditional && "conditional-class")} />
-```
+\`\`\`
 
 ## Future Scalability
 
@@ -162,13 +162,13 @@ import { cn } from "@repo/ui/lib/utils";
 
 The architecture is designed to support multiple frameworks:
 
-```
+\`\`\`
 packages/
 ├── ui/                        # React components (current)
 ├── ui-svelte/                 # Svelte components (future)
 ├── ui-vue/                    # Vue components (future)
 └── design-tokens/             # Framework-agnostic tokens (future)
-```
+\`\`\`
 
 ### Multi-Library Integration
 
@@ -183,13 +183,13 @@ Components can integrate with multiple UI libraries:
 
 Future: Extract design tokens to a separate package:
 
-```
+\`\`\`
 packages/
 └── design-tokens/
     ├── colors.json
     ├── spacing.json
     └── typography.json
-```
+\`\`\`
 
 ## Best Practices
 
@@ -212,10 +212,10 @@ packages/
 
 ### shadcn/ui Components
 
-```bash
+\`\`\`bash
 cd packages/ui
 pnpm dlx shadcn@latest add [component-name]
-```
+\`\`\`
 
 ### Custom Components
 

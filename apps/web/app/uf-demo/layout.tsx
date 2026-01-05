@@ -22,4 +22,3 @@ export default function UFDemoLayout({
   // Next.js will use the root layout's html/body
   return <>{children}</>;
 }
-

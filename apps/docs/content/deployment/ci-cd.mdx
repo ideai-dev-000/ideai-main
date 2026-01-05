@@ -83,9 +83,9 @@ See [GitHub Secrets Setup](../setup/github-secrets.md) for configuration.
 
 Add to your README:
 
-```markdown
+\`\`\`markdown
 ![CI/CD](https://github.com/ideai-dev-000/ideai-main/workflows/CI%2FCD%20Pipeline/badge.svg)
-```
+\`\`\`
 
 ## Customization
 
@@ -100,7 +100,7 @@ Workflows are located in `.github/workflows/`:
 
 Example job structure:
 
-```yaml
+\`\`\`yaml
 jobs:
   new-job:
     name: New Job
@@ -108,7 +108,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       # Add your steps here
-```
+\`\`\`
 
 ### Deployment Process
 
@@ -119,22 +119,22 @@ The workflows use the unified `deploy.sh` script which:
 4. Handles monorepo complexity automatically
 
 **Preview Deployment**:
-```yaml
+\`\`\`yaml
 - name: Deploy all apps to Preview
   run: ./deploy.sh
   env:
     VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
     VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-```
+\`\`\`
 
 **Production Deployment**:
-```yaml
+\`\`\`yaml
 - name: Deploy all apps to Production
   run: ./deploy.sh --prod
   env:
     VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
     VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-```
+\`\`\`
 
 ## Best Practices
 
@@ -167,4 +167,3 @@ The workflows use the unified `deploy.sh` script which:
 - [Deployment Overview](./overview.md)
 - [Vercel Configuration](./vercel.md)
 - [GitHub Secrets Setup](../setup/github-secrets.md)
-

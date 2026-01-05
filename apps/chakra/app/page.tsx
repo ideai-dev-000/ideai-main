@@ -4,9 +4,13 @@
 
 "use client";
 
+import { lazy, Suspense } from "react";
 import { IdeAIPageTemplate } from "@repo/ui/components/ideai-page-template";
 import { IdeAICSSSummary } from "@repo/ui/components/ideai-css-summary";
-import { UF } from "@repo/ui/components/uf";
+// Lazy load UF component to prevent compilation hang and memory issues
+const UF = lazy(() =>
+  import("@repo/ui/components/uf").then((module) => ({ default: module.UF })),
+);
 import { IdeaIButton } from "@repo/ui/components/ideai-button";
 import { useIFrameContext } from "@repo/ui";
 import {
@@ -25,8 +29,10 @@ import {
 } from "@chakra-ui/react";
 
 export default function Home() {
-  const vercelProjectName = process.env.NEXT_PUBLIC_VERCEL_PROJECT_NAME || "chakra";
-  const vercelOrgId = process.env.NEXT_PUBLIC_VERCEL_ORG_ID || "team_vhjzlMi6CfNow0IfBXnv2Yn2";
+  const vercelProjectName =
+    process.env.NEXT_PUBLIC_VERCEL_PROJECT_NAME || "chakra";
+  const vercelOrgId =
+    process.env.NEXT_PUBLIC_VERCEL_ORG_ID || "team_vhjzlMi6CfNow0IfBXnv2Yn2";
 
   return (
     <IdeAIPageTemplate
@@ -42,9 +48,15 @@ export default function Home() {
           description="Chakra UI is a simple, modular and accessible component library that gives you the building blocks you need to build your React applications."
         />
 
-        {/* UniFrame - Second UI element */}
+        {/* UniFrame - Lazy loaded to prevent compilation hang and memory issues */}
         <Box mt={6}>
-          <UF />
+          <Suspense
+            fallback={
+              <div className="text-center p-4">Loading UniFrame...</div>
+            }
+          >
+            <UF />
+          </Suspense>
         </Box>
 
         <VStack spacing={8} align="stretch" mt={8}>
@@ -53,7 +65,8 @@ export default function Home() {
               Chakra UI Components
             </Heading>
             <Text color="gray.600" mb={6}>
-              All components use Chakra UI's design system and are fully accessible.
+              All components use Chakra UI's design system and are fully
+              accessible.
             </Text>
           </section>
 
@@ -106,7 +119,10 @@ export default function Home() {
                   <Heading size="md">Card Title</Heading>
                 </CardHeader>
                 <CardBody>
-                  <Text>Card description text. This demonstrates the Chakra UI card component.</Text>
+                  <Text>
+                    Card description text. This demonstrates the Chakra UI card
+                    component.
+                  </Text>
                 </CardBody>
                 <CardFooter>
                   <Button size="sm" colorScheme="blue">
@@ -120,7 +136,9 @@ export default function Home() {
                   <Heading size="md">Another Card</Heading>
                 </CardHeader>
                 <CardBody>
-                  <Text>With different content showing Chakra UI's design system.</Text>
+                  <Text>
+                    With different content showing Chakra UI's design system.
+                  </Text>
                 </CardBody>
                 <CardFooter>
                   <Button size="sm" variant="outline" colorScheme="blue">
@@ -135,7 +153,9 @@ export default function Home() {
                 </CardHeader>
                 <CardBody>
                   <VStack align="start" spacing={2}>
-                    <Text>Combining multiple Chakra UI components together.</Text>
+                    <Text>
+                      Combining multiple Chakra UI components together.
+                    </Text>
                     <HStack>
                       <Badge colorScheme="blue">React</Badge>
                       <Badge colorScheme="purple">Chakra UI</Badge>
@@ -155,4 +175,3 @@ export default function Home() {
     </IdeAIPageTemplate>
   );
 }
-

@@ -1,26 +1,26 @@
 /**
  * @fileoverview IdeaI Universal Framework Card Component
- * 
+ *
  * @module IdeAIUniversalFrameworkCard
  * @description
  * Main IdeaI component that provides a universal card with framework switching capability.
  * Built with IdeaI structure for infinite composability and extensibility.
- * 
+ *
  * Architecture:
  * - Card wrapper: Main card container
  * - Header: Title and description
  * - Body: Main content area
  * - Footer: Metadata and actions
  * - UI Elements: Button, Input, Badge, FormField, ButtonGroup
- * 
+ *
  * Security: All class strings are predefined in configuration objects (XSS-safe).
  * Uses React's className prop (not innerHTML) for secure class injection.
- * 
+ *
  * @example
  * ```tsx
  * <IdeAIUniversalFrameworkCard />
  * ```
- * 
+ *
  * @see {@link ./ideai-framework/ideai-card/ideai-card.tsx} - Card wrapper
  * @see {@link ./ideai-framework/ideai-card/ideai-card-header.tsx} - Card header
  * @see {@link ./ideai-framework/ideai-card/ideai-card-body.tsx} - Card body
@@ -45,10 +45,10 @@ interface IdeAIUniversalFrameworkCardProps {
 
 /**
  * IdeaI Universal Framework Card Component
- * 
+ *
  * A complete, composable component system that demonstrates runtime framework switching.
  * Built with IdeaI structure: card wrapper, header, body, footer, and UI elements.
- * 
+ *
  * Features:
  * - Semantic HTML (article, header, footer, label, input, button)
  * - Accessible (ARIA labels, proper form associations)
@@ -60,7 +60,8 @@ export const IdeAIUniversalFrameworkCard = ({
   defaultFramework = "tailwind",
   className,
 }: IdeAIUniversalFrameworkCardProps) => {
-  const [selectedFramework, setSelectedFramework] = useState<Framework>(defaultFramework);
+  const [selectedFramework, setSelectedFramework] =
+    useState<Framework>(defaultFramework);
   const [inputValue, setInputValue] = useState("Sample input text");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -72,7 +73,8 @@ export const IdeAIUniversalFrameworkCard = ({
         const link = document.createElement("link");
         link.id = "bootstrap-css";
         link.rel = "stylesheet";
-        link.href = "https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css";
+        link.href =
+          "https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css";
         link.crossOrigin = "anonymous";
         document.head.appendChild(link);
       }
@@ -91,10 +93,19 @@ export const IdeAIUniversalFrameworkCard = ({
     setInputValue("");
   };
 
-  const frameworks: Framework[] = ["tailwind", "bootstrap", "material", "chakra", "radix", "shadcn"];
+  const frameworks: Framework[] = [
+    "tailwind",
+    "bootstrap",
+    "material",
+    "chakra",
+    "radix",
+    "shadcn",
+  ];
 
   return (
-    <section className={`w-full max-w-4xl mx-auto p-6 space-y-6 ${className || ""}`}>
+    <section
+      className={`w-full max-w-4xl mx-auto p-6 space-y-6 ${className || ""}`}
+    >
       {/* Framework Selector */}
       <div className="space-y-2">
         <label
@@ -117,7 +128,8 @@ export const IdeAIUniversalFrameworkCard = ({
           ))}
         </select>
         <p className="text-xs text-slate-500 dark:text-slate-400">
-          Current framework: <span className="font-semibold">{selectedFramework}</span>
+          Current framework:{" "}
+          <span className="font-semibold">{selectedFramework}</span>
         </p>
       </div>
 
@@ -141,9 +153,10 @@ export const IdeAIUniversalFrameworkCard = ({
         isLoading={isLoading}
       >
         <p className="text-slate-700 dark:text-slate-300">
-          This is sample text content that adapts to the selected framework's typography system.
-          The card demonstrates how a single component can render with different visual styles
-          based on runtime framework selection.
+          This is sample text content that adapts to the selected
+          framework&apos;s typography system. The card demonstrates how a single
+          component can render with different visual styles based on runtime
+          framework selection.
         </p>
       </IdeAICard>
 
@@ -154,29 +167,35 @@ export const IdeAIUniversalFrameworkCard = ({
         </h3>
         <ul className="text-xs text-slate-600 dark:text-slate-400 space-y-1 list-disc list-inside">
           <li>
-            <strong>Semantic HTML:</strong> Uses article, header, footer, label, input, button elements
+            <strong>Semantic HTML:</strong> Uses article, header, footer, label,
+            input, button elements
           </li>
           <li>
-            <strong>Accessibility:</strong> ARIA labels, proper form associations, keyboard navigation
+            <strong>Accessibility:</strong> ARIA labels, proper form
+            associations, keyboard navigation
           </li>
           <li>
-            <strong>Security:</strong> Predefined class strings (XSS-safe), React className prop
+            <strong>Security:</strong> Predefined class strings (XSS-safe),
+            React className prop
           </li>
           <li>
-            <strong>Composability:</strong> Card wrapper with header, body, footer, and UI elements
+            <strong>Composability:</strong> Card wrapper with header, body,
+            footer, and UI elements
           </li>
           <li>
-            <strong>Extensibility:</strong> Easy to add new frameworks or components
+            <strong>Extensibility:</strong> Easy to add new frameworks or
+            components
           </li>
           <li>
-            <strong>Type Safety:</strong> Full TypeScript support with strict types
+            <strong>Type Safety:</strong> Full TypeScript support with strict
+            types
           </li>
           <li>
-            <strong>IdeaI Structure:</strong> Organized in ideai-framework/ideai-card folder
+            <strong>IdeaI Structure:</strong> Organized in
+            ideai-framework/ideai-card folder
           </li>
         </ul>
       </aside>
     </section>
   );
 };
-

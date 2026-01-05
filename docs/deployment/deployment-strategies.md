@@ -63,6 +63,7 @@ All strategies can coexist, allowing maximum flexibility.
 ### Implementation
 
 The catch-all route at `apps/web/app/apps/[app]/[[...path]]/page.tsx` automatically serves apps via iframe when:
+
 - App exists in monorepo
 - No standalone URL is configured
 - App is available (running in dev or built in production)
@@ -80,12 +81,14 @@ The catch-all route at `apps/web/app/apps/[app]/[[...path]]/page.tsx` automatica
 
 Set environment variables in the main web app:
 
-```bash
+\`\`\`bash
 NEXT_PUBLIC_DOCS_URL=https://docs-xxx.vercel.app
 NEXT_PUBLIC_ALL_URL=https://all-xxx.vercel.app
 NEXT_PUBLIC_NOCSS_URL=https://nocss-xxx.vercel.app
+
 # ... etc
-```
+
+\`\`\`
 
 ### URLs
 
@@ -151,14 +154,18 @@ When `NEXT_PUBLIC_{APP}_URL` is set and `NODE_ENV === "production"`, the catch-a
 
 Set environment variables **only for apps you want standalone**:
 
-```bash
+\`\`\`bash
+
 # Only docs and all are standalone
+
 NEXT_PUBLIC_DOCS_URL=https://docs-xxx.vercel.app
 NEXT_PUBLIC_ALL_URL=https://all-xxx.vercel.app
 
 # Other apps (nocss, mvp, etc.) are served directly
+
 # No env vars needed - they'll be served via iframe
-```
+
+\`\`\`
 
 ### URLs
 
@@ -188,6 +195,7 @@ NEXT_PUBLIC_ALL_URL=https://all-xxx.vercel.app
 ### Implementation
 
 The catch-all route is smart:
+
 1. If `NEXT_PUBLIC_{APP}_URL` is set → redirect to standalone
 2. If app exists locally → serve via iframe
 3. Otherwise → show info page
@@ -196,20 +204,20 @@ The catch-all route is smart:
 
 The catch-all route (`apps/web/app/apps/[app]/[[...path]]/page.tsx`) uses this logic:
 
-```typescript
+\`\`\`typescript
 // Priority 1: Redirect to standalone (if configured and production)
 if (standaloneUrl && NODE_ENV === "production") {
-  redirect(standaloneUrl);
+redirect(standaloneUrl);
 }
 
 // Priority 2: Serve directly via iframe (if available)
 if (appAvailable || !standaloneUrl) {
-  serveViaIframe(appUrl);
+serveViaIframe(appUrl);
 }
 
 // Priority 3: Show info page (fallback)
 showInfoPage();
-```
+\`\`\`
 
 ## Deployment Phases
 
@@ -218,6 +226,7 @@ showInfoPage();
 **Setup**: No environment variables
 
 **Behavior**:
+
 - All apps served via iframe from local dev servers
 - Main app at `localhost:3000`
 - Sub-apps at `localhost:3000/apps/{name}`
@@ -229,6 +238,7 @@ showInfoPage();
 **Setup**: Set standalone URLs for critical apps
 
 **Behavior**:
+
 - Critical apps (docs, all) → standalone deployments
 - Other apps → served directly
 - Main app shows all apps at `/index`
@@ -240,6 +250,7 @@ showInfoPage();
 **Setup**: Choose strategy per app
 
 **Options**:
+
 - **Option A**: All integrated (no env vars)
 - **Option B**: All standalone (all env vars set)
 - **Option C**: Hybrid (some env vars set)
@@ -270,8 +281,10 @@ showInfoPage();
 
 Set these in Vercel dashboard or `.env.local`:
 
-```bash
+\`\`\`bash
+
 # Standalone app URLs (optional - only set if deploying standalone)
+
 NEXT_PUBLIC_DOCS_URL=https://docs-xxx.vercel.app
 NEXT_PUBLIC_ALL_URL=https://all-xxx.vercel.app
 NEXT_PUBLIC_NOCSS_URL=https://nocss-xxx.vercel.app
@@ -281,7 +294,7 @@ NEXT_PUBLIC_ALLCSS_URL=https://allcss-xxx.vercel.app
 NEXT_PUBLIC_BOOTSTRAP_URL=https://bootstrap-xxx.vercel.app
 NEXT_PUBLIC_UNOCSS_URL=https://unocss-xxx.vercel.app
 NEXT_PUBLIC_SHADCN_URL=https://shadcn-xxx.vercel.app
-```
+\`\`\`
 
 ### Behavior
 
@@ -295,6 +308,7 @@ NEXT_PUBLIC_SHADCN_URL=https://shadcn-xxx.vercel.app
 **Setup**: No environment variables
 
 **Result**:
+
 - `myui.space/apps/docs` → Served via iframe
 - `myui.space/apps/all` → Served via iframe
 - All apps accessible via main domain
@@ -304,6 +318,7 @@ NEXT_PUBLIC_SHADCN_URL=https://shadcn-xxx.vercel.app
 **Setup**: All environment variables set
 
 **Result**:
+
 - `myui.space/apps/docs` → Redirects to `docs-xxx.vercel.app`
 - `myui.space/apps/all` → Redirects to `all-xxx.vercel.app`
 - Each app has own deployment
@@ -313,6 +328,7 @@ NEXT_PUBLIC_SHADCN_URL=https://shadcn-xxx.vercel.app
 **Setup**: Only `NEXT_PUBLIC_DOCS_URL` set
 
 **Result**:
+
 - `myui.space/apps/docs` → Redirects to standalone
 - `myui.space/apps/all` → Served via iframe
 - `myui.space/apps/nocss` → Served via iframe
@@ -330,6 +346,7 @@ NEXT_PUBLIC_SHADCN_URL=https://shadcn-xxx.vercel.app
 ### App not loading
 
 **Check**:
+
 1. App exists in `apps/{name}` directory
 2. App has `.ideai` metadata file
 3. Environment variable is correct (if standalone)
@@ -338,6 +355,7 @@ NEXT_PUBLIC_SHADCN_URL=https://shadcn-xxx.vercel.app
 ### Redirect not working
 
 **Check**:
+
 1. Environment variable is set correctly
 2. `NODE_ENV === "production"` (redirects only in production)
 3. Standalone URL is accessible
@@ -346,6 +364,7 @@ NEXT_PUBLIC_SHADCN_URL=https://shadcn-xxx.vercel.app
 ### Iframe not loading
 
 **Check**:
+
 1. App is running (in development)
 2. App is built (in production)
 3. No standalone URL is set
@@ -356,6 +375,3 @@ NEXT_PUBLIC_SHADCN_URL=https://shadcn-xxx.vercel.app
 - [Deployment Architecture](./deployment-architecture.md)
 - [Vercel Setup](./vercel-setup.md)
 - [Unified Deployment](./unified-deployment.md)
-
-
-

@@ -26,7 +26,7 @@ The IdeaI base theme system combines common assets and UI patterns into a unifie
 **Provider**: `ThemeProvider` (next-themes)
 **Location**: Header top-right
 
-```tsx
+\`\`\`tsx
 import { ThemeProvider, ThemeToggle } from "@repo/ui";
 
 // In layout.tsx
@@ -41,7 +41,7 @@ import { ThemeProvider, ThemeToggle } from "@repo/ui";
 
 // In header
 <ThemeToggle />
-```
+\`\`\`
 
 **Best Practices**:
 - Uses `next-themes` for Next.js 16 compatibility
@@ -55,11 +55,11 @@ import { ThemeProvider, ThemeToggle } from "@repo/ui";
 **Library**: Radix UI Dialog (Sheet)
 **Location**: Header (mobile only)
 
-```tsx
+\`\`\`tsx
 import { MobileNav } from "@repo/ui";
 
 <MobileNav navItems={navItems} />
-```
+\`\`\`
 
 **Features**:
 - Touch-optimized swipe gestures
@@ -72,7 +72,7 @@ import { MobileNav } from "@repo/ui";
 
 All theme variables are defined in `base-theme.css`:
 
-```css
+\`\`\`css
 :root {
   /* Color System */
   --ideai-background: 0 0% 100%;
@@ -94,7 +94,7 @@ All theme variables are defined in `base-theme.css`:
   --ideai-duration-normal: 200ms;
   --ideai-duration-slow: 300ms;
 }
-```
+\`\`\`
 
 ### 4. Next.js 16 Best Practices
 
@@ -106,12 +106,12 @@ Includes:
 - SEO metadata helpers
 - Resource hints
 
-```tsx
+\`\`\`tsx
 import { getSecurityHeaders, getSEOMetadata } from "@repo/ui/lib/nextjs-best-practices";
 
 export const headers = getSecurityHeaders();
 export const metadata = getSEOMetadata({ ... });
-```
+\`\`\`
 
 ## Usage
 
@@ -119,7 +119,7 @@ export const metadata = getSEOMetadata({ ... });
 
 1. **Wrap app with ThemeProvider** (in `layout.tsx`):
 
-```tsx
+\`\`\`tsx
 import { ThemeProvider } from "@repo/ui/components/theme-provider";
 
 export default function RootLayout({ children }) {
@@ -138,20 +138,20 @@ export default function RootLayout({ children }) {
     </html>
   );
 }
-```
+\`\`\`
 
 2. **Import styles** (in `globals.css`):
 
-```css
+\`\`\`css
 @import "../../../packages/ui/src/styles/globals.css";
 @import "../../../packages/ui/src/styles/ideai.css";
-```
+\`\`\`
 
 3. **Use components**:
 
-```tsx
+\`\`\`tsx
 import { ThemeToggle, MobileNav } from "@repo/ui";
-```
+\`\`\`
 
 ## Dependencies
 
@@ -167,13 +167,13 @@ All dependencies are **local packages** (offline-capable):
 
 The theme uses Tailwind's `class` strategy for dark mode:
 
-```ts
+\`\`\`ts
 // tailwind.config.ts
 export default {
   darkMode: ["class"],
   // ...
 };
-```
+\`\`\`
 
 This allows `next-themes` to toggle the `dark` class on the `<html>` element.
 
@@ -186,7 +186,7 @@ The header automatically includes:
 - Mobile navigation (mobile only)
 - Desktop navigation (desktop only)
 
-```tsx
+\`\`\`tsx
 import { IdeaIHeader } from "@repo/ui";
 
 <IdeaIHeader
@@ -195,7 +195,7 @@ import { IdeaIHeader } from "@repo/ui";
   extraNav={[...]}
   accountLinks={[...]}
 />
-```
+\`\`\`
 
 ## Best Practices
 
@@ -212,4 +212,3 @@ import { IdeaIHeader } from "@repo/ui";
 - [ ] Add theme customization API
 - [ ] Add animation preferences (reduce motion)
 - [ ] Add color scheme customization
-

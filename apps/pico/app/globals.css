@@ -1,0 +1,16 @@
+/**
+ * @fileoverview Pico CSS only - Semantic HTML styling
+ * 
+ * This app uses Pico CSS exclusively for clean, minimal styling of semantic HTML.
+ * NO Tailwind - frameworks are mutually exclusive.
+ * 
+ * Framework: Pico CSS only
+ * Base: Normalize
+ */
+
+/* Normalize/Reset - Base styles for consistent rendering */
+@import "../../../packages/ui/src/styles/normalize.css";
+
+/* Pico CSS - Minimalist stylesheet for semantic HTML (~11KB) (EXCLUSIVE - no Tailwind) */
+@import "@picocss/pico/css/pico.min.css";
+

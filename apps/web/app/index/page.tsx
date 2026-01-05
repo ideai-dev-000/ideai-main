@@ -19,9 +19,9 @@ import {
   CardTitle,
   CardDescription,
   CardContent,
-} from "@repo/ui/components/ui/card";
-import { Badge } from "@repo/ui/components/ui/badge";
-import { Button } from "@repo/ui/components/ui/button";
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import styles from "./page.module.css";
 
 interface AppMetadata {
@@ -196,4 +196,3 @@ export default function AppsIndex() {
     </IdeAIPageTemplate>
   );
 }
-

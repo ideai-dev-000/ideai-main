@@ -37,7 +37,7 @@ The IdeaI IFrame Detection System provides a standard way to detect if a site is
 
 ### Basic Usage
 
-```html
+\`\`\`html
 <!-- In iframe, hide header/footer/nav -->
 <iframe src="https://site.com?i=1&h=0&f=0&n=0"></iframe>
 
@@ -52,23 +52,23 @@ The IdeaI IFrame Detection System provides a standard way to detect if a site is
 
 <!-- Full example with parent URL -->
 <iframe src="https://site.com?i=1&h=0&f=0&n=0&c=0&u=0&p=https://parent.com"></iframe>
-```
+\`\`\`
 
 ### Auto-Detection
 
 If no parameters are provided, the system auto-detects iframe context:
 
-```html
+\`\`\`html
 <!-- Auto-detects iframe and hides header/footer/nav -->
 <iframe src="https://site.com"></iframe>
-```
+\`\`\`
 
 ### Brand Configuration
 
-```html
+\`\`\`html
 <!-- With brand config -->
 <iframe src="https://site.com?i=1&b=%7B%22parentSiteName%22%3A%22Parent%22%2C%22childSiteName%22%3A%22Child%22%7D"></iframe>
-```
+\`\`\`
 
 ## Default Behavior
 
@@ -80,7 +80,7 @@ If no parameters are provided, the system auto-detects iframe context:
 
 ### Using in Components
 
-```tsx
+\`\`\`tsx
 import { useIFrameContext } from "@repo/ui/lib/iframe-detection";
 
 function MyComponent() {
@@ -94,13 +94,13 @@ function MyComponent() {
     </>
   );
 }
-```
+\`\`\`
 
 ### Using in Page Template
 
 The `IdeAIPageTemplate` component automatically uses iframe detection:
 
-```tsx
+\`\`\`tsx
 import { IdeAIPageTemplate } from "@repo/ui/components/ideai-page-template";
 
 export default function Page() {
@@ -110,7 +110,7 @@ export default function Page() {
     </IdeAIPageTemplate>
   );
 }
-```
+\`\`\`
 
 ## Value Parsing
 
@@ -146,4 +146,3 @@ This ensures stable rendering in all contexts, including iframes embedded in oth
 - Compact format is preferred for efficiency
 - Verbose format maintained for backward compatibility
 - System is hydration-safe (prevents React hydration errors)
-

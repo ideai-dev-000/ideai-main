@@ -1,6 +1,6 @@
 /**
  * @fileoverview Next.js 16 Best Practices - Performance, Security, 2027-Facing
- * 
+ *
  * @module NextJSBestPractices
  * @description
  * Utilities and patterns for Next.js 16 best practices:
@@ -8,11 +8,11 @@
  * - Security headers
  * - 2027-facing features
  * - SEO enhancements
- * 
+ *
  * @example
  * ```tsx
  * import { getSecurityHeaders, getPerformanceConfig } from "@repo/ui/lib/nextjs-best-practices";
- * 
+ *
  * export const headers = getSecurityHeaders();
  * export const config = getPerformanceConfig();
  * ```
@@ -36,19 +36,19 @@ export function getSecurityHeaders(): Record<string, string> {
       "connect-src 'self' https:",
       "frame-ancestors 'self'",
     ].join("; "),
-    
+
     // XSS Protection
     "X-XSS-Protection": "1; mode=block",
-    
+
     // Prevent MIME type sniffing
     "X-Content-Type-Options": "nosniff",
-    
+
     // Clickjacking protection
     "X-Frame-Options": "SAMEORIGIN",
-    
+
     // Referrer policy
     "Referrer-Policy": "strict-origin-when-cross-origin",
-    
+
     // Permissions policy (2027 standard)
     "Permissions-Policy": [
       "camera=()",
@@ -56,7 +56,7 @@ export function getSecurityHeaders(): Record<string, string> {
       "geolocation=()",
       "interest-cohort=()", // FLoC opt-out
     ].join(", "),
-    
+
     // Strict Transport Security (HTTPS only)
     "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
   };
@@ -131,14 +131,15 @@ export function getSEOMetadata({
  * Request Middleware Helper
  * Adds security headers to requests
  */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function middleware(_request: NextRequest) {
   const headers = new Headers();
-  
+
   // Add security headers
   Object.entries(getSecurityHeaders()).forEach(([key, value]) => {
     headers.set(key, value);
   });
-  
+
   return {
     headers,
   };
@@ -150,14 +151,7 @@ export function middleware(_request: NextRequest) {
  */
 export function getResourceHints() {
   return {
-    preconnect: [
-      "https://fonts.googleapis.com",
-      "https://fonts.gstatic.com",
-    ],
-    dnsPrefetch: [
-      "https://fonts.googleapis.com",
-      "https://fonts.gstatic.com",
-    ],
+    preconnect: ["https://fonts.googleapis.com", "https://fonts.gstatic.com"],
+    dnsPrefetch: ["https://fonts.googleapis.com", "https://fonts.gstatic.com"],
   };
 }
-

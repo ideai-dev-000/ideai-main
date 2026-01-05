@@ -22,4 +22,3 @@ import type { PageTemplate } from "./types";
 import pageTemplatesData from "./examples/page-templates.json";
 
 export const pageTemplates = pageTemplatesData as PageTemplate[];
-

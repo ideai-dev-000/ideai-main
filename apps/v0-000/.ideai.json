@@ -1,0 +1,17 @@
+{
+  "name": "v0-000",
+  "version": "0.1.0",
+  "role": "child",
+  "localPort": 3015,
+  "v0Integration": true,
+  "sharedLibraries": true,
+  "description": "Perfect v0-compatible template app for IdeaI monorepo. Use this as a base for all v0 experiments.",
+  "features": {
+    "nextjs": "16.1.0",
+    "react": "19.2.0",
+    "tailwind": "4.1.9",
+    "typescript": true,
+    "v0Sync": true
+  }
+}
+

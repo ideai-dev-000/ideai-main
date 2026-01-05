@@ -34,10 +34,10 @@ We provide an automated script to simplify the setup process.
 
 ### Step 2: Run the Setup Script
 
-```bash
+\`\`\`bash
 cd /path/to/ideai-main
 ./scripts/setup-secrets.sh
-```
+\`\`\`
 
 The script will:
 1. Verify GitHub CLI authentication
@@ -59,7 +59,7 @@ If you prefer to set secrets manually or the script doesn't work:
 
 ### Option 1: GitHub CLI
 
-```bash
+\`\`\`bash
 # Authenticate with GitHub CLI first
 gh auth login
 
@@ -67,7 +67,7 @@ gh auth login
 gh secret set VERCEL_TOKEN --body "YOUR_TOKEN" --repo ideai-dev-000/ideai-main
 gh secret set VERCEL_ORG_ID --body "team_vhjzlMi6CfNow0IfBXnv2Yn2" --repo ideai-dev-000/ideai-main
 gh secret set VERCEL_PROJECT_ID --body "prj_rOeGwbNZwaO6sJ2J685Y3g9TV2cw" --repo ideai-dev-000/ideai-main
-```
+\`\`\`
 
 ### Option 2: GitHub Web Interface
 
@@ -82,10 +82,10 @@ gh secret set VERCEL_PROJECT_ID --body "prj_rOeGwbNZwaO6sJ2J685Y3g9TV2cw" --repo
 
 After setup, verify secrets are configured:
 
-```bash
+\`\`\`bash
 # List secrets (names only, values are hidden)
 gh secret list --repo ideai-dev-000/ideai-main
-```
+\`\`\`
 
 Or check in GitHub: [Secrets Page](https://github.com/ideai-dev-000/ideai-main/settings/secrets/actions)
 
@@ -106,9 +106,9 @@ These values are automatically used by the setup script.
 ## Troubleshooting
 
 ### Script Fails: "GitHub CLI not authenticated"
-```bash
+\`\`\`bash
 gh auth login
-```
+\`\`\`
 
 ### Script Fails: "Token cannot be empty"
 - Ensure you copied the entire token from Vercel
@@ -124,9 +124,9 @@ gh auth login
 ### Token Expired
 1. Create a new token at [Vercel Tokens](https://vercel.com/account/tokens)
 2. Update the secret:
-   ```bash
+   \`\`\`bash
    gh secret set VERCEL_TOKEN --body "NEW_TOKEN" --repo ideai-dev-000/ideai-main
-   ```
+   \`\`\`
 
 ## Security Best Practices
 
@@ -141,4 +141,3 @@ gh auth login
 - [Deployment Guide](../deployment/overview.md)
 - [CI/CD Workflows](../deployment/ci-cd.md)
 - [Vercel Configuration](../deployment/vercel.md)
-

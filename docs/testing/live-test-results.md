@@ -18,12 +18,14 @@ description: Test results for parent/child app architecture on local, preview, a
 ### ✅ Local Development
 
 **Setup**:
+
 - Parent app (`web`) running on port 3000
 - Child app (`docs`) running on port 3001
 
 **Test**: `http://localhost:3000/apps/docs`
 
 **Expected**:
+
 - Should show docs app in iframe
 - Iframe src: `http://localhost:3001`
 - Header/footer hidden in iframe
@@ -35,6 +37,7 @@ description: Test results for parent/child app architecture on local, preview, a
 **URL**: `https://web-hvjrpj9rn-idea-i.vercel.app/apps/docs`
 
 **Expected**:
+
 - Should show placeholder message (production build not yet unified)
 - Or show child app if unified build works
 
@@ -45,6 +48,7 @@ description: Test results for parent/child app architecture on local, preview, a
 **URL**: `https://www.myui.space/apps/docs`
 
 **Expected**:
+
 - Should show placeholder message (production build not yet unified)
 - Or show child app if unified build works
 
@@ -55,5 +59,3 @@ description: Test results for parent/child app architecture on local, preview, a
 - Removed `NEXT_PUBLIC_DOCS_URL` to test unified app approach
 - Local development uses iframe with localhost URLs
 - Production needs unified build strategy (future work)
-
-

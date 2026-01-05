@@ -1,6 +1,6 @@
 /**
  * @fileoverview Tailwind CSS configuration for the web app
- * 
+ *
  * @module WebTailwindConfig
  * @description
  * Extends the shared UI package Tailwind config.
@@ -19,4 +19,3 @@ const config: Config = {
 };
 
 export default config;
-

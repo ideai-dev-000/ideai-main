@@ -15,7 +15,7 @@ The animations showcase dynamically displays only the animation libraries config
 
 Add `animationLibraries` to your `.ideai.json` file:
 
-```json
+\`\`\`json
 {
   "role": "parent",
   "name": "IdeaI",
@@ -24,7 +24,7 @@ Add `animationLibraries` to your `.ideai.json` file:
     "react-spring"
   ]
 }
-```
+\`\`\`
 
 ### Available Libraries
 
@@ -42,42 +42,42 @@ Add `animationLibraries` to your `.ideai.json` file:
 
 ### Full Animation Support
 
-```json
+\`\`\`json
 {
   "animationLibraries": [
     "framer-motion",
     "react-spring"
   ]
 }
-```
+\`\`\`
 
 ### Framer Motion Only
 
-```json
+\`\`\`json
 {
   "animationLibraries": [
     "framer-motion"
   ]
 }
-```
+\`\`\`
 
 ### React Spring Only
 
-```json
+\`\`\`json
 {
   "animationLibraries": [
     "react-spring"
   ]
 }
-```
+\`\`\`
 
 ### No Animations
 
-```json
+\`\`\`json
 {
   "animationLibraries": []
 }
-```
+\`\`\`
 
 If `animationLibraries` is omitted or empty, the animations showcase will show a message indicating no libraries are configured.
 
@@ -105,4 +105,3 @@ The animations showcase component:
 
 - [IdeaI Config System](./ideai-config.md) - General config system
 - [Animations Architecture](./animations.md) - Animation system architecture
-

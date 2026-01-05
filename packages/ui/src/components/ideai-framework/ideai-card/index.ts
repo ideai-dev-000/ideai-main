@@ -1,10 +1,10 @@
 /**
  * @fileoverview IdeaI Card Component Exports
- * 
+ *
  * @module IdeAICardExports
  * @description
  * Centralized exports for all IdeaI framework card components.
- * 
+ *
  * Structure:
  * - Card wrapper: ideai-card.tsx
  * - Header: ideai-card-header.tsx
@@ -24,6 +24,3 @@ export { IdeAICardFormField } from "./ideai-card-form-field";
 export { IdeAICardButtonGroup } from "./ideai-card-button-group";
 export type { Framework, FrameworkConfig } from "./ideai-card-types";
 export { frameworkConfigs } from "./ideai-card-types";
-
-
-

@@ -1,6 +1,6 @@
 /**
  * @fileoverview IdeaI Deployment Component - Deployment options and testing widget
- * 
+ *
  * @module IdeAIDeployment
  * @description
  * A comprehensive deployment status and options component that displays:
@@ -9,12 +9,12 @@
  * - Testing tools for each deployment mode
  * - Logs and debugging information
  * - Quick actions to test/deploy each option
- * 
+ *
  * Designed to help test and debug deployment strategies before full automation.
- * 
+ *
  * @example
  * ```tsx
- * <IdeAIDeployment 
+ * <IdeAIDeployment
  *   appName="docs"
  *   appConfig={appConfig}
  *   currentPath="/apps/docs"
@@ -55,16 +55,17 @@ export interface IdeAIDeploymentProps {
 
 /**
  * IdeaI Deployment Component
- * 
+ *
  * Displays deployment options and allows testing each strategy.
  */
 export const IdeAIDeployment = ({
   appName,
   appConfig,
-  currentPath,
   showLogs = true,
 }: IdeAIDeploymentProps) => {
-  const [deploymentOptions, setDeploymentOptions] = useState<DeploymentOption[]>([]);
+  const [deploymentOptions, setDeploymentOptions] = useState<
+    DeploymentOption[]
+  >([]);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [logs, setLogs] = useState<string[]>([]);
   const [isTesting, setIsTesting] = useState<string | null>(null);
@@ -87,7 +88,8 @@ export const IdeAIDeployment = ({
         {
           id: "standalone",
           name: "Standalone Domain",
-          description: "Deploy as independent app with its own domain (e.g., docs.myui.space)",
+          description:
+            "Deploy as independent app with its own domain (e.g., docs.myui.space)",
           url: appConfig.standaloneUrl,
           status: appConfig.standaloneUrl ? "configured" : "not-configured",
           testUrl: appConfig.standaloneUrl,
@@ -111,13 +113,16 @@ export const IdeAIDeployment = ({
         {
           id: "vercel-project",
           name: "Vercel Project",
-          description: "Deploy as separate Vercel project with its own configuration",
+          description:
+            "Deploy as separate Vercel project with its own configuration",
           status: "not-configured",
         },
       ];
 
       setDeploymentOptions(options);
-      addLog(`📋 Initialized ${options.length} deployment options for ${appName}`);
+      addLog(
+        `📋 Initialized ${options.length} deployment options for ${appName}`,
+      );
     };
 
     // Initialize immediately on client
@@ -133,7 +138,10 @@ export const IdeAIDeployment = ({
       return newLogs.slice(-100);
     });
     // Also log to console for debugging
-    if (typeof window !== "undefined" && process.env.NODE_ENV === "development") {
+    if (
+      typeof window !== "undefined" &&
+      process.env.NODE_ENV === "development"
+    ) {
       console.log(`[IdeAIDeployment] ${logMessage}`);
     }
   };
@@ -156,8 +164,8 @@ export const IdeAIDeployment = ({
     // Update status to testing
     setDeploymentOptions((prev) =>
       prev.map((opt) =>
-        opt.id === optionId ? { ...opt, status: "testing" as const } : opt
-      )
+        opt.id === optionId ? { ...opt, status: "testing" as const } : opt,
+      ),
     );
 
     try {
@@ -166,23 +174,19 @@ export const IdeAIDeployment = ({
       const testMethods = [
         async () => {
           // Method 1: Try HEAD request with CORS (gives us status code)
-          try {
-            const response = await fetch(option.testUrl!, {
-              method: "HEAD",
-              mode: "cors",
-              cache: "no-store",
-              signal: AbortSignal.timeout(5000), // 5 second timeout
-            });
-            return { 
-              success: response.ok, 
-              status: response.status, 
-              method: "HEAD (CORS)",
-              headers: Object.fromEntries(response.headers.entries()),
-            };
-          } catch (error) {
-            // CORS might fail, that's okay - try next method
-            throw error;
-          }
+          // CORS might fail, that's okay - try next method
+          const response = await fetch(option.testUrl!, {
+            method: "HEAD",
+            mode: "cors",
+            cache: "no-store",
+            signal: AbortSignal.timeout(5000), // 5 second timeout
+          });
+          return {
+            success: response.ok,
+            status: response.status,
+            method: "HEAD (CORS)",
+            headers: Object.fromEntries(response.headers.entries()),
+          };
         },
         async () => {
           // Method 2: Try GET request with no-cors (always succeeds but doesn't give details)
@@ -192,12 +196,22 @@ export const IdeAIDeployment = ({
             cache: "no-store",
             signal: AbortSignal.timeout(5000),
           });
-          return { success: true, status: null, method: "GET (no-cors)", headers: {} };
+          return {
+            success: true,
+            status: null,
+            method: "GET (no-cors)",
+            headers: {},
+          };
         },
       ];
 
       let lastError: Error | null = null;
-      let testResult: { success: boolean; status: number | null; method: string; headers: Record<string, string> } | null = null;
+      let testResult: {
+        success: boolean;
+        status: number | null;
+        method: string;
+        headers: Record<string, string>;
+      } | null = null;
 
       // Try each method until one succeeds
       for (const testMethod of testMethods) {
@@ -214,45 +228,56 @@ export const IdeAIDeployment = ({
       }
 
       if (testResult && testResult.success) {
-        const statusText = testResult.status ? ` (HTTP ${testResult.status})` : "";
-        const serverInfo = testResult.headers["server"] ? ` [Server: ${testResult.headers["server"]}]` : "";
-        addLog(`✅ ${option.name} is reachable${statusText}${serverInfo} [${testResult.method}]`);
-        
+        const statusText = testResult.status
+          ? ` (HTTP ${testResult.status})`
+          : "";
+        const serverInfo = testResult.headers["server"]
+          ? ` [Server: ${testResult.headers["server"]}]`
+          : "";
+        addLog(
+          `✅ ${option.name} is reachable${statusText}${serverInfo} [${testResult.method}]`,
+        );
+
         // Check if it's a Next.js app
         if (testResult.headers["x-powered-by"] === "Next.js") {
           addLog(`   ✓ Detected Next.js application`);
         }
-        
+
         // Update option status
         setDeploymentOptions((prev) =>
           prev.map((opt) =>
             opt.id === optionId
-              ? { 
-                  ...opt, 
-                  status: "available" as const, 
-                  logs: [`✅ Reachable at ${option.testUrl}${statusText}${serverInfo}`] 
+              ? {
+                  ...opt,
+                  status: "available" as const,
+                  logs: [
+                    `✅ Reachable at ${option.testUrl}${statusText}${serverInfo}`,
+                  ],
                 }
-              : opt
-          )
+              : opt,
+          ),
         );
       } else {
         throw lastError || new Error("All test methods failed");
       }
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : "Unknown error";
+      const errorMessage =
+        error instanceof Error ? error.message : "Unknown error";
       addLog(`❌ ${option.name} test failed: ${errorMessage}`);
-      addLog(`💡 Tip: Check if the URL is accessible and CORS is configured correctly`);
-      
+      addLog(
+        `💡 Tip: Check if the URL is accessible and CORS is configured correctly`,
+      );
+
       setDeploymentOptions((prev) =>
         prev.map((opt) =>
           opt.id === optionId
-            ? { 
-                ...opt, 
-                status: "error" as const, 
-                logs: [`❌ Error: ${errorMessage}`] 
+            ? {
+                ...opt,
+                status: "error" as const,
+                logs: [`❌ Error: ${errorMessage}`],
               }
-            : opt
-        )
+            : opt,
+        ),
       );
     } finally {
       setIsTesting(null);
@@ -296,80 +321,88 @@ export const IdeAIDeployment = ({
           Deployment Options for {appConfig.name}
         </h2>
         <p className="text-slate-600 dark:text-slate-400">
-          Test and configure deployment strategies. All options can be automated once tested.
+          Test and configure deployment strategies. All options can be automated
+          once tested.
         </p>
       </div>
 
       {/* Deployment Options Grid */}
       {deploymentOptions.length === 0 ? (
         <div className="p-4 bg-slate-50 dark:bg-slate-800 rounded-lg text-center">
-          <p className="text-slate-600 dark:text-slate-400">Loading deployment options...</p>
+          <p className="text-slate-600 dark:text-slate-400">
+            Loading deployment options...
+          </p>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {deploymentOptions.map((option) => (
-          <div
-            key={option.id}
-            className={`p-4 border-2 rounded-lg transition-all ${
-              selectedOption === option.id
-                ? "border-blue-500 dark:border-blue-400 bg-blue-50 dark:bg-blue-900/20"
-                : "border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600"
-            }`}
-            onClick={() => setSelectedOption(option.id)}
-          >
-            <div className="flex items-start justify-between mb-2">
-              <div className="flex items-center gap-2">
-                <span className="text-xl">{getStatusIcon(option.status)}</span>
-                <h3 className="font-semibold text-slate-900 dark:text-slate-100">
-                  {option.name}
-                </h3>
+            <div
+              key={option.id}
+              className={`p-4 border-2 rounded-lg transition-all ${
+                selectedOption === option.id
+                  ? "border-blue-500 dark:border-blue-400 bg-blue-50 dark:bg-blue-900/20"
+                  : "border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600"
+              }`}
+              onClick={() => setSelectedOption(option.id)}
+            >
+              <div className="flex items-start justify-between mb-2">
+                <div className="flex items-center gap-2">
+                  <span className="text-xl">
+                    {getStatusIcon(option.status)}
+                  </span>
+                  <h3 className="font-semibold text-slate-900 dark:text-slate-100">
+                    {option.name}
+                  </h3>
+                </div>
+                <span
+                  className={`px-2 py-1 rounded text-xs font-medium ${getStatusColor(option.status)}`}
+                >
+                  {option.status.replace("-", " ")}
+                </span>
               </div>
-              <span
-                className={`px-2 py-1 rounded text-xs font-medium ${getStatusColor(option.status)}`}
-              >
-                {option.status.replace("-", " ")}
-              </span>
-            </div>
-            <p className="text-sm text-slate-600 dark:text-slate-400 mb-3">
-              {option.description}
-            </p>
-            {option.url && (
-              <p className="text-xs text-slate-500 dark:text-slate-500 mb-3 font-mono break-all">
-                {option.url}
+              <p className="text-sm text-slate-600 dark:text-slate-400 mb-3">
+                {option.description}
               </p>
-            )}
-            <div className="flex gap-2">
-              {option.testUrl && (
-                <IdeaIButton
-                  appName={appName}
-                  onClick={() => testDeployment(option.id)}
-                  disabled={isTesting === option.id}
-                  className="text-xs"
-                >
-                  {isTesting === option.id ? "Testing..." : "Test"}
-                </IdeaIButton>
-              )}
               {option.url && (
-                <a
-                  href={option.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-3 py-1.5 text-xs bg-slate-200 dark:bg-slate-700 text-slate-900 dark:text-slate-100 rounded hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors"
-                >
-                  Open →
-                </a>
+                <p className="text-xs text-slate-500 dark:text-slate-500 mb-3 font-mono break-all">
+                  {option.url}
+                </p>
+              )}
+              <div className="flex gap-2">
+                {option.testUrl && (
+                  <IdeaIButton
+                    appName={appName}
+                    onClick={() => testDeployment(option.id)}
+                    disabled={isTesting === option.id}
+                    className="text-xs"
+                  >
+                    {isTesting === option.id ? "Testing..." : "Test"}
+                  </IdeaIButton>
+                )}
+                {option.url && (
+                  <a
+                    href={option.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-3 py-1.5 text-xs bg-slate-200 dark:bg-slate-700 text-slate-900 dark:text-slate-100 rounded hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors"
+                  >
+                    Open →
+                  </a>
+                )}
+              </div>
+              {option.logs && option.logs.length > 0 && (
+                <div className="mt-2 p-2 bg-slate-50 dark:bg-slate-800 rounded text-xs font-mono">
+                  {option.logs.map((log, idx) => (
+                    <div
+                      key={idx}
+                      className="text-slate-600 dark:text-slate-400"
+                    >
+                      {log}
+                    </div>
+                  ))}
+                </div>
               )}
             </div>
-            {option.logs && option.logs.length > 0 && (
-              <div className="mt-2 p-2 bg-slate-50 dark:bg-slate-800 rounded text-xs font-mono">
-                {option.logs.map((log, idx) => (
-                  <div key={idx} className="text-slate-600 dark:text-slate-400">
-                    {log}
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
           ))}
         </div>
       )}
@@ -441,14 +474,19 @@ export const IdeAIDeployment = ({
               };
               const configJson = JSON.stringify(config, null, 2);
               console.log("Deployment Config:", config);
-              
+
               // Copy to clipboard if available
               if (typeof navigator !== "undefined" && navigator.clipboard) {
-                navigator.clipboard.writeText(configJson).then(() => {
-                  addLog("📋 Configuration copied to clipboard");
-                }).catch(() => {
-                  addLog("📋 Configuration logged to console (clipboard failed)");
-                });
+                navigator.clipboard
+                  .writeText(configJson)
+                  .then(() => {
+                    addLog("📋 Configuration copied to clipboard");
+                  })
+                  .catch(() => {
+                    addLog(
+                      "📋 Configuration logged to console (clipboard failed)",
+                    );
+                  });
               } else {
                 addLog("📋 Configuration logged to console");
               }
@@ -461,4 +499,3 @@ export const IdeAIDeployment = ({
     </div>
   );
 };
-

@@ -1,11 +1,11 @@
 /**
  * @fileoverview Page Templates Showcase - All Template Layouts
- * 
+ *
  * @module PageTemplatesShowcase
  * @description
  * Unified showcase for all page templates with filtering.
  * Shows all templates in one view, filterable by type.
- * 
+ *
  * @example
  * ```tsx
  * <PageTemplatesShowcase />
@@ -19,7 +19,16 @@ import { IdeAIPageTemplate } from "../ideai-page-template";
 import { Button } from "../ui/button";
 import { Card, CardContent } from "../ui/card";
 import { Badge } from "../ui/badge";
-import { LayoutDashboard, FileText, Users, ShoppingBag, Rocket, FolderKanban, BookOpen, Shield } from "lucide-react";
+import {
+  LayoutDashboard,
+  FileText,
+  Users,
+  ShoppingBag,
+  Rocket,
+  FolderKanban,
+  BookOpen,
+  Shield,
+} from "lucide-react";
 import pageTemplatesData from "./examples/page-templates.json";
 import type { PageTemplate, TemplateType } from "./types";
 import {
@@ -35,28 +44,36 @@ import {
 
 /**
  * Unified Page Templates Showcase Component
- * 
+ *
  * Displays all page templates in a single view.
  * Filterable by template type using toggle group at the top.
  */
 export function PageTemplatesShowcase() {
   const templates = pageTemplatesData as PageTemplate[];
-  
-  // Get app name from environment or default to "web"
-  const appName = process.env.NEXT_PUBLIC_VERCEL_PROJECT_NAME || "web";
-  
-  const vercelProjectName = process.env.NEXT_PUBLIC_VERCEL_PROJECT_NAME || "web";
-  const vercelOrgId = process.env.NEXT_PUBLIC_VERCEL_ORG_ID || "team_vhjzlMi6CfNow0IfBXnv2Yn2";
+
+  const vercelProjectName =
+    process.env.NEXT_PUBLIC_VERCEL_PROJECT_NAME || "web";
+  const vercelOrgId =
+    process.env.NEXT_PUBLIC_VERCEL_ORG_ID || "team_vhjzlMi6CfNow0IfBXnv2Yn2";
 
   // Get unique template types
-  const allTypes: TemplateType[] = ["dashboard", "blog", "social", "shop", "landing", "portfolio", "docs", "admin"];
   const availableTypes = useMemo(() => {
+    const allTypes: TemplateType[] = [
+      "dashboard",
+      "blog",
+      "social",
+      "shop",
+      "landing",
+      "portfolio",
+      "docs",
+      "admin",
+    ];
     const typesInData = new Set(templates.map((t) => t.type));
     return allTypes.filter((type) => typesInData.has(type));
   }, [templates]);
 
   const [selectedTypes, setSelectedTypes] = useState<Set<TemplateType>>(
-    new Set(availableTypes)
+    new Set(availableTypes),
   );
 
   // Filter templates based on selected types
@@ -126,7 +143,9 @@ export function PageTemplatesShowcase() {
     >
       <div className="max-w-7xl mx-auto p-8 space-y-8">
         <header className="text-center space-y-4">
-          <h1 className="text-4xl font-bold text-foreground">Page Templates Showcase</h1>
+          <h1 className="text-4xl font-bold text-foreground">
+            Page Templates Showcase
+          </h1>
           <p className="text-muted-foreground">
             Explore standard page layouts and templates for common use cases
           </p>
@@ -140,45 +159,49 @@ export function PageTemplatesShowcase() {
         {/* Filter Toggle Group */}
         <Card>
           <CardContent className="p-6">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-semibold text-foreground">Filter by Type</h2>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => {
-                if (selectedTypes.size === availableTypes.length) {
-                  setSelectedTypes(new Set());
-                } else {
-                  setSelectedTypes(new Set(availableTypes));
-                }
-              }}
-            >
-              {selectedTypes.size === availableTypes.length ? "Deselect All" : "Select All"}
-            </Button>
-          </div>
-          <div className="flex gap-2 flex-wrap">
-            {availableTypes.map((type) => {
-              const isSelected = selectedTypes.has(type);
-              const Icon = typeIcons[type];
-              const count = templates.filter((t) => t.type === type).length;
-              return (
-                <Button
-                  key={type}
-                  variant={isSelected ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => toggleType(type)}
-                  aria-pressed={isSelected}
-                  className="gap-2 capitalize"
-                >
-                  <Icon className="h-4 w-4" />
-                  <span>{type}</span>
-                  <Badge variant="secondary" className="text-xs">
-                    {count}
-                  </Badge>
-                </Button>
-              );
-            })}
-          </div>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-lg font-semibold text-foreground">
+                Filter by Type
+              </h2>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => {
+                  if (selectedTypes.size === availableTypes.length) {
+                    setSelectedTypes(new Set());
+                  } else {
+                    setSelectedTypes(new Set(availableTypes));
+                  }
+                }}
+              >
+                {selectedTypes.size === availableTypes.length
+                  ? "Deselect All"
+                  : "Select All"}
+              </Button>
+            </div>
+            <div className="flex gap-2 flex-wrap">
+              {availableTypes.map((type) => {
+                const isSelected = selectedTypes.has(type);
+                const Icon = typeIcons[type];
+                const count = templates.filter((t) => t.type === type).length;
+                return (
+                  <Button
+                    key={type}
+                    variant={isSelected ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => toggleType(type)}
+                    aria-pressed={isSelected}
+                    className="gap-2 capitalize"
+                  >
+                    <Icon className="h-4 w-4" />
+                    <span>{type}</span>
+                    <Badge variant="secondary" className="text-xs">
+                      {count}
+                    </Badge>
+                  </Button>
+                );
+              })}
+            </div>
           </CardContent>
         </Card>
 
@@ -219,4 +242,3 @@ export function PageTemplatesShowcase() {
     </IdeAIPageTemplate>
   );
 }
-

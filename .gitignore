@@ -37,6 +37,26 @@ yarn-error.log*
 .DS_Store
 *.pem
 
+# Boot logs (debugging - can be deleted)
+.boot-logs/
+
+# Memory logs (debugging - can be deleted)
+.memory-logs/
+
+# Debug documentation files (temporary - can be deleted)
+.boot-*.md
+.compilation-*.md
+.crash-*.md
+.debug-*.md
+.dev-manager-crash-log.md
+.dev-manager.log
+.framer-motion-restoration-*.md
+.memory-*.md
+.final-verification-checklist.md
+.commit-ready-summary.md
+.boot-checkpoint.json
+_RIC
+
 # Code Context (Kotlin/Gradle build artifacts)
 tools/code-context/build/
 tools/code-context/.gradle/
@@ -44,3 +64,7 @@ tools/code-context/output/
 tools/code-context/*.log
 tools/code-context/*.tar
 tools/code-context/*.zip
+.DS_Store
+
+# Zip files
+*.zip

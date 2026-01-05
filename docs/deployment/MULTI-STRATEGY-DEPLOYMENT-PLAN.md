@@ -24,7 +24,7 @@ This document outlines a comprehensive, phased approach to support multiple depl
 
 **Every commit for any ticket must include a well-formatted commit message:**
 
-```
+\`\`\`
 type(scope): detailed subject line
 
 Detailed explanation of what changed and why.
@@ -34,7 +34,7 @@ Detailed explanation of what changed and why.
 - Specific change 3
 
 Related: TICKET-XXX
-```
+\`\`\`
 
 ### Commit Types
 
@@ -59,7 +59,7 @@ Related: TICKET-XXX
 ### Examples
 
 **Good Commit Message:**
-```
+\`\`\`
 fix(web): resolve sub-folder route 404 issue
 
 Fixed Next.js App Router catch-all route that was returning 404
@@ -72,12 +72,12 @@ for async params handling.
 - Updated TypeScript types for params
 
 Related: TICKET-0.1
-```
+\`\`\`
 
 **Bad Commit Message (DON'T DO THIS):**
-```
+\`\`\`
 fix: stuff
-```
+\`\`\`
 
 ### Commit Signing
 
@@ -218,7 +218,7 @@ fix: stuff
 - Document successful deployment patterns
 
 **Commit Message Format** (REQUIRED):
-```
+\`\`\`
 fix(web): resolve sub-folder route 404 issue
 
 Fixed Next.js App Router catch-all route that was returning 404
@@ -229,7 +229,7 @@ in production. [Detailed explanation of solution]
 - [Specific change 3]
 
 Related: TICKET-0.1
-```
+\`\`\`
 
 ---
 
@@ -262,7 +262,7 @@ Related: TICKET-0.1
 **Acceptance Criteria**:
 
 **Commit Message Format** (REQUIRED):
-```
+\`\`\`
 type(scope): detailed subject line
 
 Detailed explanation of what changed and why.
@@ -272,7 +272,7 @@ Detailed explanation of what changed and why.
 - [Specific change 3]
 
 Related: TICKET-1.1
-```
+\`\`\`
 - ✅ Complete documentation for both workflows
 - ✅ Clear decision criteria
 - ✅ Step-by-step procedures
@@ -348,7 +348,7 @@ Related: TICKET-1.1
 **Acceptance Criteria**:
 
 **Commit Message Format** (REQUIRED):
-```
+\`\`\`
 type(scope): detailed subject line
 
 Detailed explanation of what changed and why.
@@ -358,7 +358,7 @@ Detailed explanation of what changed and why.
 - [Specific change 3]
 
 Related: TICKET-1.4
-```
+\`\`\`
 - ✅ Comprehensive checklists
 - ✅ Clear safety guidelines
 - ✅ Server impact documentation
@@ -414,14 +414,14 @@ Self-sovereign apps are individual apps that:
 - [ ] radix
 
 **Configuration Template**:
-```
+\`\`\`
 Vercel Dashboard Settings:
 - Root Directory: apps/{app-name}
 - Include files outside root: ✅ Enabled
 - Framework: Next.js (auto-detected)
 - Build Command: pnpm build (auto-detected)
 - Install Command: pnpm install (auto-detected)
-```
+\`\`\`
 
 **Acceptance Criteria**:
 - ✅ All apps deploy successfully to preview
@@ -432,7 +432,7 @@ Vercel Dashboard Settings:
 **Documentation Required**:
 
 **Commit Message Format** (REQUIRED):
-```
+\`\`\`
 type(scope): detailed subject line
 
 Detailed explanation of what changed and why.
@@ -442,7 +442,7 @@ Detailed explanation of what changed and why.
 - [Specific change 3]
 
 Related: TICKET-2.1
-```
+\`\`\`
 - [ ] `docs/deployment/self-sovereign-apps.md`
 - [ ] Update `docs/deployment/vercel.md` with per-app config
 - [ ] Create configuration checklist
@@ -475,7 +475,7 @@ Related: TICKET-2.1
 **Documentation Required**:
 
 **Commit Message Format** (REQUIRED):
-```
+\`\`\`
 type(scope): detailed subject line
 
 Detailed explanation of what changed and why.
@@ -485,7 +485,7 @@ Detailed explanation of what changed and why.
 - [Specific change 3]
 
 Related: TICKET-2.2
-```
+\`\`\`
 - [ ] Update `docs/deployment/unified-deployment.md`
 - [ ] Document validation checks
 - [ ] Document error messages and solutions
@@ -511,7 +511,7 @@ Related: TICKET-2.2
 **Acceptance Criteria**:
 
 **Commit Message Format** (REQUIRED):
-```
+\`\`\`
 type(scope): detailed subject line
 
 Detailed explanation of what changed and why.
@@ -521,7 +521,7 @@ Detailed explanation of what changed and why.
 - [Specific change 3]
 
 Related: TICKET-2.3
-```
+\`\`\`
 - ✅ Complete architecture documentation
 - ✅ Clear diagrams
 - ✅ Decision criteria documented
@@ -547,7 +547,7 @@ Related: TICKET-2.3
 **Acceptance Criteria**:
 
 **Commit Message Format** (REQUIRED):
-```
+\`\`\`
 type(scope): detailed subject line
 
 Detailed explanation of what changed and why.
@@ -557,7 +557,7 @@ Detailed explanation of what changed and why.
 - [Specific change 3]
 
 Related: TICKET-2.4
-```
+\`\`\`
 - ✅ Apps work completely standalone
 - ✅ No dependencies on other apps
 - ✅ All required packages included
@@ -609,7 +609,7 @@ Support subdomain routing where each app can be accessed at `{app}.myui.space`:
 **Acceptance Criteria**:
 
 **Commit Message Format** (REQUIRED):
-```
+\`\`\`
 type(scope): detailed subject line
 
 Detailed explanation of what changed and why.
@@ -619,7 +619,7 @@ Detailed explanation of what changed and why.
 - [Specific change 3]
 
 Related: TICKET-3.1
-```
+\`\`\`
 - ✅ Complete research documented
 - ✅ Clear strategy defined
 - ✅ Requirements identified
@@ -645,12 +645,12 @@ Related: TICKET-3.1
 - [ ] (others as needed)
 
 **DNS Configuration**:
-```
+\`\`\`
 Type: CNAME
 Name: docs
 Value: cname.vercel-dns.com
 TTL: 3600
-```
+\`\`\`
 
 **Acceptance Criteria**:
 - ✅ DNS records configured
@@ -661,7 +661,7 @@ TTL: 3600
 **Documentation Required**:
 
 **Commit Message Format** (REQUIRED):
-```
+\`\`\`
 type(scope): detailed subject line
 
 Detailed explanation of what changed and why.
@@ -671,7 +671,7 @@ Detailed explanation of what changed and why.
 - [Specific change 3]
 
 Related: TICKET-3.2
-```
+\`\`\`
 - [ ] `docs/deployment/dns-configuration.md`
 - [ ] DNS record reference
 - [ ] Troubleshooting guide
@@ -704,7 +704,7 @@ Related: TICKET-3.2
 **Documentation Required**:
 
 **Commit Message Format** (REQUIRED):
-```
+\`\`\`
 type(scope): detailed subject line
 
 Detailed explanation of what changed and why.
@@ -714,7 +714,7 @@ Detailed explanation of what changed and why.
 - [Specific change 3]
 
 Related: TICKET-3.3
-```
+\`\`\`
 - [ ] Update `docs/deployment/vercel.md` with subdomain config
 - [ ] Per-app subdomain configuration
 - [ ] Troubleshooting guide
@@ -746,7 +746,7 @@ Related: TICKET-3.3
 **Documentation Required**:
 
 **Commit Message Format** (REQUIRED):
-```
+\`\`\`
 type(scope): detailed subject line
 
 Detailed explanation of what changed and why.
@@ -756,7 +756,7 @@ Detailed explanation of what changed and why.
 - [Specific change 3]
 
 Related: TICKET-3.4
-```
+\`\`\`
 - [ ] Update routing documentation
 - [ ] Document subdomain configuration
 - [ ] Document fallback behavior
@@ -789,7 +789,7 @@ Related: TICKET-3.4
 **Documentation Required**:
 
 **Commit Message Format** (REQUIRED):
-```
+\`\`\`
 type(scope): detailed subject line
 
 Detailed explanation of what changed and why.
@@ -799,7 +799,7 @@ Detailed explanation of what changed and why.
 - [Specific change 3]
 
 Related: TICKET-3.5
-```
+\`\`\`
 - [ ] `docs/deployment/subdomain-scripts.md`
 - [ ] Usage examples
 - [ ] Troubleshooting guide
@@ -852,7 +852,7 @@ Mother-child app architecture where:
 **Acceptance Criteria**:
 
 **Commit Message Format** (REQUIRED):
-```
+\`\`\`
 type(scope): detailed subject line
 
 Detailed explanation of what changed and why.
@@ -862,7 +862,7 @@ Detailed explanation of what changed and why.
 - [Specific change 3]
 
 Related: TICKET-4.1
-```
+\`\`\`
 - ✅ Complete architecture design
 - ✅ Clear diagrams
 - ✅ Build process defined
@@ -883,7 +883,7 @@ Related: TICKET-4.1
 - [ ] Test base structure
 
 **Mother App Structure**:
-```
+\`\`\`
 apps/mother/
 ├── app/
 │   ├── layout.tsx
@@ -896,7 +896,7 @@ apps/mother/
 ├── lib/
 │   └── child-app-registry.ts
 └── package.json
-```
+\`\`\`
 
 **Acceptance Criteria**:
 - ✅ Mother app structure created
@@ -908,7 +908,7 @@ apps/mother/
 **Documentation Required**:
 
 **Commit Message Format** (REQUIRED):
-```
+\`\`\`
 type(scope): detailed subject line
 
 Detailed explanation of what changed and why.
@@ -918,7 +918,7 @@ Detailed explanation of what changed and why.
 - [Specific change 3]
 
 Related: TICKET-4.2
-```
+\`\`\`
 - [ ] Update architecture docs
 - [ ] Document structure
 - [ ] Document build process
@@ -956,7 +956,7 @@ Related: TICKET-4.2
 **Documentation Required**:
 
 **Commit Message Format** (REQUIRED):
-```
+\`\`\`
 type(scope): detailed subject line
 
 Detailed explanation of what changed and why.
@@ -966,7 +966,7 @@ Detailed explanation of what changed and why.
 - [Specific change 3]
 
 Related: TICKET-4.3
-```
+\`\`\`
 - [ ] Document integration method
 - [ ] Document CSS isolation
 - [ ] Document routing
@@ -999,7 +999,7 @@ Related: TICKET-4.3
 **Documentation Required**:
 
 **Commit Message Format** (REQUIRED):
-```
+\`\`\`
 type(scope): detailed subject line
 
 Detailed explanation of what changed and why.
@@ -1009,7 +1009,7 @@ Detailed explanation of what changed and why.
 - [Specific change 3]
 
 Related: TICKET-4.4
-```
+\`\`\`
 - [ ] Document each child app
 - [ ] Document how to add new child apps
 - [ ] Document CSS framework requirements
@@ -1042,7 +1042,7 @@ Related: TICKET-4.4
 **Documentation Required**:
 
 **Commit Message Format** (REQUIRED):
-```
+\`\`\`
 type(scope): detailed subject line
 
 Detailed explanation of what changed and why.
@@ -1052,7 +1052,7 @@ Detailed explanation of what changed and why.
 - [Specific change 3]
 
 Related: TICKET-4.5
-```
+\`\`\`
 - [ ] Update deployment docs
 - [ ] Document mother app deployment
 - [ ] Document troubleshooting
@@ -1089,7 +1089,7 @@ Related: TICKET-4.5
 **Acceptance Criteria**:
 
 **Commit Message Format** (REQUIRED):
-```
+\`\`\`
 type(scope): detailed subject line
 
 Detailed explanation of what changed and why.
@@ -1099,7 +1099,7 @@ Detailed explanation of what changed and why.
 - [Specific change 3]
 
 Related: TICKET-5.1
-```
+\`\`\`
 - ✅ All routing scenarios work
 - ✅ Routing is configurable
 - ✅ Fallback works correctly
@@ -1120,7 +1120,7 @@ Related: TICKET-5.1
 **Acceptance Criteria**:
 
 **Commit Message Format** (REQUIRED):
-```
+\`\`\`
 type(scope): detailed subject line
 
 Detailed explanation of what changed and why.
@@ -1130,7 +1130,7 @@ Detailed explanation of what changed and why.
 - [Specific change 3]
 
 Related: TICKET-5.2
-```
+\`\`\`
 - ✅ Build times reduced
 - ✅ Caching works correctly
 - ✅ Parallel builds work
@@ -1151,7 +1151,7 @@ Related: TICKET-5.2
 **Acceptance Criteria**:
 
 **Commit Message Format** (REQUIRED):
-```
+\`\`\`
 type(scope): detailed subject line
 
 Detailed explanation of what changed and why.
@@ -1161,7 +1161,7 @@ Detailed explanation of what changed and why.
 - [Specific change 3]
 
 Related: TICKET-5.3
-```
+\`\`\`
 - ✅ Monitoring in place
 - ✅ Dashboard functional
 - ✅ Alerts configured
@@ -1337,4 +1337,3 @@ Related: TICKET-5.3
 
 **Last Updated**: January 1, 2026  
 **Next Review**: After Phase 0 completion
-

@@ -32,20 +32,20 @@ The **Vercel CLI Direct** workflow is a **backup deployment method** for IdeaI m
 ### Required Tools
 
 1. **Vercel CLI**: Installed globally
-   ```bash
+   \`\`\`bash
    npm install -g vercel@latest
-   ```
+   \`\`\`
 
 2. **Vercel Account**: Logged in
-   ```bash
+   \`\`\`bash
    vercel login
-   ```
+   \`\`\`
 
 3. **Project Linked**: Each app must be linked to Vercel project
-   ```bash
+   \`\`\`bash
    cd apps/web
    vercel link
-   ```
+   \`\`\`
 
 ### Required Environment Variables
 
@@ -59,35 +59,35 @@ The **Vercel CLI Direct** workflow is a **backup deployment method** for IdeaI m
 The unified `deploy.sh` script works with Vercel CLI:
 
 **Preview Deployment**:
-```bash
+\`\`\`bash
 ./deploy.sh
-```
+\`\`\`
 
 **Production Deployment**:
-```bash
+\`\`\`bash
 ./deploy.sh --prod
-```
+\`\`\`
 
 **Single App**:
-```bash
+\`\`\`bash
 ./deploy.sh --prod web
-```
+\`\`\`
 
 **With Token**:
-```bash
+\`\`\`bash
 VERCEL_TOKEN=your_token ./deploy.sh --prod
-```
+\`\`\`
 
 ### Method 2: Direct Vercel CLI
 
 **From App Directory**:
-```bash
+\`\`\`bash
 cd apps/web
 vercel deploy --prod
-```
+\`\`\`
 
 **From Repo Root** (requires symlink setup):
-```bash
+\`\`\`bash
 # Create symlink (deploy.sh does this automatically)
 ln -s apps/web/.vercel .vercel
 
@@ -96,17 +96,17 @@ vercel deploy --prod
 
 # Remove symlink
 rm .vercel
-```
+\`\`\`
 
 ## Workflow Process
 
 ### Step-by-Step
 
 1. **Ensure Project is Linked**
-   ```bash
+   \`\`\`bash
    cd apps/web
    vercel link
-   ```
+   \`\`\`
    - Select existing project or create new
    - Project config saved to `.vercel/project.json`
 
@@ -115,14 +115,14 @@ rm .vercel
    - Include files outside root: ✅ Enabled
 
 3. **Deploy**
-   ```bash
+   \`\`\`bash
    # From repo root (recommended)
    ./deploy.sh --prod web
    
    # Or from app directory
    cd apps/web
    vercel deploy --prod
-   ```
+   \`\`\`
 
 4. **Verify Deployment**
    - Check Vercel dashboard
@@ -139,18 +139,18 @@ When deploying directly via Vercel CLI, **you must sync changes to GitHub** to m
 
 ### Option 1: Manual Git Push (Recommended)
 
-```bash
+\`\`\`bash
 # After Vercel deployment
 git add .
 git commit -m "deploy(web): deploy to production via CLI"
 git push origin main
-```
+\`\`\`
 
 ### Option 2: Auto-commit Script
 
 Create a script to auto-commit after deployment:
 
-```bash
+\`\`\`bash
 #!/bin/bash
 # scripts/post-vercel-deploy.sh
 
@@ -161,12 +161,12 @@ Create a script to auto-commit after deployment:
 git add .
 git commit -m "deploy($1): deploy via Vercel CLI"
 git push origin main
-```
+\`\`\`
 
 **Usage**:
-```bash
+\`\`\`bash
 ./scripts/post-vercel-deploy.sh web
-```
+\`\`\`
 
 ### Option 3: Vercel Webhook (Future)
 
@@ -189,14 +189,14 @@ The `deploy.sh` script handles:
 
 For CI/CD or automated scripts:
 
-```bash
+\`\`\`bash
 # Set environment variables
 export VERCEL_TOKEN=your_token
 export VERCEL_ORG_ID=your_org_id
 
 # Deploy
 ./deploy.sh --prod
-```
+\`\`\`
 
 **Note**: Token must have full access to organization and projects.
 
@@ -205,15 +205,15 @@ export VERCEL_ORG_ID=your_org_id
 ### Error: "Project not linked"
 
 **Solution**:
-```bash
+\`\`\`bash
 cd apps/web
 vercel link
-```
+\`\`\`
 
 Or use `deploy.sh` which auto-links:
-```bash
+\`\`\`bash
 ./deploy.sh --prod web
-```
+\`\`\`
 
 ### Error: "Cannot find .vercel directory"
 
@@ -231,14 +231,14 @@ Or use `deploy.sh` which auto-links:
 ### Error: "Authentication failed"
 
 **Solution**:
-```bash
+\`\`\`bash
 vercel login
-```
+\`\`\`
 
 Or set `VERCEL_TOKEN`:
-```bash
+\`\`\`bash
 export VERCEL_TOKEN=your_token
-```
+\`\`\`
 
 ### Deployment Succeeds But Code Not Updated
 
@@ -296,4 +296,3 @@ export VERCEL_TOKEN=your_token
 - [Rollback Procedures](./rollback-procedures.md)
 - [Unified Deployment Guide](./unified-deployment.md)
 - [Vercel Configuration](./vercel.md)
-

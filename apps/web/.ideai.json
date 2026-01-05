@@ -11,12 +11,19 @@
     "allcss",
     "bootstrap",
     "unocss",
-    "shadcn"
+    "shadcn",
+    "ideai-designer",
+    "v0-prototype",
+    "v0-000"
   ],
   "localPort": 3000,
   "animationLibraries": [
     "framer-motion",
-    "react-spring"
+    "react-spring",
+    "kute",
+    "motion-one",
+    "tsparticles",
+    "vivus"
   ],
   "vercelProject": {
     "projectName": "ideai-main",

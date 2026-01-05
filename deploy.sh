@@ -32,7 +32,7 @@ APPS_TO_DEPLOY=("$@")
 
 # If no apps specified, deploy all
 if [ ${#APPS_TO_DEPLOY[@]} -eq 0 ]; then
-  APPS_TO_DEPLOY=("web" "docs" "all" "nocss" "mvp" "tailwind" "allcss" "bootstrap" "unocss" "shadcn" "material" "chakra" "radix")
+  APPS_TO_DEPLOY=("web" "docs" "all" "nocss" "mvp" "tailwind" "allcss" "bootstrap" "unocss" "shadcn" "material" "chakra" "radix" "pico")
 fi
 
 echo -e "${BLUE}=== IdeaI Monorepo Deployment ===${NC}"
@@ -44,6 +44,15 @@ echo ""
 # Ensure we're in repo root
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$REPO_ROOT"
+
+# Update submodules to latest commits before deployment
+echo -e "${BLUE}Updating submodules to latest commits...${NC}"
+if node scripts/ideai-build-sync-submodules.mjs --init; then
+  echo -e "${GREEN}✅ Submodules updated${NC}"
+else
+  echo -e "${YELLOW}⚠️  Submodule update had issues, continuing anyway...${NC}"
+fi
+echo ""
 
 # Deploy each app
 for app in "${APPS_TO_DEPLOY[@]}"; do
@@ -60,11 +69,11 @@ for app in "${APPS_TO_DEPLOY[@]}"; do
     echo -e "${YELLOW}⚠️  Project not linked: apps/${app}${NC}"
     echo -e "${BLUE}Attempting to link based on .ideai.json config...${NC}"
     
-    # Try to link using ideai-vercel-link script
-    if [ -f "scripts/ideai-vercel-link.mjs" ]; then
-      node scripts/ideai-vercel-link.mjs "$app" || {
+    # Try to link using ideai-develop-vercel-link script
+    if [ -f "scripts/ideai-develop-vercel-link.mjs" ]; then
+      node scripts/ideai-develop-vercel-link.mjs "$app" || {
         echo -e "${RED}❌ Failed to link project${NC}"
-        echo -e "${YELLOW}Run manually: node scripts/ideai-vercel-link.mjs ${app}${NC}"
+        echo -e "${YELLOW}Run manually: node scripts/ideai-develop-vercel-link.mjs ${app}${NC}"
         exit 1
       }
     else
@@ -131,4 +140,3 @@ for app in "${APPS_TO_DEPLOY[@]}"; do
 done
 
 echo -e "${GREEN}=== All deployments complete ===${NC}"
-

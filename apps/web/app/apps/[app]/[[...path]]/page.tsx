@@ -40,7 +40,6 @@ function SubAppPageContent({ params }: PageProps) {
   const path = resolvedParams?.path || [];
   const [appUrl, setAppUrl] = useState<string | null>(null);
   const [appConfig, setAppConfig] = useState<{ name: string; localPort?: number } | null>(null);
-  const [ChildComponent, setChildComponent] = useState<React.ComponentType<any> | null>(null);
   const [mode, setMode] = useState<"unified" | "individual">("individual");
   const [loading, setLoading] = useState(true);
 
@@ -59,12 +58,11 @@ function SubAppPageContent({ params }: PageProps) {
 
     if (currentMode === "unified") {
       // Unified mode: Load child app as component from registry (synchronous)
-      const Component = getChildAppComponent(app);
-      setChildComponent(Component);
+      // Component is loaded but not used directly - iframe is used instead
+      getChildAppComponent(app);
       setLoading(false);
     } else {
       // Individual mode: Use iframe with separate port
-      // eslint-disable-next-line turbo/no-undeclared-env-vars
       if (process.env.NODE_ENV === "development" && config.localPort) {
         setAppUrl(`http://localhost:${config.localPort}`);
       }

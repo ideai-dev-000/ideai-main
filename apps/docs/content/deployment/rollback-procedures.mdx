@@ -15,7 +15,7 @@ This document describes procedures for rolling back IdeaI deployments when issue
 
 ### Git-Based Rollback (Recommended)
 
-```bash
+\`\`\`bash
 # Find the last good commit
 git log --oneline
 
@@ -24,7 +24,7 @@ git revert <commit-hash>
 
 # Push to trigger new deployment
 git push origin main
-```
+\`\`\`
 
 ### Vercel Dashboard Rollback (Quick Fix)
 
@@ -48,7 +48,7 @@ git push origin main
 
 **Steps**:
 
-```bash
+\`\`\`bash
 # 1. Find the problematic commit
 git log --oneline -10
 
@@ -62,7 +62,7 @@ git revert abc1234
 
 # 3. Push to trigger deployment
 git push origin main
-```
+\`\`\`
 
 **Result**:
 - ✅ New commit created that undoes problematic changes
@@ -106,7 +106,7 @@ git push origin main
 
 **⚠️ Important**: After Vercel rollback, sync to git:
 
-```bash
+\`\`\`bash
 # Get the commit hash of the rolled-back deployment
 # (from Vercel dashboard)
 
@@ -115,7 +115,7 @@ git reset --hard <commit-hash>
 
 # Force push (use with caution!)
 git push origin main --force
-```
+\`\`\`
 
 ### Method 3: Deploy Previous Version via CLI
 
@@ -129,7 +129,7 @@ git push origin main --force
 
 **Steps**:
 
-```bash
+\`\`\`bash
 # 1. Find previous good commit
 git log --oneline -10
 
@@ -146,7 +146,7 @@ git checkout main
 # 5. Create revert commit
 git revert <problematic-commit-hash>
 git push origin main
-```
+\`\`\`
 
 **Result**:
 - ✅ Quick rollback for specific app
@@ -191,13 +191,13 @@ git push origin main
 **Recommended**: Git Revert (multiple reverts) or Vercel Dashboard
 
 **Option A: Multiple Git Reverts**
-```bash
+\`\`\`bash
 # Revert commits in reverse order (newest first)
 git revert <newest-commit>
 git revert <middle-commit>
 git revert <oldest-commit>
 git push origin main
-```
+\`\`\`
 
 **Option B: Vercel Dashboard**
 1. Find last good deployment
@@ -240,7 +240,7 @@ git push origin main
 5. ✅ Git history shows rollback commit
 
 **Commands**:
-```bash
+\`\`\`bash
 # Check deployment status
 curl -I https://www.myui.space
 
@@ -249,7 +249,7 @@ git log --oneline -5
 
 # Verify Vercel deployment
 # (check Vercel dashboard)
-```
+\`\`\`
 
 ## Prevention
 
@@ -317,7 +317,7 @@ git log --oneline -5
 **Situation**: Rolled back via Vercel dashboard, but git still has problematic code.
 
 **Solution**:
-```bash
+\`\`\`bash
 # Find the commit hash of the rolled-back deployment
 # (from Vercel dashboard)
 
@@ -326,7 +326,7 @@ git reset --hard <commit-hash>
 
 # Force push (coordinate with team first!)
 git push origin main --force
-```
+\`\`\`
 
 **⚠️ Warning**: Force push can break others' work. Coordinate with team!
 
@@ -346,4 +346,3 @@ git push origin main --force
 - [Deployment Decision Matrix](./deployment-decision-matrix.md)
 - [Deployment Safety Checklist](./safety-checklist.md)
 - [Unified Deployment Guide](./unified-deployment.md)
-

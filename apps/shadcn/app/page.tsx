@@ -1,13 +1,17 @@
 "use client";
 /**
  * @fileoverview Shadcn Components Showcase Page
- * 
+ *
  * Displays all shadcn/ui components from @repo/ui with design tokens
  */
 
+import { lazy, Suspense } from "react";
 import { IdeAIPageTemplate } from "@repo/ui/components/ideai-page-template";
 import { IdeAICSSSummary } from "@repo/ui/components/ideai-css-summary";
-import { UF } from "@repo/ui/components/uf";
+// Lazy load UF component to prevent compilation hang and memory issues
+const UF = lazy(() =>
+  import("@repo/ui/components/uf").then((module) => ({ default: module.UF })),
+);
 import { IdeaIButton } from "@repo/ui/components/ideai-button";
 import { useIFrameContext } from "@repo/ui";
 import {
@@ -29,8 +33,10 @@ import {
 } from "@repo/ui/components/ui/tooltip";
 
 export default function Home() {
-  const vercelProjectName = process.env.NEXT_PUBLIC_VERCEL_PROJECT_NAME || "shadcn";
-  const vercelOrgId = process.env.NEXT_PUBLIC_VERCEL_ORG_ID || "team_vhjzlMi6CfNow0IfBXnv2Yn2";
+  const vercelProjectName =
+    process.env.NEXT_PUBLIC_VERCEL_PROJECT_NAME || "shadcn";
+  const vercelOrgId =
+    process.env.NEXT_PUBLIC_VERCEL_ORG_ID || "team_vhjzlMi6CfNow0IfBXnv2Yn2";
 
   return (
     <IdeAIPageTemplate
@@ -42,13 +48,23 @@ export default function Home() {
     >
       <div className="max-w-6xl mx-auto p-8 space-y-12">
         <IdeAICSSSummary
-          frameworks={["Tailwind CSS", "IdeaI Design System", "Shadcn/UI Components"]}
+          frameworks={[
+            "Tailwind CSS",
+            "IdeaI Design System",
+            "Shadcn/UI Components",
+          ]}
           description="Shadcn/UI component library built on Radix UI primitives, styled with Tailwind CSS and IdeaI design tokens. All components from shared @repo/ui package."
         />
-        
-        {/* UniFrame - Second UI element */}
+
+        {/* UniFrame - Lazy loaded to prevent compilation hang and memory issues */}
         <div className="mt-6">
-          <UF />
+          <Suspense
+            fallback={
+              <div className="text-center p-4">Loading UniFrame...</div>
+            }
+          >
+            <UF />
+          </Suspense>
         </div>
 
         <section>
@@ -99,7 +115,10 @@ export default function Home() {
                 <CardDescription>Card description text</CardDescription>
               </CardHeader>
               <CardContent>
-                <p>Card content goes here. This demonstrates the card component with all its parts.</p>
+                <p>
+                  Card content goes here. This demonstrates the card component
+                  with all its parts.
+                </p>
               </CardContent>
               <CardFooter>
                 <ShadcnButton>Action</ShadcnButton>
@@ -112,7 +131,10 @@ export default function Home() {
                 <CardDescription>With different content</CardDescription>
               </CardHeader>
               <CardContent>
-                <p>This card shows how multiple cards can be displayed in a grid layout.</p>
+                <p>
+                  This card shows how multiple cards can be displayed in a grid
+                  layout.
+                </p>
               </CardContent>
               <CardFooter className="justify-between">
                 <Badge>New</Badge>
@@ -127,7 +149,10 @@ export default function Home() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-2">
-                  <p>This card demonstrates combining multiple components together.</p>
+                  <p>
+                    This card demonstrates combining multiple components
+                    together.
+                  </p>
                   <div className="flex gap-2">
                     <Badge>React</Badge>
                     <Badge variant="secondary">Next.js</Badge>
@@ -135,7 +160,9 @@ export default function Home() {
                 </div>
               </CardContent>
               <CardFooter>
-                <ShadcnButton className="w-full">Full Width Button</ShadcnButton>
+                <ShadcnButton className="w-full">
+                  Full Width Button
+                </ShadcnButton>
               </CardFooter>
             </Card>
           </div>
@@ -250,4 +277,3 @@ export default function Home() {
     </IdeAIPageTemplate>
   );
 }
-

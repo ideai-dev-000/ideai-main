@@ -1,11 +1,11 @@
 /**
  * @fileoverview IdeaI Card Form Field Component
- * 
+ *
  * @module IdeAICardFormField
  * @description
  * Form field component combining label and input into a complete form field.
  * Part of the IdeaI framework card system.
- * 
+ *
  * @example
  * ```tsx
  * <IdeAICardFormField
@@ -23,7 +23,10 @@ import { IdeAICardInput } from "./ideai-card-input";
 import { cn } from "../../../lib/utils";
 import type { Framework } from "./ideai-card-types";
 
-interface IdeAICardFormFieldProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "id"> {
+interface IdeAICardFormFieldProps extends Omit<
+  InputHTMLAttributes<HTMLInputElement>,
+  "id"
+> {
   /** Framework to use for styling */
   framework: Framework;
   /** Input ID (required for accessibility) */
@@ -42,7 +45,7 @@ interface IdeAICardFormFieldProps extends Omit<InputHTMLAttributes<HTMLInputElem
 
 /**
  * IdeaI Card Form Field Component
- * 
+ *
  * Combines label and input into a complete, accessible form field.
  * Uses semantic HTML with proper label-input association.
  */
@@ -56,16 +59,14 @@ export const IdeAICardFormField = ({
   error,
   ...inputProps
 }: IdeAICardFormFieldProps) => {
-  const labelClasses = framework === "bootstrap" 
-    ? "form-label" 
-    : "block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2";
+  const labelClasses =
+    framework === "bootstrap"
+      ? "form-label"
+      : "block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2";
 
   return (
     <div className={cn("mb-4", className)}>
-      <label
-        htmlFor={id}
-        className={cn(labelClasses, labelClassName)}
-      >
+      <label htmlFor={id} className={cn(labelClasses, labelClassName)}>
         {label}
       </label>
       <IdeAICardInput
@@ -96,6 +97,3 @@ export const IdeAICardFormField = ({
     </div>
   );
 };
-
-
-

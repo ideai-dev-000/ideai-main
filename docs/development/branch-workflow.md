@@ -11,11 +11,12 @@ Each IdeaI app can have its own Git branch, enabling independent deployments whi
 
 ## Branch Naming Convention
 
-```
+\`\`\`
 branch/{app-name}
-```
+\`\`\`
 
 Examples:
+
 - `branch/web` - Web app
 - `branch/docs` - Documentation site
 - `branch/landing` - Landing page
@@ -25,29 +26,36 @@ Examples:
 
 ### Creating a Branch for an App
 
-```bash
+\`\`\`bash
+
 # Create and switch to new branch
+
 git checkout -b branch/landing
 
 # Make changes to apps/landing
+
 # ... edit files ...
 
 # Commit changes
+
 git add apps/landing
 git commit -m "feat(landing): add new feature"
 
 # Push branch
+
 git push -u origin branch/landing
-```
+\`\`\`
 
 ### Vercel Project Configuration
 
 1. **Link branch to Vercel project**:
-   ```bash
+   \`\`\`bash
    cd apps/landing
    vercel link
+
    # Select existing project: landing
-   ```
+
+   \`\`\`
 
 2. **Configure in Vercel dashboard**:
    - Go to project settings
@@ -61,42 +69,47 @@ git push -u origin branch/landing
 
 ### Working with Multiple Branches
 
-```bash
+\`\`\`bash
+
 # Switch between branches
+
 git checkout branch/landing
 git checkout branch/docs
 git checkout main
 
 # See all branches
+
 git branch -a
 
 # Merge shared changes from main
+
 git checkout branch/landing
 git merge main
-```
+\`\`\`
 
 ### Shared Package Changes
 
 When changing shared packages (`packages/*`):
 
 1. **Commit to main**:
-   ```bash
+   \`\`\`bash
    git checkout main
    git add packages/ui
    git commit -m "feat(ui): update shared component"
    git push
-   ```
+   \`\`\`
 
 2. **Merge to app branches** (if needed):
-   ```bash
+   \`\`\`bash
    git checkout branch/landing
    git merge main
    git push
-   ```
+   \`\`\`
 
 ## Status Monitoring
 
 The landing page automatically shows:
+
 - **Local status**: Is dev server running?
 - **Vercel status**: Latest deployment status
 - **GitHub status**: Branch last commit, protection status
@@ -127,13 +140,3 @@ The landing page automatically shows:
 
 - [Branch-Per-Site Strategy](../architecture/branch-per-site-strategy.md)
 - [Git Integration](../deployment/git-integration.md)
-
-
-
-
-
-
-
-
-
-

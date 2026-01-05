@@ -35,4 +35,3 @@ export interface PageTemplate {
 export interface PageTemplatesData {
   templates: PageTemplate[];
 }
-

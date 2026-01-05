@@ -1,6 +1,6 @@
 /**
  * @fileoverview Semantic IdeaI header component with best practices
- * 
+ *
  * @module IdeaIHeader
  * @description
  * Semantic header with logo/brand (left), navigation (middle), and accounts (right).
@@ -11,9 +11,15 @@
 
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, lazy, Suspense } from "react";
 import { IdeAILogo } from "./ideai-logo";
-import { IdeAIDiagnostics } from "./ideai-diagnostics";
+// Lazy load IdeAIDiagnostics to prevent framer-motion from blocking compilation
+import type { IdeAIDiagnosticsProps } from "./ideai-diagnostics.js";
+const IdeAIDiagnostics = lazy(() =>
+  import("./ideai-diagnostics.js").then((module) => ({
+    default: module.IdeAIDiagnostics,
+  })),
+) as React.LazyExoticComponent<React.ComponentType<IdeAIDiagnosticsProps>>;
 import { ThemeToggle } from "./theme-toggle";
 import { MobileNav } from "./mobile-nav";
 
@@ -35,6 +41,7 @@ interface IdeaIHeaderProps {
   shrinkOnScroll?: boolean;
   fullWidth?: boolean;
   diagnosticsAppName?: string;
+  headerActions?: React.ReactNode;
 }
 
 export const IdeaIHeader = ({
@@ -58,6 +65,7 @@ export const IdeaIHeader = ({
   shrinkOnScroll = true,
   fullWidth = true,
   diagnosticsAppName,
+  headerActions,
 }: IdeaIHeaderProps) => {
   const [isExtraNavOpen, setIsExtraNavOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -107,9 +115,15 @@ export const IdeaIHeader = ({
       >
         {/* IdeaI Diagnostics - First element in header DOM */}
         {diagnosticsAppName && (
-          <IdeAIDiagnostics appName={diagnosticsAppName} position="top-right" />
+          <Suspense fallback={null}>
+            <IdeAIDiagnostics
+              appName={diagnosticsAppName}
+              position="top-right"
+              visible={true}
+            />
+          </Suspense>
         )}
-        
+
         <div className="ideai-header__container">
           {/* Left: Logo/Brand */}
           <div className="ideai-header__brand">
@@ -134,7 +148,10 @@ export const IdeaIHeader = ({
                         aria-haspopup="true"
                       >
                         {item.label}
-                        <span className="ideai-header__nav-arrow" aria-hidden="true">
+                        <span
+                          className="ideai-header__nav-arrow"
+                          aria-hidden="true"
+                        >
                           ▼
                         </span>
                       </button>
@@ -179,6 +196,12 @@ export const IdeaIHeader = ({
           <div className="ideai-header__accounts">
             <nav aria-label="Account navigation" role="navigation">
               <ul className="ideai-header__accounts-list">
+                {/* Header Actions - Custom actions (e.g., theme switcher) */}
+                {headerActions && (
+                  <li className="ideai-header__accounts-item">
+                    {headerActions}
+                  </li>
+                )}
                 {/* Theme Toggle - Top Right */}
                 <li className="ideai-header__accounts-item">
                   <ThemeToggle />
@@ -189,11 +212,11 @@ export const IdeaIHeader = ({
                 </li>
                 {/* Desktop Account Links */}
                 {accountLinks.map((link) => (
-                  <li key={link.href} className="ideai-header__accounts-item ideai-header__accounts-item--desktop">
-                    <a
-                      href={link.href}
-                      className="ideai-header__accounts-link"
-                    >
+                  <li
+                    key={link.href}
+                    className="ideai-header__accounts-item ideai-header__accounts-item--desktop"
+                  >
+                    <a href={link.href} className="ideai-header__accounts-link">
                       {link.label}
                     </a>
                   </li>

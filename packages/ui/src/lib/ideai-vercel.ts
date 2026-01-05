@@ -66,4 +66,3 @@ export function getVercelProjectName(appName: string): string {
   const config = getVercelProjectConfig(appName);
   return config.projectName;
 }
-

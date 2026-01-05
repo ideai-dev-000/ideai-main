@@ -150,6 +150,3 @@ export const IdeAICSSSummary = ({ frameworks, description, stacked = false }: Id
     </div>
   );
 };
-
-
-

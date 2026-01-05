@@ -1,0 +1,49 @@
+[
+  {
+    "id": "vivus-1",
+    "title": "SVG Draw Animation",
+    "description": "Draw SVG paths as if being sketched - perfect for logos and illustrations",
+    "library": "Vivus",
+    "category": "Drawing",
+    "tags": ["drawing", "svg", "sketch"],
+    "source": "https://maxwellito.github.io/vivus/",
+    "code": "import Vivus from 'vivus';\n\nnew Vivus('my-svg', {\n  type: 'oneByOne',\n  duration: 200,\n  animTimingFunction: Vivus.EASE\n});",
+    "config": {
+      "type": "oneByOne",
+      "duration": 200,
+      "animTimingFunction": "EASE"
+    },
+    "effectType": "drawing"
+  },
+  {
+    "id": "vivus-2",
+    "title": "Delayed Draw",
+    "description": "SVG drawing with delayed start between paths",
+    "library": "Vivus",
+    "category": "Drawing",
+    "tags": ["drawing", "delayed", "sequential"],
+    "source": "https://maxwellito.github.io/vivus/",
+    "code": "import Vivus from 'vivus';\n\nnew Vivus('my-svg', {\n  type: 'delayed',\n  duration: 200,\n  delay: 50\n});",
+    "config": {
+      "type": "delayed",
+      "duration": 200,
+      "delay": 50
+    },
+    "effectType": "drawing"
+  },
+  {
+    "id": "vivus-3",
+    "title": "Sync Draw",
+    "description": "All SVG paths draw simultaneously",
+    "library": "Vivus",
+    "category": "Drawing",
+    "tags": ["drawing", "sync", "simultaneous"],
+    "source": "https://maxwellito.github.io/vivus/",
+    "code": "import Vivus from 'vivus';\n\nnew Vivus('my-svg', {\n  type: 'sync',\n  duration: 200\n});",
+    "config": {
+      "type": "sync",
+      "duration": 200
+    },
+    "effectType": "drawing"
+  }
+]

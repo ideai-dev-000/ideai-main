@@ -53,7 +53,7 @@ Deployments happen automatically via GitHub Actions when:
 ### Manual
 Deployments can be triggered manually using the unified deployment script:
 
-```bash
+\`\`\`bash
 # Deploy all apps to production
 ./deploy.sh --prod
 
@@ -62,7 +62,7 @@ Deployments can be triggered manually using the unified deployment script:
 
 # Preview deployment
 ./deploy.sh
-```
+\`\`\`
 
 See [Unified Deployment Guide](./unified-deployment.md) for complete instructions.
 
@@ -101,4 +101,3 @@ See [Unified Deployment Guide](./unified-deployment.md) for complete instruction
 
 - [Development Guide](../development/getting-started.md)
 - [Troubleshooting](./troubleshooting.md)
-

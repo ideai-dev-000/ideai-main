@@ -69,18 +69,30 @@ async function readIdeaiMetadata(
         const stats = await stat(ideaiJsonPath);
         if (stats.isFile()) {
           const content = await readFile(ideaiJsonPath, "utf-8");
-          const config = JSON.parse(content) as any;
+          const config = JSON.parse(content) as {
+            name?: string;
+            description?: string;
+            localPort?: number;
+            metadata?: {
+              id?: string;
+              port?: number;
+              css?: string[];
+              capabilities?: string[];
+              path?: string;
+              category?: string;
+            };
+          };
           
           // Extract metadata from config
           metadata = {
-            id: config.metadata?.id || entry.name,
-            name: config.name || entry.name,
-            description: config.description || "",
+            id: (config.metadata?.id as string | undefined) || entry.name,
+            name: (config.name as string | undefined) || entry.name,
+            description: (config.description as string | undefined) || "",
             port: config.metadata?.port || config.localPort || 0,
-            css: config.metadata?.css || [],
-            capabilities: config.metadata?.capabilities || [],
-            path: config.metadata?.path || `/${entry.name}`,
-            category: config.metadata?.category || "development",
+            css: (config.metadata?.css as string[] | undefined) || [],
+            capabilities: (config.metadata?.capabilities as string[] | undefined) || [],
+            path: (config.metadata?.path as string | undefined) || `/${entry.name}`,
+            category: (config.metadata?.category as string | undefined) || "development",
           };
         }
         
@@ -110,8 +122,8 @@ async function readIdeaiMetadata(
   return apps.sort((a, b) => (a.port || 0) - (b.port || 0));
 }
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
+// Note: dynamic and revalidate removed - incompatible with cacheComponents in Next.js 16
+// This route will use default caching behavior
 
 export async function GET(): Promise<NextResponse<AppMetadata[] | { error: string; details?: string }>> {
   try {
@@ -128,4 +140,3 @@ export async function GET(): Promise<NextResponse<AppMetadata[] | { error: strin
     );
   }
 }
-

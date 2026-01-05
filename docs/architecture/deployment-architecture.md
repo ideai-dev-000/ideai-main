@@ -90,7 +90,7 @@ Sub-apps can be accessed via:
 
 Use the unified deployment script to deploy all apps:
 
-```bash
+\`\`\`bash
 # Deploy all apps (preview)
 ./deploy.sh
 
@@ -99,20 +99,20 @@ Use the unified deployment script to deploy all apps:
 
 # Deploy specific apps (production)
 ./deploy.sh --prod docs web
-```
+\`\`\`
 
 ### Manual Deployment
 
 Deploy individual apps:
 
-```bash
+\`\`\`bash
 # From app directory
 cd apps/docs
 vercel deploy --prod --yes
 
 # Or from root
 vercel deploy --prod --yes --cwd apps/docs
-```
+\`\`\`
 
 ## Current Deployment Status
 
@@ -136,26 +136,26 @@ vercel deploy --prod --yes --cwd apps/docs
 ### Environment Variables
 
 #### Main App (Web)
-```env
+\`\`\`env
 # Optional: Standalone app URLs for redirects
 NEXT_PUBLIC_DOCS_URL=https://docs-xxx.vercel.app
 NEXT_PUBLIC_ALL_URL=https://all-xxx.vercel.app
 # ... etc
-```
+\`\`\`
 
 #### Standalone Apps
-```env
+\`\`\`env
 # Vercel project name (shown in header)
 NEXT_PUBLIC_VERCEL_PROJECT_NAME=docs
 NEXT_PUBLIC_VERCEL_ORG_ID=idea-i
-```
+\`\`\`
 
 ### Vercel Configuration
 
 Each app has a `vercel.json`:
-```json
+\`\`\`json
 {}
-```
+\`\`\`
 
 Most settings are auto-detected. Configure in Vercel dashboard:
 - **Root Directory**: `apps/{app-name}`
@@ -266,12 +266,3 @@ This allows seamless switching between integrated and standalone modes per app.
 - All apps use `@repo/ui` - no duplication
 - Shared code in `packages/` directory
 - CSS centralized in `packages/ui/src/styles/`
-
-
-
-
-
-
-
-
-

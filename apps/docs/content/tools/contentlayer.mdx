@@ -20,14 +20,14 @@ Contentlayer is integrated into the `apps/docs` application to provide:
 
 Contentlayer and the Next.js plugin are installed in `apps/docs`:
 
-```json
+\`\`\`json
 {
   "dependencies": {
     "contentlayer": "^0.3.4",
     "next-contentlayer": "^0.3.4"
   }
 }
-```
+\`\`\`
 
 ## Configuration
 
@@ -35,7 +35,7 @@ Contentlayer and the Next.js plugin are installed in `apps/docs`:
 
 The Contentlayer configuration is in `apps/docs/contentlayer.config.ts`:
 
-```typescript
+\`\`\`typescript
 import { defineDocumentType, makeSource } from "contentlayer/source-files";
 
 const Doc = defineDocumentType(() => ({
@@ -64,13 +64,13 @@ export default makeSource({
   documentTypes: [Doc],
   disableImportAliasWarning: true,
 });
-```
+\`\`\`
 
 ### Next.js Config
 
 The Next.js configuration wraps the config with `withContentlayer`:
 
-```javascript
+\`\`\`javascript
 import { withContentlayer } from "next-contentlayer";
 
 const nextConfig = {
@@ -78,13 +78,13 @@ const nextConfig = {
 };
 
 export default withContentlayer(nextConfig);
-```
+\`\`\`
 
 ### TypeScript Config
 
 Path aliases are configured in `apps/docs/tsconfig.json`:
 
-```json
+\`\`\`json
 {
   "compilerOptions": {
     "paths": {
@@ -93,7 +93,7 @@ Path aliases are configured in `apps/docs/tsconfig.json`:
     }
   }
 }
-```
+\`\`\`
 
 ## Content Structure
 
@@ -101,7 +101,7 @@ Path aliases are configured in `apps/docs/tsconfig.json`:
 
 All documentation files must include frontmatter with at least a `title`:
 
-```markdown
+\`\`\`markdown
 ---
 title: Page Title
 description: SEO description for the page
@@ -111,13 +111,13 @@ published: true
 # Page Title
 
 Content here...
-```
+\`\`\`
 
 ### File Organization
 
 Documentation files are organized in `apps/docs/content/`:
 
-```
+\`\`\`
 content/
 ├── index.mdx
 ├── contributing.mdx
@@ -138,7 +138,7 @@ content/
 │   └── code-context.mdx
 └── tasks/
     └── code-context-integration.mdx
-```
+\`\`\`
 
 ## Usage
 
@@ -146,7 +146,7 @@ content/
 
 Content is accessed via the generated types:
 
-```typescript
+\`\`\`typescript
 import { allDocs, type Doc } from "contentlayer/generated";
 
 // Get all docs
@@ -154,20 +154,20 @@ const docs = allDocs;
 
 // Find a specific doc
 const doc = allDocs.find((d) => d.slug === "deployment/overview");
-```
+\`\`\`
 
 ### Rendering Content
 
 Content is rendered using `react-markdown` (not Contentlayer's MDX component for stability):
 
-```typescript
+\`\`\`typescript
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
 <ReactMarkdown remarkPlugins={[remarkGfm]}>
   {doc.body.raw}
 </ReactMarkdown>
-```
+\`\`\`
 
 **Note**: We use `react-markdown` instead of Contentlayer's `useMDXComponent` hook because:
 - More stable with Next.js 16 App Router
@@ -178,7 +178,7 @@ import remarkGfm from "remark-gfm";
 
 SEO metadata is generated automatically per page:
 
-```typescript
+\`\`\`typescript
 export async function generateMetadata({ params }: PageProps) {
   const doc = getDocFromSlug(slug);
   
@@ -193,13 +193,13 @@ export async function generateMetadata({ params }: PageProps) {
     },
   };
 }
-```
+\`\`\`
 
 ### Sitemap
 
 A sitemap is automatically generated at `/sitemap.xml`:
 
-```typescript
+\`\`\`typescript
 // apps/docs/app/sitemap.xml/route.ts
 import { allDocs } from "contentlayer/generated";
 
@@ -221,7 +221,7 @@ ${allDocs
     headers: { "Content-Type": "application/xml" },
   });
 }
-```
+\`\`\`
 
 ## URL Structure
 
@@ -263,7 +263,7 @@ These files are generated automatically during:
 1. Create a new `.mdx` file in `apps/docs/content/`
 2. Add frontmatter with `title` and optional `description`:
 
-```markdown
+\`\`\`markdown
 ---
 title: New Page Title
 description: Description for SEO
@@ -272,7 +272,7 @@ description: Description for SEO
 # New Page Title
 
 Content...
-```
+\`\`\`
 
 3. Run `pnpm sync-docs` if adding to `docs/` directory (auto-syncs on build)
 4. Contentlayer will automatically generate types
@@ -284,20 +284,20 @@ Content...
 
 Run Contentlayer manually:
 
-```bash
+\`\`\`bash
 cd apps/docs
 pnpm contentlayer build
-```
+\`\`\`
 
 ### Missing Frontmatter
 
 All `.mdx` files must have frontmatter with at least `title`:
 
-```markdown
+\`\`\`markdown
 ---
 title: Required Title
 ---
-```
+\`\`\`
 
 ### Build Errors
 
@@ -311,6 +311,3 @@ If Contentlayer build fails:
 - [Documentation Site Setup](../development/getting-started.md)
 - [SEO Best Practices](./seo.md) (if exists)
 - [Contentlayer Documentation](https://contentlayer.dev/docs)
-
-
-

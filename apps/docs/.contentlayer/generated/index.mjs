@@ -9,5 +9,3 @@ import allDocs from './Doc/_index.json' assert { type: 'json' }
 export { allDocs }
 
 export const allDocuments = [...allDocs]
-
-

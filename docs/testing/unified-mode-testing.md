@@ -19,21 +19,25 @@ description: Testing guide for unified mode (all apps on port 3000)
 Child app components are loading but not rendering. The page shows "Loading..." indefinitely.
 
 **Possible Causes**:
+
 - Child app pages have their own layouts that conflict
 - Component import/export mismatch
 - React hydration mismatch
 
 ### Test URLs (Unified Mode)
 
-```bash
+\`\`\`bash
+
 # Start unified mode
+
 NEXT_PUBLIC_IDEAI_APP_MODE=unified pnpm --filter web dev
 
 # Test URLs
+
 http://localhost:3000/apps/docs
 http://localhost:3000/apps/all
 http://localhost:3000/apps/tailwind
-```
+\`\`\`
 
 ### Next Steps
 
@@ -44,13 +48,14 @@ http://localhost:3000/apps/tailwind
 
 ### Individual Mode Testing
 
-```bash
+\`\`\`bash
+
 # Start individual mode (default)
+
 pnpm --filter web dev
-pnpm --filter docs dev  # In separate terminal
+pnpm --filter docs dev # In separate terminal
 
 # Test URLs
-http://localhost:3000/apps/docs  # Should use iframe to localhost:3001
-```
 
-
+http://localhost:3000/apps/docs # Should use iframe to localhost:3001
+\`\`\`

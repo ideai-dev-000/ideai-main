@@ -45,25 +45,26 @@ The `IdeAIDeployment` component provides a comprehensive interface for testing a
 
 ### Basic Usage
 
-```tsx
+\`\`\`tsx
 import { IdeAIDeployment } from "@repo/ui/components/ideai-deployment";
 
 <IdeAIDeployment
-  appName="docs"
-  appConfig={{
+appName="docs"
+appConfig={{
     name: "Documentation",
     description: "IdeaI documentation site",
     standaloneUrl: process.env.NEXT_PUBLIC_DOCS_URL,
     localPort: 3001,
   }}
-  currentPath="/apps/docs"
-  showLogs={true}
+currentPath="/apps/docs"
+showLogs={true}
 />
-```
+\`\`\`
 
 ### Integration in Route
 
 The component is automatically integrated into `/apps/[app]` routes when:
+
 - App is not deployed standalone (no `standaloneUrl` set)
 - In production mode
 - Shows deployment options and testing tools
@@ -75,15 +76,16 @@ The component is automatically integrated into `/apps/[app]` routes when:
 **Configuration**: Set environment variable `NEXT_PUBLIC_{APP}_URL`
 
 **Example**:
-```bash
+\`\`\`bash
 NEXT_PUBLIC_DOCS_URL=https://docs.myui.space
-```
+\`\`\`
 
 **Status**: Shows as "configured" when URL is set
 
 ### Option 2: Subdomain
 
-**Configuration**: 
+**Configuration**:
+
 - DNS: Add CNAME record for `{app}.myui.space`
 - Vercel: Configure custom domain in project settings
 
@@ -102,6 +104,7 @@ NEXT_PUBLIC_DOCS_URL=https://docs.myui.space
 ### Option 4: Vercel Project
 
 **Configuration**:
+
 - Create new Vercel project
 - Set Root Directory: `apps/{app}`
 - Enable "Include files outside root"
@@ -119,6 +122,7 @@ NEXT_PUBLIC_DOCS_URL=https://docs.myui.space
 ## Logs
 
 The component logs:
+
 - Test start/completion
 - Test URLs
 - Success/failure status
@@ -136,21 +140,22 @@ The component logs:
 
 The component is designed to work with deployment automation scripts:
 
-```bash
+\`\`\`bash
+
 # Test deployment options
+
 ./scripts/test-deployment.sh docs
 
 # Deploy using specific strategy
+
 ./scripts/deploy-standalone.sh docs
 ./scripts/deploy-subdomain.sh docs
 ./scripts/deploy-subfolder.sh docs
 ./scripts/deploy-vercel-project.sh docs
-```
+\`\`\`
 
 ## Related Documentation
 
 - [Multi-Strategy Deployment Plan](./MULTI-STRATEGY-DEPLOYMENT-PLAN.md)
 - [Deployment Scripts](./deployment-scripts.md) (to be created)
 - [Multi-Tenant Architecture](./multi-tenant-architecture.md) (to be created)
-
-

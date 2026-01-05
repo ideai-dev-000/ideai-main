@@ -64,7 +64,7 @@ Each Vercel project must have a **unique Root Directory** setting that tells Ver
 
 ### Test Deployment
 
-```bash
+\`\`\`bash
 # Make a change only to apps/web
 echo "test" >> apps/web/app/page.tsx
 
@@ -76,7 +76,7 @@ git push
 # Check Vercel dashboard:
 # - web project should deploy
 # - docs project should NOT deploy (unless docs files also changed)
-```
+\`\`\`
 
 ## Troubleshooting
 
@@ -88,9 +88,9 @@ git push
 1. Verify Root Directory is set correctly for each project
 2. Configure Ignored Build Step to skip when app files don't change
 3. Example for `web` project:
-   ```
+   \`\`\`
    git diff HEAD^ HEAD --quiet apps/web
-   ```
+   \`\`\`
 
 ### Issue: Wrong Project Deploying
 
@@ -125,14 +125,14 @@ git push
 If Vercel allows direct commands, enter these in the "Ignored Build Step" field:
 
 **For `web` Project:**
-```
+\`\`\`
 git diff HEAD^ HEAD --quiet apps/web packages/
-```
+\`\`\`
 
 **For `docs` Project:**
-```
+\`\`\`
 git diff HEAD^ HEAD --quiet apps/docs packages/
-```
+\`\`\`
 
 ### Option B: Script File (If Required)
 
@@ -170,5 +170,3 @@ Scripts are executable and ready to use.
 4. **Directory paths** limit the diff to specific directories
 
 This ensures each project only builds when its own files (or shared packages) change.
-
-

@@ -1,0 +1,202 @@
+---
+title: IdeaI Build Verification System
+description: Complete guide to the IdeaI build verification and documentation checking system
+---
+
+# IdeaI Build Verification System
+
+**Last Updated**: January 1, 2026  
+**Status**: Active  
+**Version**: 1.0.0
+
+## Overview
+
+The IdeaI Build Verification System ensures:
+
+- ✅ **100% Documentation Accuracy**: OCD-level verification that docs match production code
+- ✅ **Build Step Tracking**: Visual UI showing all build steps with green light indicators
+- ✅ **Isolated Code**: Verification code never goes online (local-only)
+
+## Quick Start
+
+```bash
+# Full build verification with UI
+node scripts/ideai-build.mjs verify
+
+# Documentation verification only
+node scripts/ideai-build.mjs verify --docs
+
+# Silent verification (no UI)
+node scripts/ideai-build.mjs verify --no-ui
+
+# Verbose output
+node scripts/ideai-build.mjs verify --verbose
+```
+
+## System Architecture
+
+```
+scripts/ideai-build/
+├── docs-verifier.mjs    # Documentation verification engine
+├── build-ui.mjs         # Standalone build UI (never goes online)
+└── README.md            # Component documentation
+```
+
+## Documentation Verification
+
+### What It Checks
+
+1. **Code Examples**: All code examples match actual code
+2. **File Paths**: All referenced paths exist
+3. **Links**: All internal links work
+4. **Versions**: All version numbers match package.json
+5. **Cross-References**: All @see, @link references valid
+6. **Terminology**: Brand name "IdeaI" used correctly (not "ideai", "IDEAI", etc.)
+7. **Status Info**: All "Last Updated", "Version" fields current
+8. **Sync**: Docs in `docs/` synced to `apps/docs/content/`
+
+### Verification Process
+
+The verification system:
+
+1. Scans all `.md` and `.mdx` files in `docs/` and `apps/docs/content/`
+2. Extracts code blocks, file paths, links, versions
+3. Verifies each against actual codebase
+4. Reports all errors and warnings
+5. Fails build if critical errors found
+
+### Example Output
+
+```
+✅ All documentation checks passed!
+
+CODE EXAMPLES:
+  ❌ File deployment/guide.md: Code example uses 'npm install' instead of 'pnpm install'
+
+FILE PATHS:
+  ❌ File setup.md: Referenced path does not exist: scripts/old-script.sh
+
+TERMINOLOGY:
+  ❌ File readme.md: Incorrect brand name usage: "ideai" (should be "IdeaI")
+
+WARNINGS:
+  ⚠️  Documentation file deployment/workflow.md exists in docs/ but not in apps/docs/content/ as deployment/workflow.mdx
+```
+
+## Build UI
+
+### Features
+
+- **Visual Progress**: Step-by-step progress with icons
+- **Green Lights**: ✅ indicators for passed steps
+- **Red Indicators**: ❌ for failed steps
+- **Duration Tracking**: Shows time taken per step
+- **Isolated**: Never goes online, local-only execution
+
+### Default Build Steps
+
+1. **Linting** - `pnpm lint`
+2. **Type Checking** - `pnpm check-types`
+3. **Documentation Verification** - `node scripts/ideai-build.mjs verify --docs --no-ui`
+4. **Build** - `pnpm build`
+
+### Example UI Output
+
+```
+╔════════════════════════════════════════════════════════════╗
+║         IdeaI Build Verification System                     ║
+║         Standalone UI - Never Goes Online                  ║
+╚════════════════════════════════════════════════════════════╝
+
+✅ [1/4] Linting
+   Running ESLint to check code quality
+   ✅ Passed (1234ms)
+
+✅ [2/4] Type Checking
+   Running TypeScript type checker
+   ✅ Passed (2345ms)
+
+✅ [3/4] Documentation Verification
+   Verifying documentation is in sync with code (OCD-level accuracy)
+   ✅ Passed (567ms)
+
+✅ [4/4] Build
+   Building all apps and packages
+   ✅ Passed (45678ms)
+
+╔════════════════════════════════════════════════════════════╗
+║  ✅ All build steps passed!                                ║
+╚════════════════════════════════════════════════════════════╝
+```
+
+## Integration with Workflow
+
+### Before Every Build
+
+1. Run verification: `node scripts/ideai-build.mjs verify`
+2. Fix any errors
+3. Proceed with build
+
+### Before Every Commit
+
+1. Run documentation verification: `node scripts/ideai-build.mjs verify --docs`
+2. Fix any documentation errors
+3. Commit changes
+
+### In CI/CD (Optional)
+
+The verification can be integrated into CI/CD:
+
+- Add step: `node scripts/ideai-build.mjs verify --no-ui`
+- Fail build if verification fails
+
+**Note**: The build UI is local-only and not included in CI/CD.
+
+## Rules and Standards
+
+### Documentation Standards
+
+See `.ideai-rules.md` for complete documentation standards:
+
+- 100% accuracy required
+- All code examples must work
+- All paths must be correct
+- All links must work
+- Terminology must be consistent
+
+### Build Standards
+
+- All build steps must pass
+- Documentation verification is mandatory
+- Build fails if any required step fails
+
+## Troubleshooting
+
+### "Documentation verification failed"
+
+1. Check the error messages
+2. Fix incorrect file paths
+3. Update code examples to match actual code
+4. Fix brand name usage (IdeaI, not ideai)
+5. Re-run verification
+
+### "Build UI not showing"
+
+- Ensure you're running: `node scripts/ideai-build.mjs verify` (without `--no-ui`)
+- Check that build-ui.mjs exists in `scripts/ideai-build/`
+
+### "Import errors"
+
+- Ensure all files exist in `scripts/ideai-build/`
+- Check Node.js version (requires Node 18+)
+
+## Related Documentation
+
+- [`.ideai-rules.md`](../../.ideai-rules.md) - Complete IdeaI development rules
+- [`.cursorrules`](../../.cursorrules) - Cursor-specific rules
+- [IdeaI Build Workflow](./ideai-build-workflow.md) - Complete deployment workflow
+- [IdeaI Build Auto-Setup](./ideai-build-auto-setup.md) - Auto-setup system
+
+---
+
+**End of Document**

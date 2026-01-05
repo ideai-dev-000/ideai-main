@@ -1,5 +1,9 @@
 # Cursor AI Rules for IdeaI Monorepo
 
+**Note**: This file is a Cursor-specific summary. For complete rules usable by all AI tools, see `.ideai-rules.md` - the single source of truth for all IdeaI development standards.
+
+---
+
 ## Brand and Naming Standards
 
 ### Brand Name: IdeaI
@@ -68,6 +72,86 @@
 
 **NEVER be sloppy with naming - it's a sign of unprofessional code.**
 
+### Documentation File Organization
+
+**CRITICAL**: All documentation files must be organized in semantic locations. NO random MD files in root or scattered locations.
+
+**Rules**:
+- ✅ **All documentation in `docs/` directory** - Organized by category
+- ✅ **Root README.md only** - Project overview
+- ✅ **Temporary files archived** - Move to `docs/archive/`
+- ✅ **Semantic naming** - Use kebab-case
+- ❌ **NO MD files in root** (except README.md, SECURITY.md, .ideai-rules.md, .cursorrules)
+- ❌ **NO temporary status files in root** - Archive immediately
+
+**See `.ideai-rules.md` for complete documentation organization standards.**
+
+## Architecture Standards: Composability and Parent-Child Semantics
+
+**CRITICAL**: IdeaI is built on composable patterns that enable infinite extensibility. Every component, app, and system follows strict parent-child semantics.
+
+### Core Principles
+
+1. **Composability First**: All components must be composable
+   - ✅ Components can be nested and combined
+   - ✅ Components have clear parent-child relationships
+   - ✅ Use UniFrame structure: wrapper → header/body/footer → content
+   - ❌ Monolithic components that can't be broken down
+
+2. **Parent-Child Semantics**: Every system has clear hierarchy
+   - **Parent**: Container, orchestrator, or wrapper
+   - **Child**: Content, element, or nested component
+   - **Relationship**: Explicit and documented
+
+3. **Pattern Consistency**: Use established patterns, never invent new ones
+   - ✅ Follow existing patterns in `@repo/ui`
+   - ✅ Use UniFrame structure (wrapper, header, body, footer)
+   - ✅ Use IdeaI app structure (parent app, child apps)
+   - ✅ Script naming: `ideai-[parent]-[child].mjs`
+   - ✅ Component naming: `[parent]-[child].tsx`
+   - ❌ Creating new patterns without justification
+
+### Component Pattern (UniFrame Card Structure)
+
+```
+Card (Parent)
+├── Header (Child)
+│   ├── Title (Child)
+│   └── Badge (Child)
+├── Body (Child)
+│   └── Content (Children)
+└── Footer (Child)
+    └── Actions (Children)
+```
+
+**Rules**:
+- ✅ Always use wrapper → header/body/footer → content pattern
+- ✅ Each level is a composable child of its parent
+- ✅ Children can be nested infinitely
+- ❌ Skipping levels (e.g., content directly in card without body)
+
+### App Architecture Pattern
+
+- **Parent App** (`web`): Container, serves at root, embeds child apps
+- **Child Apps**: Content, serve specific functionality, can be embedded
+- **Configuration**: `.ideai.json` with explicit `role: "parent"` or `role: "child"`
+
+**Rules**:
+- ✅ Parent app embeds child apps, never the reverse
+- ✅ Child apps detect iframe context automatically
+- ✅ Parent-child relationship is explicit in `.ideai.json`
+- ❌ Child apps embedding other child apps (use parent instead)
+
+### Why These Patterns Matter
+
+1. **Predictability**: Developers know where to find things
+2. **Composability**: Components can be combined infinitely
+3. **Maintainability**: Clear hierarchy makes code easier to understand
+4. **Scalability**: Patterns scale to any size
+5. **Onboarding**: New developers understand structure immediately
+
+**See `.ideai-rules.md` for complete architecture standards.**
+
 ## Code Standards
 
 ### Code Headers
@@ -109,7 +193,7 @@ All code files must include rich, descriptive headers with:
 ### Commit Messages
 **CRITICAL**: All commits must follow this exact format with ticket reference:
 
-```
+\`\`\`
 type(scope): detailed subject line
 
 Detailed explanation of what changed and why.
@@ -119,7 +203,7 @@ Detailed explanation of what changed and why.
 - Specific change 3
 
 Related: TICKET-XXX
-```
+\`\`\`
 
 **Commit Types**:
 - `fix`: Bug fixes
@@ -142,7 +226,7 @@ Related: TICKET-XXX
 **Ticket Reference**: Every commit must include `Related: TICKET-XXX` at the end, where XXX is the ticket number (e.g., TICKET-0.1, TICKET-1.2).
 
 **Example Good Commit**:
-```
+\`\`\`
 fix(web): resolve sub-folder route 404 issue
 
 Fixed Next.js App Router catch-all route that was returning 404
@@ -155,12 +239,12 @@ for async params handling.
 - Updated TypeScript types for params
 
 Related: TICKET-0.1
-```
+\`\`\`
 
 **Example Bad Commit (DON'T DO THIS)**:
-```
+\`\`\`
 fix: stuff
-```
+\`\`\`
 
 ### Commit Signing in Non-Interactive Environment
 **CRITICAL**: When committing in Cursor/AI tools (non-interactive):
@@ -220,11 +304,11 @@ Never skip CI checks. All PRs must pass CI before merge.
    - **Both imported in every app's globals.css**
 
 2. **Import Pattern** (MANDATORY for all apps):
-   ```css
+   \`\`\`css
    /* In apps/*/app/globals.css */
    @import "../../../packages/ui/src/styles/globals.css";
    @import "../../../packages/ui/src/styles/ideai.css";
-   ```
+   \`\`\`
 
 3. **NO Custom CSS in Apps**:
    - ❌ NO custom button styles in app CSS modules
@@ -274,22 +358,22 @@ Never skip CI checks. All PRs must pass CI before merge.
 
 2. **During Debugging**:
    - Extract and compare HTML from both pages:
-     ```bash
+     \`\`\`bash
      curl -s http://localhost:3000 | grep -o 'class="[^"]*"' | sort | uniq > /tmp/web-classes.txt
      curl -s http://localhost:3001 | grep -o 'class="[^"]*"' | sort | uniq > /tmp/docs-classes.txt
      comm -23 /tmp/web-classes.txt /tmp/docs-classes.txt  # Classes in web but not docs
      comm -13 /tmp/web-classes.txt /tmp/docs-classes.txt  # Classes in docs but not web
-     ```
+     \`\`\`
    - Check rendered CSS by inspecting specific elements:
-     ```bash
+     \`\`\`bash
      curl -s http://localhost:3000 | grep -A 50 'class="ideai-footer'  # Footer HTML
      curl -s http://localhost:3001 | grep -A 50 'class="ideai-footer'  # Footer HTML
-     ```
+     \`\`\`
    - Compare CSS files loaded:
-     ```bash
+     \`\`\`bash
      curl -s http://localhost:3000 | grep -o 'href="[^"]*\.css[^"]*"'
      curl -s http://localhost:3001 | grep -o 'href="[^"]*\.css[^"]*"'
-     ```
+     \`\`\`
 
 3. **After Making Changes**:
    - **ALWAYS** take new screenshots to verify visual consistency
@@ -333,8 +417,253 @@ Never skip CI checks. All PRs must pass CI before merge.
 2. **ALWAYS check DOM** - Navigate, screenshot, compare HTML/CSS
 3. **Verify UI consistency** - Check both apps side-by-side visually
 4. Run checks: `pnpm lint && pnpm check-types && pnpm build`
-5. Update documentation if code changed (ensure OCD accuracy)
-6. Write detailed commit message
-7. If in non-interactive environment, disable auto-sign, commit, re-enable
-8. Push and verify CI passes
+5. **Verify documentation** - Run `node scripts/ideai-build.mjs verify --docs` (MANDATORY)
+6. Update documentation if code changed (ensure OCD accuracy)
+7. Write detailed commit message
+8. If in non-interactive environment, disable auto-sign, commit, re-enable
+9. Push and verify CI passes
 
+## Cache Management Standards
+
+**CRITICAL**: Never keep massive caches in individual apps. Use centralized caching when possible.
+
+### Cache Cleanup Rules
+
+1. **Build Caches (`.next/`, `dist/`, `build/`)**
+   - ✅ **Delete before committing** - These are already in `.gitignore`
+   - ✅ **Clean regularly** - Use `pnpm build:cold` for full cleanup
+   - ✅ **Don't commit** - Build artifacts should never be in git
+   - ❌ **Don't keep large caches** - Turbopack/Next.js caches can grow to 200MB+
+
+2. **Node Modules (`node_modules/`)**
+   - ✅ **Always in `.gitignore`** - Never commit dependencies
+   - ✅ **Use workspace dependencies** - Share packages via `@repo/*` when possible
+   - ✅ **Clean before deployment** - `pnpm install --frozen-lockfile` in CI/CD
+
+3. **Centralized Caching (Future)**
+   - 🎯 **Goal**: Move to centralized cache location (e.g., `.cache/` at repo root)
+   - 🎯 **Benefit**: Single cache location, easier cleanup, shared across apps
+   - ⏳ **Status**: To be implemented - currently caches are per-app
+
+4. **Cache Cleanup Commands**
+   ```bash
+   # Clean single app cache
+   rm -rf apps/[app-name]/.next
+   
+   # Clean all app caches (via cold refresh)
+   pnpm build:cold
+   
+   # Clean Turbopack cache specifically
+   find apps -name ".next" -type d -exec rm -rf {} +
+   ```
+
+5. **Before Committing**
+   - [ ] Check folder sizes: `du -sh apps/*`
+   - [ ] Remove any `.next/` folders > 100MB
+   - [ ] Verify `.gitignore` includes all cache directories
+   - [ ] Run `git status` to ensure no cache files are staged
+
+### Why This Matters
+
+- **Repository Size**: Large caches bloat the repo (even if ignored)
+- **Developer Experience**: Slow git operations, large folder sizes
+- **CI/CD Performance**: Faster builds with clean caches
+- **Disk Space**: Prevents unnecessary disk usage
+
+**Rule**: If a cache folder is > 50MB, it should be cleaned or moved to centralized location.
+
+---
+
+## Development Server Management
+
+**CRITICAL**: Starting dev servers must follow a clear, predictable workflow to avoid confusion.
+
+### Primary Method: Turbo (All Apps)
+
+**Command**: `pnpm dev`
+
+**What it does**:
+- Runs `turbo run dev --concurrency=20` from root
+- Starts all 13 apps in parallel via Turbo
+- Each app runs on its configured port (3000-3012)
+
+**When to use**:
+- ✅ Starting all apps at once
+- ✅ Normal development workflow
+- ✅ First time setup
+
+**If Turbo fails**:
+- One app failure may stop Turbo or leave some apps not started
+- Check which apps failed: Look for error messages in output
+- Use fallback method (individual apps) to start remaining apps
+
+### Fallback Method: Individual Apps
+
+**Command**: `pnpm --filter <app-name> dev`
+
+**What it does**:
+- Starts a single app in foreground
+- Use `&` to run in background: `pnpm --filter web dev &`
+
+**When to use**:
+- ✅ Turbo failed and some apps didn't start
+- ✅ Need to start specific apps only
+- ✅ Debugging a specific app
+
+**Example**:
+```bash
+# Start web app
+pnpm --filter web dev &
+
+# Start all apps individually (if turbo fails)
+for app in web docs all nocss mvp tailwind allcss bootstrap unocss shadcn material chakra radix; do
+  pnpm --filter $app dev &
+done
+```
+
+### Checking Server Status
+
+**Method 1: Port Check** (Recommended)
+```bash
+# Check all ports
+for port in 3000 3001 3002 3003 3004 3005 3006 3007 3008 3009 3010 3011 3012; do
+  if lsof -ti:$port >/dev/null 2>&1; then
+    echo "✅ Port $port: Running"
+  else
+    echo "❌ Port $port: Not running"
+  fi
+done
+```
+
+**Method 2: Process Check**
+```bash
+# Check for running Next.js processes
+ps aux | grep -E "next dev|turbo.*dev" | grep -v grep
+```
+
+**Method 3: HTTP Check**
+```bash
+# Test if app responds
+curl -s http://localhost:3000 >/dev/null && echo "✅ Web app responding" || echo "❌ Web app not responding"
+```
+
+### Stopping Dev Servers
+
+**Graceful Shutdown** (Recommended):
+```bash
+pnpm dev:stop
+# Uses scripts/ideai-develop-graceful-shutdown.mjs
+```
+
+**Force Kill** (If graceful fails):
+```bash
+pnpm dev:stop:force
+# Immediately kills all processes
+```
+
+**Manual Kill**:
+```bash
+# Kill all processes on dev ports
+lsof -ti:3000,3001,3002,3003,3004,3005,3006,3007,3008,3009,3010,3011,3012 | xargs kill -9 2>/dev/null
+```
+
+### Important Notes
+
+1. **`dev-manager.mjs` doesn't exist**: Documentation may reference `scripts/dev-manager.mjs`, but this script does not exist. Use `pnpm dev` (Turbo) or individual `pnpm --filter` commands instead.
+
+2. **Turbo concurrency**: The `dev` script uses `--concurrency=20` to handle all 13 apps. This is required because Turbo's default is 10, which is insufficient.
+
+3. **App ports**: Each app has a fixed port defined in its `package.json` dev script:
+   - web: 3000, docs: 3001, all: 3002, nocss: 3003, mvp: 3004, tailwind: 3005, allcss: 3006, bootstrap: 3007, unocss: 3008, shadcn: 3009, material: 3010, chakra: 3011, radix: 3012
+
+4. **Submodules**: `apps/ideai-designer` is a submodule and is excluded from `pnpm dev`. Start it separately if needed: `cd apps/ideai-designer && pnpm dev` (runs on port 3013).
+
+5. **Background processes**: When starting apps individually, always use `&` to run in background, or they will block the terminal.
+
+### Troubleshooting
+
+**Problem**: Turbo fails with "command exited (1)"
+- **Solution**: Check which app failed, fix the error, then start remaining apps individually
+
+**Problem**: Some apps not starting
+- **Solution**: Use port check to identify missing apps, then start them individually
+
+**Problem**: Port already in use
+- **Solution**: Use `pnpm dev:stop` to gracefully stop all servers, or manually kill processes on that port
+
+**Problem**: Apps start but don't respond
+- **Solution**: Wait 10-15 seconds for Next.js to compile, then check again. Check logs for compilation errors.
+
+### Workflow Checklist
+
+**Before starting dev servers**:
+- [ ] All dependencies installed (`pnpm install`)
+- [ ] No processes on ports 3000-3012 (or stop existing ones)
+- [ ] Submodules synced (if using ideai-designer)
+
+**Starting dev servers**:
+- [ ] Try `pnpm dev` first (Turbo method)
+- [ ] Wait 15-20 seconds for all apps to start
+- [ ] Check port status to verify all apps running
+- [ ] If some apps failed, start them individually
+
+**After starting**:
+- [ ] Verify all 13 apps running (ports 3000-3012)
+- [ ] Test at least web (3000) and docs (3001) in browser
+- [ ] Check for compilation errors in terminal
+
+## Build Verification System
+
+IdeaI includes a comprehensive build verification system:
+- **Documentation Verification**: Ensures docs are 100% in sync with code
+- **Build UI**: Standalone UI showing build steps with green light indicators
+- **Isolated Code**: Build verification code never goes online (local-only)
+
+**Usage**:
+- `node scripts/ideai-build.mjs verify` - Full build verification with UI
+- `node scripts/ideai-build.mjs verify --docs` - Documentation verification only
+- `node scripts/ideai-build.mjs verify --no-ui` - Silent verification (no UI)
+
+**Documentation Standards**:
+- All documentation must be verified before every build
+- Documentation must match production code exactly
+- All code examples must be tested and working
+- All file paths must be verified
+- All links must be tested
+- All version numbers must be current
+- Terminology must be consistent (IdeaI, not ideai)
+
+## Rules Management
+
+**CRITICAL**: All rules are centralized in `.ideai-rules.md` - the single source of truth.
+
+**Adding Rules via UI**:
+- Propose: `node scripts/ideai-build.mjs rules propose --title "Title" --content "Content" --category "architecture"`
+- List pending: `node scripts/ideai-build.mjs rules list`
+- Approve: `node scripts/ideai-build.mjs rules approve`
+- Sync: `node scripts/ideai-build.mjs rules sync`
+
+**Rule Categories**:
+- `architecture`: Patterns, composability, parent-child semantics
+- `code`: Code quality, TypeScript, functions
+- `docs`: Documentation standards
+- `commit`: Commit message format
+- `ui`: UI consistency, CSS patterns
+- `build`: Build and verification
+
+**Auto-Sync**: Approved rules are automatically synced to:
+- `.cursorrules` (this file - Cursor AI)
+- `.ideai-rules.md` (complete rules - all AI tools)
+
+## Complete Rules Reference
+
+**For comprehensive rules usable by all AI tools (Cursor, Claude, ChatGPT, etc.), see:**
+- **`.ideai-rules.md`** - Complete IdeaI development rules and standards
+  - Includes all sections from this file plus:
+  - Enhanced documentation verification requirements
+  - Build verification system details
+  - Complete architecture standards with examples
+  - Pattern enforcement checklists
+  - Rules manager integration details
+
+**This `.cursorrules` file is a Cursor-specific summary. `.ideai-rules.md` is the authoritative source.**

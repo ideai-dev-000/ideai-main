@@ -1,6 +1,6 @@
 /**
  * @fileoverview IdeaI CTA Section Component - Centralized call-to-action
- * 
+ *
  * @module IdeAICTASection
  * @description
  * Centralized CTA section component for landing pages.
@@ -24,7 +24,7 @@ export interface IdeAICTASectionProps {
 
 /**
  * IdeaI CTA Section Component
- * 
+ *
  * Centralized call-to-action section for landing pages.
  */
 export function IdeAICTASection({
@@ -35,7 +35,9 @@ export function IdeAICTASection({
   className = "",
 }: IdeAICTASectionProps) {
   return (
-    <section className={`py-16 bg-slate-50 dark:bg-slate-900 rounded-lg ${className}`}>
+    <section
+      className={`py-16 bg-slate-50 dark:bg-slate-900 rounded-lg ${className}`}
+    >
       <div className="max-w-3xl mx-auto text-center">
         <h2 className="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-4">
           {title}
@@ -53,5 +55,3 @@ export function IdeAICTASection({
     </section>
   );
 }
-
-

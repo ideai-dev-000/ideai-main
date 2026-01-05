@@ -1,6 +1,6 @@
 /**
  * @fileoverview Documentation Page Template
- * 
+ *
  * @module DocsTemplate
  * @description
  * Documentation layout with sidebar navigation and content
@@ -8,7 +8,7 @@
 
 "use client";
 
-import { Search, Book, FileText, Code } from "lucide-react";
+import { Search, Book } from "lucide-react";
 
 export function DocsTemplate() {
   return (
@@ -30,7 +30,13 @@ export function DocsTemplate() {
           </div>
         </div>
         <nav className="space-y-1">
-          {["Getting Started", "Installation", "Configuration", "API Reference", "Examples"].map((item) => (
+          {[
+            "Getting Started",
+            "Installation",
+            "Configuration",
+            "API Reference",
+            "Examples",
+          ].map((item) => (
             <a
               key={item}
               href="#"
@@ -46,9 +52,13 @@ export function DocsTemplate() {
       <main className="flex-1 p-8">
         {/* Breadcrumbs */}
         <nav className="flex items-center gap-2 text-sm text-muted-foreground mb-6">
-          <a href="#" className="hover:text-foreground">Home</a>
+          <a href="#" className="hover:text-foreground">
+            Home
+          </a>
           <span>/</span>
-          <a href="#" className="hover:text-foreground">Documentation</a>
+          <a href="#" className="hover:text-foreground">
+            Documentation
+          </a>
           <span>/</span>
           <span className="text-foreground">Getting Started</span>
         </nav>
@@ -70,7 +80,9 @@ export function DocsTemplate() {
               Install the package using your preferred package manager.
             </p>
             <div className="bg-slate-900 dark:bg-slate-950 rounded-lg p-4 mb-6">
-              <code className="text-green-400 text-sm">npm install package-name</code>
+              <code className="text-green-400 text-sm">
+                npm install package-name
+              </code>
             </div>
 
             <h2 className="text-2xl font-semibold text-foreground mt-8 mb-4">
@@ -94,4 +106,3 @@ function App() {
     </div>
   );
 }
-

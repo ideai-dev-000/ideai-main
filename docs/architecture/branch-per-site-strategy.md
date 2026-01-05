@@ -18,13 +18,13 @@ This strategy enables each IdeaI app to have its own Git branch, with each commi
 
 ### Branch Structure
 
-```
+\`\`\`
 main                    → ideai-main project (web app at myui.space)
 ├── branch/web          → web project (if separate deployment needed)
 ├── branch/docs         → docs project (docs.ideai.space or standalone)
 ├── branch/all          → all project (all.ideai.space)
 └── branch/{app-name}   → {app-name} project
-```
+\`\`\`
 
 ### Vercel Project Mapping
 
@@ -126,7 +126,7 @@ main                    → ideai-main project (web app at myui.space)
 
 ### Props Interface
 
-```typescript
+\`\`\`typescript
 interface IdeAISiteCardProps {
   app: AppConfig;
   localStatus?: 'running' | 'stopped' | 'unknown';
@@ -135,7 +135,7 @@ interface IdeAISiteCardProps {
   githubBranch?: string;
   lastDeployed?: string;
 }
-```
+\`\`\`
 
 ### Visual Design
 
@@ -177,11 +177,3 @@ interface IdeAISiteCardProps {
 - [Deployment Architecture](./deployment-architecture.md)
 - [Git Integration](../deployment/git-integration.md)
 - [Vercel Configuration](../deployment/vercel.md)
-
-
-
-
-
-
-
-

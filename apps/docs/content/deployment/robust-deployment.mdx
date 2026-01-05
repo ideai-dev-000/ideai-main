@@ -39,7 +39,7 @@ The deployment script (`deploy.sh`):
 
 ## Deployment Flow
 
-```
+\`\`\`
 1. Script runs from repo root
 2. For each app:
    a. cd into apps/$app
@@ -47,19 +47,19 @@ The deployment script (`deploy.sh`):
    c. Vercel uses Root Directory from dashboard
    d. cd back to repo root
 3. Next app...
-```
+\`\`\`
 
 ## Verification
 
 Before deploying, verify:
 
-```bash
+\`\`\`bash
 # Check project is linked
 cat apps/web/.vercel/project.json
 
 # Should show:
 # {"projectId":"...","orgId":"...","projectName":"web"}
-```
+\`\`\`
 
 ## Troubleshooting
 
@@ -90,4 +90,3 @@ cat apps/web/.vercel/project.json
 3. ✅ Verify `.vercel/project.json` exists before deploying
 4. ✅ Enable "Include files outside root directory" for all apps
 5. ✅ Test deployment with single app first: `./deploy.sh --prod web`
-

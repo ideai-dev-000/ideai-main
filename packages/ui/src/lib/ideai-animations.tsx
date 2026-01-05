@@ -1,18 +1,18 @@
 /**
  * @fileoverview IdeaI Animation System - Performance-Aware Animations
- * 
+ *
  * @module IdeAIAnimations
  * @description
  * Core IdeaI animation system that can be toggled on/off based on device performance.
  * Uses Framer Motion (React Fiber-based) for performant animations.
  * Automatically detects device performance and reduces/removes animations on low-end devices.
- * 
+ *
  * @example
  * ```tsx
  * import { useIdeAIAnimations, AnimatedDiv } from "@repo/ui/lib/ideai-animations";
- * 
+ *
  * const { animationsEnabled } = useIdeAIAnimations();
- * 
+ *
  * <AnimatedDiv
  *   initial={{ opacity: 0 }}
  *   animate={{ opacity: 1 }}
@@ -49,7 +49,7 @@ export function detectDevicePerformance(): {
 
   // Check for prefers-reduced-motion
   const prefersReducedMotion = window.matchMedia(
-    "(prefers-reduced-motion: reduce)"
+    "(prefers-reduced-motion: reduce)",
   ).matches;
 
   // Check for hardware acceleration (GPU)
@@ -63,6 +63,7 @@ export function detectDevicePerformance(): {
 
   // Check device memory (if available)
   if ("deviceMemory" in navigator) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const memory = (navigator as any).deviceMemory;
     if (memory < 2) performanceScore -= 0.3; // Low memory
     if (memory < 4) performanceScore -= 0.1; // Medium memory
@@ -70,8 +71,12 @@ export function detectDevicePerformance(): {
 
   // Check connection speed (if available)
   if ("connection" in navigator) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const connection = (navigator as any).connection;
-    if (connection?.effectiveType === "slow-2g" || connection?.effectiveType === "2g") {
+    if (
+      connection?.effectiveType === "slow-2g" ||
+      connection?.effectiveType === "2g"
+    ) {
       performanceScore -= 0.2;
     }
   }
@@ -83,16 +88,15 @@ export function detectDevicePerformance(): {
   }
 
   // Check if device is mobile (generally less performant)
-  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-    navigator.userAgent
-  );
+  const isMobile =
+    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+      navigator.userAgent,
+    );
   if (isMobile) performanceScore -= 0.1;
 
   // Final decision
   const canAnimate =
-    !prefersReducedMotion &&
-    hardwareAccelerated &&
-    performanceScore > 0.3;
+    !prefersReducedMotion && hardwareAccelerated && performanceScore > 0.3;
 
   return {
     canAnimate,
@@ -107,10 +111,10 @@ export function detectDevicePerformance(): {
  */
 export function useIdeAIAnimations() {
   const [performance, setPerformance] = useState(() =>
-    detectDevicePerformance()
+    detectDevicePerformance(),
   );
   const [animationsEnabled, setAnimationsEnabled] = useState(
-    performance.canAnimate
+    performance.canAnimate,
   );
 
   useEffect(() => {
@@ -139,7 +143,7 @@ export function useIdeAIAnimations() {
  */
 export function createAnimationVariants(
   variants: Variants,
-  animationsEnabled: boolean
+  animationsEnabled: boolean,
 ): Variants {
   if (!animationsEnabled) {
     // Return instant variants (no animation)
@@ -157,7 +161,7 @@ export function createAnimationVariants(
  */
 export function createAnimationTransition(
   transition: MotionProps["transition"],
-  animationsEnabled: boolean
+  animationsEnabled: boolean,
 ): MotionProps["transition"] {
   if (!animationsEnabled) {
     return { duration: 0 };
@@ -179,7 +183,7 @@ export function AnimatedDiv({
 }) {
   const transition = useMemo(
     () => createAnimationTransition(props.transition, animationsEnabled),
-    [props.transition, animationsEnabled]
+    [props.transition, animationsEnabled],
   );
 
   return (
@@ -279,7 +283,7 @@ export const fadeVariants: Variants = {
  * Slide from direction
  */
 export function createSlideVariants(
-  direction: "left" | "right" | "up" | "down" = "left"
+  direction: "left" | "right" | "up" | "down" = "left",
 ): Variants {
   const directions = {
     left: { x: "-100%" },
@@ -308,4 +312,3 @@ export function createSlideVariants(
     },
   };
 }
-

@@ -7,6 +7,7 @@
     "category": "Basic",
     "tags": ["fade", "opacity", "basic"],
     "source": "https://www.framer.com/motion/",
+    "effectType": "animating",
     "code": "import { motion } from 'framer-motion';\n\n<motion.div\n  initial={{ opacity: 0 }}\n  animate={{ opacity: 1 }}\n  transition={{ duration: 0.5 }}\n>\n  Content\n</motion.div>",
     "config": {
       "initial": { "opacity": 0 },
@@ -94,4 +95,3 @@
     }
   }
 ]
-

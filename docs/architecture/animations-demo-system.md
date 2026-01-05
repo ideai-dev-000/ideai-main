@@ -13,7 +13,7 @@ All components are code-split and only load when accessed for optimal performanc
 
 ### File Structure
 
-```
+\`\`\`
 packages/ui/src/components/animations/
 ├── framer-motion-demo.tsx    # Framer Motion demo component
 ├── react-spring-demo.tsx     # React Spring demo component
@@ -25,7 +25,7 @@ apps/*/app/animations/
 │   └── page.tsx              # Framer Motion demo route
 └── react-spring/
     └── page.tsx              # React Spring demo route
-```
+\`\`\`
 
 ### Routes
 
@@ -41,14 +41,14 @@ To add animation demos to any IdeaI app:
 
 1. **Create the animations directory structure:**
 
-```bash
+\`\`\`bash
 mkdir -p apps/[app-name]/app/animations/framer-motion
 mkdir -p apps/[app-name]/app/animations/react-spring
-```
+\`\`\`
 
 2. **Create the index page** (`apps/[app-name]/app/animations/page.tsx`):
 
-```tsx
+\`\`\`tsx
 import { IdeAIPageTemplate } from "@repo/ui/components/ideai-page-template";
 import Link from "next/link";
 
@@ -66,11 +66,11 @@ export default function AnimationsPage() {
     </IdeAIPageTemplate>
   );
 }
-```
+\`\`\`
 
 3. **Create Framer Motion page** (`apps/[app-name]/app/animations/framer-motion/page.tsx`):
 
-```tsx
+\`\`\`tsx
 import { lazy, Suspense } from "react";
 
 const FramerMotionDemo = lazy(() =>
@@ -86,11 +86,11 @@ export default function FramerMotionPage() {
     </Suspense>
   );
 }
-```
+\`\`\`
 
 4. **Create React Spring page** (`apps/[app-name]/app/animations/react-spring/page.tsx`):
 
-```tsx
+\`\`\`tsx
 import { lazy, Suspense } from "react";
 
 const ReactSpringDemo = lazy(() =>
@@ -106,7 +106,7 @@ export default function ReactSpringPage() {
     </Suspense>
   );
 }
-```
+\`\`\`
 
 ## Features
 
@@ -150,6 +150,26 @@ All dependencies are already installed in the shared UI package. No additional c
 1. **Always use lazy loading** - Never import animation demos directly
 2. **Provide loading states** - Use Suspense fallbacks
 3. **Respect performance settings** - Use `useIdeAIAnimations()` hook
+4. **Lazy-load components with framer-motion** - If used on root route, lazy-load to prevent compilation hangs
+5. **Test compilation** - Verify routes compile successfully after adding animation dependencies
+
+## Important: Framer Motion and Compilation
+
+**CRITICAL**: Components that import `framer-motion` directly and are used on the root route (`/`) can cause Next.js/Turbopack compilation to hang. 
+
+**Solution**: Lazy-load these components using `React.lazy()` and `Suspense`. For example:
+
+```tsx
+// ✅ Good - Lazy-loaded
+const IdeAIDiagnostics = lazy(() => 
+  import("./ideai-diagnostics").then(module => ({ default: module.IdeAIDiagnostics }))
+);
+
+// ❌ Bad - Direct import (can cause compilation hang on root route)
+import { IdeAIDiagnostics } from "./ideai-diagnostics";
+```
+
+**Why**: Next.js/Turbopack analyzes all imports during compilation, even if components aren't rendered. Lazy-loading defers this analysis until the component is actually needed.
 4. **Keep components focused** - Each demo component should showcase one library
 5. **Use semantic naming** - Clear, descriptive file and component names
 
@@ -178,4 +198,3 @@ The React Spring demo includes:
 - [ ] Add animation performance metrics
 - [ ] Add animation presets library
 - [ ] Add animation playground/editor
-

@@ -1,0 +1,23 @@
+{
+  "name": "@repo/security",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./headers": "./src/headers.ts",
+    "./csp": "./src/csp.ts",
+    "./rate-limit": "./src/rate-limit.ts"
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "check-types": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@repo/eslint-config": "workspace:*",
+    "@repo/typescript-config": "workspace:*",
+    "typescript": "5.9.2"
+  },
+  "dependencies": {
+    "next": "16.1.1"
+  }
+}

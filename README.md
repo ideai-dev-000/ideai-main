@@ -5,6 +5,7 @@
 ## What is IdeaI?
 
 IdeaI is a modern monorepo framework that enables:
+
 - **Parent-Child App Architecture**: One parent app serving multiple child apps
 - **Unified Deployment**: All apps on one domain with iframe embedding
 - **Documentation Integration**: Built-in docs viewer for AI and developers
@@ -20,35 +21,44 @@ IdeaI is a modern monorepo framework that enables:
 
 ### Installation
 
-```bash
+\`\`\`bash
+
 # Clone repository
+
 git clone <repo-url>
 cd ideai-main
 
 # Install dependencies
+
 pnpm install
 
 # Start development
+
 pnpm --filter web dev
-```
+
+# Cold refresh (clean everything and rebuild)
+
+pnpm build:cold
+\`\`\`
 
 ## Project Structure
 
-```
+\`\`\`
 ideai-main/
-├── apps/                  # Applications
-│   ├── web/              # Main parent app (boilerplate)
-│   ├── docs/             # Documentation site
-│   └── ...               # Other child apps
-├── packages/             # Shared packages
-│   └── ui/               # UI components and utilities
-├── docs/                 # Documentation files
-└── scripts/              # Build and deployment scripts
-```
+├── apps/ # Applications
+│ ├── web/ # Main parent app (boilerplate)
+│ ├── docs/ # Documentation site
+│ └── ... # Other child apps
+├── packages/ # Shared packages
+│ └── ui/ # UI components and utilities
+├── docs/ # Documentation files
+└── scripts/ # Build and deployment scripts
+\`\`\`
 
 ## Main App: `apps/web`
 
 The `web` app is:
+
 - **Production App**: Main IdeaI application
 - **Boilerplate**: Complete example for new apps
 - **Documentation Hub**: Integrated docs viewer
@@ -75,17 +85,18 @@ See [apps/web/README.md](apps/web/README.md) for details.
 
 Configure apps in `.ideai.json`:
 
-```json
+\`\`\`json
 {
-  "role": "parent",
-  "name": "IdeaI",
-  "childApps": ["docs", "all", "nocss"]
+"role": "parent",
+"name": "IdeaI",
+"childApps": ["docs", "all", "nocss"]
 }
-```
+\`\`\`
 
 ### 2. Unified Deployment
 
 All apps deploy to one Vercel project:
+
 - Parent app: `ideai-main`
 - Child apps: Embedded via iframes
 - Single domain: `myui.space`
@@ -93,25 +104,26 @@ All apps deploy to one Vercel project:
 ### 3. Documentation Integration
 
 Built-in docs viewer component:
-```tsx
+\`\`\`tsx
 import { IdeAIDocsViewer } from "@repo/ui";
 
 <IdeAIDocsViewer filter={{ category: "deployment" }} />
-```
+\`\`\`
 
 ### 4. Page Templates Showcase
 
 Pre-built page templates for common layouts:
+
 - Dashboard, Blog, Social Feed, E-commerce, Landing, Portfolio, Docs, Admin
 - JSON-driven configuration for easy extension
 - Centralized shadcn theme integration
 - Filterable showcase at `/page-templates`
 
-```tsx
+\`\`\`tsx
 import { PageTemplatesShowcase } from "@repo/ui/components/page-templates";
 
 <PageTemplatesShowcase />
-```
+\`\`\`
 
 ### 5. No Legacy Support
 
@@ -123,58 +135,70 @@ import { PageTemplatesShowcase } from "@repo/ui/components/page-templates";
 
 ### Start Development Server
 
-```bash
+\`\`\`bash
+
 # Parent app (web)
+
 pnpm --filter web dev
 
 # Child app (docs)
+
 pnpm --filter docs dev
-```
+\`\`\`
 
 ### Build
 
-```bash
+\`\`\`bash
+
 # Build all apps
+
 pnpm build
 
 # Build specific app
+
 pnpm --filter web build
-```
+\`\`\`
 
 ### Linting & Type Checking
 
-```bash
+\`\`\`bash
+
 # Lint
+
 pnpm lint
 
 # Type check
+
 pnpm check-types
-```
+\`\`\`
 
 ## Deployment
 
 ### Vercel Deployment
 
-```bash
+\`\`\`bash
+
 # Preview
+
 ./deploy.sh web
 
 # Production
+
 ./deploy.sh --prod web
-```
+\`\`\`
 
 ### Configuration
 
 Each app's `.ideai.json` specifies Vercel project:
 
-```json
+\`\`\`json
 {
-  "vercelProject": {
-    "projectName": "ideai-main",
-    "forkToNew": false
-  }
+"vercelProject": {
+"projectName": "ideai-main",
+"forkToNew": false
 }
-```
+}
+\`\`\`
 
 ## Architecture
 
@@ -194,23 +218,23 @@ Each app's `.ideai.json` specifies Vercel project:
 
 ### App Configuration (`.ideai.json`)
 
-```json
+\`\`\`json
 {
-  "role": "parent" | "child",
-  "name": "App Name",
-  "childApps": ["app1", "app2"],
-  "vercelProject": {
-    "projectName": "project-name",
-    "forkToNew": false
-  },
-  "metadata": {
-    "id": "app-id",
-    "port": 3000,
-    "css": ["Tailwind CSS"],
-    "capabilities": ["Feature 1", "Feature 2"]
-  }
+"role": "parent" | "child",
+"name": "App Name",
+"childApps": ["app1", "app2"],
+"vercelProject": {
+"projectName": "project-name",
+"forkToNew": false
+},
+"metadata": {
+"id": "app-id",
+"port": 3000,
+"css": ["Tailwind CSS"],
+"capabilities": ["Feature 1", "Feature 2"]
 }
-```
+}
+\`\`\`
 
 ## Documentation
 

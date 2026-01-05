@@ -49,17 +49,17 @@ See [Future Integration Tasks](#future-integration-tasks) below.
 
 The Code Context repository is included as a Git submodule:
 
-```bash
+\`\`\`bash
 # Clone with submodules (if starting fresh)
 git clone --recurse-submodules https://github.com/ideai-dev-000/ideai-main.git
 
 # Or initialize existing repo
 git submodule update --init --recursive
-```
+\`\`\`
 
 ### Building Code Context
 
-```bash
+\`\`\`bash
 # Navigate to code-context directory
 cd tools/code-context
 
@@ -68,29 +68,29 @@ cd tools/code-context
 
 # Install distribution
 ./gradlew installDist
-```
+\`\`\`
 
 ## Usage
 
 ### Analyze This Monorepo
 
-```bash
+\`\`\`bash
 # From repository root
 cd tools/code-context
 ./gradlew run --args="analyze ../.."
 
 # Or using installed binary
 ./build/install/codecontext/bin/codecontext analyze ../..
-```
+\`\`\`
 
 ### View Analysis Report
 
-```bash
+\`\`\`bash
 # Open the generated report
 open tools/code-context/output/index.html        # macOS
 xdg-open tools/code-context/output/index.html    # Linux
 start tools/code-context/output/index.html      # Windows
-```
+\`\`\`
 
 ## Integration with Our Standards
 
@@ -121,7 +121,7 @@ Code Context is excluded from:
 
 To pull updates from the upstream repository:
 
-```bash
+\`\`\`bash
 # Update to latest from ideai-dev/ideai-codecontext
 cd tools/code-context
 git pull origin main
@@ -130,11 +130,11 @@ git pull origin main
 cd ../..
 git add tools/code-context
 git commit -m "chore: update code-context submodule"
-```
+\`\`\`
 
 ## File Structure
 
-```
+\`\`\`
 ideai-main/
 ├── tools/
 │   └── code-context/          # Git submodule
@@ -143,7 +143,7 @@ ideai-main/
 │       └── output/             # Generated reports (gitignored)
 └── apps/                       # Our apps (TypeScript/Next.js)
 └── packages/                   # Our packages (TypeScript)
-```
+\`\`\`
 
 ## Best Practices
 
@@ -197,31 +197,31 @@ ideai-main/
 
 ### Submodule Not Initialized
 
-```bash
+\`\`\`bash
 git submodule update --init --recursive
-```
+\`\`\`
 
 ### Build Fails: JDK Not Found
 
-```bash
+\`\`\`bash
 # Check Java version
 java -version  # Should be 21+
 
 # Install JDK 21+ if needed
 # macOS: brew install openjdk@21
 # Linux: sudo apt install openjdk-21-jdk
-```
+\`\`\`
 
 ### Report Not Generated
 
-```bash
+\`\`\`bash
 # Ensure analysis completed successfully
 cd tools/code-context
 ./gradlew run --args="analyze ../.."
 
 # Check output directory
 ls -la output/
-```
+\`\`\`
 
 ## Related Documentation
 
@@ -269,4 +269,3 @@ If you want to contribute features back to Code Context:
 3. Push to your fork: `ideai-dev/ideai-codecontext`
 4. Create PR to upstream if applicable
 5. Update submodule reference in this repo
-

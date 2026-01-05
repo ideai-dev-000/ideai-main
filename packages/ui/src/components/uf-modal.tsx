@@ -1,6 +1,6 @@
 /**
  * @fileoverview UniFrame Modal/Popover Component
- * 
+ *
  * @file uf-modal.tsx
  * @module UFModal
  * @description
@@ -10,18 +10,18 @@
  * - Backdrop that blocks clicks and hides content below header
  * - Can be opened/closed
  * - Prevents click-throughs
- * 
+ *
  * @author IdeaI Development Team
  * @since 2026-01-01
  * @version 1.0.0
- * 
+ *
  * @example
  * ```tsx
  * import { UFModal } from "@repo/ui/components/uf-modal";
- * 
+ *
  * <UFModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
  * ```
- * 
+ *
  * @see {@link ./uf-iframe-wrapper.tsx} - IFrame wrapper component
  */
 
@@ -46,7 +46,7 @@ export interface UFModalProps {
 
 /**
  * UniFrame Modal Component
- * 
+ *
  * Displays the UniFrame demo in a centered modal with backdrop.
  * Blocks all interactions outside the modal.
  */
@@ -144,6 +144,3 @@ export const UFModal = ({
     </div>
   );
 };
-
-
-

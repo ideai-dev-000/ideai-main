@@ -10,11 +10,13 @@ description: Current deployment status, quick commands, and troubleshooting
 ## ✅ Deployment Status
 
 ### Command Line Deployment
+
 - ✅ **Preview**: `./deploy.sh` - Works correctly
 - ✅ **Production**: `./deploy.sh --prod` - Works correctly
 - ✅ **Single App**: `./deploy.sh web` or `./deploy.sh --prod docs` - Works correctly
 
 ### GitHub Actions Deployment
+
 - ✅ **Preview Workflow**: `.github/workflows/preview-deploy.yml` - Configured
 - ✅ **Production Workflow**: `.github/workflows/ci-cd.yml` - Configured
 - ✅ **Automatic Triggers**: Push to `preview` (preview) or `main` (production)
@@ -23,47 +25,55 @@ description: Current deployment status, quick commands, and troubleshooting
 
 ### Deploy from Command Line
 
-```bash
+\`\`\`bash
+
 # Preview - Deploy all apps
+
 ./deploy.sh
 
 # Preview - Deploy specific app
+
 ./deploy.sh web
 ./deploy.sh docs
 
 # Production - Deploy all apps
+
 ./deploy.sh --prod
 
 # Production - Deploy specific app
+
 ./deploy.sh --prod web
 ./deploy.sh --prod docs
-```
+\`\`\`
 
 ### Deploy via Git Push
 
-```bash
+\`\`\`bash
+
 # Preview deployment
+
 git checkout preview
 git push origin preview
 
 # Production deployment
+
 git checkout main
 git push origin main
-```
+\`\`\`
 
 ## Current Apps (9 total)
 
-| App | Port | Vercel Project | Status |
-|-----|------|----------------|--------|
-| web | 3000 | `web` | ✅ Linked |
-| docs | 3001 | `docs` | ✅ Linked |
-| all | 3002 | - | Ready |
-| nocss | 3003 | - | Ready |
-| mvp | 3004 | - | Ready |
-| tailwind | 3005 | - | Ready |
-| allcss | 3006 | - | Ready |
-| unocss | 3008 | - | Ready |
-| shadcn | 3009 | - | Ready |
+| App      | Port | Vercel Project | Status    |
+| -------- | ---- | -------------- | --------- |
+| web      | 3000 | `web`          | ✅ Linked |
+| docs     | 3001 | `docs`         | ✅ Linked |
+| all      | 3002 | -              | Ready     |
+| nocss    | 3003 | -              | Ready     |
+| mvp      | 3004 | -              | Ready     |
+| tailwind | 3005 | -              | Ready     |
+| allcss   | 3006 | -              | Ready     |
+| unocss   | 3008 | -              | Ready     |
+| shadcn   | 3009 | -              | Ready     |
 
 ## Required GitHub Secrets
 
@@ -74,9 +84,9 @@ For automatic deployment via GitHub Actions:
 - ⚠️ `VERCEL_PROJECT_ID` - Optional (not needed with deploy.sh)
 
 **Check secrets**:
-```bash
+\`\`\`bash
 gh secret list --repo ideai-dev-000/ideai-main
-```
+\`\`\`
 
 ## Vercel Dashboard Configuration
 
@@ -93,23 +103,27 @@ For each deployed app, verify in Vercel dashboard:
 
 ### Deployment Fails Locally
 
-```bash
+\`\`\`bash
+
 # Check authentication
+
 vercel whoami
 
 # Re-authenticate if needed
+
 vercel login
 
 # Check project linking
+
 cat apps/web/.vercel/project.json
-```
+\`\`\`
 
 ### GitHub Actions Fails
 
 1. **Check secrets are set**:
-   ```bash
+   \`\`\`bash
    gh secret list --repo ideai-dev-000/ideai-main
-   ```
+   \`\`\`
 
 2. **View workflow logs**:
    - Go to: https://github.com/ideai-dev-000/ideai-main/actions
@@ -132,6 +146,3 @@ cat apps/web/.vercel/project.json
 - [Unified Deployment Guide](./unified-deployment.md) - How deploy.sh works
 - [Vercel Configuration](./vercel.md) - Dashboard setup
 - [CI/CD Workflows](./ci-cd.md) - GitHub Actions details
-
-
-

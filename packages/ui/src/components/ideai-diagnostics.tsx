@@ -1,6 +1,6 @@
 /**
  * @fileoverview IdeaI Diagnostics Component - Developer tools widget
- * 
+ *
  * @module IdeAIDiagnostics
  * @description
  * A lightweight diagnostics widget that displays:
@@ -9,15 +9,15 @@
  * - Web Vitals metrics
  * - Framework information
  * - Useful dev tools
- * 
+ *
  * Designed to be minimal and efficient, using native browser APIs.
  * No external dependencies, no bloat - just real data from the stack.
- * 
+ *
  * @example
  * ```tsx
  * <IdeAIDiagnostics />
  * ```
- * 
+ *
  * @todo Add component-level render tracking
  * @todo Add bundle size analysis
  */
@@ -68,7 +68,7 @@ export interface IdeAIDiagnosticsProps {
 
 /**
  * IdeaI Diagnostics Widget
- * 
+ *
  * Displays real-time performance metrics and dev tools in a corner widget.
  * Automatically detects framework and collects performance data.
  */
@@ -78,13 +78,11 @@ export const IdeAIDiagnostics = ({
   appName,
 }: IdeAIDiagnosticsProps) => {
   // Only show in development - never in production
-  const isDevelopment = process.env.NODE_ENV === "development" || 
+  const isDevelopment =
+    process.env.NODE_ENV === "development" ||
     (typeof window !== "undefined" && window.location.hostname === "localhost");
-  
-  if (!isDevelopment) {
-    return null;
-  }
 
+  // All hooks must be called before any early returns (React rules)
   const [metrics, setMetrics] = useState<PerformanceMetrics>({
     domContentLoaded: null,
     loadComplete: null,
@@ -103,17 +101,34 @@ export const IdeAIDiagnostics = ({
   });
   const [isOpen, setIsOpen] = useState(false);
   const [isSideMenu, setIsSideMenu] = useState(true); // Default to side menu view
-  const [componentTimes, setComponentTimes] = useState<ComponentRenderTime[]>([]);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [componentTimes, setComponentTimes] = useState<ComponentRenderTime[]>(
+    [],
+  );
   const observerRef = useRef<PerformanceObserver | null>(null);
   const { animationsEnabled } = useIdeAIAnimations();
 
   useEffect(() => {
+    // Early return inside useEffect if not in development
+    if (!isDevelopment) {
+      return;
+    }
     if (typeof window === "undefined") return;
 
     // Detect framework
-    const detectFramework = (): { framework: string; reactVersion: string; nextVersion: string | null } => {
-      const reactVersion = (window as any).React?.version || "unknown";
-      const nextVersion = (window as any).__NEXT_DATA__?.buildId ? "16.1.0" : null;
+    const detectFramework = (): {
+      framework: string;
+      reactVersion: string;
+      nextVersion: string | null;
+    } => {
+      const reactVersion =
+        (window as Window & { React?: { version: string } }).React?.version ||
+        "unknown";
+      const nextVersion = (
+        window as Window & { __NEXT_DATA__?: { buildId?: string } }
+      ).__NEXT_DATA__?.buildId
+        ? "16.1.0"
+        : null;
       const framework = nextVersion ? "Next.js" : "React";
       return { framework, reactVersion, nextVersion };
     };
@@ -130,14 +145,18 @@ export const IdeAIDiagnostics = ({
         return { total: 0, js: 0, css: 0, image: 0, font: 0 };
       }
 
-      const resources = performance.getEntriesByType("resource") as PerformanceResourceTiming[];
+      const resources = performance.getEntriesByType(
+        "resource",
+      ) as PerformanceResourceTiming[];
       let js = 0;
       let css = 0;
       let image = 0;
       let font = 0;
 
       resources.forEach((entry) => {
-        const size = (entry as any).transferSize || 0;
+        const size =
+          (entry as PerformanceResourceTiming & { transferSize?: number })
+            .transferSize || 0;
         const name = entry.name.toLowerCase();
 
         if (name.endsWith(".js") || name.includes("javascript")) {
@@ -166,17 +185,22 @@ export const IdeAIDiagnostics = ({
       if (!perf || !perf.timing) return;
 
       const timing = perf.timing;
-      const navigation = perf.getEntriesByType("navigation")[0] as PerformanceNavigationTiming;
 
-      const domContentLoaded = timing.domContentLoadedEventEnd - timing.navigationStart;
+      const domContentLoaded =
+        timing.domContentLoadedEventEnd - timing.navigationStart;
       const loadComplete = timing.loadEventEnd - timing.navigationStart;
       const totalLoadTime = timing.loadEventEnd - timing.navigationStart;
 
       // Get paint metrics
-      const paintEntries = perf.getEntriesByType("paint") as PerformancePaintTiming[];
-      const firstPaint = paintEntries.find((entry) => entry.name === "first-paint")?.startTime || null;
+      const paintEntries = perf.getEntriesByType(
+        "paint",
+      ) as PerformancePaintTiming[];
+      const firstPaint =
+        paintEntries.find((entry) => entry.name === "first-paint")?.startTime ||
+        null;
       const firstContentfulPaint =
-        paintEntries.find((entry) => entry.name === "first-contentful-paint")?.startTime || null;
+        paintEntries.find((entry) => entry.name === "first-contentful-paint")
+          ?.startTime || null;
 
       // Get LCP
       let largestContentfulPaint: number | null = null;
@@ -190,7 +214,7 @@ export const IdeAIDiagnostics = ({
             }
           });
           lcpObserver.observe({ entryTypes: ["largest-contentful-paint"] });
-        } catch (e) {
+        } catch {
           // LCP not supported
         }
       }
@@ -202,8 +226,12 @@ export const IdeAIDiagnostics = ({
         domContentLoaded,
         loadComplete,
         firstPaint: firstPaint ? Math.round(firstPaint) : null,
-        firstContentfulPaint: firstContentfulPaint ? Math.round(firstContentfulPaint) : null,
-        largestContentfulPaint: largestContentfulPaint ? Math.round(largestContentfulPaint) : null,
+        firstContentfulPaint: firstContentfulPaint
+          ? Math.round(firstContentfulPaint)
+          : null,
+        largestContentfulPaint: largestContentfulPaint
+          ? Math.round(largestContentfulPaint)
+          : null,
         totalLoadTime,
         totalFileSize: fileSizes.total,
         jsFileSize: fileSizes.js,
@@ -225,15 +253,16 @@ export const IdeAIDiagnostics = ({
 
     // Also collect after a short delay to catch late-loading resources
     const timeout = setTimeout(collectMetrics, 2000);
+    const currentObserver = observerRef.current;
 
     return () => {
       window.removeEventListener("load", collectMetrics);
       clearTimeout(timeout);
-      if (observerRef.current) {
-        observerRef.current.disconnect();
+      if (currentObserver) {
+        currentObserver.disconnect();
       }
     };
-  }, []);
+  }, [isDevelopment]);
 
   const formatBytes = (bytes: number): string => {
     if (bytes === 0) return "0 B";
@@ -255,7 +284,10 @@ export const IdeAIDiagnostics = ({
     "bottom-left": "ideai-diagnostics--bottom-left",
   };
 
-  if (!visible) return null;
+  // Early return checks after all hooks
+  if (!isDevelopment || !visible) {
+    return null;
+  }
 
   return (
     <div className={`ideai-diagnostics ${positionClasses[position]}`}>
@@ -274,7 +306,10 @@ export const IdeAIDiagnostics = ({
         {isOpen && isSideMenu && (
           <motion.div
             className="ideai-diagnostics__overlay"
-            variants={createAnimationVariants(overlayVariants, animationsEnabled)}
+            variants={createAnimationVariants(
+              overlayVariants,
+              animationsEnabled,
+            )}
             initial="closed"
             animate="open"
             exit="closed"
@@ -291,7 +326,7 @@ export const IdeAIDiagnostics = ({
             className={`ideai-diagnostics__panel ${isSideMenu ? "ideai-diagnostics__panel--side-menu" : ""}`}
             variants={createAnimationVariants(
               isSideMenu ? sideMenuVariants : panelVariants,
-              animationsEnabled
+              animationsEnabled,
             )}
             initial="closed"
             animate="open"
@@ -303,14 +338,20 @@ export const IdeAIDiagnostics = ({
                 <h3 className="ideai-diagnostics__title">
                   IdeaI Diagnostics {appName && `- ${appName}`}
                 </h3>
-                <p className="ideai-diagnostics__subtitle">Performance metrics and diagnostics</p>
+                <p className="ideai-diagnostics__subtitle">
+                  Performance metrics and diagnostics
+                </p>
               </div>
               <div className="ideai-diagnostics__header-actions">
                 {/* Toggle View Button */}
                 <button
                   onClick={() => setIsSideMenu(!isSideMenu)}
                   className="ideai-diagnostics__toggle-view"
-                  aria-label={isSideMenu ? "Switch to panel view" : "Switch to side menu view"}
+                  aria-label={
+                    isSideMenu
+                      ? "Switch to panel view"
+                      : "Switch to side menu view"
+                  }
                   title={isSideMenu ? "Panel View" : "Side Menu View"}
                 >
                   {isSideMenu ? (
@@ -329,128 +370,226 @@ export const IdeAIDiagnostics = ({
               </div>
             </div>
 
-          {/* Dashboard Grid */}
-          <div className="ideai-diagnostics__grid">
-            {/* Framework Info - 3 columns */}
-            <section className="ideai-diagnostics__card" style={{ gridColumn: "span 3" }}>
-              <h4 className="ideai-diagnostics__card-title">Framework</h4>
-              <div className="ideai-diagnostics__card-content">
-                <div className="ideai-diagnostics__row">
-                  <span className="ideai-diagnostics__label">Framework:</span>
-                  <span className="ideai-diagnostics__value" style={{ fontWeight: 500 }}>{metrics.framework}</span>
-                </div>
-                <div className="ideai-diagnostics__row">
-                  <span className="ideai-diagnostics__label">React:</span>
-                  <span className="ideai-diagnostics__value">{metrics.reactVersion}</span>
-                </div>
-                {metrics.nextVersion && (
+            {/* Dashboard Grid */}
+            <div className="ideai-diagnostics__grid">
+              {/* Framework Info - 3 columns */}
+              <section
+                className="ideai-diagnostics__card"
+                style={{ gridColumn: "span 3" }}
+              >
+                <h4 className="ideai-diagnostics__card-title">Framework</h4>
+                <div className="ideai-diagnostics__card-content">
                   <div className="ideai-diagnostics__row">
-                    <span className="ideai-diagnostics__label">Next.js:</span>
-                    <span className="ideai-diagnostics__value">{metrics.nextVersion}</span>
+                    <span className="ideai-diagnostics__label">Framework:</span>
+                    <span
+                      className="ideai-diagnostics__value"
+                      style={{ fontWeight: 500 }}
+                    >
+                      {metrics.framework}
+                    </span>
                   </div>
-                )}
-              </div>
-            </section>
+                  <div className="ideai-diagnostics__row">
+                    <span className="ideai-diagnostics__label">React:</span>
+                    <span className="ideai-diagnostics__value">
+                      {metrics.reactVersion}
+                    </span>
+                  </div>
+                  {metrics.nextVersion && (
+                    <div className="ideai-diagnostics__row">
+                      <span className="ideai-diagnostics__label">Next.js:</span>
+                      <span className="ideai-diagnostics__value">
+                        {metrics.nextVersion}
+                      </span>
+                    </div>
+                  )}
+                </div>
+              </section>
 
-            {/* Render Times - 5 columns */}
-            <section className="ideai-diagnostics__card" style={{ gridColumn: "span 5" }}>
-              <h4 className="ideai-diagnostics__card-title">Render Times</h4>
-              <div className="ideai-diagnostics__card-content">
-                <div className="ideai-diagnostics__row">
-                  <span className="ideai-diagnostics__label">DOM Ready:</span>
-                  <span className="ideai-diagnostics__value" style={{ fontWeight: 500 }}>{formatTime(metrics.domContentLoaded)}</span>
+              {/* Render Times - 5 columns */}
+              <section
+                className="ideai-diagnostics__card"
+                style={{ gridColumn: "span 5" }}
+              >
+                <h4 className="ideai-diagnostics__card-title">Render Times</h4>
+                <div className="ideai-diagnostics__card-content">
+                  <div className="ideai-diagnostics__row">
+                    <span className="ideai-diagnostics__label">DOM Ready:</span>
+                    <span
+                      className="ideai-diagnostics__value"
+                      style={{ fontWeight: 500 }}
+                    >
+                      {formatTime(metrics.domContentLoaded)}
+                    </span>
+                  </div>
+                  <div className="ideai-diagnostics__row">
+                    <span className="ideai-diagnostics__label">
+                      First Paint:
+                    </span>
+                    <span
+                      className="ideai-diagnostics__value"
+                      style={{ fontWeight: 500 }}
+                    >
+                      {formatTime(metrics.firstPaint)}
+                    </span>
+                  </div>
+                  <div className="ideai-diagnostics__row">
+                    <span className="ideai-diagnostics__label">FCP:</span>
+                    <span
+                      className="ideai-diagnostics__value"
+                      style={{ fontWeight: 500 }}
+                    >
+                      {formatTime(metrics.firstContentfulPaint)}
+                    </span>
+                  </div>
+                  <div className="ideai-diagnostics__row">
+                    <span className="ideai-diagnostics__label">LCP:</span>
+                    <span
+                      className="ideai-diagnostics__value"
+                      style={{ fontWeight: 500 }}
+                    >
+                      {formatTime(metrics.largestContentfulPaint)}
+                    </span>
+                  </div>
+                  <div className="ideai-diagnostics__row">
+                    <span className="ideai-diagnostics__label">
+                      Load Complete:
+                    </span>
+                    <span
+                      className="ideai-diagnostics__value"
+                      style={{ fontWeight: 500 }}
+                    >
+                      {formatTime(metrics.loadComplete)}
+                    </span>
+                  </div>
                 </div>
-                <div className="ideai-diagnostics__row">
-                  <span className="ideai-diagnostics__label">First Paint:</span>
-                  <span className="ideai-diagnostics__value" style={{ fontWeight: 500 }}>{formatTime(metrics.firstPaint)}</span>
-                </div>
-                <div className="ideai-diagnostics__row">
-                  <span className="ideai-diagnostics__label">FCP:</span>
-                  <span className="ideai-diagnostics__value" style={{ fontWeight: 500 }}>{formatTime(metrics.firstContentfulPaint)}</span>
-                </div>
-                <div className="ideai-diagnostics__row">
-                  <span className="ideai-diagnostics__label">LCP:</span>
-                  <span className="ideai-diagnostics__value" style={{ fontWeight: 500 }}>{formatTime(metrics.largestContentfulPaint)}</span>
-                </div>
-                <div className="ideai-diagnostics__row">
-                  <span className="ideai-diagnostics__label">Load Complete:</span>
-                  <span className="ideai-diagnostics__value" style={{ fontWeight: 500 }}>{formatTime(metrics.loadComplete)}</span>
-                </div>
-              </div>
-            </section>
+              </section>
 
-            {/* File Sizes - 4 columns */}
-            <section className="ideai-diagnostics__card" style={{ gridColumn: "span 4" }}>
-              <h4 className="ideai-diagnostics__card-title">File Sizes</h4>
-              <div className="ideai-diagnostics__card-content">
-                <div className="ideai-diagnostics__row">
-                  <span className="ideai-diagnostics__label">Total:</span>
-                  <span className="ideai-diagnostics__value" style={{ fontWeight: 500 }}>{formatBytes(metrics.totalFileSize)}</span>
+              {/* File Sizes - 4 columns */}
+              <section
+                className="ideai-diagnostics__card"
+                style={{ gridColumn: "span 4" }}
+              >
+                <h4 className="ideai-diagnostics__card-title">File Sizes</h4>
+                <div className="ideai-diagnostics__card-content">
+                  <div className="ideai-diagnostics__row">
+                    <span className="ideai-diagnostics__label">Total:</span>
+                    <span
+                      className="ideai-diagnostics__value"
+                      style={{ fontWeight: 500 }}
+                    >
+                      {formatBytes(metrics.totalFileSize)}
+                    </span>
+                  </div>
+                  <div className="ideai-diagnostics__row">
+                    <span className="ideai-diagnostics__label">
+                      JavaScript:
+                    </span>
+                    <span
+                      className="ideai-diagnostics__value"
+                      style={{ fontWeight: 500 }}
+                    >
+                      {formatBytes(metrics.jsFileSize)}
+                    </span>
+                  </div>
+                  <div className="ideai-diagnostics__row">
+                    <span className="ideai-diagnostics__label">CSS:</span>
+                    <span
+                      className="ideai-diagnostics__value"
+                      style={{ fontWeight: 500 }}
+                    >
+                      {formatBytes(metrics.cssFileSize)}
+                    </span>
+                  </div>
+                  <div className="ideai-diagnostics__row">
+                    <span className="ideai-diagnostics__label">Images:</span>
+                    <span
+                      className="ideai-diagnostics__value"
+                      style={{ fontWeight: 500 }}
+                    >
+                      {formatBytes(metrics.imageFileSize)}
+                    </span>
+                  </div>
+                  <div className="ideai-diagnostics__row">
+                    <span className="ideai-diagnostics__label">Fonts:</span>
+                    <span
+                      className="ideai-diagnostics__value"
+                      style={{ fontWeight: 500 }}
+                    >
+                      {formatBytes(metrics.fontFileSize)}
+                    </span>
+                  </div>
                 </div>
-                <div className="ideai-diagnostics__row">
-                  <span className="ideai-diagnostics__label">JavaScript:</span>
-                  <span className="ideai-diagnostics__value" style={{ fontWeight: 500 }}>{formatBytes(metrics.jsFileSize)}</span>
-                </div>
-                <div className="ideai-diagnostics__row">
-                  <span className="ideai-diagnostics__label">CSS:</span>
-                  <span className="ideai-diagnostics__value" style={{ fontWeight: 500 }}>{formatBytes(metrics.cssFileSize)}</span>
-                </div>
-                <div className="ideai-diagnostics__row">
-                  <span className="ideai-diagnostics__label">Images:</span>
-                  <span className="ideai-diagnostics__value" style={{ fontWeight: 500 }}>{formatBytes(metrics.imageFileSize)}</span>
-                </div>
-                <div className="ideai-diagnostics__row">
-                  <span className="ideai-diagnostics__label">Fonts:</span>
-                  <span className="ideai-diagnostics__value" style={{ fontWeight: 500 }}>{formatBytes(metrics.fontFileSize)}</span>
-                </div>
-              </div>
-            </section>
+              </section>
 
-            {/* Dev Tools - Full width row */}
-            <section className="ideai-diagnostics__card" style={{ gridColumn: "span 12" }}>
-              <h4 className="ideai-diagnostics__card-title">Dev Tools</h4>
-              <div className="ideai-diagnostics__tools-grid">
-                <button
-                  onClick={() => {
-                    if (typeof window !== "undefined" && (window as any).__REACT_DEVTOOLS_GLOBAL_HOOK__) {
-                      console.log("React DevTools detected");
-                    } else {
-                      console.log("React DevTools not detected");
-                    }
-                  }}
-                  className="ideai-diagnostics__tool-button"
-                >
-                  <div className="ideai-diagnostics__tool-title">Check React DevTools</div>
-                  <div className="ideai-diagnostics__tool-desc">Detect if DevTools is active</div>
-                </button>
-                <button
-                  onClick={() => {
-                    console.table(metrics);
-                  }}
-                  className="ideai-diagnostics__tool-button"
-                >
-                  <div className="ideai-diagnostics__tool-title">Log Metrics to Console</div>
-                  <div className="ideai-diagnostics__tool-desc">Output all metrics data</div>
-                </button>
-                <button
-                  onClick={() => {
-                    const perf = window.performance;
-                    if (perf && perf.getEntriesByType) {
-                      console.log("Performance Entries:", perf.getEntriesByType("resource"));
-                    }
-                  }}
-                  className="ideai-diagnostics__tool-button"
-                >
-                  <div className="ideai-diagnostics__tool-title">Log Performance Entries</div>
-                  <div className="ideai-diagnostics__tool-desc">View performance data</div>
-                </button>
-              </div>
-            </section>
-          </div>
-        </motion.div>
+              {/* Dev Tools - Full width row */}
+              <section
+                className="ideai-diagnostics__card"
+                style={{ gridColumn: "span 12" }}
+              >
+                <h4 className="ideai-diagnostics__card-title">Dev Tools</h4>
+                <div className="ideai-diagnostics__tools-grid">
+                  <button
+                    onClick={() => {
+                      if (
+                        typeof window !== "undefined" &&
+                        (
+                          window as Window & {
+                            __REACT_DEVTOOLS_GLOBAL_HOOK__?: unknown;
+                          }
+                        ).__REACT_DEVTOOLS_GLOBAL_HOOK__
+                      ) {
+                        console.log("React DevTools detected");
+                      } else {
+                        console.log("React DevTools not detected");
+                      }
+                    }}
+                    className="ideai-diagnostics__tool-button"
+                  >
+                    <div className="ideai-diagnostics__tool-title">
+                      Check React DevTools
+                    </div>
+                    <div className="ideai-diagnostics__tool-desc">
+                      Detect if DevTools is active
+                    </div>
+                  </button>
+                  <button
+                    onClick={() => {
+                      console.table(metrics);
+                    }}
+                    className="ideai-diagnostics__tool-button"
+                  >
+                    <div className="ideai-diagnostics__tool-title">
+                      Log Metrics to Console
+                    </div>
+                    <div className="ideai-diagnostics__tool-desc">
+                      Output all metrics data
+                    </div>
+                  </button>
+                  <button
+                    onClick={() => {
+                      const perf = window.performance;
+                      if (perf && perf.getEntriesByType) {
+                        console.log(
+                          "Performance Entries:",
+                          perf.getEntriesByType("resource"),
+                        );
+                      }
+                    }}
+                    className="ideai-diagnostics__tool-button"
+                  >
+                    <div className="ideai-diagnostics__tool-title">
+                      Log Performance Entries
+                    </div>
+                    <div className="ideai-diagnostics__tool-desc">
+                      View performance data
+                    </div>
+                  </button>
+                </div>
+              </section>
+            </div>
+          </motion.div>
         )}
       </AnimatePresence>
     </div>
   );
 };
-

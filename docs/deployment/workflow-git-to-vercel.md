@@ -15,9 +15,9 @@ The **GitHub → Vercel** workflow is the **primary and recommended** deployment
 
 ### Workflow Flow
 
-```
+\`\`\`
 GitHub Push → GitHub Actions → Build & Test → Deploy to Vercel → Status Update
-```
+\`\`\`
 
 1. **Developer pushes code** to GitHub (branch: `main`, `preview`, or `develop`)
 2. **GitHub Actions triggers** automatically
@@ -85,7 +85,7 @@ GitHub Push → GitHub Actions → Build & Test → Deploy to Vercel → Status 
 
 **Trigger**: Push to `preview` branch or create PR
 
-```bash
+\`\`\`bash
 # Switch to preview branch
 git checkout preview
 
@@ -95,7 +95,7 @@ git commit -m "feat(web): add new feature"
 
 # Push to trigger preview deployment
 git push origin preview
-```
+\`\`\`
 
 **Result**:
 - ✅ All apps deployed to Vercel preview
@@ -106,7 +106,7 @@ git push origin preview
 
 **Trigger**: Push to `main` branch
 
-```bash
+\`\`\`bash
 # Switch to main branch
 git checkout main
 
@@ -115,7 +115,7 @@ git merge preview
 
 # Push to trigger production deployment
 git push origin main
-```
+\`\`\`
 
 **Result**:
 - ✅ All apps deployed to Vercel production
@@ -202,19 +202,19 @@ Each app must be configured in Vercel dashboard:
 The workflows use the unified `deploy.sh` script:
 
 **Preview Mode**:
-```bash
+\`\`\`bash
 ./deploy.sh
-```
+\`\`\`
 
 **Production Mode**:
-```bash
+\`\`\`bash
 ./deploy.sh --prod
-```
+\`\`\`
 
 **Single App**:
-```bash
+\`\`\`bash
 ./deploy.sh --prod web
-```
+\`\`\`
 
 **Script Features**:
 - ✅ Auto-discovers all apps
@@ -260,9 +260,9 @@ The workflows use the unified `deploy.sh` script:
 
 Add to README:
 
-```markdown
+\`\`\`markdown
 ![CI/CD](https://github.com/ideai-dev-000/ideai-main/workflows/CI%2FCD%20Pipeline/badge.svg)
-```
+\`\`\`
 
 ### Deployment Status
 
@@ -355,4 +355,3 @@ Add to README:
 - [Vercel Configuration](./vercel.md)
 - [GitHub Secrets Setup](../setup/github-secrets.md)
 - [Branch Protection Setup](../setup/branch-protection.md)
-
