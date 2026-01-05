@@ -14,9 +14,9 @@
 import { useState, useEffect, lazy, Suspense } from "react";
 import { IdeAILogo } from "./ideai-logo";
 // Lazy load IdeAIDiagnostics to prevent framer-motion from blocking compilation
-import type { IdeAIDiagnosticsProps } from "./ideai-diagnostics.js";
+import type { IdeAIDiagnosticsProps } from "./ideai-diagnostics";
 const IdeAIDiagnostics = lazy(() =>
-  import("./ideai-diagnostics.js").then((module) => ({
+  import("./ideai-diagnostics").then((module) => ({
     default: module.IdeAIDiagnostics,
   })),
 ) as React.LazyExoticComponent<React.ComponentType<IdeAIDiagnosticsProps>>;

@@ -110,6 +110,7 @@ export const IdeAIPageTemplate = ({
               ? []
               : [
                   { label: "Home", href: "/" },
+                  { label: "About", href: "/about" },
                   { label: "Documentation", href: "/docs" },
                   // Cloud Manager - DEVELOPMENT ONLY (never in production for security)
                   ...(process.env.NODE_ENV === "development"
@@ -125,7 +126,6 @@ export const IdeAIPageTemplate = ({
             shouldHideNav
               ? []
               : [
-                  { label: "About", href: "/about" },
                   { label: "Contact", href: "/contact" },
                   { label: "Blog", href: "/blog" },
                   { label: "Resources", href: "/resources" },
