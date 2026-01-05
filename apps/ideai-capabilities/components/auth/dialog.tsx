@@ -474,7 +474,7 @@ const EmailOnlyDialog = ({
   onSubmit,
   onToggleMode,
 }: EmailOnlyDialogProps) => (
-  <Dialog onOpenChange={onOpenChange} open={open}>
+  <Dialog open={open} onOpenChange={onOpenChange}>
     <DialogTrigger asChild>
       {children || (
         <Button size="sm" variant="default">
@@ -547,7 +547,7 @@ const MultiProviderDialog = ({
     enabledProviders.google;
 
   return (
-    <Dialog onOpenChange={onOpenChange} open={open}>
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>
         {children || (
           <Button size="sm" variant="default">

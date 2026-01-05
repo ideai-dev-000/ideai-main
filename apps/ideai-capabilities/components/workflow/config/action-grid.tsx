@@ -374,7 +374,7 @@ export function ActionGrid({
                 {groupIndex > 0 && <div className="my-2 h-px bg-border" />}
                 <div
                   className={cn(
-                    "sticky top-0 z-10 mb-1 flex items-center gap-2 bg-background px-3 py-2 font-medium text-muted-foreground text-xs uppercase tracking-wider",
+                    "sticky top-0 z-10 mb-1 flex items-center gap-2 bg-white dark:bg-slate-950 px-3 py-2 font-medium text-muted-foreground text-xs uppercase tracking-wider",
                     isHidden && "opacity-50",
                   )}
                 >

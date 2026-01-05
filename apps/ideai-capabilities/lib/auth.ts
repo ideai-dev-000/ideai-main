@@ -48,8 +48,8 @@ function getBaseURL() {
     return `https://${process.env.VERCEL_URL}`;
   }
 
-  // Fallback: Local development
-  return "http://localhost:3000";
+  // Fallback: Local development (capabilities app port)
+  return "http://localhost:3018";
 }
 
 // Build plugins array conditionally

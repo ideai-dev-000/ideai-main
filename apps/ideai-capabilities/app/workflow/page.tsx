@@ -15,7 +15,7 @@ import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef } from "react";
 import { toast } from "sonner";
 import { api } from "@/lib/api-client";
-import { authClient, useSession } from "@/lib/auth-client";
+import { authClient } from "@/lib/auth-client";
 import {
   currentWorkflowNameAtom,
   edgesAtom,
@@ -43,7 +43,6 @@ function createDefaultTriggerNode() {
 
 export default function WorkflowPage() {
   const router = useRouter();
-  const { data: session } = useSession();
   const nodes = useAtomValue(nodesAtom);
   const edges = useAtomValue(edgesAtom);
   const setNodes = useSetAtom(nodesAtom);
@@ -65,14 +64,6 @@ export default function WorkflowPage() {
   useEffect(() => {
     document.title = `${currentWorkflowName} - IdeaI Capabilities`;
   }, [currentWorkflowName]);
-
-  // Helper to create anonymous session if needed
-  const ensureSession = useCallback(async () => {
-    if (!session) {
-      await authClient.signIn.anonymous();
-      await new Promise((resolve) => setTimeout(resolve, 100));
-    }
-  }, [session]);
 
   // Handler to add the first node (replaces the "add" node)
   const handleAddNode = useCallback(() => {
@@ -114,7 +105,20 @@ export default function WorkflowPage() {
       hasCreatedWorkflowRef.current = true;
 
       try {
-        await ensureSession();
+        // Check if user is authenticated (not anonymous)
+        const currentSession = await authClient.getSession();
+        // User is anonymous if: no user, no email, or explicitly marked as anonymous
+        const isAnonymous =
+          !currentSession?.user ||
+          (!currentSession.user.email && !currentSession.user.name) ||
+          currentSession.user.isAnonymous === true;
+
+        if (isAnonymous) {
+          toast.error("Please sign in to create workflows");
+          // Reset the flag so user can try again after signing in
+          hasCreatedWorkflowRef.current = false;
+          return;
+        }
 
         // Create workflow with all real nodes
         const newWorkflow = await api.workflow.create({
@@ -138,7 +142,7 @@ export default function WorkflowPage() {
     };
 
     createWorkflowAndRedirect();
-  }, [nodes, edges, router, ensureSession, setIsTransitioningFromHomepage]);
+  }, [nodes, edges, router, setIsTransitioningFromHomepage]);
 
   // Canvas and toolbar are rendered by PersistentCanvas in the layout
   // This page just handles the workflow creation logic

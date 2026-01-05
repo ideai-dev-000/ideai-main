@@ -15,6 +15,7 @@ import { IdeAILogo } from "@repo/ui";
 import { ThemeToggle } from "@repo/ui";
 import { MobileNav } from "@repo/ui";
 import { Workflow, UserSearch, Code, Home } from "lucide-react";
+import { UserMenu } from "@/components/workflow/user-menu";
 
 interface NavItem {
   label: string;
@@ -55,7 +56,7 @@ export function CapabilitiesHeader() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 border-b bg-white/80 backdrop-blur-sm transition-all dark:bg-slate-950/80 ${
+      className={`fixed top-0 left-0 right-0 z-50 border-b bg-white/95 backdrop-blur-sm transition-all dark:bg-slate-950/95 ${
         isScrolled
           ? "border-slate-200 dark:border-slate-800"
           : "border-transparent"
@@ -92,7 +93,8 @@ export function CapabilitiesHeader() {
           </nav>
 
           {/* Right Side */}
-          <div className="flex items-center gap-4">
+          <div className="relative z-50 flex items-center gap-4">
+            <UserMenu />
             <ThemeToggle />
             <MobileNav navItems={mainNav} />
           </div>

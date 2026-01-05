@@ -1067,7 +1067,7 @@ export const PanelInner = () => {
   );
 };
 export const NodeConfigPanel = () => (
-  <div className="hidden size-full flex-col bg-background md:flex">
+  <div className="hidden size-full flex-col bg-white dark:bg-slate-950 md:flex">
     <PanelInner />
   </div>
 );
