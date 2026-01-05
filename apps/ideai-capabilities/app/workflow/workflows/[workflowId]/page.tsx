@@ -31,6 +31,7 @@ import {
   nodesAtom,
   rightPanelWidthAtom,
   selectedExecutionIdAtom,
+  selectedNodeAtom,
   triggerExecuteAtom,
   updateNodeDataAtom,
   type WorkflowNode,
@@ -133,6 +134,7 @@ const WorkflowEditor = ({ params }: WorkflowPageProps) => {
   const setGlobalIntegrations = useSetAtom(integrationsAtom);
   const setIntegrationsLoaded = useSetAtom(integrationsLoadedAtom);
   const integrationsVersion = useAtomValue(integrationsVersionAtom);
+  const selectedNodeId = useAtomValue(selectedNodeAtom);
 
   // Panel width state for resizing
   const [panelWidth, setPanelWidth] = useState(30); // default percentage
@@ -233,6 +235,40 @@ const WorkflowEditor = ({ params }: WorkflowPageProps) => {
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [setIsPanelAnimating, setPanelCollapsed]);
+
+  // Show panel when a node is selected (if not mobile)
+  useEffect(() => {
+    if (!isMobile && selectedNodeId) {
+      console.log(
+        "[WorkflowEditor] Node selected, showing panel:",
+        selectedNodeId,
+        "panelVisible:",
+        panelVisible,
+        "panelCollapsed:",
+        panelCollapsed,
+      );
+      // Always show panel when node is selected
+      setPanelVisible(true);
+      setHasSidebarBeenShown(true);
+      // Always expand if collapsed when node is selected
+      if (panelCollapsed) {
+        console.log("[WorkflowEditor] Expanding collapsed panel");
+        setPanelCollapsed(false);
+      }
+    } else if (!isMobile && !selectedNodeId) {
+      console.log(
+        "[WorkflowEditor] No node selected, panelVisible:",
+        panelVisible,
+      );
+    }
+  }, [
+    selectedNodeId,
+    isMobile,
+    setHasSidebarBeenShown,
+    setPanelCollapsed,
+    panelVisible,
+    panelCollapsed,
+  ]);
 
   // Set right panel width for AI prompt positioning
   // Only set it after the panel is visible (animated in) to coordinate the animation
@@ -698,7 +734,7 @@ const WorkflowEditor = ({ params }: WorkflowPageProps) => {
       {/* Right panel overlay (desktop only) */}
       {!isMobile && (
         <div
-          className="pointer-events-auto absolute inset-y-0 right-0 z-20 border-l bg-background transition-transform duration-300 ease-out"
+          className="pointer-events-auto absolute inset-y-0 right-0 z-20 border-l border-border bg-white dark:bg-slate-950 transition-transform duration-300 ease-out shadow-lg"
           style={{
             width: `${panelWidth}%`,
             transform:
