@@ -175,3 +175,15 @@ export {
   type ChildDependency,
   type BuildMetadata,
 } from "./lib/ideai-build";
+
+// React Flow Components
+export {
+  IdeaIReactFlowProvider,
+  IdeaIReactFlowContainer,
+  IdeaIReactFlowNode,
+} from "./components/reactflow";
+export type {
+  IdeaIReactFlowProviderProps,
+  IdeaIReactFlowContainerProps,
+  IdeaIReactFlowNodeData,
+} from "./components/reactflow";

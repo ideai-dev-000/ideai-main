@@ -81,6 +81,7 @@ const DEFAULT_CHILD_PORTS: Record<string, number> = {
   nocss: 3003,
   mvp: 3004,
   "ideai-frameworks": 3016,
+  "ideai-reactflow": 3017,
   "ideai-workflow": 3013,
   "lead-processing-agent": 3014,
   "ideai-builder": 3015,

@@ -1,0 +1,26 @@
+{
+  "role": "child",
+  "name": "IdeaI React Flow",
+  "description": "React Flow showcase with shared components and best practices",
+  "parentApp": "web",
+  "localPort": 3017,
+  "vercelProject": {
+    "projectName": "ideai-reactflow",
+    "orgId": "team_vhjzlMi6CfNow0IfBXnv2Yn2",
+    "forkToNew": false
+  },
+  "metadata": {
+    "id": "ideai-reactflow",
+    "port": 3017,
+    "css": ["Tailwind CSS", "Shadcn/UI"],
+    "capabilities": [
+      "React Flow integration",
+      "Shared React Flow components",
+      "Interactive flow examples",
+      "Custom node types",
+      "Edge configurations"
+    ],
+    "path": "/apps/ideai-reactflow",
+    "category": "showcase"
+  }
+}
