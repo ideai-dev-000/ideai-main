@@ -4,8 +4,8 @@ import { cn } from "../../lib/utils";
 export type LabelProps = React.LabelHTMLAttributes<HTMLLabelElement>;
 
 // TypeScript provides type safety, prop-types is redundant
-
 const Label = React.forwardRef<HTMLLabelElement, LabelProps>(
+  // eslint-disable-next-line react/prop-types
   ({ className, ...props }, ref) => (
     <label
       ref={ref}
