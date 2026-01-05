@@ -505,11 +505,13 @@ function ReactSpring1({ animConfig }: { animConfig: Record<string, unknown> }) {
  * React Spring 2: Number Animation
  */
 function ReactSpring2({ animConfig }: { animConfig: Record<string, unknown> }) {
-  const [targetNumber, setTargetNumber] = useState(animConfig.number || 100);
+  const [targetNumber, setTargetNumber] = useState(
+    (animConfig.number as number) || 100,
+  );
   const { number } = useSpring({
     number: targetNumber,
-    from: animConfig.from || { number: 0 },
-    config: resolveConfig(animConfig.config),
+    from: (animConfig.from as { number: number }) || { number: 0 },
+    config: resolveConfig(animConfig.config as Record<string, unknown>),
   });
 
   return (
@@ -566,11 +568,14 @@ function ReactSpring2({ animConfig }: { animConfig: Record<string, unknown> }) {
  */
 function ReactSpring3({ animConfig }: { animConfig: Record<string, unknown> }) {
   const [toggle, setToggle] = useState(false);
-  const itemCount = animConfig.itemCount || 5;
+  const itemCount = (animConfig.itemCount as number) || 5;
   const trail = useTrail(itemCount, {
-    from: animConfig.from || { opacity: 0, y: 20 },
+    from: (animConfig.from as { opacity: number; y: number }) || {
+      opacity: 0,
+      y: 20,
+    },
     to: toggle ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 },
-    config: resolveConfig(animConfig.config),
+    config: resolveConfig(animConfig.config as Record<string, unknown>),
   });
 
   return (
@@ -821,6 +826,7 @@ function KuteDemo({ example }: { example: AnimationExample }) {
   useEffect(() => {
     if (containerRef.current && !isAnimating) {
       const modulePath = "kute" + ".js";
+
       import(modulePath)
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         .then((KUTEModule: any) => {

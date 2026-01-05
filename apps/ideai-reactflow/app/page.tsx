@@ -281,8 +281,16 @@ export default function IdeaIReactFlowPage() {
                 <Controls />
                 <MiniMap
                   nodeColor={(node) => {
-                    const variant = node.data?.variant || "default";
-                    const colors = {
+                    const variant = (node.data?.variant || "default") as
+                      | "default"
+                      | "primary"
+                      | "success"
+                      | "warning"
+                      | "danger";
+                    const colors: Record<
+                      "default" | "primary" | "success" | "warning" | "danger",
+                      string
+                    > = {
                       default: "#cbd5e1",
                       primary: "#3b82f6",
                       success: "#10b981",

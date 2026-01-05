@@ -40,7 +40,6 @@ export function KuteLogo({ config, selectedSvg }: LogoProps) {
     if (typeof window === "undefined") return;
 
     const loadKute = async () => {
-      // @ts-expect-error - kute.js is an optional dependency
       const KUTE = (await import("kute.js")).default;
 
       if (logoRef.current && textRef.current) {

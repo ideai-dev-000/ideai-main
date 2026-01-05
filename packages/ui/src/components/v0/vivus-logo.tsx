@@ -38,7 +38,6 @@ export function VivusLogo({ config, selectedSvg }: LogoProps) {
     if (typeof window === "undefined" || !svgRef.current) return;
 
     const loadVivus = async () => {
-      // @ts-expect-error - vivus is an optional dependency
       const Vivus = (await import("vivus")).default;
 
       const animationType =
