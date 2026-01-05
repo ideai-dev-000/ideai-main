@@ -1,7 +1,0 @@
-{
-  "role": "child",
-  "name": "UnoCSS",
-  "description": "UnoCSS utility-first CSS engine",
-  "parentApp": "web",
-  "localPort": 3008
-}

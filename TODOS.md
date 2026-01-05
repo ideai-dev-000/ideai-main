@@ -6,6 +6,222 @@
 
 ## High Priority
 
+### True Unified Mode: Shared Codebase Architecture
+
+**Priority**: High  
+**Status**: Design Phase  
+**Category**: Architecture  
+**Related**: Unified Mode, Component Architecture
+
+#### Goal
+
+Transform IdeaI from a collection of separate apps into a true shared codebase where any site or capability can be built using shared packages, apps, and components. This enables:
+
+- **Single Codebase**: All capabilities built from shared packages in `ideai-main` repo
+- **Component Reuse**: Any app can use any component from `@repo/ui` or other packages
+- **No Separate Ports**: True unified mode where child apps are imported as React components, not iframes
+- **Shared Capabilities**: Build any site (workflow builder, lead agent, app builder, etc.) using shared code
+- **Production Ready**: All apps bundle into one deployment, no rewrites or proxies needed
+
+#### Current State (Temporary Solution)
+
+**Development Mode**:
+
+- Next.js rewrites proxy child apps to separate ports (dev only)
+- Child apps still run on separate ports (3001-3015)
+- Iframes embed child apps via rewrites
+- **Note**: This is a temporary development solution, not production-ready
+
+**Limitations**:
+
+- Child apps must run on separate ports even in "unified" mode
+- Rewrites only work in development
+- Production would require separate deployments or true component imports
+- No true code sharing - apps are still separate Next.js instances
+
+#### Target Architecture
+
+**Shared Packages** (`packages/`):
+
+- `@repo/ui`: All UI components, templates, utilities (already exists)
+- `@repo/workflow`: Workflow builder capabilities (extract from `ideai-workflow`)
+- `@repo/lead-agent`: Lead processing capabilities (extract from `lead-processing-agent`)
+- `@repo/app-builder`: App builder capabilities (extract from `ideai-builder`)
+- `@repo/cloud-manager`: Cloud provider management (already exists)
+- Future packages as needed
+
+**Shared Apps** (`apps/`):
+
+- Each app becomes a thin wrapper that imports from packages
+- Apps are just routes/pages that compose shared components
+- No duplicate code between apps
+- All business logic in packages
+
+**Component Architecture**:
+
+- All capabilities exposed as React components
+- Components can be imported into any app
+- No iframes, no rewrites, no separate ports
+- True code sharing and reuse
+
+#### Implementation Steps
+
+1. **Extract Capabilities to Packages**:
+   - [ ] Create `@repo/workflow` package from `ideai-workflow` app
+     - Extract workflow builder UI components
+     - Extract workflow execution logic
+     - Extract database schemas and migrations
+     - Keep as reusable package
+   - [ ] Create `@repo/lead-agent` package from `lead-processing-agent` app
+     - Extract lead qualification logic
+     - Extract research agent capabilities
+     - Extract Slack integration
+     - Keep as reusable package
+   - [ ] Create `@repo/app-builder` package from `ideai-builder` app
+     - Extract v0 SDK integration
+     - Extract code generation logic
+     - Extract preview capabilities
+     - Keep as reusable package
+
+2. **Refactor Apps to Use Packages**:
+   - [ ] Update `ideai-workflow` app to import from `@repo/workflow`
+   - [ ] Update `lead-processing-agent` app to import from `@repo/lead-agent`
+   - [ ] Update `ideai-builder` app to import from `@repo/app-builder`
+   - [ ] Ensure apps are thin wrappers (routes + minimal app-specific code)
+
+3. **Implement True Unified Mode**:
+   - [ ] Remove Next.js rewrites (dev-only workaround)
+   - [ ] Create component registry that imports child app pages as React components
+   - [ ] Update `apps/web/app/apps/[app]/[[...path]]/page.tsx` to render components directly
+   - [ ] Remove iframe dependency
+   - [ ] Test all child apps render as components in parent app
+
+4. **Update Build System**:
+   - [ ] Ensure all packages are built before apps
+   - [ ] Verify child apps can be imported as components at build time
+   - [ ] Test production build with all apps bundled into one deployment
+   - [ ] Remove port-based routing from production builds
+
+5. **Documentation**:
+   - [ ] Document package extraction process
+   - [ ] Document how to create new capabilities as packages
+   - [ ] Document how to use packages in apps
+   - [ ] Update unified mode documentation
+   - [ ] Create examples of building new sites from shared packages
+
+#### Benefits
+
+- **Code Reuse**: Build any site using shared capabilities
+- **Single Deployment**: All apps bundle into one deployment
+- **Faster Development**: Changes to packages benefit all apps
+- **Easier Testing**: Test capabilities in isolation
+- **Better Architecture**: Clear separation of concerns (packages = capabilities, apps = routes)
+- **Production Ready**: No dev-only workarounds
+
+#### Example: Building a New Site
+
+```typescript
+// New app: apps/my-new-site/app/page.tsx
+import { WorkflowBuilder } from "@repo/workflow";
+import { LeadAgent } from "@repo/lead-agent";
+import { AppBuilder } from "@repo/app-builder";
+import { IdeAIPageTemplate } from "@repo/ui";
+
+export default function MyNewSite() {
+  return (
+    <IdeAIPageTemplate siteName="My New Site">
+      <WorkflowBuilder />
+      <LeadAgent />
+      <AppBuilder />
+    </IdeAIPageTemplate>
+  );
+}
+```
+
+#### Related Files
+
+- `apps/web/next.config.js` - Current rewrites (dev-only, to be removed)
+- `apps/web/app/apps/[app]/[[...path]]/page.tsx` - Current iframe implementation
+- `packages/ui/src/lib/ideai-app-loader.ts` - App loader (needs component import support)
+- `docs/architecture/unified-vs-individual-mode.md` - Documentation (needs update)
+
+#### Estimated Effort
+
+- Package extraction: 2-3 days per package (3 packages = 6-9 days)
+- App refactoring: 1 day per app (3 apps = 3 days)
+- True unified mode: 2-3 days
+- Build system updates: 1-2 days
+- Documentation: 1-2 days
+- **Total**: ~13-19 days
+
+#### Notes
+
+- This is a major architectural change but essential for IdeaI's vision
+- Current rewrites in `next.config.js` are marked as dev-only and temporary
+- All child apps should eventually become thin wrappers around shared packages
+- This enables building any site/capability from the shared codebase
+
+---
+
+### Framework Apps Unification
+
+**Priority**: High  
+**Status**: Analysis Complete, Implementation Pending  
+**Category**: Architecture, Code Deduplication  
+**Related**: Shared Codebase Architecture, Unified Mode
+
+#### Current State
+
+**8 Framework Showcase Apps** with 95% duplicate code:
+
+- `tailwind`, `allcss`, `bootstrap`, `unocss`, `shadcn`, `material`, `chakra`, `radix`
+- Each app is nearly identical (only CSS framework differs)
+- Each requires separate Next.js instance and build
+- Maintenance burden: changes require updates in 8 places
+
+#### Problem
+
+- **Code Duplication**: 8 apps with identical structure
+- **Resource Waste**: 8 separate builds, 8 separate instances
+- **Maintenance Burden**: Changes require 8 updates
+- **Not Aligned**: Doesn't follow shared codebase vision
+
+#### Solution: Unified Framework Showcase App
+
+**Create**: Single `apps/framework-showcase` app with dynamic routing
+
+**Structure**:
+
+- Dynamic routes: `/frameworks/[framework]` (e.g., `/frameworks/tailwind`)
+- Framework selector page at `/frameworks`
+- Conditional CSS loading based on route
+- All frameworks share same component code
+
+**Benefits**:
+
+- ✅ Eliminates 87.5% of duplicate code (8 apps → 1 app)
+- ✅ Single build, single instance
+- ✅ Easy to add new frameworks
+- ✅ Aligns with shared codebase vision
+- ✅ Better user experience (framework selector)
+
+**Implementation Steps**:
+
+1. [ ] Create `apps/framework-showcase` app
+2. [ ] Implement dynamic routing for frameworks
+3. [ ] Create framework configuration system
+4. [ ] Implement conditional CSS loading
+5. [ ] Test all frameworks in unified app
+6. [ ] Update parent app config
+7. [ ] Archive old framework apps (keep for reference)
+8. [ ] Update documentation
+
+**See**: `docs/architecture/framework-apps-analysis.md` for complete analysis
+
+**Estimated Effort**: 2-3 days
+
+---
+
 ### Remaining ESLint Warning (1) - Known Issue
 
 **Status**: 1 warning remaining in `@repo/ui` package  

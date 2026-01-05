@@ -1,7 +1,0 @@
-{
-  "role": "child",
-  "name": "Shadcn Components",
-  "description": "Shadcn/ui component showcase",
-  "parentApp": "web",
-  "localPort": 3009
-}

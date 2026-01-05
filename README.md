@@ -81,6 +81,62 @@ See [apps/web/README.md](apps/web/README.md) for details.
 
 ## Key Features
 
+### 0. Shared Codebase Architecture (Future)
+
+**Vision**: Transform IdeaI into a true shared codebase where any site or capability can be built using shared packages, apps, and components from the `ideai-main` repo.
+
+**Current State**:
+
+- Development mode uses Next.js rewrites (dev-only, temporary)
+- Child apps still run on separate ports
+- **Framework apps**: 8 nearly identical showcase apps (to be unified)
+- See [TODOS.md](TODOS.md) for detailed implementation plan
+
+**Target Architecture**:
+
+- **Shared Packages**: Extract capabilities (workflow, lead-agent, app-builder) into `@repo/*` packages
+- **Component Reuse**: Any app can import any component from shared packages
+- **True Unified Mode**: Child apps imported as React components, no iframes, no separate ports
+- **Single Deployment**: All apps bundle into one production deployment
+- **Unified Framework Showcase**: One app for all CSS framework demos (instead of 8 duplicate apps)
+
+**Example**:
+
+```typescript
+// Build any site using shared capabilities
+import { WorkflowBuilder } from "@repo/workflow";
+import { LeadAgent } from "@repo/lead-agent";
+import { IdeAIPageTemplate } from "@repo/ui";
+```
+
+See [TODOS.md](TODOS.md#true-unified-mode-shared-codebase-architecture) for complete implementation plan.
+
+**Vision**: Transform IdeaI into a true shared codebase where any site or capability can be built using shared packages, apps, and components from the `ideai-main` repo.
+
+**Current State**:
+
+- Development mode uses Next.js rewrites (dev-only, temporary)
+- Child apps still run on separate ports
+- See [TODOS.md](TODOS.md) for detailed implementation plan
+
+**Target Architecture**:
+
+- **Shared Packages**: Extract capabilities (workflow, lead-agent, app-builder) into `@repo/*` packages
+- **Component Reuse**: Any app can import any component from shared packages
+- **True Unified Mode**: Child apps imported as React components, no iframes, no separate ports
+- **Single Deployment**: All apps bundle into one production deployment
+
+**Example**:
+
+```typescript
+// Build any site using shared capabilities
+import { WorkflowBuilder } from "@repo/workflow";
+import { LeadAgent } from "@repo/lead-agent";
+import { IdeAIPageTemplate } from "@repo/ui";
+```
+
+See [TODOS.md](TODOS.md#true-unified-mode-shared-codebase-architecture) for complete implementation plan.
+
 ### 1. Parent-Child Architecture
 
 Configure apps in `.ideai.json`:
@@ -94,6 +150,9 @@ Configure apps in `.ideai.json`:
 \`\`\`
 
 ### 2. Unified Deployment
+
+**Current State**: Development mode uses Next.js rewrites to proxy child apps (dev-only, temporary solution).  
+**Future**: True unified mode with component imports - all apps bundle into one deployment.
 
 All apps deploy to one Vercel project:
 

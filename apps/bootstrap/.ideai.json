@@ -1,7 +1,0 @@
-{
-  "role": "child",
-  "name": "Bootstrap",
-  "description": "Bootstrap CSS framework",
-  "parentApp": "web",
-  "localPort": 3007
-}

@@ -1,7 +1,0 @@
-{
-  "role": "child",
-  "name": "Tailwind CSS",
-  "description": "Tailwind CSS only - utility-first styling",
-  "parentApp": "web",
-  "localPort": 3005
-}

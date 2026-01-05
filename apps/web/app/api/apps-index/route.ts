@@ -1,6 +1,6 @@
 /**
  * @fileoverview API route to serve apps index data
- * 
+ *
  * @module AppsIndexAPI
  * @description
  * Reads all .ideai metadata files and returns JSON with app information and status.
@@ -51,20 +51,20 @@ async function isPortInUse(port: number): Promise<boolean> {
  */
 async function readIdeaiMetadata(
   repoRoot: string,
-  includeStatus = false
+  includeStatus = false,
 ): Promise<AppMetadata[]> {
   const appsDir = join(repoRoot, "apps");
   const entries = await readdir(appsDir, { withFileTypes: true });
   const apps: AppMetadata[] = [];
-  
+
   for (const entry of entries) {
     if (entry.isDirectory()) {
       const appPath = join(appsDir, entry.name);
       const ideaiJsonPath = join(appPath, ".ideai.json");
-      
+
       try {
         let metadata: AppMetadata | null = null;
-        
+
         // Read .ideai.json (only format supported)
         const stats = await stat(ideaiJsonPath);
         if (stats.isFile()) {
@@ -82,7 +82,7 @@ async function readIdeaiMetadata(
               category?: string;
             };
           };
-          
+
           // Extract metadata from config
           metadata = {
             id: (config.metadata?.id as string | undefined) || entry.name,
@@ -90,12 +90,16 @@ async function readIdeaiMetadata(
             description: (config.description as string | undefined) || "",
             port: config.metadata?.port || config.localPort || 0,
             css: (config.metadata?.css as string[] | undefined) || [],
-            capabilities: (config.metadata?.capabilities as string[] | undefined) || [],
-            path: (config.metadata?.path as string | undefined) || `/${entry.name}`,
-            category: (config.metadata?.category as string | undefined) || "development",
+            capabilities:
+              (config.metadata?.capabilities as string[] | undefined) || [],
+            path:
+              (config.metadata?.path as string | undefined) || `/${entry.name}`,
+            category:
+              (config.metadata?.category as string | undefined) ||
+              "development",
           };
         }
-        
+
         if (metadata) {
           let status: AppStatus | undefined = undefined;
           if (includeStatus && metadata.port) {
@@ -106,7 +110,7 @@ async function readIdeaiMetadata(
               url: running ? `http://localhost:${metadata.port}` : null,
             };
           }
-          
+
           apps.push({
             ...metadata,
             status,
@@ -118,14 +122,27 @@ async function readIdeaiMetadata(
       }
     }
   }
-  
-  return apps.sort((a, b) => (a.port || 0) - (b.port || 0));
+
+  // Deduplicate apps by id (keep first occurrence)
+  const seenIds = new Set<string>();
+  const uniqueApps = apps.filter((app) => {
+    if (seenIds.has(app.id)) {
+      console.warn(`Duplicate app id detected: ${app.id}. Skipping duplicate.`);
+      return false;
+    }
+    seenIds.add(app.id);
+    return true;
+  });
+
+  return uniqueApps.sort((a, b) => (a.port || 0) - (b.port || 0));
 }
 
 // Note: dynamic and revalidate removed - incompatible with cacheComponents in Next.js 16
 // This route will use default caching behavior
 
-export async function GET(): Promise<NextResponse<AppMetadata[] | { error: string; details?: string }>> {
+export async function GET(): Promise<
+  NextResponse<AppMetadata[] | { error: string; details?: string }>
+> {
   try {
     // Get repo root - resolve from current working directory
     // In Next.js, process.cwd() is the app directory, so go up to repo root
@@ -135,8 +152,11 @@ export async function GET(): Promise<NextResponse<AppMetadata[] | { error: strin
   } catch (error) {
     console.error("Error reading apps index:", error);
     return NextResponse.json(
-      { error: "Failed to load apps index", details: error instanceof Error ? error.message : String(error) },
-      { status: 500 }
+      {
+        error: "Failed to load apps index",
+        details: error instanceof Error ? error.message : String(error),
+      },
+      { status: 500 },
     );
   }
 }

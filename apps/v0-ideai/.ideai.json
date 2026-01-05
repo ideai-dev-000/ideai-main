@@ -7,16 +7,11 @@
   "v0Integration": true,
   "sharedLibraries": true,
   "metadata": {
-    "id": "v0-prototype",
+    "id": "v0-ideai",
     "port": 3014,
     "css": ["Tailwind CSS", "IdeaI Design System"],
-    "capabilities": [
-      "Minimal boilerplate",
-      "V0 compatible",
-      "IdeaI standards"
-    ],
+    "capabilities": ["Minimal boilerplate", "V0 compatible", "IdeaI standards"],
     "path": "/v0-prototype",
     "category": "prototype"
   }
 }
-
