@@ -126,6 +126,9 @@ export const IdeAIPageTemplate = ({
             shouldHideNav
               ? []
               : [
+                  { label: "Workflow Builder", href: "/apps/ideai-workflow" },
+                  { label: "Lead Agent", href: "/apps/lead-processing-agent" },
+                  { label: "App Builder", href: "/apps/ideai-builder" },
                   { label: "Contact", href: "/contact" },
                   { label: "Blog", href: "/blog" },
                   { label: "Resources", href: "/resources" },

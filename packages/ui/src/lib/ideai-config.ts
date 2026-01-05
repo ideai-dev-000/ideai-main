@@ -85,6 +85,9 @@ const DEFAULT_CHILD_PORTS: Record<string, number> = {
   bootstrap: 3007,
   unocss: 3008,
   shadcn: 3009,
+  "ideai-workflow": 3013,
+  "lead-processing-agent": 3014,
+  "ideai-builder": 3015,
 };
 
 /**

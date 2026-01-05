@@ -14,7 +14,10 @@
     "shadcn",
     "ideai-designer",
     "v0-prototype",
-    "v0-000"
+    "v0-000",
+    "ideai-workflow",
+    "lead-processing-agent",
+    "ideai-builder"
   ],
   "localPort": 3000,
   "animationLibraries": [
@@ -33,11 +36,7 @@
   "metadata": {
     "id": "web",
     "port": 3000,
-    "css": [
-      "MVP.css",
-      "Tailwind CSS",
-      "IdeaI Design System"
-    ],
+    "css": ["MVP.css", "Tailwind CSS", "IdeaI Design System"],
     "capabilities": [
       "Full UI components",
       "Shared design tokens",
