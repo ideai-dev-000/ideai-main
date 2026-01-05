@@ -89,7 +89,7 @@ See [apps/web/README.md](apps/web/README.md) for details.
 
 - Development mode uses Next.js rewrites (dev-only, temporary)
 - Child apps still run on separate ports
-- **Framework apps**: 8 nearly identical showcase apps (to be unified)
+- **Framework apps**: ✅ Unified into single `ideai-frameworks` app (87.5% code reduction)
 - See [TODOS.md](TODOS.md) for detailed implementation plan
 
 **Target Architecture**:
@@ -98,6 +98,12 @@ See [apps/web/README.md](apps/web/README.md) for details.
 - **Component Reuse**: Any app can import any component from shared packages
 - **True Unified Mode**: Child apps imported as React components, no iframes, no separate ports
 - **Single Deployment**: All apps bundle into one production deployment
+
+**Recent Progress**:
+
+- ✅ **Framework Unification**: 8 framework apps unified into `ideai-frameworks` (January 5, 2026)
+- ✅ **Vercel Cleanup**: All old framework projects removed, alignment complete
+- See [Framework Unification Completion](docs/deployment/framework-unification-completion.md) for details
 - **Unified Framework Showcase**: One app for all CSS framework demos (instead of 8 duplicate apps)
 
 **Example**:
