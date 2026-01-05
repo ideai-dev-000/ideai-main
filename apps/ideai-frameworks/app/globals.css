@@ -1,0 +1,12 @@
+/**
+ * @fileoverview Unified Framework CSS - Conditional loading based on framework
+ * 
+ * This file handles CSS loading for all frameworks in the unified showcase.
+ * Uses the same approach as shadcn app - imports from shared UI package.
+ */
+
+/* Import shared globals (includes Tailwind + IdeaI styles) */
+@import "../../../packages/ui/src/styles/globals.css";
+
+/* IdeaI custom layer */
+@import "../../../packages/ui/src/styles/ideai.css";

@@ -1,0 +1,34 @@
+{
+  "role": "child",
+  "name": "IdeaI Frameworks",
+  "description": "Unified CSS framework showcase - all frameworks in one app",
+  "parentApp": "web",
+  "localPort": 3016,
+  "vercelProject": {
+    "projectName": "ideai-frameworks",
+    "orgId": "team_vhjzlMi6CfNow0IfBXnv2Yn2",
+    "forkToNew": false
+  },
+  "metadata": {
+    "id": "ideai-frameworks",
+    "port": 3016,
+    "css": [
+      "Tailwind CSS",
+      "Bootstrap",
+      "UnoCSS",
+      "Material UI",
+      "Chakra UI",
+      "Radix UI",
+      "Shadcn/UI",
+      "MVP.css"
+    ],
+    "capabilities": [
+      "Unified framework showcase",
+      "Dynamic framework routing",
+      "Conditional CSS loading",
+      "Framework selector"
+    ],
+    "path": "/apps/ideai-frameworks",
+    "category": "showcase"
+  }
+}
