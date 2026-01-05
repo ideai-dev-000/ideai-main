@@ -54,10 +54,20 @@ description: Current status, completed work, and pending tasks for IdeaI monorep
 
 ### New Apps
 
-- ✅ **UnoCSS App**: `apps/unocss` (port 3008) - UnoCSS integration demo
-- ✅ **Shadcn Showcase**: `apps/shadcn` (port 3009) - All shadcn components showcase
-- ✅ **Pico CSS App**: `apps/pico` (port 3013) - Pico CSS framework demo
+- ✅ **IdeaI Frameworks**: `apps/ideai-frameworks` (port 3016) - Unified CSS framework showcase (replaces 8 separate apps)
+- ✅ **IdeaI Workflow**: `apps/ideai-workflow` (port 3013) - AI workflow builder with Workflow DevKit
+- ✅ **Lead Processing Agent**: `apps/lead-processing-agent` (port 3014) - AI-powered lead qualification agent
+- ✅ **IdeaI Builder**: `apps/ideai-builder` (port 3015) - v0 clone app builder with AI Elements
 - ✅ **Cloud Manager Package**: `packages/cloud-manager` - Centralized cloud provider management with Vercel MVP
+
+### Framework Unification ✅ **COMPLETED** (January 5, 2026)
+
+- ✅ **Unified 8 Framework Apps**: Merged `tailwind`, `allcss`, `bootstrap`, `unocss`, `shadcn`, `material`, `chakra`, `radix` into single `ideai-frameworks` app
+- ✅ **87.5% Code Reduction**: 8 apps → 1 app with dynamic routing
+- ✅ **Vercel Cleanup**: Removed all 8 old framework projects from Vercel
+- ✅ **Filesystem Cleanup**: Removed all 8 old framework apps from filesystem
+- ✅ **Documentation Updated**: All references updated to reflect unified app
+- ✅ **Vercel Alignment**: `ideai-frameworks` project created and linked
 
 ## ⏳ In Progress
 

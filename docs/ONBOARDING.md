@@ -36,10 +36,11 @@ This document provides a comprehensive overview of the project, current status, 
 ### ✅ What's Working
 
 - **Main Site**: https://www.myui.space (LIVE)
-- **13 Apps**: All building successfully
+- **11 Apps**: All building successfully (8 framework apps unified into 1)
 - **Unified Deployment**: `deploy.sh` script for all apps
 - **Vercel Integration**: All apps linked to Vercel projects
 - **Documentation**: Comprehensive docs in `docs/` directory
+- **Framework Unification**: 8 framework apps unified into `ideai-frameworks` (87.5% code reduction)
 
 ### ⚠️ Current Issues
 
@@ -60,23 +61,22 @@ See: [Multi-Strategy Deployment Plan](./deployment/MULTI-STRATEGY-DEPLOYMENT-PLA
 
 \`\`\`
 ideai-main/
-├── apps/ # 14 Next.js applications
+├── apps/ # Next.js applications
 │ ├── web/ # Main IdeaI app (port 3000)
 │ ├── docs/ # Documentation site (port 3001)
 │ ├── all/ # Component showcase (port 3002)
 │ ├── nocss/ # No CSS demo (port 3003)
 │ ├── mvp/ # MVP.css demo (port 3004)
-│ ├── tailwind/ # Tailwind CSS demo (port 3005)
-│ ├── allcss/ # All CSS demo (port 3006)
-│ ├── bootstrap/ # Bootstrap demo (port 3007)
-│ ├── unocss/ # UnoCSS demo (port 3008)
-│ ├── shadcn/ # Shadcn Components (port 3009)
-│ ├── material/ # Material UI demo (port 3010)
-│ ├── chakra/ # Chakra UI demo (port 3011)
-│ ├── radix/ # Radix UI demo (port 3012)
-│ └── pico/ # Pico CSS demo (port 3013)
+│ ├── ideai-frameworks/ # Unified CSS framework showcase (port 3016)
+│ ├── ideai-workflow/ # AI workflow builder (port 3013)
+│ ├── lead-processing-agent/ # Lead qualification agent (port 3014)
+│ ├── ideai-builder/ # v0 clone app builder (port 3015)
+│ ├── ideai-designer/ # Designer app (submodule)
+│ ├── v0-prototype/ # v0 prototype
+│ └── v0-000/ # v0 workspace
 ├── packages/ # Shared packages
 │ ├── ui/ # Shared UI components and styles
+│ ├── cloud-manager/ # Cloud provider management
 │ ├── eslint-config/ # Shared ESLint config
 │ └── typescript-config/ # Shared TypeScript config
 ├── docs/ # Documentation
@@ -86,23 +86,22 @@ ideai-main/
 
 ### Apps Overview
 
-| App       | Port | Purpose                     | Status       |
-| --------- | ---- | --------------------------- | ------------ |
-| web       | 3000 | Main IdeaI application      | ✅ Deployed  |
-| docs      | 3001 | Documentation site          | ✅ Deployed  |
-| all       | 3002 | Complete component showcase | ✅ Built     |
-| nocss     | 3003 | Pure HTML (no CSS)          | ✅ Built     |
-| mvp       | 3004 | MVP.css framework demo      | ✅ Built     |
-| tailwind  | 3005 | Tailwind CSS demo           | ✅ Built     |
-| allcss    | 3006 | Tailwind CSS only           | ✅ Built     |
-| bootstrap | 3007 | Bootstrap framework demo    | ✅ Built     |
-| unocss    | 3008 | UnoCSS framework demo       | ✅ Built     |
-| shadcn    | 3009 | Shadcn/ui components        | ✅ Built     |
-| material  | 3010 | Material UI demo            | ✅ Built     |
-| chakra    | 3011 | Chakra UI demo              | ✅ Built     |
-| radix     | 3012 | Radix UI primitives         | ✅ Built     |
-| pico      | 3013 | Pico CSS framework demo     | ✅ Built     |
-| cloud     | -    | Cloud Manager (in web app)  | ✅ Available |
+| App                   | Port | Purpose                        | Status       |
+| --------------------- | ---- | ------------------------------ | ------------ |
+| web                   | 3000 | Main IdeaI application         | ✅ Deployed  |
+| docs                  | 3001 | Documentation site             | ✅ Deployed  |
+| all                   | 3002 | Complete component showcase    | ✅ Built     |
+| nocss                 | 3003 | Pure HTML (no CSS)             | ✅ Built     |
+| mvp                   | 3004 | MVP.css framework demo         | ✅ Built     |
+| ideai-frameworks      | 3016 | Unified CSS framework showcase | ✅ Built     |
+| ideai-workflow        | 3013 | AI workflow builder            | ✅ Built     |
+| lead-processing-agent | 3014 | Lead qualification agent       | ✅ Built     |
+| ideai-builder         | 3015 | v0 clone app builder           | ✅ Built     |
+| ideai-designer        | -    | Designer app (submodule)       | ✅ Available |
+| v0-prototype          | -    | v0 prototype                   | ✅ Available |
+| v0-000                | -    | v0 workspace                   | ✅ Available |
+
+**Note**: The 8 old framework apps (`tailwind`, `allcss`, `bootstrap`, `unocss`, `shadcn`, `material`, `chakra`, `radix`) have been unified into `ideai-frameworks`. See [Framework Unification](../architecture/ideai-frameworks-unification.md) for details.
 
 ---
 

@@ -27,22 +27,19 @@ Currently imports:
 
 ### Child Apps CSS Requirements
 
-| Child App   | CSS Framework     | Base           |
-| ----------- | ----------------- | -------------- |
-| `web`       | Tailwind CSS only | Normalize      |
-| `docs`      | Tailwind CSS only | Normalize      |
-| `all`       | Tailwind CSS only | Normalize      |
-| `nocss`     | None (pure HTML)  | Normalize only |
-| `mvp`       | MVP.css only      | Normalize      |
-| `pico`      | Pico CSS only     | Normalize      |
-| `tailwind`  | Tailwind CSS only | Normalize      |
-| `allcss`    | Tailwind CSS only | Normalize      |
-| `bootstrap` | Bootstrap only    | Normalize      |
-| `unocss`    | UnoCSS only       | Normalize      |
-| `shadcn`    | Tailwind CSS only | Normalize      |
-| `radix`     | Tailwind CSS only | Normalize      |
-| `material`  | Material UI only  | Normalize      |
-| `chakra`    | Chakra UI only    | Normalize      |
+| Child App               | CSS Framework     | Base           |
+| ----------------------- | ----------------- | -------------- |
+| `web`                   | Tailwind CSS only | Normalize      |
+| `docs`                  | Tailwind CSS only | Normalize      |
+| `all`                   | Tailwind CSS only | Normalize      |
+| `nocss`                 | None (pure HTML)  | Normalize only |
+| `mvp`                   | MVP.css only      | Normalize      |
+| `ideai-frameworks`      | Dynamic (all)     | Normalize      |
+| `ideai-workflow`        | Tailwind CSS only | Normalize      |
+| `lead-processing-agent` | Tailwind CSS only | Normalize      |
+| `ideai-builder`         | Tailwind CSS only | Normalize      |
+
+**Note**: The 8 old framework apps (`tailwind`, `allcss`, `bootstrap`, `unocss`, `shadcn`, `material`, `chakra`, `radix`) have been unified into `ideai-frameworks`, which dynamically loads the appropriate CSS framework based on the route. See [Framework Unification](ideai-frameworks-unification.md) for details.
 
 ## CSS Compatibility Strategy
 
