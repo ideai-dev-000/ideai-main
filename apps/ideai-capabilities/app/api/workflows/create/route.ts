@@ -63,10 +63,15 @@ export async function POST(request: Request) {
     // Generate "Untitled N" name if the provided name is "Untitled Workflow"
     let workflowName = body.name;
     if (body.name === "Untitled Workflow") {
+      // Count only workflows that are NOT the current workflow placeholder
       const userWorkflows = await db.query.workflows.findMany({
         where: eq(workflows.userId, session.user.id),
       });
-      const count = userWorkflows.length + 1;
+      // Filter out current workflow placeholders and count only real workflows
+      const realWorkflows = userWorkflows.filter(
+        (w) => w.name !== "~~__CURRENT__~~" && w.name !== "__current__",
+      );
+      const count = realWorkflows.length + 1;
       workflowName = `Untitled ${count}`;
     }
 

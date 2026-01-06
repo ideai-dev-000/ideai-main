@@ -5,13 +5,14 @@
  * @description
  * Landing page that shows a clean static page for unauthenticated users,
  * explaining the workflow automation tool and prompting sign up/sign in.
+ * For authenticated users, shows the workflow menu to access their workflows.
  */
 
 "use client";
 
 import { useSession } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import {
   Card,
   CardContent,
@@ -27,8 +28,133 @@ import {
   Shield,
   ArrowRight,
   CheckCircle2,
+  ChevronDown,
+  Check,
 } from "lucide-react";
+import { WorkflowIcon } from "@/components/ui/workflow-icon";
 import { AuthDialog } from "@/components/auth/dialog";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { api } from "@/lib/api-client";
+
+// Standalone workflow menu component for landing page
+function LandingWorkflowMenu() {
+  const router = useRouter();
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [allWorkflows, setAllWorkflows] = useState<
+    Array<{
+      id: string;
+      name: string;
+      updatedAt: string;
+    }>
+  >([]);
+  const { data: session } = useSession();
+  const prevSessionRef = useRef(session);
+  const hasAutoOpenedRef = useRef(false);
+
+  // Load workflows
+  const loadWorkflows = useCallback(async () => {
+    try {
+      const workflows = await api.workflow.getAll();
+      setAllWorkflows(workflows);
+    } catch (error) {
+      console.error("Failed to load workflows:", error);
+      setAllWorkflows([]);
+    }
+  }, []);
+
+  // Load workflows on mount and when menu opens
+  useEffect(() => {
+    loadWorkflows();
+  }, [loadWorkflows]);
+
+  // Auto-open menu on login
+  useEffect(() => {
+    const prevSession = prevSessionRef.current;
+    prevSessionRef.current = session;
+
+    const wasAnonymous =
+      !prevSession?.user ||
+      prevSession.user.name === "Anonymous" ||
+      prevSession.user.email?.startsWith("temp-");
+    const isNowAuthenticated =
+      session?.user &&
+      session.user.name !== "Anonymous" &&
+      !session.user.email?.startsWith("temp-");
+
+    if (wasAnonymous && isNowAuthenticated && !hasAutoOpenedRef.current) {
+      hasAutoOpenedRef.current = true;
+      setTimeout(() => {
+        setMenuOpen(true);
+        loadWorkflows();
+      }, 300);
+    }
+
+    if (!isNowAuthenticated) {
+      hasAutoOpenedRef.current = false;
+    }
+  }, [session, loadWorkflows]);
+
+  const handleOpenChange = useCallback(
+    (open: boolean) => {
+      setMenuOpen(open);
+      if (open) {
+        loadWorkflows();
+      } else {
+        hasAutoOpenedRef.current = false;
+      }
+    },
+    [loadWorkflows],
+  );
+
+  return (
+    <div className="flex h-9 max-w-[160px] items-center overflow-hidden rounded-md border bg-secondary text-secondary-foreground sm:max-w-none">
+      <DropdownMenu open={menuOpen} onOpenChange={handleOpenChange}>
+        <DropdownMenuTrigger className="flex h-full cursor-pointer items-center gap-2 px-3 font-medium text-sm transition-all hover:bg-black/5 dark:hover:bg-white/5">
+          <WorkflowIcon className="size-4 shrink-0" />
+          <p className="truncate font-medium text-sm">
+            <span className="sm:hidden">New</span>
+            <span className="hidden sm:inline">New Workflow</span>
+          </p>
+          <ChevronDown className="size-3 shrink-0 opacity-50" />
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="start" className="w-64">
+          <DropdownMenuItem
+            asChild
+            className="flex items-center justify-between"
+          >
+            <a href="/workflow">
+              New Workflow <Check className="size-4 shrink-0" />
+            </a>
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          {allWorkflows.length === 0 ? (
+            <DropdownMenuItem disabled>No workflows found</DropdownMenuItem>
+          ) : (
+            allWorkflows
+              .filter((w) => w.name !== "__current__")
+              .map((workflow) => (
+                <DropdownMenuItem
+                  className="flex items-center justify-between"
+                  key={workflow.id}
+                  onClick={() =>
+                    router.push(`/workflow/workflows/${workflow.id}`)
+                  }
+                >
+                  <span className="truncate">{workflow.name}</span>
+                </DropdownMenuItem>
+              ))
+          )}
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </div>
+  );
+}
 
 export default function CapabilitiesLanding() {
   const { data: session, isPending } = useSession();
@@ -39,13 +165,6 @@ export default function CapabilitiesLanding() {
     !session?.user ||
     session.user.name === "Anonymous" ||
     session.user.email?.startsWith("temp-");
-
-  // Redirect authenticated users to workflows
-  useEffect(() => {
-    if (!isPending && !isAnonymous) {
-      router.replace("/workflow");
-    }
-  }, [isPending, isAnonymous, router]);
 
   // Show loading state while checking session
   if (isPending) {
@@ -267,12 +386,37 @@ export default function CapabilitiesLanding() {
     );
   }
 
-  // Authenticated users - show loading while redirecting
+  // Authenticated users - show workflow menu
   return (
-    <div className="pointer-events-auto flex min-h-screen items-center justify-center">
-      <div className="text-center">
-        <div className="mb-4 h-8 w-8 animate-spin rounded-full border-4 border-slate-300 border-t-slate-600 mx-auto" />
-        <p className="text-slate-600 dark:text-slate-400">Redirecting...</p>
+    <div className="pointer-events-auto min-h-screen">
+      <div className="container mx-auto px-4 py-16">
+        <div className="mx-auto max-w-4xl">
+          {/* Header with workflow menu */}
+          <div className="mb-8 flex items-center justify-between">
+            <h1 className="text-3xl font-bold">My Workflows</h1>
+            <LandingWorkflowMenu />
+          </div>
+
+          {/* Workflows list or empty state */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Welcome back!</CardTitle>
+              <CardDescription>
+                Select a workflow from the menu above or create a new one to get
+                started.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="text-center py-8">
+                <Workflow className="mx-auto mb-4 h-12 w-12 text-slate-400" />
+                <p className="text-slate-600 dark:text-slate-400">
+                  Use the workflow menu above to access your workflows or create
+                  a new one.
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </div>
   );

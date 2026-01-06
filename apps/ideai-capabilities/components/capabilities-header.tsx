@@ -3,8 +3,8 @@
  *
  * @module CapabilitiesHeader
  * @description
- * Custom header component based on IdeaIHeader but customized for capabilities site.
- * Demonstrates how to create standalone navigation using IdeaI components.
+ * Enhanced header with dropdown menus for each section (Workflow Builder, Lead Agent, App Builder).
+ * Shows active state and provides quick access to items within each section.
  */
 
 "use client";
@@ -16,11 +16,16 @@ import { ThemeToggle } from "@repo/ui";
 import { MobileNav } from "@repo/ui";
 import { Workflow, UserSearch, Code, Home } from "lucide-react";
 import { UserMenu } from "@/components/workflow/user-menu";
+import { NavItemWithMenu } from "@/components/nav/nav-item-with-menu";
+import { useWorkflowNav } from "@/components/nav/use-workflow-nav";
+import { useSession } from "@/lib/auth-client";
 
 interface NavItem {
   label: string;
   href: string;
   icon?: React.ReactNode;
+  basePath?: string; // For dropdown detection
+  showMenu?: boolean; // Whether to show dropdown when active
 }
 
 const mainNav: NavItem[] = [
@@ -29,21 +34,35 @@ const mainNav: NavItem[] = [
     label: "Workflow Builder",
     href: "/workflow",
     icon: <Workflow className="h-4 w-4" />,
+    basePath: "/workflow",
+    showMenu: true,
   },
   {
     label: "Lead Agent",
     href: "/lead-agent",
     icon: <UserSearch className="h-4 w-4" />,
+    basePath: "/lead-agent",
+    showMenu: false, // Can be enabled when Lead Agent has items
   },
   {
     label: "App Builder",
     href: "/app-builder",
     icon: <Code className="h-4 w-4" />,
+    basePath: "/app-builder",
+    showMenu: false, // Can be enabled when App Builder has items
   },
 ];
 
 export function CapabilitiesHeader() {
   const [isScrolled, setIsScrolled] = useState(false);
+  const { data: session } = useSession();
+  const workflowNav = useWorkflowNav();
+
+  // Check if user is authenticated (not anonymous)
+  const isAuthenticated =
+    session?.user &&
+    session.user.name !== "Anonymous" &&
+    !session.user.email?.startsWith("temp-");
 
   useEffect(() => {
     const handleScroll = () => {
@@ -53,6 +72,14 @@ export function CapabilitiesHeader() {
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Convert workflows to nav menu items
+  const workflowItems = workflowNav.workflows.map((w) => ({
+    id: w.id,
+    name: w.name,
+    href: w.href,
+    updatedAt: w.updatedAt,
+  }));
 
   return (
     <header
@@ -78,17 +105,42 @@ export function CapabilitiesHeader() {
             aria-label="Main navigation"
           >
             <ul className="flex items-center gap-6">
-              {mainNav.map((item) => (
-                <li key={item.href}>
-                  <Link
-                    href={item.href}
-                    className="flex items-center gap-2 text-sm font-medium text-slate-700 transition-colors hover:text-slate-900 dark:text-slate-300 dark:hover:text-slate-100"
-                  >
-                    {item.icon}
-                    {item.label}
-                  </Link>
-                </li>
-              ))}
+              {mainNav.map((item) => {
+                // Workflow Builder with dropdown (only when authenticated)
+                if (
+                  item.showMenu &&
+                  item.basePath === "/workflow" &&
+                  isAuthenticated
+                ) {
+                  return (
+                    <li key={item.href}>
+                      <NavItemWithMenu
+                        label={item.label}
+                        href={item.href}
+                        icon={item.icon}
+                        basePath={item.basePath || item.href}
+                        items={workflowItems}
+                        currentItemId={workflowNav.currentWorkflowId}
+                        onLoadItems={workflowNav.loadWorkflows}
+                        newLabel="New Workflow"
+                      />
+                    </li>
+                  );
+                }
+
+                // Regular nav item (no dropdown or not authenticated)
+                return (
+                  <li key={item.href}>
+                    <Link
+                      href={item.href}
+                      className="flex items-center gap-2 text-sm font-medium text-slate-700 transition-colors hover:text-slate-900 dark:text-slate-300 dark:hover:text-slate-100"
+                    >
+                      {item.icon}
+                      {item.label}
+                    </Link>
+                  </li>
+                );
+              })}
             </ul>
           </nav>
 

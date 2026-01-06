@@ -20,7 +20,7 @@ import {
 } from "lucide-react";
 import { nanoid } from "nanoid";
 import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
@@ -80,6 +80,7 @@ import { useOverlay } from "../overlays/overlay-provider";
 import { WorkflowIssuesOverlay } from "../overlays/workflow-issues-overlay";
 import { WorkflowIcon } from "../ui/workflow-icon";
 import { UserMenu } from "../workflows/user-menu";
+import { WorkflowStatusPanel } from "./workflow-status-panel";
 
 type WorkflowToolbarProps = {
   workflowId?: string;
@@ -933,7 +934,7 @@ function useWorkflowActions(state: ReturnType<typeof useWorkflowState>) {
 
       const newWorkflow = await api.workflow.duplicate(currentWorkflowId);
       toast.success("Workflow duplicated successfully");
-      router.push(`/workflows/${newWorkflow.id}`);
+      router.push(`/workflow/workflows/${newWorkflow.id}`);
     } catch (error) {
       console.error("Failed to duplicate workflow:", error);
       toast.error("Failed to duplicate workflow. Please try again.");
@@ -1383,10 +1384,62 @@ function WorkflowMenuComponent({
   state: ReturnType<typeof useWorkflowState>;
   actions: ReturnType<typeof useWorkflowActions>;
 }) {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const prevSessionRef = useRef(state.session);
+  const hasAutoOpenedRef = useRef(false);
+
+  // Check if user just logged in (session changed from anonymous to authenticated)
+  useEffect(() => {
+    const prevSession = prevSessionRef.current;
+    const currentSession = state.session;
+
+    // Check if user was anonymous before and is now authenticated
+    const wasAnonymous =
+      !prevSession?.user ||
+      prevSession.user.name === "Anonymous" ||
+      prevSession.user.email?.startsWith("temp-");
+
+    const isNowAuthenticated =
+      currentSession?.user &&
+      currentSession.user.name !== "Anonymous" &&
+      !currentSession.user.email?.startsWith("temp-");
+
+    // Auto-open menu on login (only once per login)
+    if (wasAnonymous && isNowAuthenticated && !hasAutoOpenedRef.current) {
+      hasAutoOpenedRef.current = true;
+      // Small delay to ensure workflows are loaded
+      setTimeout(() => {
+        setMenuOpen(true);
+        actions.loadWorkflows();
+      }, 300);
+    }
+
+    // Reset auto-open flag when user logs out
+    if (!isNowAuthenticated) {
+      hasAutoOpenedRef.current = false;
+    }
+
+    prevSessionRef.current = currentSession;
+  }, [state.session, actions]);
+
+  // Reset auto-open flag when menu closes
+  const handleOpenChange = useCallback(
+    (open: boolean) => {
+      setMenuOpen(open);
+      if (open) {
+        actions.loadWorkflows();
+      } else {
+        // Reset flag when menu closes so it can auto-open again on next login
+        hasAutoOpenedRef.current = false;
+      }
+    },
+    [actions],
+  );
+
   return (
     <div className="flex flex-col gap-1">
       <div className="flex h-9 max-w-[160px] items-center overflow-hidden rounded-md border bg-secondary text-secondary-foreground sm:max-w-none">
-        <DropdownMenu onOpenChange={(open) => open && actions.loadWorkflows()}>
+        <DropdownMenu open={menuOpen} onOpenChange={handleOpenChange}>
           <DropdownMenuTrigger className="flex h-full cursor-pointer items-center gap-2 px-3 font-medium text-sm transition-all hover:bg-black/5 dark:hover:bg-white/5">
             <WorkflowIcon className="size-4 shrink-0" />
             <p className="truncate font-medium text-sm">
@@ -1406,7 +1459,7 @@ function WorkflowMenuComponent({
               asChild
               className="flex items-center justify-between"
             >
-              <a href="/">
+              <a href="/workflow">
                 New Workflow{" "}
                 {!workflowId && <Check className="size-4 shrink-0" />}
               </a>
@@ -1416,13 +1469,16 @@ function WorkflowMenuComponent({
               <DropdownMenuItem disabled>No workflows found</DropdownMenuItem>
             ) : (
               state.allWorkflows
-                .filter((w) => w.name !== "__current__")
+                .filter(
+                  (w) =>
+                    w.name !== "__current__" && w.name !== "~~__CURRENT__~~",
+                )
                 .map((workflow) => (
                   <DropdownMenuItem
                     className="flex items-center justify-between"
                     key={workflow.id}
                     onClick={() =>
-                      state.router.push(`/workflows/${workflow.id}`)
+                      state.router.push(`/workflow/workflows/${workflow.id}`)
                     }
                   >
                     <span className="truncate">{workflow.name}</span>
@@ -1455,7 +1511,7 @@ export const WorkflowToolbar = ({ workflowId }: WorkflowToolbarProps) => {
         position="top-left"
       >
         <div className="flex items-center gap-2">
-          <WorkflowMenuComponent
+          <WorkflowStatusPanel
             actions={actions}
             state={state}
             workflowId={workflowId}

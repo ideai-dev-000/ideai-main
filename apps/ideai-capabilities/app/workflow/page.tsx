@@ -113,34 +113,49 @@ export default function WorkflowPage() {
     hasCreatedWorkflowRef.current = false;
   }, [setNodes, setEdges, setCurrentWorkflowName, handleAddNode, isAnonymous]);
 
-  // Create workflow when first real node is added
+  // Track previous node count to detect when first real node is added
+  const prevNodeCountRef = useRef(0);
+
+  // Create workflow when first real node is added (only once)
   useEffect(() => {
     if (isAnonymous) {
       return;
     }
+
+    // Filter out the placeholder "add" node
+    const realNodes = nodes.filter((node) => node.type !== "add");
+    const currentNodeCount = realNodes.length;
+    const prevNodeCount = prevNodeCountRef.current;
+
+    // Update ref for next comparison
+    prevNodeCountRef.current = currentNodeCount;
+
+    // Only create when transitioning from 0 to 1+ nodes AND haven't created yet
+    const shouldCreate =
+      prevNodeCount === 0 &&
+      currentNodeCount > 0 &&
+      !hasCreatedWorkflowRef.current;
+
+    if (!shouldCreate) {
+      return;
+    }
+
+    // Mark as created immediately to prevent race conditions
+    hasCreatedWorkflowRef.current = true;
+
     const createWorkflowAndRedirect = async () => {
-      // Filter out the placeholder "add" node
-      const realNodes = nodes.filter((node) => node.type !== "add");
-
-      // Only create when we have at least one real node and haven't created a workflow yet
-      if (realNodes.length === 0 || hasCreatedWorkflowRef.current) {
-        return;
-      }
-      hasCreatedWorkflowRef.current = true;
-
       try {
         // Check if user is authenticated (not anonymous)
-        // Use the same logic as UserMenu component for consistency
-        // User is anonymous if: no user, name is "Anonymous", or email starts with "temp-"
-        const isAnonymous =
+        const isAnonymousCheck =
           !session?.user ||
           session.user.name === "Anonymous" ||
           session.user.email?.startsWith("temp-");
 
-        if (isAnonymous) {
+        if (isAnonymousCheck) {
           toast.error("Please sign in to create workflows");
           // Reset the flag so user can try again after signing in
           hasCreatedWorkflowRef.current = false;
+          prevNodeCountRef.current = 0;
           return;
         }
 
@@ -162,20 +177,24 @@ export default function WorkflowPage() {
       } catch (error) {
         console.error("Failed to create workflow:", error);
         toast.error("Failed to create workflow");
+        // Reset flags on error so user can try again
+        hasCreatedWorkflowRef.current = false;
+        prevNodeCountRef.current = 0;
       }
     };
 
     createWorkflowAndRedirect();
-    // Use stable values from session instead of the session object itself
+    // Only depend on node count change, not the full nodes array
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
-    nodes,
-    edges,
+    nodes.length, // Only track length, not full array
+    edges.length, // Only track length, not full array
     router,
     setIsTransitioningFromHomepage,
     session?.user?.id,
     session?.user?.name,
     session?.user?.email,
+    isAnonymous,
   ]);
 
   // Canvas and toolbar are rendered by PersistentCanvas in the layout
