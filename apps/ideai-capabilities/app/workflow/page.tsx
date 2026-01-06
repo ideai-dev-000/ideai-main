@@ -43,7 +43,7 @@ function createDefaultTriggerNode() {
 
 export default function WorkflowPage() {
   const router = useRouter();
-  const { data: session } = useSession(); // Use reactive session hook
+  const { data: session, isPending } = useSession(); // Use reactive session hook
   const nodes = useAtomValue(nodesAtom);
   const edges = useAtomValue(edgesAtom);
   const setNodes = useSetAtom(nodesAtom);
@@ -56,15 +56,11 @@ export default function WorkflowPage() {
   const hasCreatedWorkflowRef = useRef(false);
   const currentWorkflowName = useAtomValue(currentWorkflowNameAtom);
 
-  // Reset sidebar animation state when on workflow page
-  useEffect(() => {
-    setHasSidebarBeenShown(false);
-  }, [setHasSidebarBeenShown]);
-
-  // Update page title when workflow name changes
-  useEffect(() => {
-    document.title = `${currentWorkflowName} - IdeaI Capabilities`;
-  }, [currentWorkflowName]);
+  // Check if user is authenticated (not anonymous)
+  const isAnonymous =
+    !session?.user ||
+    session.user.name === "Anonymous" ||
+    session.user.email?.startsWith("temp-");
 
   // Handler to add the first node (replaces the "add" node)
   const handleAddNode = useCallback(() => {
@@ -73,8 +69,32 @@ export default function WorkflowPage() {
     setNodes([newNode]);
   }, [setNodes]);
 
+  // Redirect to landing page if not authenticated
+  useEffect(() => {
+    if (!isPending && isAnonymous) {
+      router.replace("/");
+    }
+  }, [isPending, isAnonymous, router]);
+
+  // Reset sidebar animation state when on workflow page
+  useEffect(() => {
+    if (!isAnonymous) {
+      setHasSidebarBeenShown(false);
+    }
+  }, [setHasSidebarBeenShown, isAnonymous]);
+
+  // Update page title when workflow name changes
+  useEffect(() => {
+    if (!isAnonymous) {
+      document.title = `${currentWorkflowName} - IdeaI Capabilities`;
+    }
+  }, [currentWorkflowName, isAnonymous]);
+
   // Initialize with a temporary "add" node on mount
   useEffect(() => {
+    if (isAnonymous) {
+      return;
+    }
     const addNodePlaceholder: WorkflowNode = {
       id: "add-node-placeholder",
       type: "add",
@@ -91,10 +111,13 @@ export default function WorkflowPage() {
     setEdges([]);
     setCurrentWorkflowName("New Workflow");
     hasCreatedWorkflowRef.current = false;
-  }, [setNodes, setEdges, setCurrentWorkflowName, handleAddNode]);
+  }, [setNodes, setEdges, setCurrentWorkflowName, handleAddNode, isAnonymous]);
 
   // Create workflow when first real node is added
   useEffect(() => {
+    if (isAnonymous) {
+      return;
+    }
     const createWorkflowAndRedirect = async () => {
       // Filter out the placeholder "add" node
       const realNodes = nodes.filter((node) => node.type !== "add");

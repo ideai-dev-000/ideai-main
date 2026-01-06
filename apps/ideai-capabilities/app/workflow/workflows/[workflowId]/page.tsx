@@ -3,13 +3,14 @@
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { use, useCallback, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { NodeConfigPanel } from "@/components/workflow/node-config-panel";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { api } from "@/lib/api-client";
+import { useSession } from "@/lib/auth-client";
 import {
   integrationsAtom,
   integrationsLoadedAtom,
@@ -17,6 +18,7 @@ import {
 } from "@/lib/integrations-store";
 import type { IntegrationType } from "@/lib/types/integration";
 import {
+  clearWorkflowAtom,
   currentWorkflowIdAtom,
   currentWorkflowNameAtom,
   currentWorkflowVisibilityAtom,
@@ -107,6 +109,8 @@ const WorkflowEditor = ({ params }: WorkflowPageProps) => {
   const { workflowId } = use(params);
   const searchParams = useSearchParams();
   const isMobile = useIsMobile();
+  const { data: session, isPending } = useSession();
+  const router = useRouter();
   const [isGenerating, setIsGenerating] = useAtom(isGeneratingAtom);
   const [_isSaving, setIsSaving] = useAtom(isSavingAtom);
   const [nodes] = useAtom(nodesAtom);
@@ -135,6 +139,13 @@ const WorkflowEditor = ({ params }: WorkflowPageProps) => {
   const setIntegrationsLoaded = useSetAtom(integrationsLoadedAtom);
   const integrationsVersion = useAtomValue(integrationsVersionAtom);
   const selectedNodeId = useAtomValue(selectedNodeAtom);
+  const clearWorkflow = useSetAtom(clearWorkflowAtom);
+
+  // Check if user is authenticated (not anonymous)
+  const isAnonymous =
+    !session?.user ||
+    session.user.name === "Anonymous" ||
+    session.user.email?.startsWith("temp-");
 
   // Panel width state for resizing
   const [panelWidth, setPanelWidth] = useState(30); // default percentage
@@ -143,6 +154,13 @@ const WorkflowEditor = ({ params }: WorkflowPageProps) => {
   const [isDraggingResize, setIsDraggingResize] = useState(false);
   const isResizing = useRef(false);
   const hasReadCookies = useRef(false);
+
+  // Redirect to landing page if not authenticated
+  useEffect(() => {
+    if (!isPending && isAnonymous) {
+      router.replace("/");
+    }
+  }, [isPending, isAnonymous, router]);
 
   // Read sidebar preferences from cookies on mount (after hydration)
   useEffect(() => {
@@ -373,6 +391,21 @@ const WorkflowEditor = ({ params }: WorkflowPageProps) => {
   // Helper function to load existing workflow
   const loadExistingWorkflow = useCallback(async () => {
     try {
+      // Check if user is authenticated before loading
+      const isAnonymous =
+        !session?.user ||
+        session.user.name === "Anonymous" ||
+        session.user.email?.startsWith("temp-");
+
+      if (isAnonymous) {
+        // User not authenticated - clear workflow and show empty state
+        clearWorkflow();
+        setCurrentWorkflowId(null);
+        setCurrentWorkflowName("");
+        setWorkflowNotFound(false);
+        return;
+      }
+
       const workflow = await api.workflow.getById(workflowId);
 
       if (!workflow) {
@@ -401,11 +434,21 @@ const WorkflowEditor = ({ params }: WorkflowPageProps) => {
       setHasUnsavedChanges(false);
       setWorkflowNotFound(false);
     } catch (error) {
+      // Handle 401 Unauthorized gracefully
+      if (error instanceof Error && error.message.includes("Unauthorized")) {
+        // User not authenticated - clear workflow and show empty state
+        clearWorkflow();
+        setCurrentWorkflowId(null);
+        setCurrentWorkflowName("");
+        setWorkflowNotFound(false);
+        return;
+      }
       console.error("Failed to load workflow:", error);
       toast.error("Failed to load workflow");
     }
   }, [
     workflowId,
+    session,
     setNodes,
     setEdges,
     setCurrentWorkflowId,
@@ -414,6 +457,7 @@ const WorkflowEditor = ({ params }: WorkflowPageProps) => {
     setIsWorkflowOwner,
     setHasUnsavedChanges,
     setWorkflowNotFound,
+    clearWorkflow,
   ]);
 
   // Track if we've already auto-fixed integrations for this workflow+version
@@ -454,6 +498,45 @@ const WorkflowEditor = ({ params }: WorkflowPageProps) => {
     nodes.length,
     generateWorkflowFromAI,
     loadExistingWorkflow,
+  ]);
+
+  // Monitor session changes to handle sign out/in
+  const prevSessionRef = useRef(session);
+  useEffect(() => {
+    const prevSession = prevSessionRef.current;
+    prevSessionRef.current = session;
+
+    // User signed out - clear workflow state and store last workflow ID
+    if (prevSession?.user && !session?.user) {
+      if (currentWorkflowId) {
+        // Store last active workflow ID for restoration on login
+        localStorage.setItem("lastActiveWorkflowId", currentWorkflowId);
+      }
+      // Clear workflow state
+      clearWorkflow();
+      setCurrentWorkflowId(null);
+      setCurrentWorkflowName("");
+      setCurrentWorkflowVisibility("private");
+      setHasUnsavedChanges(false);
+    }
+
+    // User signed in - restore last active workflow if available
+    if (!prevSession?.user && session?.user) {
+      const lastWorkflowId = localStorage.getItem("lastActiveWorkflowId");
+      if (lastWorkflowId && lastWorkflowId !== workflowId) {
+        // Redirect to last active workflow
+        window.location.href = `/workflow/workflows/${lastWorkflowId}`;
+      }
+    }
+  }, [
+    session,
+    currentWorkflowId,
+    workflowId,
+    clearWorkflow,
+    setCurrentWorkflowId,
+    setCurrentWorkflowName,
+    setCurrentWorkflowVisibility,
+    setHasUnsavedChanges,
   ]);
 
   // Auto-fix invalid/missing integrations on workflow load or when integrations change
@@ -698,6 +781,11 @@ const WorkflowEditor = ({ params }: WorkflowPageProps) => {
       }
     };
   }, [selectedExecutionId, updateNodeData]);
+
+  // Don't render workflow editor if not authenticated
+  if (isPending || isAnonymous) {
+    return null;
+  }
 
   return (
     <div className="pointer-events-none flex h-dvh w-full flex-col overflow-hidden">
