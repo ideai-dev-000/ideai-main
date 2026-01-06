@@ -1,13 +1,17 @@
 /**
- * @fileoverview Landing page for IdeaI Capabilities site
+ * @fileoverview Landing page for IdeaI Capabilities
  *
  * @module CapabilitiesLanding
  * @description
- * Landing page explaining the capabilities site and its purpose as a test bed
- * for shared codebase architecture.
+ * Landing page that shows a clean static page for unauthenticated users,
+ * explaining the workflow automation tool and prompting sign up/sign in.
  */
 
-// Landing page - no need for IdeAIPageTemplate as it's in layout
+"use client";
+
+import { useSession } from "@/lib/auth-client";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import {
   Card,
   CardContent,
@@ -15,193 +19,261 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
 import {
   Workflow,
-  UserSearch,
-  Code,
+  Zap,
+  GitBranch,
+  Shield,
   ArrowRight,
   CheckCircle2,
 } from "lucide-react";
+import { AuthDialog } from "@/components/auth/dialog";
 
 export default function CapabilitiesLanding() {
-  return (
-    <>
-      <div className="pointer-events-auto container mx-auto px-4 py-16">
-        <div className="mx-auto max-w-4xl">
-          {/* Hero Section */}
-          <div className="mb-16 text-center">
-            <Badge className="mb-4" variant="outline">
-              Test Bed Site
-            </Badge>
-            <h1 className="mb-4 text-4xl font-bold tracking-tight sm:text-5xl">
-              IdeaI Capabilities
-            </h1>
-            <p className="mb-8 text-xl text-slate-600 dark:text-slate-400">
-              Shared Codebase Architecture Test Bed
-            </p>
-            <p className="mx-auto max-w-2xl text-slate-700 dark:text-slate-300">
-              This site demonstrates how to build new sites using shared
-              capabilities as components. It bridges the path from separate apps
-              to shared packages, directly addressing the True Unified Mode
-              TODO.
-            </p>
-          </div>
+  const { data: session, isPending } = useSession();
+  const router = useRouter();
 
-          {/* Purpose Section */}
-          <Card className="mb-8">
-            <CardHeader>
-              <CardTitle>Purpose</CardTitle>
-              <CardDescription>
-                This site serves as a test bed and reference implementation
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <ul className="space-y-2">
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 className="mt-0.5 h-5 w-5 text-green-600" />
-                  <span>
-                    <strong>Proves Concept</strong>: Demonstrates that
-                    capabilities can be used as components
-                  </span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 className="mt-0.5 h-5 w-5 text-green-600" />
-                  <span>
-                    <strong>Bridges Gap</strong>: Shows path from separate apps
-                    to shared packages
-                  </span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 className="mt-0.5 h-5 w-5 text-green-600" />
-                  <span>
-                    <strong>Test Bed</strong>: Safe environment to test
-                    component extraction
-                  </span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 className="mt-0.5 h-5 w-5 text-green-600" />
-                  <span>
-                    <strong>Reference Implementation</strong>: Example for
-                    future sites
-                  </span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 className="mt-0.5 h-5 w-5 text-green-600" />
-                  <span>
-                    <strong>Closes TODOs</strong>: Directly addresses multiple
-                    TODO items
-                  </span>
-                </li>
-              </ul>
-            </CardContent>
-          </Card>
+  // Check if user is authenticated (not anonymous)
+  const isAnonymous =
+    !session?.user ||
+    session.user.name === "Anonymous" ||
+    session.user.email?.startsWith("temp-");
 
-          {/* Capabilities Grid */}
-          <div className="mb-8 grid gap-6 md:grid-cols-3">
-            <Card>
-              <CardHeader>
-                <div className="mb-2 flex items-center gap-2">
-                  <Workflow className="h-5 w-5 text-blue-600" />
-                  <CardTitle>Workflow Builder</CardTitle>
-                </div>
-                <CardDescription>
-                  Visual workflow automation with drag-and-drop builder
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Button asChild className="w-full">
-                  <Link href="/workflow">
-                    Open Workflow Builder
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </Link>
-                </Button>
-              </CardContent>
-            </Card>
+  // Redirect authenticated users to workflows
+  useEffect(() => {
+    if (!isPending && !isAnonymous) {
+      router.replace("/workflow");
+    }
+  }, [isPending, isAnonymous, router]);
 
-            <Card>
-              <CardHeader>
-                <div className="mb-2 flex items-center gap-2">
-                  <UserSearch className="h-5 w-5 text-green-600" />
-                  <CardTitle>Lead Agent</CardTitle>
-                </div>
-                <CardDescription>
-                  AI-powered lead qualification and research agent
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Button asChild variant="outline" className="w-full" disabled>
-                  <Link href="/lead-agent">
-                    Coming Soon
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </Link>
-                </Button>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <div className="mb-2 flex items-center gap-2">
-                  <Code className="h-5 w-5 text-purple-600" />
-                  <CardTitle>App Builder</CardTitle>
-                </div>
-                <CardDescription>
-                  Build apps with AI using v0 SDK integration
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Button asChild variant="outline" className="w-full" disabled>
-                  <Link href="/app-builder">
-                    Coming Soon
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </Link>
-                </Button>
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Architecture Section */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Architecture</CardTitle>
-              <CardDescription>
-                How this site bridges to shared codebase architecture
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div>
-                <h3 className="mb-2 font-semibold">Current Approach</h3>
-                <p className="text-sm text-slate-600 dark:text-slate-400">
-                  Capabilities are imported directly from existing apps as
-                  components or via iframe bridge. This demonstrates the concept
-                  before full package extraction.
-                </p>
-              </div>
-              <div>
-                <h3 className="mb-2 font-semibold">Future Approach</h3>
-                <p className="text-sm text-slate-600 dark:text-slate-400">
-                  Once capabilities are extracted to packages (`@repo/workflow`,
-                  `@repo/lead-agent`, `@repo/app-builder`), this site will
-                  import from packages for true shared codebase architecture.
-                </p>
-              </div>
-              <div>
-                <h3 className="mb-2 font-semibold">TODOs Addressed</h3>
-                <ul className="list-inside list-disc space-y-1 text-sm text-slate-600 dark:text-slate-400">
-                  <li>Extract Capabilities to Packages (test bed created)</li>
-                  <li>Refactor Apps to Use Packages (pattern demonstrated)</li>
-                  <li>
-                    Implement True Unified Mode (component imports, no iframes)
-                  </li>
-                  <li>Documentation (example site created)</li>
-                </ul>
-              </div>
-            </CardContent>
-          </Card>
+  // Show loading state while checking session
+  if (isPending) {
+    return (
+      <div className="pointer-events-auto flex min-h-screen items-center justify-center">
+        <div className="text-center">
+          <div className="mb-4 h-8 w-8 animate-spin rounded-full border-4 border-slate-300 border-t-slate-600 mx-auto" />
+          <p className="text-slate-600 dark:text-slate-400">Loading...</p>
         </div>
       </div>
-    </>
+    );
+  }
+
+  // Show static landing page for unauthenticated users
+  if (isAnonymous) {
+    return (
+      <div className="pointer-events-auto min-h-screen">
+        <div className="container mx-auto px-4 py-16">
+          <div className="mx-auto max-w-4xl">
+            {/* Hero Section */}
+            <div className="mb-16 text-center">
+              <h1 className="mb-4 text-5xl font-bold tracking-tight sm:text-6xl">
+                Automate Your Workflows
+              </h1>
+              <p className="mb-8 text-xl text-slate-600 dark:text-slate-400">
+                Build powerful automation workflows with a visual, drag-and-drop
+                builder. Connect tools, automate tasks, and streamline your
+                work.
+              </p>
+              <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
+                <AuthDialog>
+                  <Button size="lg" className="w-full sm:w-auto">
+                    Get Started
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
+                </AuthDialog>
+                <AuthDialog>
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="w-full sm:w-auto"
+                  >
+                    Sign In
+                  </Button>
+                </AuthDialog>
+              </div>
+            </div>
+
+            {/* Features Grid */}
+            <div className="mb-16 grid gap-6 md:grid-cols-3">
+              <Card>
+                <CardHeader>
+                  <div className="mb-2 flex items-center gap-2">
+                    <Workflow className="h-6 w-6 text-blue-600" />
+                    <CardTitle>Visual Builder</CardTitle>
+                  </div>
+                  <CardDescription>
+                    Create workflows visually with drag-and-drop. No code
+                    required.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <ul className="space-y-2 text-sm text-slate-600 dark:text-slate-400">
+                    <li className="flex items-start gap-2">
+                      <CheckCircle2 className="mt-0.5 h-4 w-4 text-green-600 flex-shrink-0" />
+                      <span>Intuitive interface</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <CheckCircle2 className="mt-0.5 h-4 w-4 text-green-600 flex-shrink-0" />
+                      <span>Real-time preview</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <CheckCircle2 className="mt-0.5 h-4 w-4 text-green-600 flex-shrink-0" />
+                      <span>AI-powered suggestions</span>
+                    </li>
+                  </ul>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <div className="mb-2 flex items-center gap-2">
+                    <Zap className="h-6 w-6 text-yellow-600" />
+                    <CardTitle>Powerful Automation</CardTitle>
+                  </div>
+                  <CardDescription>
+                    Connect your favorite tools and automate repetitive tasks.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <ul className="space-y-2 text-sm text-slate-600 dark:text-slate-400">
+                    <li className="flex items-start gap-2">
+                      <CheckCircle2 className="mt-0.5 h-4 w-4 text-green-600 flex-shrink-0" />
+                      <span>100+ integrations</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <CheckCircle2 className="mt-0.5 h-4 w-4 text-green-600 flex-shrink-0" />
+                      <span>Conditional logic</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <CheckCircle2 className="mt-0.5 h-4 w-4 text-green-600 flex-shrink-0" />
+                      <span>Error handling</span>
+                    </li>
+                  </ul>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <div className="mb-2 flex items-center gap-2">
+                    <GitBranch className="h-6 w-6 text-purple-600" />
+                    <CardTitle>Flexible Workflows</CardTitle>
+                  </div>
+                  <CardDescription>
+                    Build complex workflows with branching, loops, and
+                    transformations.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <ul className="space-y-2 text-sm text-slate-600 dark:text-slate-400">
+                    <li className="flex items-start gap-2">
+                      <CheckCircle2 className="mt-0.5 h-4 w-4 text-green-600 flex-shrink-0" />
+                      <span>Parallel execution</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <CheckCircle2 className="mt-0.5 h-4 w-4 text-green-600 flex-shrink-0" />
+                      <span>Data transformations</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <CheckCircle2 className="mt-0.5 h-4 w-4 text-green-600 flex-shrink-0" />
+                      <span>Custom logic</span>
+                    </li>
+                  </ul>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Benefits Section */}
+            <Card className="mb-16">
+              <CardHeader>
+                <CardTitle>Why Choose Our Workflow Builder?</CardTitle>
+                <CardDescription>
+                  Everything you need to automate your work and save time
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="grid gap-6 md:grid-cols-2">
+                  <div>
+                    <h3 className="mb-2 flex items-center gap-2 font-semibold">
+                      <Shield className="h-5 w-5 text-green-600" />
+                      Secure & Reliable
+                    </h3>
+                    <p className="text-sm text-slate-600 dark:text-slate-400">
+                      Your workflows run securely with enterprise-grade
+                      infrastructure. All data is encrypted and backed up
+                      automatically.
+                    </p>
+                  </div>
+                  <div>
+                    <h3 className="mb-2 flex items-center gap-2 font-semibold">
+                      <Zap className="h-5 w-5 text-yellow-600" />
+                      Fast Execution
+                    </h3>
+                    <p className="text-sm text-slate-600 dark:text-slate-400">
+                      Workflows execute in seconds, not minutes. Parallel
+                      processing ensures your automations run as fast as
+                      possible.
+                    </p>
+                  </div>
+                  <div>
+                    <h3 className="mb-2 flex items-center gap-2 font-semibold">
+                      <Workflow className="h-5 w-5 text-blue-600" />
+                      Easy to Use
+                    </h3>
+                    <p className="text-sm text-slate-600 dark:text-slate-400">
+                      No technical knowledge required. Build complex workflows
+                      using our intuitive visual interface.
+                    </p>
+                  </div>
+                  <div>
+                    <h3 className="mb-2 flex items-center gap-2 font-semibold">
+                      <GitBranch className="h-5 w-5 text-purple-600" />
+                      Scalable
+                    </h3>
+                    <p className="text-sm text-slate-600 dark:text-slate-400">
+                      Start small and scale up. From simple automations to
+                      complex multi-step workflows, we've got you covered.
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* CTA Section */}
+            <div className="text-center">
+              <Card className="bg-slate-50 dark:bg-slate-900">
+                <CardHeader>
+                  <CardTitle className="text-2xl">
+                    Ready to Automate Your Work?
+                  </CardTitle>
+                  <CardDescription>
+                    Join thousands of users who are already saving time with
+                    automated workflows
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <AuthDialog>
+                    <Button size="lg">
+                      Get Started Free
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </Button>
+                  </AuthDialog>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Authenticated users - show loading while redirecting
+  return (
+    <div className="pointer-events-auto flex min-h-screen items-center justify-center">
+      <div className="text-center">
+        <div className="mb-4 h-8 w-8 animate-spin rounded-full border-4 border-slate-300 border-t-slate-600 mx-auto" />
+        <p className="text-slate-600 dark:text-slate-400">Redirecting...</p>
+      </div>
+    </div>
   );
 }
