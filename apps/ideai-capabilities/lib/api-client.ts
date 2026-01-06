@@ -50,6 +50,14 @@ async function apiCall<T>(endpoint: string, options?: RequestInit): Promise<T> {
   });
 
   if (!response.ok) {
+    // Handle 401 Unauthorized gracefully - don't crash the app
+    if (response.status === 401) {
+      const error = await response
+        .json()
+        .catch(() => ({ error: "Unauthorized" }));
+      throw new ApiError(response.status, error.error || "Unauthorized");
+    }
+
     const error = await response
       .json()
       .catch(() => ({ error: "Unknown error" }));

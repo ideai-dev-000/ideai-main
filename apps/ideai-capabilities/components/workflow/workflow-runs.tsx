@@ -548,8 +548,14 @@ export function WorkflowRuns({
         const data = await api.workflow.getExecutions(currentWorkflowId);
         setExecutions(data as WorkflowExecution[]);
       } catch (error) {
-        console.error("Failed to load executions:", error);
-        setExecutions([]);
+        // Handle 401 Unauthorized gracefully - user signed out
+        if (error instanceof Error && error.message.includes("Unauthorized")) {
+          // Silently fail - user is not authenticated, just show empty list
+          setExecutions([]);
+        } else {
+          console.error("Failed to load executions:", error);
+          setExecutions([]);
+        }
       } finally {
         if (showLoading) {
           setLoading(false);

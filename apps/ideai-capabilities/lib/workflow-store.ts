@@ -92,6 +92,11 @@ export const autosaveAtom = atom(
         // Clear the unsaved changes indicator after successful save
         set(hasUnsavedChangesAtom, false);
       } catch (error) {
+        // Handle 401 Unauthorized gracefully - user signed out, don't spam console
+        if (error instanceof Error && error.message.includes("Unauthorized")) {
+          // Silently fail - user is not authenticated
+          return;
+        }
         console.error("Autosave failed:", error);
       }
     };
