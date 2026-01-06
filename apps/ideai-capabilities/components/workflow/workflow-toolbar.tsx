@@ -411,6 +411,7 @@ async function executeTestWorkflow({
     // Start the execution via API
     const response = await fetch(`/api/workflow/${workflowId}/execute`, {
       method: "POST",
+      credentials: "include", // Include cookies for session authentication
       headers: {
         "Content-Type": "application/json",
       },
@@ -418,7 +419,15 @@ async function executeTestWorkflow({
     });
 
     if (!response.ok) {
-      throw new Error("Failed to execute workflow");
+      // Check for authentication errors
+      if (response.status === 401) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(
+          errorData.error || "Please sign in to execute workflows",
+        );
+      }
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(errorData.error || "Failed to execute workflow");
     }
 
     const result = await response.json();

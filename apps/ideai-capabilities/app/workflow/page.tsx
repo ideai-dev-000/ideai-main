@@ -15,7 +15,7 @@ import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef } from "react";
 import { toast } from "sonner";
 import { api } from "@/lib/api-client";
-import { authClient } from "@/lib/auth-client";
+import { useSession } from "@/lib/auth-client";
 import {
   currentWorkflowNameAtom,
   edgesAtom,
@@ -43,6 +43,7 @@ function createDefaultTriggerNode() {
 
 export default function WorkflowPage() {
   const router = useRouter();
+  const { data: session } = useSession(); // Use reactive session hook
   const nodes = useAtomValue(nodesAtom);
   const edges = useAtomValue(edgesAtom);
   const setNodes = useSetAtom(nodesAtom);
@@ -106,12 +107,12 @@ export default function WorkflowPage() {
 
       try {
         // Check if user is authenticated (not anonymous)
-        const currentSession = await authClient.getSession();
-        // User is anonymous if: no user, no email, or explicitly marked as anonymous
+        // Use the same logic as UserMenu component for consistency
+        // User is anonymous if: no user, name is "Anonymous", or email starts with "temp-"
         const isAnonymous =
-          !currentSession?.user ||
-          (!currentSession.user.email && !currentSession.user.name) ||
-          currentSession.user.isAnonymous === true;
+          !session?.user ||
+          session.user.name === "Anonymous" ||
+          session.user.email?.startsWith("temp-");
 
         if (isAnonymous) {
           toast.error("Please sign in to create workflows");
@@ -142,7 +143,17 @@ export default function WorkflowPage() {
     };
 
     createWorkflowAndRedirect();
-  }, [nodes, edges, router, setIsTransitioningFromHomepage]);
+    // Use stable values from session instead of the session object itself
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    nodes,
+    edges,
+    router,
+    setIsTransitioningFromHomepage,
+    session?.user?.id,
+    session?.user?.name,
+    session?.user?.email,
+  ]);
 
   // Canvas and toolbar are rendered by PersistentCanvas in the layout
   // This page just handles the workflow creation logic

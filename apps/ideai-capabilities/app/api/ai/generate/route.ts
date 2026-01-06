@@ -1,4 +1,5 @@
 import { streamText } from "ai";
+import { createOpenAI } from "@ai-sdk/openai";
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { generateAIActionPrompts } from "@/plugins";
@@ -132,7 +133,13 @@ async function processOperationStream(
 }
 
 function getSystemPrompt(): string {
-  const pluginActionPrompts = generateAIActionPrompts();
+  let pluginActionPrompts: string;
+  try {
+    pluginActionPrompts = generateAIActionPrompts();
+  } catch (error) {
+    console.error("[AI Generate] Failed to generate action prompts:", error);
+    pluginActionPrompts = ""; // Fallback to empty if plugin registry fails
+  }
   return `You are a workflow automation expert. Generate a workflow based on the user's description.
 
 CRITICAL: Output your workflow as INDIVIDUAL OPERATIONS, one per line in JSONL format.
@@ -324,11 +331,35 @@ Example: If user says "connect node A to node B", output:
 {"op": "addEdge", "edge": {"id": "e-new", "source": "A", "target": "B", "type": "default"}}`;
     }
 
-    const result = streamText({
-      model: "openai/gpt-5.1-instant",
-      system: getSystemPrompt(),
-      prompt: userPrompt,
-    });
+    let result;
+    try {
+      // Ensure we have an API key configured
+      const openaiApiKey = apiKey || process.env.OPENAI_API_KEY;
+      if (!openaiApiKey) {
+        throw new Error("OpenAI API key not configured in environment");
+      }
+
+      // Create OpenAI provider instance with API key
+      const openai = createOpenAI({
+        apiKey: openaiApiKey,
+      });
+
+      // Use OpenAI provider with model name (without provider prefix)
+      result = streamText({
+        model: openai("gpt-4o-mini"),
+        system: getSystemPrompt(),
+        prompt: userPrompt,
+      });
+    } catch (error) {
+      console.error("[AI Generate] Failed to call streamText:", error);
+      console.error(
+        "[AI Generate] Error details:",
+        error instanceof Error ? error.stack : String(error),
+      );
+      throw new Error(
+        `Failed to initialize AI stream: ${error instanceof Error ? error.message : "Unknown error"}`,
+      );
+    }
 
     // Create a streaming response
     const encoder = new TextEncoder();
@@ -360,13 +391,21 @@ Example: If user says "connect node A to node B", output:
       },
     });
   } catch (error) {
-    console.error("Failed to generate workflow:", error);
+    console.error("[AI Generate] Failed to generate workflow:", error);
+    console.error(
+      "[AI Generate] Error stack:",
+      error instanceof Error ? error.stack : "N/A",
+    );
     return NextResponse.json(
       {
         error:
           error instanceof Error
             ? error.message
             : "Failed to generate workflow",
+        details:
+          error instanceof Error && process.env.NODE_ENV === "development"
+            ? error.stack
+            : undefined,
       },
       { status: 500 },
     );

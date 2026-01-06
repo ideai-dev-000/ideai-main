@@ -32,13 +32,15 @@ function LayoutContent({ children }: { children: ReactNode }) {
   return (
     <ReactFlowProvider>
       <PersistentCanvas />
-      <div className="relative z-10">
+      <div className="pointer-events-none relative z-10">
         {/* Header needs pointer events for buttons to work */}
         <div className="pointer-events-auto">
           <CapabilitiesHeader />
         </div>
-        {/* Main content - workflow canvas needs pointer events */}
-        <main className="min-h-screen pt-16">{children}</main>
+        {/* Main content - allow clicks through to canvas */}
+        <main className="pointer-events-none min-h-screen pt-16">
+          {children}
+        </main>
       </div>
     </ReactFlowProvider>
   );

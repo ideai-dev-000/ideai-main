@@ -42,6 +42,7 @@ export class ApiError extends Error {
 async function apiCall<T>(endpoint: string, options?: RequestInit): Promise<T> {
   const response = await fetch(endpoint, {
     ...options,
+    credentials: "include", // Include cookies for session authentication
     headers: {
       "Content-Type": "application/json",
       ...options?.headers,
@@ -271,6 +272,7 @@ export const aiApi = {
   ): Promise<WorkflowData> => {
     const response = await fetch("/api/ai/generate", {
       method: "POST",
+      credentials: "include", // Include cookies for session authentication
       headers: {
         "Content-Type": "application/json",
       },
@@ -278,7 +280,17 @@ export const aiApi = {
     });
 
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      // Try to get error message from response
+      let errorMessage = `HTTP error! status: ${response.status}`;
+      try {
+        const errorData = await response.json().catch(() => null);
+        if (errorData?.error) {
+          errorMessage = `${errorMessage}: ${errorData.error}`;
+        }
+      } catch {
+        // Ignore JSON parse errors
+      }
+      throw new Error(errorMessage);
     }
 
     if (!response.body) {

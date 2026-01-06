@@ -29,7 +29,7 @@ import {
 export default function CapabilitiesLanding() {
   return (
     <>
-      <div className="container mx-auto px-4 py-16">
+      <div className="pointer-events-auto container mx-auto px-4 py-16">
         <div className="mx-auto max-w-4xl">
           {/* Hero Section */}
           <div className="mb-16 text-center">
