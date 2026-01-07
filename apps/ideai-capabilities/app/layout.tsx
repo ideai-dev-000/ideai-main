@@ -13,6 +13,7 @@ import { ReactFlowProvider } from "@xyflow/react";
 import { Provider } from "jotai";
 import { type ReactNode, Suspense } from "react";
 import { AuthProvider } from "@/components/auth/provider";
+import { GlobalModals } from "@/components/global-modals";
 import { OverlayProvider } from "@/components/overlays/overlay-provider";
 import { Toaster } from "@/components/ui/sonner";
 import { PersistentCanvas } from "@/components/workflow/persistent-canvas";
@@ -66,6 +67,7 @@ export default function RootLayout({
                 <Suspense fallback={<LayoutContent>{children}</LayoutContent>}>
                   <LayoutContent>{children}</LayoutContent>
                 </Suspense>
+                <GlobalModals />
                 <Toaster />
               </OverlayProvider>
             </AuthProvider>

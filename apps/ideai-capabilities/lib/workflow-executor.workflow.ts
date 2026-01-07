@@ -523,6 +523,16 @@ export async function executeWorkflow(input: WorkflowExecutionInput) {
           success: triggerResult.success,
           data: triggerResult.data,
         };
+
+        // Store results immediately for trigger nodes
+        results[nodeId] = result;
+
+        // Store outputs immediately for template variable lookup
+        const sanitizedNodeId = nodeId.replace(/[^a-zA-Z0-9]/g, "_");
+        outputs[sanitizedNodeId] = {
+          label: node.data.label || nodeId,
+          data: result.data,
+        };
       } else if (node.data.type === "action") {
         const config = node.data.config || {};
         const actionType = config.actionType as string | undefined;
@@ -614,15 +624,17 @@ export async function executeWorkflow(input: WorkflowExecutionInput) {
         };
       }
 
-      // Store results
-      results[nodeId] = result;
+      // Store results (if not already stored for trigger nodes)
+      if (!results[nodeId]) {
+        results[nodeId] = result;
 
-      // Store outputs with sanitized nodeId for template variable lookup
-      const sanitizedNodeId = nodeId.replace(/[^a-zA-Z0-9]/g, "_");
-      outputs[sanitizedNodeId] = {
-        label: node.data.label || nodeId,
-        data: result.data,
-      };
+        // Store outputs with sanitized nodeId for template variable lookup
+        const sanitizedNodeId = nodeId.replace(/[^a-zA-Z0-9]/g, "_");
+        outputs[sanitizedNodeId] = {
+          label: node.data.label || nodeId,
+          data: result.data,
+        };
+      }
 
       console.log("[Workflow Executor] Node execution completed:", {
         nodeId,
@@ -651,6 +663,8 @@ export async function executeWorkflow(input: WorkflowExecutionInput) {
               "[Workflow Executor] Condition is true, executing",
               nextNodes.length,
               "next nodes in parallel",
+              "node IDs:",
+              nextNodes,
             );
             // Execute all next nodes in parallel
             await Promise.all(
@@ -665,15 +679,32 @@ export async function executeWorkflow(input: WorkflowExecutionInput) {
           // For non-condition nodes, execute all next nodes in parallel
           const nextNodes = edgesBySource.get(nodeId) || [];
           console.log(
-            "[Workflow Executor] Executing",
+            "[Workflow Executor] Node",
+            nodeId,
+            "succeeded. Executing",
             nextNodes.length,
             "next nodes in parallel",
+            "node IDs:",
+            nextNodes,
           );
+          if (nextNodes.length === 0) {
+            console.log(
+              "[Workflow Executor] WARNING: No edges found from node",
+              nodeId,
+              "- workflow may be incomplete",
+            );
+          }
           // Execute all next nodes in parallel
           await Promise.all(
             nextNodes.map((nextNodeId) => executeNode(nextNodeId, visited)),
           );
         }
+      } else {
+        console.log(
+          "[Workflow Executor] Node",
+          nodeId,
+          "failed, not executing next nodes",
+        );
       }
     } catch (error) {
       console.error("[Workflow Executor] Error executing node:", nodeId, error);

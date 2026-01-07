@@ -50,6 +50,10 @@ BETTER_AUTH_URL=http://localhost:3000
 
 # AI Gateway (for AI workflow generation)
 AI_GATEWAY_API_KEY=your-openai-api-key
+
+# Integration Encryption (required for storing credentials securely)
+# Generate with: node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+INTEGRATION_ENCRYPTION_KEY=your-64-character-hex-string
 ```
 
 ### Installation

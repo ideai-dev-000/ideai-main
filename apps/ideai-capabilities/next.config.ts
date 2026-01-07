@@ -10,7 +10,10 @@ const nextConfig: NextConfig = {
   compress: true,
 };
 
-// TODO: Add workflow plugin once package exports are fixed
-// For now, we'll run without the workflow Next.js plugin
-// The workflow functionality will still work via API routes
+// Workflow plugin disabled - incompatible with Next.js 16.1.1
+// Error: Cannot find module 'next/dist/lib/server-external-packages.json'
+// TODO: Update workflow package or use alternative execution method
+// import { withWorkflow } from "workflow/next";
+// export default withWorkflow(nextConfig);
+
 export default nextConfig;

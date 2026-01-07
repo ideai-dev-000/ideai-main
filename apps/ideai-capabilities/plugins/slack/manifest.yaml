@@ -1,0 +1,272 @@
+# Slack App Manifest for IdeaI Integration
+#
+# This manifest defines the Slack app configuration for IdeaI's workflow automation platform.
+# It enables current features (message sending) and provides a methodical structure for
+# extending capabilities as needed.
+#
+# Usage:
+#   1. Copy this file to your Slack app configuration at https://api.slack.com/apps
+#   2. Or use Slack CLI: `slack manifest apply --manifest manifest.yaml`
+#   3. Update the request URLs to match your deployment
+#
+# Extension Guide:
+#   - Add new scopes under oauth_config.scopes.bot
+#   - Add new events under event_subscriptions.bot_events
+#   - Add new commands under slash_commands
+#   - Add new shortcuts under shortcuts
+#   - See EXTENSION_SECTIONS below for detailed guidance
+
+display_information:
+  name: IdeaI Workflow Bot
+  description: Automate workflows and integrate IdeaI capabilities with Slack
+  background_color: "#4A154B" # Slack purple
+  long_description: |
+    IdeaI Workflow Bot enables powerful automation workflows directly from Slack.
+    Send messages, manage channels, interact with workflows, and extend your team's
+    productivity through visual workflow automation.
+
+features:
+  bot_user:
+    display_name: IdeaI Bot
+    always_online: true
+    # Set to false if you want the bot to appear offline when not active
+    # always_online: false
+
+  # Enable slash commands for direct interaction
+  slash_commands:
+    # Example: /ideai-status - Check workflow status
+    # Uncomment and configure as needed:
+    # - command: /ideai-status
+    #   description: Check the status of your workflows
+    #   usage_hint: "[workflow-name]"
+    #   should_escape: false
+    #   # request_url: "https://your-domain.com/api/slack/commands"
+
+    # Example: /ideai-trigger - Trigger a workflow
+    # - command: /ideai-trigger
+    #   description: Trigger a workflow from Slack
+    #   usage_hint: "[workflow-name] [parameters]"
+    #   should_escape: false
+    #   # request_url: "https://your-domain.com/api/slack/commands"
+
+  # Enable shortcuts for quick actions
+  shortcuts:
+    # Example: Message shortcut to trigger workflows
+    # Uncomment and configure as needed:
+    # - name: Trigger IdeaI Workflow
+    #   type: message
+    #   callback_id: trigger_workflow
+    #   description: Trigger an IdeaI workflow from a message
+    #   # request_url: "https://your-domain.com/api/slack/shortcuts"
+
+    # Example: Global shortcut
+    # - name: Create IdeaI Workflow
+    #   type: global
+    #   callback_id: create_workflow
+    #   description: Create a new IdeaI workflow
+    #   # request_url: "https://your-domain.com/api/slack/shortcuts"
+
+  # Enable interactive components (buttons, modals, etc.)
+  interactivity:
+    is_enabled: false
+    # Set to true when you implement interactive components
+    # request_url: "https://your-domain.com/api/slack/interactivity"
+    # Uncomment when ready:
+    # request_url: "https://your-domain.com/api/slack/interactivity"
+
+  # Enable event subscriptions for real-time updates
+  event_subscriptions:
+    bot_events:
+      # Current: No events needed for basic message sending
+      # Future: Add events as you extend functionality
+
+      # Example events you might want to add:
+      # - message.channels        # Listen to channel messages
+      # - message.groups          # Listen to private channel messages
+      # - message.im              # Listen to direct messages
+      # - message.mpim            # Listen to group DMs
+      # - channel_created         # React to new channels
+      # - channel_archive         # React to archived channels
+      # - member_joined_channel   # React to new members
+      # - app_mention             # React to @mentions of your bot
+      # - reaction_added          # React to emoji reactions
+      # - file_shared             # React to file uploads
+    # Uncomment when ready:
+    # request_url: "https://your-domain.com/api/slack/events"
+
+  # Enable incoming webhooks (alternative to bot token)
+  # incoming_webhooks:
+  #   Uncomment if you want to use webhooks instead of bot tokens:
+  #   request_url: "https://your-domain.com/api/slack/webhooks"
+
+# OAuth & Permissions Configuration
+oauth_config:
+  redirect_urls:
+    # Add your OAuth redirect URLs here when implementing OAuth flow
+    # - "https://your-domain.com/api/slack/oauth/callback"
+
+  scopes:
+    bot:
+      # ============================================
+      # CURRENT FUNCTIONALITY (Required)
+      # ============================================
+      - chat:write # Send messages (currently used)
+      - chat:write.public # Send messages to public channels
+      - channels:read # Read channel information
+      - groups:read # Read private channel information
+      - im:read # Read direct messages
+      - mpim:read # Read group direct messages
+
+      # ============================================
+      # EXTENSIBLE SCOPES (Ready for future use)
+      # ============================================
+
+      # Message Management
+      - chat:write.customize # Customize message appearance
+      - files:write # Upload files to channels
+      - files:read # Read files shared in channels
+
+      # Channel Management
+      - channels:history # Read channel message history
+      - channels:join # Join public channels
+      - channels:manage # Create and manage channels
+      - groups:history # Read private channel history
+      - groups:write # Create and manage private channels
+
+      # User & Team Information
+      - users:read # Read user information
+      - users:read.email # Read user email addresses
+      - team:read # Read team information
+
+      # Reactions & Interactions
+      - reactions:write # Add reactions to messages
+      - reactions:read # Read reactions on messages
+
+      # Workflow & Automation Extensions
+      - commands # Use slash commands (when enabled)
+      - workflow.steps:execute # Execute workflow steps (if needed)
+
+      # Advanced Features (Add as needed)
+      # - admin                    # Admin permissions (use with caution)
+      # - channels:admin            # Channel admin permissions
+      # - groups:admin              # Private channel admin permissions
+      # - im:write                  # Initiate direct messages
+      # - mpim:write                # Initiate group direct messages
+      # - pins:write                # Pin messages
+      # - pins:read                 # Read pinned messages
+      # - reminders:write           # Create reminders
+      # - search:read               # Search messages and files
+      # - stars:read                # Read starred items
+      # - stars:write               # Star items
+      # - usergroups:read           # Read user groups
+      # - usergroups:write          # Manage user groups
+
+# Socket Mode (for local development)
+settings:
+  socket_mode_enabled: false
+  # Set to true for local development with Socket Mode
+  # Requires SLACK_APP_TOKEN environment variable
+
+  # Event subscriptions settings (when enabled)
+  # event_subscriptions:
+  #   request_url: "https://your-domain.com/api/slack/events"
+
+  # Org deploy settings (for enterprise)
+  # org_deploy_enabled: false
+  # token_rotation_enabled: false
+
+# ============================================
+# EXTENSION GUIDE
+# ============================================
+#
+# To add new capabilities, follow this methodical approach:
+#
+# 1. IDENTIFY THE FEATURE
+#    - What Slack API endpoint do you need?
+#    - What permissions does it require?
+#    - Check: https://api.slack.com/methods
+#
+# 2. ADD REQUIRED SCOPES
+#    - Find the scope in: https://api.slack.com/scopes
+#    - Add to oauth_config.scopes.bot
+#    - Document why it's needed in a comment
+#
+# 3. IMPLEMENT THE FEATURE
+#    - Create new step in: plugins/slack/steps/
+#    - Register action in: plugins/slack/index.ts
+#    - Test with: plugins/slack/test.ts
+#
+# 4. UPDATE MANIFEST
+#    - Add any new events to event_subscriptions.bot_events
+#    - Add any new commands to features.slash_commands
+#    - Add any new shortcuts to features.shortcuts
+#    - Update request URLs when deploying
+#
+# 5. COMMON EXTENSIONS
+#
+#    A. File Uploads:
+#       - Add: files:write, files:read
+#       - Use: files.upload API
+#
+#    B. Message Reactions:
+#       - Add: reactions:write, reactions:read
+#       - Use: reactions.add API
+#
+#    C. Channel Management:
+#       - Add: channels:manage, channels:join
+#       - Use: channels.create, channels.join APIs
+#
+#    D. User Lookup:
+#       - Add: users:read, users:read.email
+#       - Use: users.info API
+#
+#    E. Message History:
+#       - Add: channels:history, groups:history
+#       - Use: conversations.history API
+#
+#    F. Interactive Components:
+#       - Enable: features.interactivity.is_enabled = true
+#       - Add request_url
+#       - Use Block Kit for UI
+#
+#    G. Event Listeners:
+#       - Enable: event_subscriptions
+#       - Add events to bot_events
+#       - Add request_url
+#       - Handle events in API route
+#
+# 6. TESTING
+#    - Test in development workspace first
+#    - Use Socket Mode for local development
+#    - Verify all scopes are granted
+#    - Test error handling
+#
+# 7. DEPLOYMENT
+#    - Update request URLs to production
+#    - Re-apply manifest to Slack app
+#    - Re-install app to workspace (if scopes changed)
+#    - Monitor logs for errors
+#
+# ============================================
+# CURRENT API USAGE
+# ============================================
+#
+# Currently implemented:
+#   - chat.postMessage (sending messages)
+#   - auth.test (connection testing)
+#
+# Scopes in use:
+#   - chat:write (required for chat.postMessage)
+#   - channels:read (for channel validation)
+#
+# ============================================
+# VERSION HISTORY
+# ============================================
+#
+# v1.0.0 - Initial manifest
+#   - Basic message sending capability
+#   - Extensible scope structure
+#   - Methodical extension guide
+#
+# ============================================
+

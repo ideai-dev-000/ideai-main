@@ -119,6 +119,7 @@ export async function POST(request: Request) {
     return NextResponse.json(response);
   } catch (error) {
     console.error("Failed to create integration:", error);
+    console.error("Error stack:", error instanceof Error ? error.stack : "N/A");
     return NextResponse.json(
       {
         error: "Failed to create integration",
