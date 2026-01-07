@@ -100,6 +100,13 @@ export async function POST(request: Request) {
         .where(eq(workflows.id, existingWorkflow.id))
         .returning();
 
+      if (!updatedWorkflow) {
+        return NextResponse.json(
+          { error: "Failed to update workflow" },
+          { status: 500 },
+        );
+      }
+
       return NextResponse.json({
         id: updatedWorkflow.id,
         nodes: updatedWorkflow.nodes,
@@ -121,6 +128,13 @@ export async function POST(request: Request) {
         userId: session.user.id,
       })
       .returning();
+
+    if (!savedWorkflow) {
+      return NextResponse.json(
+        { error: "Failed to save workflow" },
+        { status: 500 },
+      );
+    }
 
     return NextResponse.json({
       id: savedWorkflow.id,

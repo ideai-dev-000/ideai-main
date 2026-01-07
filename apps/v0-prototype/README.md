@@ -66,3 +66,5 @@ This app is configured as a **child app** in `.ideai.json`:
 - Use IdeaI components from `@repo/ui`
 - Follow IdeaI commit standards
 - Deploy when ready
+
+

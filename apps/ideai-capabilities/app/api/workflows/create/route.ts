@@ -90,6 +90,13 @@ export async function POST(request: Request) {
       })
       .returning();
 
+    if (!newWorkflow) {
+      return NextResponse.json(
+        { error: "Failed to create workflow" },
+        { status: 500 },
+      );
+    }
+
     return NextResponse.json({
       ...newWorkflow,
       createdAt: newWorkflow.createdAt.toISOString(),

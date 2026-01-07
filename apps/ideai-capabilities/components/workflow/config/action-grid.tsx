@@ -237,10 +237,16 @@ export function ActionGrid({
       return a.localeCompare(b);
     });
 
-    return sortedCategories.map((category) => ({
-      category,
-      actions: groups[category],
-    }));
+    return sortedCategories
+      .map((category) => {
+        const categoryActions = groups[category];
+        if (!categoryActions) return null;
+        return {
+          category,
+          actions: categoryActions,
+        };
+      })
+      .filter((g): g is { category: string; actions: ActionType[] } => g !== null);
   }, [filteredActions]);
 
   // Filter groups based on hidden state
@@ -389,7 +395,7 @@ export function ActionGrid({
                         !isCollapsed && "rotate-90",
                       )}
                     />
-                    <GroupIcon group={group} />
+                    <GroupIcon group={group as { category: string; actions: ActionType[] }} />
                     {group.category}
                   </button>
                   <DropdownMenu>
@@ -421,6 +427,7 @@ export function ActionGrid({
                   </DropdownMenu>
                 </div>
                 {!isCollapsed &&
+                  group.actions &&
                   group.actions.map((action) => (
                     <button
                       className={cn(

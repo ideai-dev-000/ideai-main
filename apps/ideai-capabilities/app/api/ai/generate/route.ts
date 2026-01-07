@@ -1,4 +1,4 @@
-import { streamText, createGateway } from "ai";
+import { streamText, createGateway, type LanguageModel } from "ai";
 import { createOpenAI } from "@ai-sdk/openai";
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
@@ -351,8 +351,11 @@ Example: If user says "connect node A to node B", output:
           apiKey: openaiApiKey,
         });
 
+        // Type assertion: createGateway returns LanguageModelV3,
+        // streamText expects LanguageModel which is compatible at runtime
+        // Cast via unknown for TypeScript compatibility
         result = streamText({
-          model: gateway("openai/gpt-4o-mini"),
+          model: gateway("openai/gpt-4o-mini") as unknown as LanguageModel,
           system: getSystemPrompt(),
           prompt: userPrompt,
         });
@@ -363,8 +366,10 @@ Example: If user says "connect node A to node B", output:
           apiKey: openaiApiKey,
         });
 
+        // Type assertion: createOpenAI may return LanguageModelV3
+        // Cast via unknown for TypeScript compatibility
         result = streamText({
-          model: openai("gpt-4o-mini"),
+          model: openai("gpt-4o-mini") as unknown as LanguageModel,
           system: getSystemPrompt(),
           prompt: userPrompt,
         });

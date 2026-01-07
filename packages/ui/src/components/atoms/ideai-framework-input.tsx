@@ -58,3 +58,5 @@ export const IdeAIFrameworkInput = ({
 
   return <input className={cn(baseClasses, className)} {...props} />;
 };
+
+

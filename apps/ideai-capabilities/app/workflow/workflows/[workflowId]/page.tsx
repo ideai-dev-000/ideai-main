@@ -97,7 +97,10 @@ function checkNodeIntegration(
   const available = allIntegrations.filter((i) => i.type === integrationType);
 
   if (available.length === 1) {
-    return { nodeId: node.id, newIntegrationId: available[0].id };
+    const integration = available[0];
+    if (integration) {
+      return { nodeId: node.id, newIntegrationId: integration.id };
+    }
   }
   if (available.length === 0 && currentIntegrationId) {
     return { nodeId: node.id, newIntegrationId: undefined };
@@ -174,9 +177,12 @@ const WorkflowEditor = ({ params }: WorkflowPageProps) => {
       .split("; ")
       .find((row) => row.startsWith("sidebar-width="));
     if (widthCookie) {
-      const value = Number.parseFloat(widthCookie.split("=")[1]);
-      if (!Number.isNaN(value) && value >= 20 && value <= 50) {
-        setPanelWidth(value);
+      const parts = widthCookie.split("=");
+      if (parts[1]) {
+        const value = Number.parseFloat(parts[1]);
+        if (!Number.isNaN(value) && value >= 20 && value <= 50) {
+          setPanelWidth(value);
+        }
       }
     }
 

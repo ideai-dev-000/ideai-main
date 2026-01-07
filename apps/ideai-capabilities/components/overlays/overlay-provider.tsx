@@ -144,7 +144,10 @@ export function OverlayProvider({ children }: OverlayProviderProps) {
 
       // Call onClose for all items from this index onwards
       for (let i = index; i < prev.length; i++) {
-        prev[i].options.onClose?.();
+        const item = prev[i];
+        if (item) {
+          item.options.onClose?.();
+        }
       }
       return prev.slice(0, index);
     });

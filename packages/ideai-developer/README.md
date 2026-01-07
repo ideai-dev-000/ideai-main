@@ -116,3 +116,5 @@ export function myDevFunction() {
 - **Single Entry Point**: `scripts/ideai-developer.mjs` routes to package
 - **Type Safety**: TypeScript for components, `.mjs` for CLI functions
 - **Maintainability**: All logic in package, scripts are thin wrappers
+
+

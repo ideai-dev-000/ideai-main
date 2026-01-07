@@ -173,13 +173,19 @@ function generateEnvExample(): string {
 
   for (const envVar of envVars) {
     const prefix = envVar.name.split("_")[0];
-    if (!groupedByPrefix[prefix]) {
-      groupedByPrefix[prefix] = [];
+    if (prefix) {
+      if (!groupedByPrefix[prefix]) {
+        groupedByPrefix[prefix] = [];
+      }
+      const group = groupedByPrefix[prefix];
+      if (group) {
+        group.push(envVar);
+      }
     }
-    groupedByPrefix[prefix].push(envVar);
   }
 
   for (const [prefix, vars] of Object.entries(groupedByPrefix)) {
+    if (!vars) continue;
     lines.push(
       `# For ${prefix.charAt(0) + prefix.slice(1).toLowerCase()} integration`,
     );
@@ -242,7 +248,7 @@ export async function GET(
     for (const [path, content] of Object.entries(templateFiles)) {
       // Extract the template string from the export default statement
       const templateMatch = content.match(TEMPLATE_EXPORT_REGEX);
-      if (templateMatch) {
+      if (templateMatch && templateMatch[1]) {
         stepFiles[`lib/steps/${path}`] = templateMatch[1];
       }
     }
@@ -258,13 +264,16 @@ export async function GET(
     const allFiles = { ...boilerplateFiles, ...stepFiles, ...workflowFiles };
 
     // Update package.json to include workflow dependencies
-    const packageJson = JSON.parse(allFiles["package.json"]);
-    packageJson.dependencies = {
-      ...packageJson.dependencies,
-      workflow: "4.0.1-beta.7",
-      ...getIntegrationDependencies(workflow.nodes as WorkflowNode[]),
-    };
-    allFiles["package.json"] = JSON.stringify(packageJson, null, 2);
+    const packageJsonContent = allFiles["package.json"];
+    if (packageJsonContent) {
+      const packageJson = JSON.parse(packageJsonContent);
+      packageJson.dependencies = {
+        ...packageJson.dependencies,
+        workflow: "4.0.1-beta.7",
+        ...getIntegrationDependencies(workflow.nodes as WorkflowNode[]),
+      };
+      allFiles["package.json"] = JSON.stringify(packageJson, null, 2);
+    }
 
     // Update next.config.ts to include workflow plugin
     allFiles["next.config.ts"] = `import { withWorkflow } from 'workflow/next';
@@ -276,7 +285,11 @@ export default withWorkflow(nextConfig);
 `;
 
     // Update tsconfig.json to include workflow plugin
-    const tsConfig = JSON.parse(allFiles["tsconfig.json"]);
+    const tsConfigContent = allFiles["tsconfig.json"];
+    if (!tsConfigContent) {
+      throw new Error("tsconfig.json not found in generated files");
+    }
+    const tsConfig = JSON.parse(tsConfigContent);
     tsConfig.compilerOptions.plugins = [{ name: "next" }, { name: "workflow" }];
     allFiles["tsconfig.json"] = JSON.stringify(tsConfig, null, 2);
 

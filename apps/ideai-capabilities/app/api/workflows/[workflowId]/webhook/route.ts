@@ -193,6 +193,13 @@ export async function POST(
       })
       .returning();
 
+    if (!execution) {
+      return NextResponse.json(
+        { error: "Failed to create execution" },
+        { status: 500, headers: corsHeaders },
+      );
+    }
+
     console.log("[Webhook] Created execution:", execution.id);
 
     // Execute the workflow in the background (don't await)

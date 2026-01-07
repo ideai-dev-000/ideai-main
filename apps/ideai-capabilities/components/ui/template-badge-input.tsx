@@ -42,9 +42,9 @@ function getDisplayTextForTemplate(
 
   // Find the current node
   const node = nodes.find((n) => n.id === nodeId);
-  if (!node) {
+  if (!node || !rest) {
     // Node not found, return as-is
-    return rest;
+    return rest ?? "";
   }
 
   // Get display label: custom label > human-readable action label > fallback

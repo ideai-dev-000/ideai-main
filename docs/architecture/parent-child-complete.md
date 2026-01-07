@@ -359,3 +359,5 @@ pnpm --filter web build:track
 4. **Secure**: 2026 best practices (pnpm, lock files)
 5. **Tracked**: Build metadata for visibility
 6. **Flexible**: Easy to switch parent/child roles
+
+

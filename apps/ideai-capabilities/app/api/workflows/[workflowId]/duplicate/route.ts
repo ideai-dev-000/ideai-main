@@ -55,7 +55,10 @@ function updateEdgeReferences(
   // Create mapping from old node IDs to new node IDs
   const idMap = new Map<string, string>();
   oldNodes.forEach((oldNode, index) => {
-    idMap.set(oldNode.id, newNodes[index].id);
+    const newNode = newNodes[index];
+    if (newNode) {
+      idMap.set(oldNode.id, newNode.id);
+    }
   });
 
   return edges.map((edge) => ({
@@ -143,6 +146,13 @@ export async function POST(
         visibility: "private", // Duplicated workflows are always private
       })
       .returning();
+
+    if (!newWorkflow) {
+      return NextResponse.json(
+        { error: "Failed to create duplicate workflow" },
+        { status: 500 },
+      );
+    }
 
     return NextResponse.json({
       ...newWorkflow,

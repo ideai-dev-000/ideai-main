@@ -7,6 +7,7 @@
     "build:clean": "node scripts/ideai-build-cold-refresh.mjs --no-build",
     "dev:stop": "node scripts/ideai-develop-graceful-shutdown.mjs",
     "dev:stop:force": "node scripts/ideai-develop-graceful-shutdown.mjs --force",
+    "dev:setup-env": "node scripts/ideai-develop-setup-local-env.mjs",
     "v0:sync": "node scripts/ideai-v0-sync.mjs",
     "v0:sync:preview": "node scripts/ideai-v0-sync.mjs --preview",
     "v0:watch": "node scripts/ideai-v0-sync.mjs --watch",

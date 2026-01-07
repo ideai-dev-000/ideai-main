@@ -20,7 +20,9 @@ export default function WorkflowsPage() {
             (a, b) =>
               new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime(),
           )[0];
-          router.replace(`/workflows/${mostRecent.id}`);
+          if (mostRecent) {
+            router.replace(`/workflows/${mostRecent.id}`);
+          }
         } else {
           // No workflows, redirect to homepage
           router.replace("/");

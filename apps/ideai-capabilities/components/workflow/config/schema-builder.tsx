@@ -63,11 +63,17 @@ export function SchemaBuilder({
 
   const updateField = (index: number, updates: Partial<SchemaField>) => {
     const newSchema = [...schema];
-    newSchema[index] = { ...newSchema[index], ...updates };
+    const existingField = newSchema[index];
+    if (!existingField) return;
+    
+    newSchema[index] = { ...existingField, ...updates };
 
     // Reset dependent fields when type changes
     if (updates.type) {
-      newSchema[index] = resetDependentFields(newSchema[index], updates.type);
+      const updatedField = newSchema[index];
+      if (updatedField) {
+        newSchema[index] = resetDependentFields(updatedField, updates.type);
+      }
     }
 
     onChange(newSchema);
@@ -79,8 +85,11 @@ export function SchemaBuilder({
 
   const updateNestedFields = (index: number, fields: SchemaField[]) => {
     const newSchema = [...schema];
-    newSchema[index].fields = fields;
-    onChange(newSchema);
+    const field = newSchema[index];
+    if (field) {
+      newSchema[index] = { ...field, fields };
+      onChange(newSchema);
+    }
   };
 
   const indentClass = level > 0 ? "ml-4 border-l-2 border-muted pl-4" : "";

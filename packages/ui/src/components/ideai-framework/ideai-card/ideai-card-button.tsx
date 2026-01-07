@@ -126,3 +126,5 @@ export const IdeAICardButton = ({
     </button>
   );
 };
+
+

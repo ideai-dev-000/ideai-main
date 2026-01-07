@@ -645,6 +645,7 @@ export function WorkflowRuns({
 
     // Check if this is a new running execution that we haven't auto-expanded yet
     if (
+      latestExecution &&
       latestExecution.status === "running" &&
       latestExecution.id !== autoExpandedExecutionRef.current
     ) {

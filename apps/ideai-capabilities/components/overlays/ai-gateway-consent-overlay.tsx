@@ -69,7 +69,10 @@ export function AiGatewayConsentOverlay({
   // Auto-select first team when teams are loaded
   useEffect(() => {
     if (teams.length > 0 && !selectedTeamId) {
-      setSelectedTeamId(teams[0].id);
+      const firstTeam = teams[0];
+      if (firstTeam) {
+        setSelectedTeamId(firstTeam.id);
+      }
     }
   }, [teams, selectedTeamId]);
 

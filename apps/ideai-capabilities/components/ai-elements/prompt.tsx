@@ -133,7 +133,11 @@ export function AIPrompt({ workflowId, onWorkflowCreated }: AIPromptProps) {
               const nonTriggerNodes = (partialData.nodes || []).filter(
                 (node) => node.data?.type !== "trigger",
               );
-              partialData.nodes = [firstTrigger, ...nonTriggerNodes];
+              if (firstTrigger) {
+                partialData.nodes = [firstTrigger, ...nonTriggerNodes];
+              } else {
+                partialData.nodes = nonTriggerNodes;
+              }
 
               // Remove edges connected to removed triggers
               const removedTriggerIds = triggerNodes.slice(1).map((n) => n.id);

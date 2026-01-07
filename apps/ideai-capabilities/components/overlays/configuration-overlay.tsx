@@ -143,7 +143,7 @@ export function ConfigurationOverlay({ overlayId }: ConfigurationOverlayProps) {
         data: {
           config: {
             ...selectedNode.data.config,
-            integrationId: validIntegrations[0].id,
+            integrationId: validIntegrations[0]?.id,
           },
         },
       });

@@ -58,3 +58,5 @@ export const IdeAICardInput = ({
 
   return <input className={cn(baseClasses, className)} {...props} />;
 };
+
+

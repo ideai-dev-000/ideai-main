@@ -181,7 +181,10 @@ export function IntegrationSelector({
       if (!currentExists) {
         // Prefer managed integrations, fall back to first available
         const managed = integrations.find((i) => i.isManaged);
-        onChange(managed?.id || integrations[0].id);
+        const firstIntegration = integrations[0];
+        if (firstIntegration) {
+          onChange(managed?.id || firstIntegration.id);
+        }
       }
     }
   }, [integrations, value, disabled, onChange]);
@@ -303,6 +306,7 @@ export function IntegrationSelector({
   // Single integration - show as outlined field (not radio-style)
   if (integrations.length === 1) {
     const integration = integrations[0];
+    if (!integration) return null;
     const displayName = integration.name || `${integrationLabel} API Key`;
 
     return (
