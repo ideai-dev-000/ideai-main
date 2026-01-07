@@ -69,7 +69,7 @@ pnpm db:push
 pnpm dev
 ```
 
-Visit [http://localhost:3000](http://localhost:3000) to get started.
+Visit [http://localhost:3018](http://localhost:3018) to get started.
 
 ## Workflow Types
 
