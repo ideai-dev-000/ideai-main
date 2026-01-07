@@ -48,8 +48,13 @@ DATABASE_URL=postgresql://user:password@localhost:5432/workflow_builder
 BETTER_AUTH_SECRET=your-secret-key
 BETTER_AUTH_URL=http://localhost:3000
 
-# AI Gateway (for AI workflow generation)
-AI_GATEWAY_API_KEY=your-openai-api-key
+# AI Gateway or OpenAI (for AI workflow generation)
+# AI Gateway (recommended): Use Vercel AI Gateway API key (format: vck_...)
+# OpenAI (fallback): Use direct OpenAI API key (format: sk-...)
+# The system will automatically detect which type of key you're using
+AI_GATEWAY_API_KEY=your-ai-gateway-or-openai-api-key
+# Or use direct OpenAI key as fallback:
+# OPENAI_API_KEY=your-openai-api-key
 
 # Integration Encryption (required for storing credentials securely)
 # Generate with: node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"

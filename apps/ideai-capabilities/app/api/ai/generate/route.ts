@@ -1,4 +1,4 @@
-import { streamText } from "ai";
+import { streamText, createGateway } from "ai";
 import { createOpenAI } from "@ai-sdk/openai";
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
@@ -339,17 +339,36 @@ Example: If user says "connect node A to node B", output:
         throw new Error("OpenAI API key not configured in environment");
       }
 
-      // Create OpenAI provider instance with API key
-      const openai = createOpenAI({
-        apiKey: openaiApiKey,
-      });
+      // Determine if we're using AI Gateway or direct OpenAI
+      const isAiGateway =
+        process.env.AI_GATEWAY_API_KEY &&
+        apiKey === process.env.AI_GATEWAY_API_KEY;
 
-      // Use OpenAI provider with model name (without provider prefix)
-      result = streamText({
-        model: openai("gpt-4o-mini"),
-        system: getSystemPrompt(),
-        prompt: userPrompt,
-      });
+      if (isAiGateway) {
+        // Use AI Gateway (Vercel AI Gateway)
+        // Format: gateway("provider/model-name")
+        const gateway = createGateway({
+          apiKey: openaiApiKey,
+        });
+
+        result = streamText({
+          model: gateway("openai/gpt-4o-mini"),
+          system: getSystemPrompt(),
+          prompt: userPrompt,
+        });
+      } else {
+        // Use direct OpenAI API
+        // Format: openai("model-name")
+        const openai = createOpenAI({
+          apiKey: openaiApiKey,
+        });
+
+        result = streamText({
+          model: openai("gpt-4o-mini"),
+          system: getSystemPrompt(),
+          prompt: userPrompt,
+        });
+      }
     } catch (error) {
       console.error("[AI Generate] Failed to call streamText:", error);
       console.error(

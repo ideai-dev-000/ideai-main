@@ -62,6 +62,7 @@
   color: rgb(100 116 139); /* slate-500 */
   font-weight: 400;
   font-size: 0.6em;
+  margin-left: 0.25em; /* Consistent spacing instead of JSX whitespace */
   vertical-align: middle;
 }
 
