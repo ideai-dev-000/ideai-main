@@ -196,7 +196,40 @@ pnpm fix
 pnpm db:generate  # Generate migrations
 pnpm db:push      # Push schema to database
 pnpm db:studio    # Open Drizzle Studio
+
+# Workflow DevKit CLI
+npx workflow web          # Open observability Web UI
+npx workflow inspect runs # List workflow runs
 ```
+
+### Development Workflow
+
+1. **Start the development server:**
+
+   ```bash
+   pnpm dev
+   ```
+
+2. **In another terminal, open Workflow DevKit Web UI:**
+
+   ```bash
+   npx workflow web
+   ```
+
+3. **Build and test workflows:**
+   - Create workflows in the UI at `http://localhost:3018`
+   - Execute workflows and monitor them in the Web UI
+   - Check logs and debug any issues
+
+4. **Inspect workflow runs:**
+
+   ```bash
+   # View all runs
+   npx workflow inspect runs
+
+   # View specific run
+   npx workflow inspect run <run-id>
+   ```
 
 ## Integrations
 
@@ -277,8 +310,8 @@ const searchResult = await firecrawlSearchStep({
 
 ## Tech Stack
 
-- **Framework**: Next.js 16 with React 19
-- **Workflow Engine**: Workflow DevKit
+- **Framework**: Next.js 16.1+ with React 19
+- **Workflow Engine**: Workflow DevKit 4.0.1-beta.42+
 - **UI**: shadcn/ui with Tailwind CSS
 - **State Management**: Jotai
 - **Database**: PostgreSQL with Drizzle ORM
@@ -289,6 +322,151 @@ const searchResult = await firecrawlSearchStep({
 - **Type Checking**: TypeScript
 - **Code Quality**: Ultracite (formatter + linter)
 
+### Workflow DevKit Version
+
+This app uses **Workflow DevKit 4.0.1-beta.42+**, which includes:
+
+- ✅ Next.js 16.1+ compatibility
+- ✅ Full TypeScript plugin support
+- ✅ Enhanced observability features
+- ✅ Improved error handling and retries
+
+## Workflow Development
+
+This app uses [Workflow DevKit](https://useworkflow.dev) for workflow execution. All workflows follow the standard Workflow DevKit patterns with `"use workflow"` and `"use step"` directives.
+
+### Workflow DevKit CLI
+
+The Workflow DevKit CLI is included with the `workflow` package and provides powerful observability tools.
+
+#### Installation
+
+The CLI is automatically available via `npx`:
+
+```bash
+# Check CLI version
+npx workflow --version
+```
+
+#### Common Commands
+
+**Inspect Workflow Runs:**
+
+```bash
+# Open the observability Web UI
+npx workflow web
+
+# List recent workflow runs (terminal interface)
+npx workflow inspect runs
+
+# Inspect a specific run
+npx workflow inspect run <run-id>
+```
+
+**Development:**
+
+```bash
+# Start development server with workflow observability
+pnpm dev
+
+# In another terminal, open the Web UI to monitor workflows
+npx workflow web
+```
+
+### Workflow Structure
+
+All workflows in this app follow the Workflow DevKit standard:
+
+**Workflow Function:**
+
+```typescript
+export async function executeWorkflow(input: WorkflowExecutionInput) {
+  "use workflow";
+
+  // Workflow logic here
+  const result = await triggerStep({ ... });
+  const actionResult = await sendSlackMessageStep({ ... });
+
+  return { success: true, data: actionResult };
+}
+```
+
+**Step Functions:**
+
+```typescript
+export async function sendSlackMessageStep(input: SendSlackMessageInput) {
+  "use step";
+
+  // Step logic here
+  return { success: true, data: result };
+}
+```
+
+### Configuration
+
+**Next.js Plugin:**
+The `withWorkflow()` plugin is enabled in `next.config.ts` to process `"use workflow"` and `"use step"` directives:
+
+```typescript
+import { withWorkflow } from "workflow/next";
+
+export default withWorkflow(nextConfig);
+```
+
+**TypeScript Plugin:**
+The workflow TypeScript plugin is configured in `tsconfig.json` for IntelliSense support:
+
+```json
+{
+  "compilerOptions": {
+    "plugins": [{ "name": "workflow" }]
+  }
+}
+```
+
+### Executing Workflows
+
+Workflows are executed using the `start()` function from `workflow/api`:
+
+```typescript
+import { start } from "workflow/api";
+import { executeWorkflow } from "@/lib/workflow-executor.workflow";
+
+// Execute workflow asynchronously
+await start(executeWorkflow, [workflowInput]);
+```
+
+### Observability
+
+**Web UI:**
+
+- Open `npx workflow web` to view all workflow runs
+- See step-by-step execution details
+- Monitor workflow performance and errors
+- Debug failed workflows
+
+**Terminal:**
+
+- Use `npx workflow inspect runs` for quick terminal output
+- Filter and search workflow runs
+- View detailed execution logs
+
+### Best Practices
+
+1. **Always use `"use workflow"` directive** in workflow functions
+2. **Always use `"use step"` directive** in step functions
+3. **Use `await start()`** to execute workflows (don't forget await)
+4. **Monitor workflows** using the CLI Web UI during development
+5. **Handle errors** properly - steps automatically retry on failure
+6. **Use `FatalError`** from `workflow` for non-retryable errors
+
+### Resources
+
+- **Official Docs**: [useworkflow.dev/docs](https://useworkflow.dev/docs)
+- **Getting Started**: [useworkflow.dev/docs/getting-started/next](https://useworkflow.dev/docs/getting-started/next)
+- **Observability**: [useworkflow.dev/docs/observability](https://useworkflow.dev/docs/observability)
+- **API Reference**: [useworkflow.dev/docs/api-reference](https://useworkflow.dev/docs/api-reference)
+
 ## About Workflow DevKit
 
 This template is built on top of Workflow DevKit, a powerful workflow execution engine that enables:
@@ -298,6 +476,7 @@ This template is built on top of Workflow DevKit, a powerful workflow execution 
 - Automatic code generation from visual workflows
 - Built-in logging and error handling
 - Serverless deployment support
+- Full observability with CLI and Web UI
 
 Learn more about Workflow DevKit at [useworkflow.dev](https://useworkflow.dev)
 

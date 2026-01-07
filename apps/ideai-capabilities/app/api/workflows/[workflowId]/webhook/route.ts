@@ -86,7 +86,9 @@ async function executeWorkflowBackground(
       workflowId,
     });
 
-    start(executeWorkflow, [
+    // Use start() from workflow/api to properly execute the workflow
+    // Workflow executes asynchronously and doesn't block the API response
+    await start(executeWorkflow, [
       {
         nodes,
         edges,

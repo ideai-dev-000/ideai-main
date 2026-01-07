@@ -62,7 +62,7 @@
     "tailwind-merge": "^3.4.0",
     "v0-sdk": "^0.15.1",
     "vaul": "^1.1.2",
-    "workflow": "4.0.1-beta.17",
+    "workflow": "4.0.1-beta.42",
     "zod": "^4.1.12"
   },
   "devDependencies": {

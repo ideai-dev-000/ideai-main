@@ -30,9 +30,8 @@ async function executeWorkflowBackground(
     });
 
     // Use start() from workflow/api to properly execute the workflow
-    // Note: Requires workflow plugin to be enabled in next.config.ts
-    // Currently disabled due to Next.js 16.1.1 compatibility issue
-    start(executeWorkflow, [
+    // Workflow executes asynchronously and doesn't block the API response
+    await start(executeWorkflow, [
       {
         nodes,
         edges,
