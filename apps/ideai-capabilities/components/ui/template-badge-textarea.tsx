@@ -643,7 +643,7 @@ export function TemplateBadgeTextarea({
     <>
       <div
         className={cn(
-          "flex w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm transition-colors focus-within:outline-none focus-within:ring-1 focus-within:ring-ring",
+          "flex w-full rounded-md border border-input bg-background dark:bg-slate-900/50 px-3 py-2 text-sm shadow-sm transition-colors focus-within:outline-none focus-within:ring-1 focus-within:ring-ring",
           disabled && "cursor-not-allowed opacity-50",
           className,
         )}
