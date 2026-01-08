@@ -1628,12 +1628,18 @@ importers:
 
   apps/web:
     dependencies:
+      "@radix-ui/react-dialog":
+        specifier: ^1.1.15
+        version: 1.1.15(@types/react-dom@19.2.2(@types/react@19.2.2))(@types/react@19.2.2)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       "@radix-ui/react-label":
         specifier: 2.1.1
         version: 2.1.1(@types/react-dom@19.2.2(@types/react@19.2.2))(@types/react@19.2.2)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       "@radix-ui/react-radio-group":
         specifier: 1.2.2
         version: 1.2.2(@types/react-dom@19.2.2(@types/react@19.2.2))(@types/react@19.2.2)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      "@radix-ui/react-separator":
+        specifier: ^1.1.8
+        version: 1.1.8(@types/react-dom@19.2.2(@types/react@19.2.2))(@types/react@19.2.2)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       "@radix-ui/react-slider":
         specifier: 1.2.2
         version: 1.2.2(@types/react-dom@19.2.2(@types/react@19.2.2))(@types/react@19.2.2)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
@@ -1643,6 +1649,9 @@ importers:
       "@repo/cloud-manager":
         specifier: workspace:*
         version: link:../../packages/cloud-manager
+      "@repo/ideai-auth":
+        specifier: workspace:*
+        version: link:../../packages/ideai-auth
       "@repo/ideai-db-manager":
         specifier: workspace:*
         version: link:../../packages/ideai-db-manager
@@ -1655,12 +1664,18 @@ importers:
       next:
         specifier: 16.1.0
         version: 16.1.0(@babel/core@7.28.5)(@opentelemetry/api@1.9.0)(@playwright/test@1.57.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      next-themes:
+        specifier: ^0.4.6
+        version: 0.4.6(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       react:
         specifier: ^19.2.0
         version: 19.2.0
       react-dom:
         specifier: ^19.2.0
         version: 19.2.0(react@19.2.0)
+      sonner:
+        specifier: ^1.7.1
+        version: 1.7.4(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
     devDependencies:
       "@repo/eslint-config":
         specifier: workspace:*
@@ -1759,6 +1774,46 @@ importers:
       typescript-eslint:
         specifier: ^8.50.0
         version: 8.50.0(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.2)
+
+  packages/ideai-auth:
+    dependencies:
+      better-auth:
+        specifier: ^1.3.34
+        version: 1.4.10(drizzle-kit@0.31.8)(drizzle-orm@0.44.7(@neondatabase/serverless@0.9.5)(@opentelemetry/api@1.9.0)(@types/pg@8.11.6)(@vercel/postgres@0.10.0)(kysely@0.28.9)(postgres@3.4.7))(next@16.1.1(@babel/core@7.28.5)(@opentelemetry/api@1.9.0)(@playwright/test@1.57.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(vitest@2.1.9(@edge-runtime/vm@5.0.0)(@types/node@22.15.3)(@vitest/browser@4.0.16)(@vitest/ui@4.0.16)(happy-dom@20.0.11)(jsdom@27.4.0(bufferutil@4.1.0))(lightningcss@1.30.2)(terser@5.44.1))(vue@3.5.26(typescript@5.9.2))
+      drizzle-orm:
+        specifier: ^0.44.7
+        version: 0.44.7(@neondatabase/serverless@0.9.5)(@opentelemetry/api@1.9.0)(@types/pg@8.11.6)(@vercel/postgres@0.10.0)(kysely@0.28.9)(postgres@3.4.7)
+      nanoid:
+        specifier: ^5.1.6
+        version: 5.1.6
+      postgres:
+        specifier: ^3.4.5
+        version: 3.4.7
+      react:
+        specifier: ^19.2.0
+        version: 19.2.3
+      react-dom:
+        specifier: ^19.2.0
+        version: 19.2.3(react@19.2.3)
+    devDependencies:
+      "@repo/eslint-config":
+        specifier: workspace:*
+        version: link:../eslint-config
+      "@repo/typescript-config":
+        specifier: workspace:*
+        version: link:../typescript-config
+      "@types/node":
+        specifier: ^22.15.3
+        version: 22.15.3
+      "@types/react":
+        specifier: 19.2.2
+        version: 19.2.2
+      eslint:
+        specifier: ^9.39.1
+        version: 9.39.2(jiti@2.6.1)
+      typescript:
+        specifier: 5.9.2
+        version: 5.9.2
 
   packages/ideai-db-manager:
     dependencies:
@@ -30149,7 +30204,7 @@ snapshots:
       sirv: 3.0.2
       tinyglobby: 0.2.15
       tinyrainbow: 3.0.3
-      vitest: 2.1.9(@edge-runtime/vm@5.0.0)(@types/node@22.15.3)(@vitest/browser@4.0.16)(@vitest/ui@4.0.16)(happy-dom@20.0.11)(jsdom@27.4.0(bufferutil@4.1.0))(lightningcss@1.30.2)(terser@5.44.1)
+      vitest: 2.1.9(@edge-runtime/vm@5.0.0)(@types/node@25.0.3)(@vitest/browser@4.0.16)(@vitest/ui@4.0.16)(happy-dom@20.0.11)(jsdom@27.4.0(bufferutil@4.1.0))(lightningcss@1.30.2)(terser@5.44.1)
 
   "@vitest/utils@2.1.9":
     dependencies:
@@ -38104,6 +38159,11 @@ snapshots:
     dependencies:
       ip-address: 10.1.0
       smart-buffer: 4.2.0
+
+  sonner@1.7.4(react-dom@19.2.0(react@19.2.0))(react@19.2.0):
+    dependencies:
+      react: 19.2.0
+      react-dom: 19.2.0(react@19.2.0)
 
   sonner@1.7.4(react-dom@19.2.3(react@19.2.3))(react@19.2.3):
     dependencies:

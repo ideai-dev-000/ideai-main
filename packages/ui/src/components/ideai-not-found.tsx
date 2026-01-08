@@ -4,17 +4,20 @@
  * @module IdeAINotFound
  * @description
  * Shared 404 page component with consistent styling and proper mobile centering.
+ * Auto-detects app context from environment variables for zero-config usage.
  * Ensures button is centered on all screen sizes.
  *
  * @example
  * ```tsx
+ * // Minimal usage - auto-detects from env
+ * <IdeAINotFound />
+ *
+ * // Or with custom props
  * <IdeAINotFound
- *   siteName="IdeaI"
- *   appName="web"
+ *   siteName="IdeaI /custom"
+ *   appName="custom"
  *   homeLabel="Go Home"
  *   message="The page you're looking for doesn't exist."
- *   vercelProjectName="web"
- *   vercelOrgId="team_xxx"
  * />
  * ```
  *
@@ -28,8 +31,8 @@ import { IdeAIPageTemplate } from "./ideai-page-template";
 import { IdeaIButton } from "./ideai-button";
 
 interface IdeAINotFoundProps {
-  siteName: string;
-  appName: string;
+  siteName?: string;
+  appName?: string;
   homeLabel?: string;
   message?: string;
   vercelProjectName?: string;
@@ -43,13 +46,24 @@ export const IdeAINotFound = ({
   message = "The page you're looking for doesn't exist.",
   vercelProjectName,
   vercelOrgId,
-}: IdeAINotFoundProps) => {
+}: IdeAINotFoundProps = {}) => {
+  // Auto-detect app context from environment variables
+  const detectedAppName =
+    appName || process.env.NEXT_PUBLIC_VERCEL_PROJECT_NAME || "web";
+  const detectedSiteName =
+    siteName ||
+    `IdeaI${detectedAppName !== "web" ? ` /${detectedAppName}` : ""}`;
+  const detectedVercelProjectName = vercelProjectName || detectedAppName;
+  const detectedVercelOrgId =
+    vercelOrgId ||
+    process.env.NEXT_PUBLIC_VERCEL_ORG_ID ||
+    "team_vhjzlMi6CfNow0IfBXnv2Yn2";
   return (
     <IdeAIPageTemplate
-      siteName={siteName}
+      siteName={detectedSiteName}
       subtitle="Page Not Found"
-      vercelProjectName={vercelProjectName}
-      vercelOrgId={vercelOrgId}
+      vercelProjectName={detectedVercelProjectName}
+      vercelOrgId={detectedVercelOrgId}
     >
       <div
         style={{
@@ -99,7 +113,7 @@ export const IdeAINotFound = ({
             style={{ textDecoration: "none", display: "inline-block" }}
           >
             <IdeaIButton
-              appName={appName}
+              appName={detectedAppName}
               onClick={() => {}}
               className="ideai-not-found-button"
             >
