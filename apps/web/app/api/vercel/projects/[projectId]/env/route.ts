@@ -1,0 +1,73 @@
+/**
+ * @fileoverview Vercel Project Environment Variables API Route
+ *
+ * @module VercelProjectEnvAPI
+ * @description
+ * Server-side API route to get Vercel project environment variables.
+ */
+
+import { NextResponse } from "next/server";
+
+export async function GET(
+  request: Request,
+  { params }: { params: Promise<{ projectId: string }> },
+) {
+  const { projectId } = await params;
+  const { searchParams } = new URL(request.url);
+  const teamId = searchParams.get("teamId") || "team_vhjzlMi6CfNow0IfBXnv2Yn2";
+  const envName = searchParams.get("env") || "production";
+
+  const token = process.env.VERCEL_TOKEN;
+  if (!token) {
+    return NextResponse.json(
+      { error: { message: "Vercel token not configured" } },
+      { status: 500 },
+    );
+  }
+
+  try {
+    const response = await fetch(
+      `https://api.vercel.com/v9/projects/${projectId}/env?teamId=${teamId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      },
+    );
+
+    if (!response.ok) {
+      return NextResponse.json(
+        {
+          error: {
+            message: `Failed to fetch environment variables: ${response.statusText}`,
+            code: response.status.toString(),
+          },
+        },
+        { status: response.status },
+      );
+    }
+
+    const data = await response.json();
+    // Filter by environment (production, preview, development)
+    const envVars = (data.envs || []).filter((env: { target?: string[] }) => {
+      if (!env.target) return true;
+      return env.target.includes(
+        envName as "production" | "preview" | "development",
+      );
+    });
+
+    return NextResponse.json({
+      data: envVars,
+    });
+  } catch (error) {
+    return NextResponse.json(
+      {
+        error: {
+          message: error instanceof Error ? error.message : "Unknown error",
+        },
+      },
+      { status: 500 },
+    );
+  }
+}

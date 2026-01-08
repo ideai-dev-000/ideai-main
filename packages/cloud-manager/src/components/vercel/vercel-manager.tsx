@@ -14,6 +14,11 @@ import { VercelClient } from "../../providers/vercel/vercel-client";
 import { autoConfigureVercelProject } from "../../providers/vercel/vercel-config";
 import type { VercelProjectSettings } from "../../providers/vercel/vercel-types";
 
+interface VercelDomain {
+  domain: string;
+  verified: boolean;
+}
+
 export function VercelManager() {
   const [projects, setProjects] = useState<Array<{ id: string; name: string }>>(
     [],
@@ -22,6 +27,7 @@ export function VercelManager() {
   const [settings, setSettings] = useState<VercelProjectSettings | null>(null);
   const [localSettings, setLocalSettings] =
     useState<VercelProjectSettings | null>(null);
+  const [domains, setDomains] = useState<VercelDomain[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
@@ -87,6 +93,31 @@ export function VercelManager() {
     [teamId],
   );
 
+  const loadProjectDomains = useCallback(
+    async (projectId: string) => {
+      try {
+        const response = await fetch(
+          `/api/vercel/projects/${projectId}/domains?teamId=${teamId}`,
+        );
+        const result = await response.json();
+        if (result.error) {
+          console.warn(`Failed to load domains: ${result.error.message}`);
+          setDomains([]);
+        } else if (result.data) {
+          setDomains(result.data);
+        } else {
+          setDomains([]);
+        }
+      } catch (err) {
+        console.warn(
+          `Network error loading domains: ${err instanceof Error ? err.message : "Unknown error"}`,
+        );
+        setDomains([]);
+      }
+    },
+    [teamId],
+  );
+
   useEffect(() => {
     loadProjects();
   }, [loadProjects]);
@@ -94,9 +125,12 @@ export function VercelManager() {
   useEffect(() => {
     if (selectedProject) {
       loadProjectSettings(selectedProject);
+      loadProjectDomains(selectedProject);
       setHasUnsavedChanges(false);
+    } else {
+      setDomains([]);
     }
-  }, [selectedProject, loadProjectSettings]);
+  }, [selectedProject, loadProjectSettings, loadProjectDomains]);
 
   // Update local settings when server settings change
   useEffect(() => {
@@ -299,6 +333,60 @@ export function VercelManager() {
           <p className="text-sm text-green-800 dark:text-green-200">
             {success}
           </p>
+        </div>
+      )}
+
+      {/* Project Domains */}
+      {selectedProject && (
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg p-6">
+          <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-4">
+            Live Domains
+          </h3>
+          {domains.length > 0 ? (
+            <>
+              <div className="space-y-2">
+                {domains.map((domain) => (
+                  <div
+                    key={domain.domain}
+                    className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800 rounded-md border border-slate-200 dark:border-slate-700"
+                  >
+                    <div className="flex items-center space-x-2">
+                      <span
+                        className={`w-2 h-2 rounded-full ${
+                          domain.verified ? "bg-green-500" : "bg-yellow-500"
+                        }`}
+                      />
+                      <a
+                        href={`https://${domain.domain}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="font-mono text-sm text-blue-600 dark:text-blue-400 hover:underline"
+                      >
+                        {domain.domain}
+                      </a>
+                    </div>
+                    <span className="text-xs text-slate-500 dark:text-slate-400">
+                      {domain.verified ? "✓ Verified" : "⏳ Pending"}
+                    </span>
+                  </div>
+                ))}
+              </div>
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-3">
+                💡 Click a domain to open it in a new tab
+              </p>
+            </>
+          ) : (
+            <div className="text-sm text-slate-500 dark:text-slate-400">
+              {loading ? (
+                <span>Loading domains...</span>
+              ) : (
+                <span>
+                  No custom domains configured. This project uses Vercel's
+                  default domain.
+                </span>
+              )}
+            </div>
+          )}
         </div>
       )}
 

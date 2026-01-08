@@ -215,4 +215,44 @@ export class VercelClient {
       };
     }
   }
+
+  /**
+   * Get project domains
+   */
+  async getProjectDomains(
+    projectId: string,
+    teamId: string,
+  ): Promise<VercelApiResponse<Array<{ domain: string; verified: boolean }>>> {
+    try {
+      const response = await fetch(
+        `${this.baseUrl}/v9/projects/${projectId}/domains?teamId=${teamId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${this.apiToken}`,
+            "Content-Type": "application/json",
+          },
+        },
+      );
+
+      if (!response.ok) {
+        return {
+          error: {
+            message: `Failed to fetch domains: ${response.statusText}`,
+            code: response.status.toString(),
+          },
+        };
+      }
+
+      const data = await response.json();
+      return {
+        data: data.domains || [],
+      };
+    } catch (error) {
+      return {
+        error: {
+          message: error instanceof Error ? error.message : "Unknown error",
+        },
+      };
+    }
+  }
 }
