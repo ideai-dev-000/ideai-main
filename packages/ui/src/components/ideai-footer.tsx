@@ -9,6 +9,7 @@
  */
 
 import { IdeAILogo } from "./ideai-logo";
+import { Twitter, Github, Linkedin, Phone, Mail, MapPin } from "lucide-react";
 
 interface FooterNavItem {
   label: string;
@@ -18,7 +19,7 @@ interface FooterNavItem {
 interface SocialLink {
   label: string;
   href: string;
-  icon?: string;
+  icon?: "twitter" | "github" | "linkedin";
 }
 
 interface IdeAIFooterProps {
@@ -59,12 +60,20 @@ export const IdeAIFooter = ({
     { label: "Terms", href: "/terms" },
   ],
   socialLinks = [
-    { label: "Twitter", href: "https://twitter.com/ideai", icon: "🐦" },
-    { label: "GitHub", href: "https://github.com/ideai-dev-000", icon: "💻" },
+    {
+      label: "Twitter",
+      href: "https://twitter.com/ideai",
+      icon: "twitter" as const,
+    },
+    {
+      label: "GitHub",
+      href: "https://github.com/ideai-dev-000",
+      icon: "github" as const,
+    },
     {
       label: "LinkedIn",
       href: "https://linkedin.com/company/ideai",
-      icon: "💼",
+      icon: "linkedin" as const,
     },
   ],
   accountLinks = [
@@ -87,133 +96,97 @@ export const IdeAIFooter = ({
       itemType="https://schema.org/WPFooter"
     >
       <div className="ideai-footer__container">
-        {/* Three-Column Layout */}
+        {/* Three-Column Layout with Copyright in Same Row */}
         <div className="ideai-footer__columns">
-          {/* Left: Brand, Address & Copyright */}
+          {/* Left: Logo Only */}
           <div className="ideai-footer__column ideai-footer__column--left">
             {/* Logo/Brand Area */}
             <div className="ideai-footer__brand">
-              <IdeAILogo siteName={siteName} />
+              <IdeAILogo />
             </div>
-            <address
-              className="ideai-footer__address"
-              itemScope
-              itemType="https://schema.org/PostalAddress"
-            >
-              {address.street && (
-                <span
-                  itemProp="streetAddress"
-                  className="ideai-footer__address-line"
-                >
-                  {address.street}
-                </span>
-              )}
-              <span className="ideai-footer__address-line">
-                {address.city && (
-                  <span itemProp="addressLocality">{address.city}</span>
-                )}
-                {address.state && (
-                  <span itemProp="addressRegion">, {address.state}</span>
-                )}
-                {address.zip && (
-                  <span itemProp="postalCode"> {address.zip}</span>
-                )}
-                {address.country && (
-                  <span itemProp="addressCountry">, {address.country}</span>
-                )}
-              </span>
-            </address>
+          </div>
 
-            {phone && (
-              <div className="ideai-footer__contact">
-                <span className="ideai-footer__contact-label">Tell:</span>
-                <a
-                  href={`tel:${phone.replace(/\s/g, "")}`}
-                  className="ideai-footer__contact-link"
-                  itemProp="telephone"
-                >
-                  {phone}
-                </a>
-              </div>
-            )}
-
-            {email && (
-              <div className="ideai-footer__contact">
-                <span className="ideai-footer__contact-label">Email:</span>
-                <a
-                  href={`mailto:${email}`}
-                  className="ideai-footer__contact-link"
-                  itemProp="email"
-                >
-                  {email}
-                </a>
-              </div>
-            )}
-
+          {/* Middle: Copyright */}
+          <div className="ideai-footer__column ideai-footer__column--middle">
             <p className="ideai-footer__copyright">{copyright}</p>
           </div>
 
-          {/* Middle: Navigation */}
-          <div className="ideai-footer__column ideai-footer__column--middle">
-            <nav aria-label="Footer navigation" role="navigation">
-              <h2 className="ideai-footer__column-title">Navigation</h2>
-              <ul className="ideai-footer__nav-list">
-                {footerNav.map((item) => (
-                  <li key={item.href} className="ideai-footer__nav-item">
-                    <a href={item.href} className="ideai-footer__nav-link">
-                      {item.label}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </nav>
-          </div>
-
-          {/* Right: Social & Accounts */}
+          {/* Right: Social Icons, Phone & Email - All in One Row */}
           <div className="ideai-footer__column ideai-footer__column--right">
-            {/* Social Links */}
-            <div className="ideai-footer__social">
-              <h2 className="ideai-footer__column-title">Connect</h2>
-              <ul className="ideai-footer__social-list">
-                {socialLinks.map((link) => (
-                  <li key={link.href} className="ideai-footer__social-item">
-                    <a
-                      href={link.href}
-                      className="ideai-footer__social-link"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label={`${link.label} (opens in new tab)`}
-                    >
-                      {link.icon && (
-                        <span
-                          className="ideai-footer__social-icon"
-                          aria-hidden="true"
-                        >
-                          {link.icon}
-                        </span>
-                      )}
-                      <span className="ideai-footer__social-label">
-                        {link.label}
-                      </span>
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
+            <div className="ideai-footer__icons-row">
+              {/* Social Links */}
+              {socialLinks.map((link) => {
+                const IconComponent =
+                  link.icon === "twitter"
+                    ? Twitter
+                    : link.icon === "github"
+                      ? Github
+                      : link.icon === "linkedin"
+                        ? Linkedin
+                        : null;
 
-            {/* Account Links */}
-            <nav aria-label="Account navigation" role="navigation">
-              <h2 className="ideai-footer__column-title">Account</h2>
-              <ul className="ideai-footer__accounts-list">
-                {accountLinks.map((link) => (
-                  <li key={link.href} className="ideai-footer__accounts-item">
-                    <a href={link.href} className="ideai-footer__accounts-link">
-                      {link.label}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </nav>
+                return IconComponent ? (
+                  <a
+                    key={link.href}
+                    href={link.href}
+                    className="ideai-footer__icon-link"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`${link.label} (opens in new tab)`}
+                    title={link.label}
+                  >
+                    <IconComponent
+                      className="ideai-footer__icon"
+                      size={18}
+                      aria-hidden="true"
+                    />
+                  </a>
+                ) : null;
+              })}
+
+              {/* Phone & Email */}
+              {phone && (
+                <a
+                  href={`tel:${phone.replace(/\s/g, "")}`}
+                  className="ideai-footer__icon-link"
+                  itemProp="telephone"
+                  title={`Phone: ${phone}`}
+                  aria-label={`Phone: ${phone}`}
+                >
+                  <Phone size={18} aria-hidden="true" />
+                </a>
+              )}
+
+              {email && (
+                <a
+                  href={`mailto:${email}`}
+                  className="ideai-footer__icon-link"
+                  itemProp="email"
+                  title={`Email: ${email}`}
+                  aria-label={`Email: ${email}`}
+                >
+                  <Mail size={18} aria-hidden="true" />
+                </a>
+              )}
+
+              {/* Address/Location */}
+              {address && (
+                <a
+                  href={`https://maps.google.com/?q=${encodeURIComponent(
+                    `${address.street || ""} ${address.city || ""} ${address.state || ""} ${address.zip || ""} ${address.country || ""}`.trim(),
+                  )}`}
+                  className="ideai-footer__icon-link"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  itemScope
+                  itemType="https://schema.org/PostalAddress"
+                  title={`Address: ${address.street || ""} ${address.city || ""} ${address.state || ""} ${address.zip || ""} ${address.country || ""}`.trim()}
+                  aria-label={`Address: ${address.street || ""} ${address.city || ""} ${address.state || ""} ${address.zip || ""} ${address.country || ""}`.trim()}
+                >
+                  <MapPin size={18} aria-hidden="true" />
+                </a>
+              )}
+            </div>
           </div>
         </div>
       </div>

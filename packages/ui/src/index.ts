@@ -10,6 +10,7 @@
 export { Button } from "./button";
 export { IdeaIHeader } from "./components/ideai-header";
 export { IdeAIFooter } from "./components/ideai-footer";
+export { IdeAIFooterIndicators } from "./components/ideai-footer-indicators";
 export { IdeAIContent } from "./components/ideai-content";
 export { IdeaIButton } from "./components/ideai-button";
 export { IdeAILogo } from "./components/ideai-logo";
