@@ -6,11 +6,28 @@ Complete guide for managing IdeaI databases both locally and in production using
 
 ## Overview
 
-IdeaI uses **PostgreSQL** with **Drizzle ORM** for database management. The same database is shared across multiple apps (e.g., `ideai-capabilities`, `ideai-workflow`) for unified authentication and data consistency.
+IdeaI uses **PostgreSQL** with **Drizzle ORM** for database management.
+
+### Current Database Setup (January 2026)
+
+**⚠️ IMPORTANT: Currently using a single shared cloud database for both local development and production.**
+
+- **Database Provider**: Neon Postgres (cloud-hosted)
+- **Connection**: `postgresql://...@ep-cold-band-absecb56-pooler.eu-west-2.aws.neon.tech/neondb`
+- **Usage**: Both local development and production deployments use the same database
+- **Why**: Simplified setup for initial development - all apps connect to the same cloud database
+- **Future**: Database separation (local vs production) is planned - see TODOs
+
+**Note**: This setup means:
+
+- ✅ No separate local database setup needed
+- ✅ Local and production data share the same database
+- ✅ Sync between "local" and "production" currently syncs to the same DB
+- ⚠️ Changes made locally immediately affect production (they're the same DB)
 
 ### Key Features
 
-- **Unified Database**: Single database shared across all IdeaI apps
+- **Cloud Database**: Single Neon Postgres database for all environments
 - **Drizzle ORM**: Type-safe database queries and migrations
 - **Automatic Migrations**: Production migrations run during build
 - **Dev Tools**: Drizzle Studio for visual database management
@@ -48,11 +65,21 @@ All IdeaI apps use the `DATABASE_URL` environment variable:
 DATABASE_URL=postgresql://user:password@host:port/database
 ```
 
-**Default Local Connection:**
+**Current Configuration (Shared Cloud DB):**
 
 ```env
+# Both local and production use the same Neon cloud database
+DATABASE_URL=postgresql://neondb_owner:...@ep-cold-band-absecb56-pooler.eu-west-2.aws.neon.tech/neondb?sslmode=require
+```
+
+**Default Fallback (if DATABASE_URL not set):**
+
+```env
+# Only used if DATABASE_URL is not configured
 DATABASE_URL=postgres://localhost:5432/workflow
 ```
+
+**Note**: The fallback is not currently used - all apps are configured to use the Neon cloud database.
 
 ### Setting Up Database URL
 

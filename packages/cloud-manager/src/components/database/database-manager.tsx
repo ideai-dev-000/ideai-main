@@ -30,6 +30,10 @@ export function DatabaseManager() {
   const [success, setSuccess] = useState<string | null>(null);
   const [databaseUrl, setDatabaseUrl] = useState<string | null>(null);
   const [migrationOutput, setMigrationOutput] = useState<string | null>(null);
+  const [productionDatabaseUrl, setProductionDatabaseUrl] = useState<
+    string | null
+  >(null);
+  const [syncOutput, setSyncOutput] = useState<string | null>(null);
 
   const apps = [
     { id: "ideai-capabilities", name: "IdeaI Capabilities" },
@@ -153,6 +157,83 @@ export function DatabaseManager() {
     }
   }, [selectedEnv, selectedApp, databaseUrl, loadStatus]);
 
+  const connectToProduction = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    setSuccess(null);
+
+    try {
+      // Use the same configured database (currently shared cloud DB)
+      // This uses the same DATABASE_URL that the app is configured with
+      setProductionDatabaseUrl("USE_SAME_AS_LOCAL");
+      setSuccess(`Using configured database (shared cloud DB for now)`);
+      setLoading(false);
+    } catch (err) {
+      setError(
+        `Network error: ${err instanceof Error ? err.message : "Unknown error"}`,
+      );
+      setLoading(false);
+    }
+  }, [selectedApp]);
+
+  const syncToProduction = useCallback(async () => {
+    if (!productionDatabaseUrl) {
+      setError("Please connect to production database first");
+      return;
+    }
+
+    // Since we're using the same database, sync is mostly for testing the sync flow
+    if (
+      !confirm(
+        "⚠️ Database Sync\n\n" +
+          "Current setup: Using same cloud database for both local and production.\n\n" +
+          "This will sync the database to itself (validates sync process).\n\n" +
+          "Continue?",
+      )
+    ) {
+      return;
+    }
+
+    setLoading(true);
+    setError(null);
+    setSuccess(null);
+    setSyncOutput(null);
+
+    try {
+      const response = await fetch("/api/database/sync", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          sourceEnv: "local",
+          targetEnv: "production",
+          app: selectedApp,
+          sourceUrl: undefined, // Use local DATABASE_URL
+          targetUrl: productionDatabaseUrl,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (result.error) {
+        setError(result.error.message);
+        if (result.error.output) {
+          setSyncOutput(result.error.output);
+        }
+      } else {
+        setSuccess(`Successfully synced local database to production!`);
+        setSyncOutput(`Sync completed: ${result.data.message}`);
+      }
+    } catch (err) {
+      setError(
+        `Network error: ${err instanceof Error ? err.message : "Unknown error"}`,
+      );
+    } finally {
+      setLoading(false);
+    }
+  }, [selectedApp, productionDatabaseUrl]);
+
   return (
     <div className="space-y-6">
       <div>
@@ -237,6 +318,74 @@ export function DatabaseManager() {
           >
             {loading ? "Running..." : "Run Migrations"}
           </button>
+        </div>
+
+        {/* Sync to Production Section - Always Visible */}
+        <div className="border-t-2 border-orange-200 dark:border-orange-800 pt-6 mt-6">
+          <div className="bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg p-4 mb-4">
+            <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100 mb-2">
+              🔄 Sync Local → Production
+            </h3>
+            <p className="text-sm text-slate-700 dark:text-slate-300 mb-2">
+              Sync database data between environments. Currently uses the same
+              configured cloud database for both local and production.
+            </p>
+            <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded p-2 mt-2 mb-2">
+              <p className="text-xs text-blue-800 dark:text-blue-300 font-medium">
+                ℹ️ Current Setup: Using single shared cloud database (Neon
+                Postgres) for both local dev and production.
+              </p>
+              <p className="text-xs text-blue-700 dark:text-blue-400 mt-1">
+                Future: Database separation is planned - local and production
+                will have separate databases.
+              </p>
+            </div>
+            <p className="text-xs text-orange-700 dark:text-orange-300 font-medium">
+              ✓ Click "Connect to Database" to use the configured database for
+              sync
+            </p>
+          </div>
+
+          <div className="flex gap-2 flex-wrap">
+            {!productionDatabaseUrl && (
+              <button
+                onClick={connectToProduction}
+                disabled={loading}
+                className="px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white rounded-md text-base font-semibold disabled:opacity-50 disabled:cursor-not-allowed shadow-md hover:shadow-lg transition-shadow"
+              >
+                {loading ? "Connecting..." : "🔗 Connect to Database"}
+              </button>
+            )}
+            {productionDatabaseUrl && (
+              <>
+                <button
+                  onClick={syncToProduction}
+                  disabled={loading}
+                  className="px-6 py-3 bg-orange-600 hover:bg-orange-700 text-white rounded-md text-base font-semibold disabled:opacity-50 disabled:cursor-not-allowed shadow-md hover:shadow-lg transition-shadow"
+                >
+                  {loading ? "🔄 Syncing..." : "🚀 Sync DB → Production"}
+                </button>
+                <button
+                  onClick={() => setProductionDatabaseUrl(null)}
+                  disabled={loading}
+                  className="px-4 py-3 bg-slate-400 hover:bg-slate-500 text-white rounded-md text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  Disconnect
+                </button>
+              </>
+            )}
+          </div>
+          {productionDatabaseUrl && (
+            <div className="mt-3 p-3 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-md">
+              <div className="text-sm text-green-800 dark:text-green-200 font-medium">
+                ✓ Database connected and ready for sync
+              </div>
+              <div className="text-xs text-green-700 dark:text-green-300 mt-1">
+                Using configured database (shared cloud DB for local and
+                production)
+              </div>
+            </div>
+          )}
         </div>
 
         {selectedEnv !== "local" && databaseUrl && (
@@ -335,6 +484,18 @@ export function DatabaseManager() {
           </h3>
           <pre className="text-xs text-slate-300 font-mono whitespace-pre-wrap overflow-x-auto">
             {migrationOutput}
+          </pre>
+        </div>
+      )}
+
+      {/* Sync Output */}
+      {syncOutput && (
+        <div className="bg-slate-900 border border-slate-700 rounded-lg p-4">
+          <h3 className="text-sm font-semibold text-slate-300 mb-2">
+            Sync Output
+          </h3>
+          <pre className="text-xs text-slate-300 font-mono whitespace-pre-wrap overflow-x-auto">
+            {syncOutput}
           </pre>
         </div>
       )}

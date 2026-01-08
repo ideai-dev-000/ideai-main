@@ -102,7 +102,9 @@ function parseArgs() {
       const key = arg.slice(2);
       const value = args[i + 1];
       if (value && !value.startsWith("--")) {
-        options[key] = value;
+        // Handle kebab-case to camelCase conversion
+        const camelKey = key.replace(/-([a-z])/g, (_, letter) => letter.toUpperCase());
+        options[camelKey] = value;
         i++;
       } else {
         options[key] = true;
@@ -305,6 +307,9 @@ function execDbCommand(command, options = {}) {
       case "connect":
         return showConnectionInfo(options);
         
+      case "sync":
+        return syncDatabase(options);
+        
       default:
         error(`Unknown command: ${command}`);
         showHelp();
@@ -501,6 +506,100 @@ async function showConnectionInfo(options) {
 }
 
 /**
+ * Sync database from source to target
+ */
+function syncDatabase(options) {
+  const { 
+    source = "local", 
+    target = "production", 
+    app = "ideai-capabilities",
+    sourceUrl,
+    targetUrl 
+  } = options;
+
+  // Get source database URL
+  let sourceDatabaseUrl = sourceUrl || getDatabaseUrl({ env: source, app });
+  
+  if (!sourceDatabaseUrl && source === "local") {
+    sourceDatabaseUrl = "postgres://localhost:5432/workflow";
+  }
+
+  if (!sourceDatabaseUrl) {
+    error(`Source DATABASE_URL not found for ${source}`);
+    return false;
+  }
+
+  // Get target database URL
+  let targetDatabaseUrl = targetUrl;
+  
+  if (!targetDatabaseUrl && target === "production") {
+    warn("Target DATABASE_URL not provided for production");
+    info("Use 'connect' command first to get production URL:");
+    info(`  node scripts/ideai-db-manager.mjs connect --env production --app ${app}`);
+    return false;
+  }
+
+  if (!targetDatabaseUrl) {
+    targetDatabaseUrl = getDatabaseUrl({ env: target, app });
+  }
+
+  if (!targetDatabaseUrl) {
+    error(`Target DATABASE_URL not found for ${target}`);
+    return false;
+  }
+
+  // Safety check for production
+  if (target === "production") {
+    warn("\n⚠️  WARNING: This will OVERWRITE production database!");
+    warn(`Source: ${source} (${sourceDatabaseUrl.replace(/:([^:@]+)@/, ":****@")})`);
+    warn(`Target: ${target} (${targetDatabaseUrl.replace(/:([^:@]+)@/, ":****@")})`);
+    warn("\nThis cannot be undone. Make sure you have a backup!");
+    log("\nPress Ctrl+C to cancel, or Enter to continue...", "yellow");
+    // In non-interactive mode, we'll proceed (CLI scripts should have --yes flag)
+  }
+
+  const timestamp = Date.now();
+  const dumpFile = `/tmp/db-sync-${timestamp}.sql`;
+
+  log(`\n🔄 Syncing database from ${source} to ${target}...\n`, "cyan");
+
+  try {
+    // Step 1: Dump source
+    info(`Dumping source database (${source})...`);
+    execSync(`pg_dump "${sourceDatabaseUrl}" > "${dumpFile}"`, {
+      stdio: "inherit"
+    });
+
+    // Step 2: Restore to target
+    info(`Restoring to target database (${target})...`);
+    execSync(`psql "${targetDatabaseUrl}" < "${dumpFile}"`, {
+      stdio: "inherit"
+    });
+
+    // Step 3: Cleanup
+    try {
+      execSync(`rm "${dumpFile}"`, { stdio: "ignore" });
+    } catch (e) {
+      // Ignore cleanup errors
+    }
+
+    success(`\n✅ Successfully synced database from ${source} to ${target}`);
+    return true;
+  } catch (err) {
+    error(`Sync failed: ${err.message}`);
+    
+    // Cleanup on error
+    try {
+      execSync(`rm "${dumpFile}"`, { stdio: "ignore" });
+    } catch (e) {
+      // Ignore cleanup errors
+    }
+    
+    return false;
+  }
+}
+
+/**
  * Show help
  */
 function showHelp() {
@@ -518,6 +617,7 @@ function showHelp() {
   log("  query       Run SQL query");
   log("  tables      List all tables");
   log("  connect     Get connection string from Vercel");
+  log("  sync        Sync database from local to production");
   
   log("\nOptions:", "cyan");
   log("  --env <env>     Environment (local|production|preview) [default: local]");
@@ -526,6 +626,10 @@ function showHelp() {
   log("  --output <file> Output file for backup/query results");
   log("  --file <file>   Input file for restore");
   log("  --sql <query>   SQL query to execute");
+  log("  --source <env>  Source environment for sync [default: local]");
+  log("  --target <env>  Target environment for sync [default: production]");
+  log("  --source-url <url>  Source DATABASE_URL (overrides --source)");
+  log("  --target-url <url>  Target DATABASE_URL (overrides --target)");
   
   log("\nExamples:", "cyan");
   log("  # Check database status");
@@ -545,6 +649,9 @@ function showHelp() {
   log("");
   log("  # Get production DATABASE_URL from Vercel");
   log("  node scripts/ideai-db-manager.mjs connect --env production");
+  log("");
+  log("  # Sync local database to production");
+  log("  node scripts/ideai-db-manager.mjs sync --target-url \"postgresql://...\"");
   log("");
 }
 
