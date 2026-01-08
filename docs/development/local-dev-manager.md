@@ -22,25 +22,33 @@ The dev manager script (`scripts/dev-manager.mjs`) provides a modern, zero-bloat
 ## Quick Commands
 
 \`\`\`bash
+
 # Check status of all apps
+
 pnpm dev:status
 
 # Start all apps
+
 pnpm dev:start
 
 # Start specific app
+
 pnpm dev:start web
 
 # Stop all apps
+
 pnpm dev:stop
 
 # Stop specific app
+
 pnpm dev:stop docs
 
 # Restart all apps
+
 pnpm dev:restart
 
 # Restart specific app
+
 pnpm dev:restart bootstrap
 \`\`\`
 
@@ -64,11 +72,11 @@ The status command shows a clean table:
 📊 IdeaI Monorepo - Dev Server Status
 
 ┌─────────────┬──────────┬─────────┬─────────────────────────┐
-│ App         │ Port     │ Status  │ URL                     │
+│ App │ Port │ Status │ URL │
 ├─────────────┼──────────┼─────────┼─────────────────────────┤
-│ web         │ 3000     │ 🟢 Running │ http://localhost:3000   │
-│ docs        │ 3001     │ 🟢 Running │ http://localhost:3001   │
-│ all         │ 3002     │ 🔴 Stopped │ http://localhost:3002   │
+│ web │ 3000 │ 🟢 Running │ http://localhost:3000 │
+│ docs │ 3001 │ 🟢 Running │ http://localhost:3001 │
+│ all │ 3002 │ 🔴 Stopped │ http://localhost:3002 │
 └─────────────┴──────────┴─────────┴─────────────────────────┘
 
 2/8 apps running
@@ -79,6 +87,7 @@ The status command shows a clean table:
 ### Auto-Discovery
 
 The script automatically:
+
 1. Scans `apps/` directory for all subdirectories
 2. Reads each app's `package.json`
 3. Extracts port from dev script (e.g., `next dev --port 3000`)
@@ -87,12 +96,14 @@ The script automatically:
 ### Port Detection
 
 Ports are extracted from dev scripts using regex:
+
 - `next dev --port 3000` → port 3000
-- `next dev -p 3007` → port 3007
+- `next dev -p 3016` → port 3016 (ideai-frameworks)
 
 ### Status Checking
 
 Uses `lsof` to check if a port is in use:
+
 - Port in use = app running
 - Port free = app stopped
 
@@ -104,15 +115,15 @@ Uses `lsof` to check if a port is in use:
 
 ## Available Apps
 
-| App | Port | URL |
-|-----|------|-----|
-| web | 3000 | http://localhost:3000 |
-| docs | 3001 | http://localhost:3001 |
-| all | 3002 | http://localhost:3002 |
-| nocss | 3003 | http://localhost:3003 |
-| mvp | 3004 | http://localhost:3004 |
-| tailwind | 3005 | http://localhost:3005 |
-| allcss | 3006 | http://localhost:3006 |
+| App       | Port | URL                   |
+| --------- | ---- | --------------------- |
+| web       | 3000 | http://localhost:3000 |
+| docs      | 3001 | http://localhost:3001 |
+| all       | 3002 | http://localhost:3002 |
+| nocss     | 3003 | http://localhost:3003 |
+| mvp       | 3004 | http://localhost:3004 |
+| tailwind  | 3005 | http://localhost:3005 |
+| allcss    | 3006 | http://localhost:3006 |
 | bootstrap | 3007 | http://localhost:3007 |
 
 ## Best Practices
@@ -133,16 +144,20 @@ Uses `lsof` to check if a port is in use:
 ### Port Already in Use
 
 \`\`\`bash
+
 # Find what's using the port
+
 lsof -ti:3000
 
 # Kill it manually if needed
+
 kill -9 $(lsof -ti:3000)
 \`\`\`
 
 ### Script Hangs
 
 The script should exit immediately after starting apps. If it hangs:
+
 1. Check for errors in the output
 2. Verify Node.js version (requires Node 18+)
 3. Try running directly: `node scripts/dev-manager.mjs status`

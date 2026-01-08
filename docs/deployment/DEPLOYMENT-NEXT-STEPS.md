@@ -5,8 +5,8 @@ description: Current deployment status and next steps for IdeaI monorepo
 
 # Deployment Next Steps
 
-**Last Updated**: January 1, 2026  
-**Status**: Deployment blocked - Vercel configuration needed
+**Last Updated**: January 8, 2026  
+**Status**: ✅ Deployment working - See DEPLOYMENT-STATUS.md for current status
 
 ## Current Situation
 
@@ -34,13 +34,11 @@ description: Current deployment status and next steps for IdeaI monorepo
    - ✅ Updated `pnpm-lock.yaml` (committed)
    - ✅ Web app is linked to Vercel project
 
-### Current Blocker ❌
+### ✅ Deployment Status
 
-**Deployment is failing** because Vercel install command fails.
+**Deployment is working**. See [DEPLOYMENT-STATUS.md](./DEPLOYMENT-STATUS.md) for current status and quick commands.
 
-**Error**: `Command "pnpm install" exited with 1`
-
-**Root Cause**: Vercel dashboard setting "Include files outside the root directory in the Build Step" is likely **NOT ENABLED**.
+**Note**: If you encounter deployment issues, verify Vercel dashboard setting "Include files outside the root directory in the Build Step" is **ENABLED**.
 
 ## Required Vercel Dashboard Fix
 
@@ -218,5 +216,3 @@ This configuration should work once "Include files outside root directory" is en
 - Smart routing is implemented and ready
 - Documentation is mostly complete
 - Only blocker is Vercel dashboard setting
-
-

@@ -30,28 +30,17 @@ Multiple dedicated apps demonstrate different CSS approaches:
   - Mobile-friendly out of the box
   - CSS variables for customization
 
-### 3. `/tailwind` - Tailwind CSS Only (Port 3005)
+### 3. `/ideai-frameworks` - Unified Framework Showcase (Port 3016)
 
-- **Purpose**: Utility-first CSS framework
-- **Use Case**: Component-based development, utility classes
-- **Styling**: Tailwind CSS base, components, utilities
-- **URL**: http://localhost:3005
+- **Purpose**: All CSS frameworks in one app
+- **Use Case**: Framework comparison and testing
+- **Styling**: Dynamic CSS loading based on route (Tailwind, Bootstrap, UnoCSS, Material, Chakra, Radix, Shadcn/UI, MVP.css)
+- **URL**: http://localhost:3016
 - **Features**:
-  - Utility-first approach
-  - Extensive utility classes
-  - Responsive design utilities
-  - Customizable via config
-
-### 4. `/allcss` - Tailwind CSS Only (Port 3006)
-
-- **Purpose**: Tailwind CSS showcase
-- **Use Case**: Production apps with utility-first styling
-- **Styling**: Tailwind CSS + IdeaI custom layer (NO MVP.css - frameworks are exclusive)
-- **URL**: http://localhost:3006
-- **Features**:
-  - Tailwind for utility classes
-  - IdeaI custom layer for brand-specific styles
-  - Complete styling solution
+  - Dynamic framework switching
+  - All 8 frameworks accessible via routes
+  - Framework selector page
+  - Conditional CSS loading
 
 ### 5. `/pico` - Pico CSS Only (Port 3013)
 
@@ -249,16 +238,16 @@ All apps support **hot reload** automatically via Next.js dev servers:
 
 pnpm --filter @repo/nocss dev # Port 3003
 pnpm --filter @repo/mvp dev # Port 3004
-pnpm --filter @repo/tailwind dev # Port 3005
-pnpm --filter @repo/allcss dev # Port 3006
+pnpm --filter ideai-frameworks dev # Port 3016 (unified framework showcase)
+pnpm --filter metaframework dev # Port 3013 (Pico CSS showcase)
 \`\`\`
 
 ### Access URLs
 
 - **No CSS**: http://localhost:3003
 - **MVP.css Only**: http://localhost:3004
-- **Tailwind Only**: http://localhost:3005
-- **Tailwind CSS**: http://localhost:3006
+- **IdeaI Frameworks** (all frameworks): http://localhost:3016
+- **MetaFramework** (Pico CSS): http://localhost:3013
 
 ## Comparison Matrix
 

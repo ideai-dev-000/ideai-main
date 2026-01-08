@@ -53,7 +53,8 @@ export function IdeAIDocsViewer({
 }: IdeAIDocsViewerProps) {
   const [currentPath, setCurrentPath] = useState<string>("");
   const [activeTab, setActiveTab] = useState<string>("overview");
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   // Determine docs URL
   // In development, use the docs app directly (port 3001)
@@ -120,8 +121,17 @@ export function IdeAIDocsViewer({
       setCurrentPath("");
       setActiveTab("overview");
     }
-    setLoading(false);
-  }, [filter]);
+
+    // Set timeout to detect if iframe doesn't load (docs app not running)
+    const timeout = setTimeout(() => {
+      if (loading) {
+        setError("Documentation server is not running");
+        setLoading(false);
+      }
+    }, 5000);
+
+    return () => clearTimeout(timeout);
+  }, [filter, docsUrl]);
 
   const vercelProjectName =
     process.env.NEXT_PUBLIC_VERCEL_PROJECT_NAME || "web";
@@ -197,7 +207,49 @@ export function IdeAIDocsViewer({
         )}
 
         <div className={styles.content}>
-          {loading ? (
+          {error ? (
+            <div className={styles.error}>
+              <p>⚠️ Documentation server is not running.</p>
+              <p
+                style={{
+                  fontSize: "0.875rem",
+                  marginTop: "0.5rem",
+                  color: "rgb(100 116 139)",
+                }}
+              >
+                Start the docs app with:{" "}
+                <code
+                  style={{
+                    fontFamily: "monospace",
+                    background: "rgb(241 245 249)",
+                    padding: "0.25rem 0.5rem",
+                    borderRadius: "0.25rem",
+                  }}
+                >
+                  pnpm --filter docs dev
+                </code>
+              </p>
+              <p
+                style={{
+                  fontSize: "0.875rem",
+                  marginTop: "0.5rem",
+                  color: "rgb(100 116 139)",
+                }}
+              >
+                The docs app should be running on{" "}
+                <code
+                  style={{
+                    fontFamily: "monospace",
+                    background: "rgb(241 245 249)",
+                    padding: "0.25rem 0.5rem",
+                    borderRadius: "0.25rem",
+                  }}
+                >
+                  http://localhost:3001
+                </code>
+              </p>
+            </div>
+          ) : loading ? (
             <div className={styles.loading}>
               <p>Loading documentation...</p>
             </div>
@@ -208,8 +260,14 @@ export function IdeAIDocsViewer({
               title={title}
               loading="lazy"
               sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-modals"
-              onLoad={() => setLoading(false)}
-              onError={() => setLoading(false)}
+              onLoad={() => {
+                setLoading(false);
+                setError(null);
+              }}
+              onError={() => {
+                setLoading(false);
+                setError("Failed to load documentation");
+              }}
             />
           )}
         </div>

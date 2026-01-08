@@ -169,21 +169,19 @@ description: Current status, completed work, and pending tasks for IdeaI monorep
 
 ## 🗂️ Project Structure
 
-### Apps (13 total)
+### Apps (11 total)
 
 - `web` - Main IdeaI app (port 3000)
 - `docs` - Documentation site (port 3001)
 - `all` - Component showcase (port 3002)
 - `nocss` - No CSS demo (port 3003)
 - `mvp` - MVP.css demo (port 3004)
-- `tailwind` - Tailwind CSS demo (port 3005)
-- `allcss` - All CSS demo (port 3006)
-- `bootstrap` - Bootstrap CSS demo (port 3007)
-- `unocss` - UnoCSS demo (port 3008)
-- `shadcn` - Shadcn Components Showcase (port 3009)
-- `material` - Material UI demo (port 3010)
-- `chakra` - Chakra UI demo (port 3011)
-- `radix` - Radix UI demo (port 3012)
+- `ideai-frameworks` - Unified CSS framework showcase (port 3016)
+- `ideai-reactflow` - React Flow showcase (port 3017)
+- `ideai-capabilities` - Capabilities test bed (port 3018)
+- `ideai-designer` - v0-powered design tool (port 3013)
+- `v0-prototype` - V0 prototype app (port 3014)
+- `v0-000` - V0 template app (port 3015)
 
 ### Packages
 
