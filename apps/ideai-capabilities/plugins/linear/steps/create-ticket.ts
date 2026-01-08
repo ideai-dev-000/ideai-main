@@ -94,9 +94,10 @@ async function stepHandler(
       );
 
       if (teamsResult.errors?.length) {
+        const firstError = teamsResult.errors[0];
         return {
           success: false,
-          error: { message: teamsResult.errors[0].message },
+          error: { message: firstError?.message || "Unknown error" },
         };
       }
 
@@ -130,9 +131,10 @@ async function stepHandler(
     );
 
     if (createResult.errors?.length) {
+      const firstError = createResult.errors[0];
       return {
         success: false,
-        error: { message: createResult.errors[0].message },
+        error: { message: firstError?.message || "Unknown error" },
       };
     }
 

@@ -52,9 +52,10 @@ export async function testLinear(credentials: Record<string, string>) {
       (await response.json()) as LinearGraphQLResponse<ViewerQueryResponse>;
 
     if (result.errors?.length) {
+      const firstError = result.errors[0];
       return {
         success: false,
-        error: result.errors[0].message,
+        error: firstError?.message || "Unknown error",
       };
     }
 

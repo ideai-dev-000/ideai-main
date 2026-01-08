@@ -169,6 +169,12 @@ async function stepHandler(
     }
 
     const image = result.images[0];
+    if (!image) {
+      return {
+        success: false,
+        error: { message: "No image generated" },
+      };
+    }
     return {
       success: true,
       data: { imageUrl: image.url, width: image.width, height: image.height },

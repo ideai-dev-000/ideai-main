@@ -132,9 +132,10 @@ async function stepHandler(
     );
 
     if (result.errors?.length) {
+      const firstError = result.errors[0];
       return {
         success: false,
-        error: { message: result.errors[0].message },
+        error: { message: firstError?.message || "Unknown error" },
       };
     }
 
