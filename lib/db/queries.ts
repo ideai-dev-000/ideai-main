@@ -145,6 +145,12 @@ export async function getChatCountByUserId({
   differenceInHours: number
 }): Promise<number> {
   try {
+    // If database is not configured, skip rate limiting
+    if (!db) {
+      console.warn('Database not configured, skipping rate limiting check')
+      return 0
+    }
+
     const hoursAgo = new Date(Date.now() - differenceInHours * 60 * 60 * 1000)
 
     const [stats] = await db
@@ -159,8 +165,10 @@ export async function getChatCountByUserId({
 
     return stats?.count || 0
   } catch (error) {
-    console.error('Failed to get chat count by user from database')
-    throw error
+    // If table doesn't exist or query fails, log but don't block requests
+    console.error('Failed to get chat count by user from database:', error)
+    // Return 0 to allow the request to proceed (fail open for development)
+    return 0
   }
 }
 
@@ -171,6 +179,12 @@ export async function getChatCountByIP({
   ipAddress: string
   differenceInHours: number
 }): Promise<number> {
+  // If database is not configured, skip rate limiting
+  if (!db) {
+    console.warn('Database not configured, skipping rate limiting check')
+    return 0
+  }
+
   try {
     const hoursAgo = new Date(Date.now() - differenceInHours * 60 * 60 * 1000)
 
@@ -185,9 +199,19 @@ export async function getChatCountByIP({
       )
 
     return stats?.count || 0
-  } catch (error) {
-    console.error('Failed to get chat count by IP from database')
-    throw error
+  } catch (error: any) {
+    // If table doesn't exist or query fails, log but don't block requests
+    // Common errors: table doesn't exist (42P01), connection issues, etc.
+    const errorMessage = error?.message || String(error)
+    const errorCode = error?.code || 'UNKNOWN'
+    
+    console.warn(
+      `Database query failed (non-blocking): ${errorMessage} (code: ${errorCode})`
+    )
+    
+    // Return 0 to allow the request to proceed (fail open for development)
+    // In production, you might want to log this to monitoring service
+    return 0
   }
 }
 
@@ -199,12 +223,19 @@ export async function createAnonymousChatLog({
   v0ChatId: string
 }) {
   try {
+    // If database is not configured, skip logging
+    if (!db) {
+      console.warn('Database not configured, skipping anonymous chat log')
+      return
+    }
+
     return await db.insert(anonymous_chat_logs).values({
       ip_address: ipAddress,
       v0_chat_id: v0ChatId,
     })
   } catch (error) {
-    console.error('Failed to create anonymous chat log in database')
-    throw error
+    // If table doesn't exist or insert fails, log but don't block requests
+    console.error('Failed to create anonymous chat log in database:', error)
+    // Don't throw - allow request to proceed (fail open for development)
   }
 }

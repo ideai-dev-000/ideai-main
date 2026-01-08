@@ -51,14 +51,19 @@ export async function POST(request: NextRequest) {
     // Rate limiting
     if (session?.user?.id) {
       // Authenticated user rate limiting
-      const chatCount = await getChatCountByUserId({
-        userId: session.user.id,
-        differenceInHours: 24,
-      })
+      try {
+        const chatCount = await getChatCountByUserId({
+          userId: session.user.id,
+          differenceInHours: 24,
+        })
 
-      const userType = session.user.type
-      if (chatCount >= entitlementsByUserType[userType].maxMessagesPerDay) {
-        return new ChatSDKError('rate_limit:chat').toResponse()
+        const userType = session.user.type
+        if (chatCount >= entitlementsByUserType[userType].maxMessagesPerDay) {
+          return new ChatSDKError('rate_limit:chat').toResponse()
+        }
+      } catch (error) {
+        // If rate limiting check fails, log but allow request to proceed
+        console.warn('Rate limiting check failed, allowing request:', error)
       }
 
       console.log('API request:', {
@@ -70,13 +75,18 @@ export async function POST(request: NextRequest) {
     } else {
       // Anonymous user rate limiting
       const clientIP = getClientIP(request)
-      const chatCount = await getChatCountByIP({
-        ipAddress: clientIP,
-        differenceInHours: 24,
-      })
+      try {
+        const chatCount = await getChatCountByIP({
+          ipAddress: clientIP,
+          differenceInHours: 24,
+        })
 
-      if (chatCount >= anonymousEntitlements.maxMessagesPerDay) {
-        return new ChatSDKError('rate_limit:chat').toResponse()
+        if (chatCount >= anonymousEntitlements.maxMessagesPerDay) {
+          return new ChatSDKError('rate_limit:chat').toResponse()
+        }
+      } catch (error) {
+        // If rate limiting check fails, log but allow request to proceed
+        console.warn('Rate limiting check failed, allowing request:', error)
       }
 
       console.log('API request (anonymous):', {

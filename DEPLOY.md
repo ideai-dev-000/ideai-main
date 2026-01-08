@@ -68,15 +68,17 @@ Use the Vercel deploy button from the README, which will:
 Make sure to set these in your Vercel project:
 
 ```
-AUTH_SECRET=/kqOoOZJ4jeWPfGLgDpixpkAxtllPTcdbqiJ4gAmhrs=
-POSTGRES_URL=postgresql://neondb_owner:npg_aWXJhpzvu2H7@ep-bold-moon-abb8491g-pooler.eu-west-2.aws.neon.tech/neondb?sslmode=require
-V0_API_KEY=v1:team_vhjzlMi6CfNow0IfBXnv2Yn2:N2evx2fcN1sMmzQ0BuuyyYAI
+AUTH_SECRET=your-generated-auth-secret-here
+POSTGRES_URL=postgresql://user:password@host:port/database
+V0_API_KEY=your_v0_api_key_here
 ```
 
 **Important**: 
-- Generate a new `AUTH_SECRET` for production (don't use the development one)
-- Use your production database URL
-- Keep your API keys secure
+- Generate a new `AUTH_SECRET` for production using `openssl rand -base64 32`
+- Use your production database URL from your database provider
+- Get your V0 API key from https://v0.dev/chat/settings/keys
+- **NEVER commit secrets to git** - only use `.env.local` for local development
+- Keep your API keys secure and rotate them regularly
 
 ## Post-Deployment
 

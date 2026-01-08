@@ -14,10 +14,9 @@ This guide will help you complete the setup of the v0 clone project.
 Create a `.env` file in the root directory with the following content:
 
 ```bash
-# Auth Secret - Generated for you
-# Generate with: openssl rand -base64 32
+# Auth Secret - Generate with: openssl rand -base64 32
 # Or visit: https://generate-secret.vercel.app/32
-AUTH_SECRET=/kqOoOZJ4jeWPfGLgDpixpkAxtllPTcdbqiJ4gAmhrs=
+AUTH_SECRET=your-generated-auth-secret-here
 
 # Database URL - PostgreSQL connection string
 # For local development: postgresql://user:password@localhost:5432/v0_clone
@@ -30,6 +29,11 @@ V0_API_KEY=your_v0_api_key_here
 # Optional: Use a custom API URL
 # V0_API_URL=http://localhost:3001/v1
 ```
+
+**⚠️ SECURITY WARNING**: 
+- **NEVER commit `.env.local` files to git** - they are already in `.gitignore`
+- Only store actual secrets in `.env.local` files (never in markdown files)
+- Use placeholders in documentation files
 
 **Important:** Replace the following values:
 - `POSTGRES_URL`: Your PostgreSQL database connection string
