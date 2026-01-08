@@ -468,9 +468,9 @@ async function generateCodegenTemplate(
   // Extract input type from first parameter
   const inputType =
     coreFunction.params
-      .split(",")[0]
-      .replace(LEADING_WHITESPACE_PATTERN, "")
-      .split(":")[1]
+      ?.split(",")[0]
+      ?.replace(LEADING_WHITESPACE_PATTERN, "")
+      ?.split(":")[1]
       ?.trim() || "unknown";
 
   // Build the raw template (formatter will fix indentation)

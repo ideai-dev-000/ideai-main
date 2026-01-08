@@ -245,11 +245,14 @@ export const PanelInner = () => {
 
     if (availableIntegrations.length === 1) {
       // Auto-select the only available integration
-      const newConfig = {
-        ...selectedNode.data.config,
-        integrationId: availableIntegrations[0].id,
-      };
-      updateNodeData({ id: selectedNode.id, data: { config: newConfig } });
+      const firstIntegration = availableIntegrations[0];
+      if (firstIntegration) {
+        const newConfig = {
+          ...selectedNode.data.config,
+          integrationId: firstIntegration.id,
+        };
+        updateNodeData({ id: selectedNode.id, data: { config: newConfig } });
+      }
     } else if (availableIntegrations.length === 0) {
       // No integrations available - clear the invalid reference
       const newConfig = {
@@ -379,12 +382,15 @@ export const PanelInner = () => {
 
         // Auto-select if only one integration exists
         if (filtered.length === 1 && !abortSignal.aborted) {
-          const newConfig = {
-            ...currentConfig,
-            actionType,
-            integrationId: filtered[0].id,
-          };
-          updateNodeData({ id: nodeId, data: { config: newConfig } });
+          const firstIntegration = filtered[0];
+          if (firstIntegration) {
+            const newConfig = {
+              ...currentConfig,
+              actionType,
+              integrationId: firstIntegration.id,
+            };
+            updateNodeData({ id: nodeId, data: { config: newConfig } });
+          }
         }
       } catch (error) {
         console.error("Failed to auto-select integration:", error);

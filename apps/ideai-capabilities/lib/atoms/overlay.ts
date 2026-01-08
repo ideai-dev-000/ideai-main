@@ -179,7 +179,7 @@ export const closeOverlayAtom = atom(null, (get, set, id: string) => {
 
   // Call onClose for all items from this index onwards
   for (let i = index; i < stack.length; i++) {
-    stack[i].options.onClose?.();
+    stack[i]?.options?.onClose?.();
   }
   set(overlayStackAtom, stack.slice(0, index));
 });

@@ -289,6 +289,12 @@ export async function triggerDeployment(
     }
 
     const latestDeployment = deploymentsResult.deployments[0];
+    if (!latestDeployment) {
+      return {
+        status: "error",
+        error: "No deployments found to redeploy",
+      };
+    }
 
     // Trigger a redeploy
     const deployment = await vercelRequest<VercelDeployment>(

@@ -73,5 +73,5 @@ export function getEnabledProvidersList(): AuthProvider[] {
  */
 export function getSingleProvider(): AuthProvider | null {
   const providersList = getEnabledProvidersList();
-  return providersList.length === 1 ? providersList[0] : null;
+  return providersList.length === 1 ? (providersList[0] ?? null) : null;
 }

@@ -137,7 +137,14 @@ function checkBracketExpressions(expression: string): ValidationResult {
     }
 
     const beforeBracket = match[1];
-    const insideBracket = match[2].trim();
+    const insideBracket = match[2]?.trim();
+
+    if (!beforeBracket || !insideBracket) {
+      return {
+        valid: false,
+        error: "Invalid bracket notation format",
+      };
+    }
 
     // Check if the part before the bracket is a valid variable (__v0, __v1, etc.)
     if (!VALID_BRACKET_ACCESS_PATTERN.test(beforeBracket)) {
@@ -186,7 +193,7 @@ function checkMethodCalls(expression: string): ValidationResult {
     }
 
     const methodName = match[1];
-    if (!ALLOWED_METHODS.has(methodName)) {
+    if (!methodName || !ALLOWED_METHODS.has(methodName)) {
       return {
         valid: false,
         error: `Method "${methodName}" is not allowed in conditions. Allowed methods: ${Array.from(ALLOWED_METHODS).join(", ")}`,

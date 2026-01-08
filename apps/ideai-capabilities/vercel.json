@@ -1,0 +1,5 @@
+{
+  "buildCommand": "pnpm --filter @repo/ideai-capabilities build",
+  "installCommand": "pnpm install",
+  "framework": "nextjs"
+}

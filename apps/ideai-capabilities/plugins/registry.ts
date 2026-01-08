@@ -235,7 +235,7 @@ export function parseActionId(actionId: string | undefined | null): {
     return null;
   }
   const parts = actionId.split("/");
-  if (parts.length !== 2) {
+  if (parts.length !== 2 || !parts[0] || !parts[1]) {
     return null;
   }
   return { integration: parts[0], slug: parts[1] };
@@ -298,10 +298,12 @@ export function getActionsByCategory(): Record<string, ActionWithFullId[]> {
 
   for (const plugin of integrationRegistry.values()) {
     for (const action of plugin.actions) {
-      if (!categories[action.category]) {
-        categories[action.category] = [];
+      const category = action.category;
+      if (!category) continue;
+      if (!categories[category]) {
+        categories[category] = [];
       }
-      categories[action.category].push({
+      categories[category].push({
         ...action,
         id: computeActionId(plugin.type, action.slug),
         integration: plugin.type,

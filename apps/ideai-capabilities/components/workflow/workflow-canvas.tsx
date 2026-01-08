@@ -301,13 +301,17 @@ export function WorkflowCanvas() {
 
   const getClientPosition = useCallback((event: MouseEvent | TouchEvent) => {
     const clientX =
-      "changedTouches" in event
+      "changedTouches" in event && event.changedTouches[0]
         ? event.changedTouches[0].clientX
-        : event.clientX;
+        : "clientX" in event
+          ? event.clientX
+          : 0;
     const clientY =
-      "changedTouches" in event
+      "changedTouches" in event && event.changedTouches[0]
         ? event.changedTouches[0].clientY
-        : event.clientY;
+        : "clientY" in event
+          ? event.clientY
+          : 0;
     return { clientX, clientY };
   }, []);
 
@@ -514,7 +518,10 @@ export function WorkflowCanvas() {
       if (selectedNodes.length === 0) {
         setSelectedNode(null);
       } else if (selectedNodes.length === 1) {
-        setSelectedNode(selectedNodes[0].id);
+        const firstNode = selectedNodes[0];
+        if (firstNode) {
+          setSelectedNode(firstNode.id);
+        }
       }
     },
     [setSelectedNode],

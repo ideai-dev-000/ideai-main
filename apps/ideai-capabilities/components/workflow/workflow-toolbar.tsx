@@ -139,10 +139,15 @@ function extractTemplateReferences(
   const pattern = /\{\{@([^:]+):([^}]+)\}\}/g;
   const matches = value.matchAll(pattern);
 
-  return Array.from(matches).map((match) => ({
-    nodeId: match[1],
-    displayText: match[2],
-  }));
+  return Array.from(matches)
+    .map((match) => ({
+      nodeId: match[1],
+      displayText: match[2],
+    }))
+    .filter(
+      (item): item is { nodeId: string; displayText: string } =>
+        !!item.nodeId && !!item.displayText,
+    );
 }
 
 // Recursively extract all template references from a config object

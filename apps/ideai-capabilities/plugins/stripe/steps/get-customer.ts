@@ -128,7 +128,14 @@ async function stepHandler(
           error: `No customer found with email: ${input.email}`,
         };
       }
-      customer = data.data[0];
+      const firstCustomer = data.data[0];
+      if (!firstCustomer) {
+        return {
+          success: false,
+          error: `No customer found with email: ${input.email}`,
+        };
+      }
+      customer = firstCustomer;
     }
 
     if (!customer) {

@@ -58,7 +58,7 @@ export function decrypt(ciphertext: string): string {
   const key = getEncryptionKey();
   const parts = ciphertext.split(":");
 
-  if (parts.length !== 3) {
+  if (parts.length !== 3 || !parts[0] || !parts[1] || !parts[2]) {
     throw new Error("Invalid encrypted data format");
   }
 
@@ -145,13 +145,14 @@ export async function getIntegration(
     )
     .limit(1);
 
-  if (result.length === 0) {
+  if (result.length === 0 || !result[0]) {
     return null;
   }
 
+  const integration = result[0];
   return {
-    ...result[0],
-    config: decryptConfig(result[0].config as string) as IntegrationConfig,
+    ...integration,
+    config: decryptConfig(integration.config as string) as IntegrationConfig,
   };
 }
 
@@ -167,13 +168,14 @@ export async function getIntegrationById(
     .where(eq(integrations.id, integrationId))
     .limit(1);
 
-  if (result.length === 0) {
+  if (result.length === 0 || !result[0]) {
     return null;
   }
 
+  const integration = result[0];
   return {
-    ...result[0],
-    config: decryptConfig(result[0].config as string) as IntegrationConfig,
+    ...integration,
+    config: decryptConfig(integration.config as string) as IntegrationConfig,
   };
 }
 
@@ -197,6 +199,10 @@ export async function createIntegration(
       config: encryptedConfig,
     })
     .returning();
+
+  if (!result) {
+    throw new Error("Failed to create integration");
+  }
 
   return {
     ...result,

@@ -13,3 +13,4 @@
 
 export * from "./providers/vercel";
 export * from "./components/cloud-manager-ui";
+export * from "./components/database/database-manager";
