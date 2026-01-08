@@ -29,6 +29,14 @@ export type {
   IdeAISiteCardProps,
   SiteStatus,
 } from "./components/ideai-site-card";
+export { IdeAIAppCard } from "./components/ideai-app-card";
+export type {
+  IdeAIAppCardProps,
+  AppMetadata,
+  VercelProject,
+  VercelDomain,
+  EnhancedAppMetadata,
+} from "./components/ideai-app-card";
 export { IdeAIDiagnostics } from "./components/ideai-diagnostics";
 export type { IdeAIDiagnosticsProps } from "./components/ideai-diagnostics";
 export { IdeAIDeployment } from "./components/ideai-deployment";
