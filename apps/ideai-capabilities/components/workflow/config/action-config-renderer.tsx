@@ -94,11 +94,13 @@ function SelectField({ field, value, onChange, disabled }: FieldProps) {
         <SelectValue placeholder={field.placeholder} />
       </SelectTrigger>
       <SelectContent>
-        {field.options.map((option) => (
-          <SelectItem key={option.value} value={option.value}>
-            {option.label}
-          </SelectItem>
-        ))}
+        {field.options
+          .filter((option) => option.value !== "") // Filter out empty string values
+          .map((option) => (
+            <SelectItem key={option.value} value={option.value}>
+              {option.label}
+            </SelectItem>
+          ))}
       </SelectContent>
     </Select>
   );
