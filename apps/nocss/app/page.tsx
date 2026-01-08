@@ -24,7 +24,6 @@ export default function Home() {
       subtitle="No CSS - Pure HTML Browser Defaults"
       vercelProjectName={vercelProjectName}
       vercelOrgId={vercelOrgId}
-      headerActions={<IdeaIButton appName="nocss">Open alert</IdeaIButton>}
     >
       <div>
         <IdeAICSSSummary

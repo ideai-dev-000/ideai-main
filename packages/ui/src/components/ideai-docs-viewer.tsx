@@ -1,14 +1,14 @@
 /**
  * @fileoverview IdeaI Docs Viewer Component
- * 
+ *
  * @module IdeAIDocsViewer
  * @description
  * Embeds and filters IdeaI documentation from the docs app.
  * Can filter by category, path, or search term.
- * 
+ *
  * @example
  * ```tsx
- * <IdeAIDocsViewer 
+ * <IdeAIDocsViewer
  *   filter={{ category: "deployment" }}
  *   docsUrl="https://docs.myui.space"
  * />
@@ -42,7 +42,7 @@ export interface IdeAIDocsViewerProps {
 
 /**
  * IdeaI Docs Viewer Component
- * 
+ *
  * Embeds filtered documentation from the IdeaI docs app.
  */
 export function IdeAIDocsViewer({
@@ -59,10 +59,11 @@ export function IdeAIDocsViewer({
   // In development, use the docs app directly (port 3001)
   // In production, use the same origin (/docs) or provided docsUrl
   const [baseDocsUrl, setBaseDocsUrl] = useState<string>("/docs");
-  
+
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const url = docsUrl || 
+      const url =
+        docsUrl ||
         (process.env.NODE_ENV === "development"
           ? "http://localhost:3001"
           : `${window.location.origin}/docs`);
@@ -80,12 +81,13 @@ export function IdeAIDocsViewer({
   // If currentPath is empty, use root of docs app
   // If currentPath starts with /docs, use as-is
   // Otherwise, prepend /docs
-  const docsPath = currentPath === "" || currentPath === "/docs"
-    ? ""
-    : currentPath.startsWith("/docs")
-      ? currentPath
-      : `/docs${currentPath}`;
-  
+  const docsPath =
+    currentPath === "" || currentPath === "/docs"
+      ? ""
+      : currentPath.startsWith("/docs")
+        ? currentPath
+        : `/docs${currentPath}`;
+
   const iframeUrl = `${baseDocsUrl}${docsPath}${filterParams.toString() ? `?${filterParams.toString()}` : ""}`;
 
   useEffect(() => {
@@ -121,8 +123,10 @@ export function IdeAIDocsViewer({
     setLoading(false);
   }, [filter]);
 
-  const vercelProjectName = process.env.NEXT_PUBLIC_VERCEL_PROJECT_NAME || "web";
-  const vercelOrgId = process.env.NEXT_PUBLIC_VERCEL_ORG_ID || "team_vhjzlMi6CfNow0IfBXnv2Yn2";
+  const vercelProjectName =
+    process.env.NEXT_PUBLIC_VERCEL_PROJECT_NAME || "web";
+  const vercelOrgId =
+    process.env.NEXT_PUBLIC_VERCEL_ORG_ID || "team_vhjzlMi6CfNow0IfBXnv2Yn2";
 
   return (
     <IdeAIPageTemplate
@@ -130,7 +134,6 @@ export function IdeAIDocsViewer({
       subtitle="IdeaI Framework Documentation"
       vercelProjectName={vercelProjectName}
       vercelOrgId={vercelOrgId}
-      headerActions={<IdeaIButton appName="web">Open alert</IdeaIButton>}
     >
       <div className={styles.docsViewer}>
         {showNav && (
@@ -138,8 +141,8 @@ export function IdeAIDocsViewer({
             <h3>Documentation</h3>
             <ul>
               <li>
-                <a 
-                  href="#" 
+                <a
+                  href="#"
                   onClick={(e) => {
                     e.preventDefault();
                     setCurrentPath("/docs");
@@ -151,8 +154,8 @@ export function IdeAIDocsViewer({
                 </a>
               </li>
               <li>
-                <a 
-                  href="#" 
+                <a
+                  href="#"
                   onClick={(e) => {
                     e.preventDefault();
                     setCurrentPath("/deployment/overview");
@@ -164,8 +167,8 @@ export function IdeAIDocsViewer({
                 </a>
               </li>
               <li>
-                <a 
-                  href="#" 
+                <a
+                  href="#"
                   onClick={(e) => {
                     e.preventDefault();
                     setCurrentPath("/development/getting-started");
@@ -177,8 +180,8 @@ export function IdeAIDocsViewer({
                 </a>
               </li>
               <li>
-                <a 
-                  href="#" 
+                <a
+                  href="#"
                   onClick={(e) => {
                     e.preventDefault();
                     setCurrentPath("/setup/github-secrets");
@@ -192,7 +195,7 @@ export function IdeAIDocsViewer({
             </ul>
           </nav>
         )}
-        
+
         <div className={styles.content}>
           {loading ? (
             <div className={styles.loading}>

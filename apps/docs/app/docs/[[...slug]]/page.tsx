@@ -1,15 +1,15 @@
 /**
  * @fileoverview Dynamic documentation page handler with Contentlayer
- * 
+ *
  * @module DocsDynamicPage
  * @description
  * Handles all documentation routes dynamically using Contentlayer.
  * Provides type-safe content access, SEO metadata, and semantic URLs.
  * Uses shared page template to ensure consistent header/footer on all doc pages.
- * 
+ *
  * @example
  * Routes like /docs/getting-started, /docs/deployment/overview
- * 
+ *
  * @see https://contentlayer.dev/docs
  */
 
@@ -86,8 +86,10 @@ export default async function DocsPage({ params }: PageProps) {
     notFound();
   }
 
-  const vercelProjectName = process.env.NEXT_PUBLIC_VERCEL_PROJECT_NAME || "docs";
-  const vercelOrgId = process.env.NEXT_PUBLIC_VERCEL_ORG_ID || "team_vhjzlMi6CfNow0IfBXnv2Yn2";
+  const vercelProjectName =
+    process.env.NEXT_PUBLIC_VERCEL_PROJECT_NAME || "docs";
+  const vercelOrgId =
+    process.env.NEXT_PUBLIC_VERCEL_ORG_ID || "team_vhjzlMi6CfNow0IfBXnv2Yn2";
 
   return (
     <IdeAIPageTemplate
@@ -95,12 +97,14 @@ export default async function DocsPage({ params }: PageProps) {
       subtitle={doc.title}
       vercelProjectName={vercelProjectName}
       vercelOrgId={vercelOrgId}
-      headerActions={<IdeaIButton appName="docs">Open alert</IdeaIButton>}
     >
-      <article className="prose prose-lg dark:prose-invert max-w-none" style={{
-        fontFamily: 'var(--font-geist-sans)',
-        color: 'var(--foreground)'
-      }}>
+      <article
+        className="prose prose-lg dark:prose-invert max-w-none"
+        style={{
+          fontFamily: "var(--font-geist-sans)",
+          color: "var(--foreground)",
+        }}
+      >
         <ReactMarkdown
           remarkPlugins={[remarkGfm]}
           components={{

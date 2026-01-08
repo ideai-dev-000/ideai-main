@@ -32,7 +32,6 @@ export default function UniFramePage() {
       subtitle="UF Showcase - Runtime Framework Switching"
       vercelProjectName={vercelProjectName}
       vercelOrgId={vercelOrgId}
-      headerActions={<IdeaIButton appName="pico">Open alert</IdeaIButton>}
     >
       <div className="max-w-6xl mx-auto p-8">
         <div className="mb-8">

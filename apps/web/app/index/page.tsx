@@ -1,6 +1,6 @@
 /**
  * @fileoverview IdeaI Apps Index Page
- * 
+ *
  * @module AppsIndex
  * @description
  * Displays a card-based index of all IdeaI apps with their metadata and status.
@@ -62,14 +62,16 @@ export default function AppsIndex() {
     }
 
     loadApps();
-    
+
     // Refresh status every 5 seconds
     const interval = setInterval(loadApps, 5000);
     return () => clearInterval(interval);
   }, []);
 
-  const vercelProjectName = process.env.NEXT_PUBLIC_VERCEL_PROJECT_NAME || "web";
-  const vercelOrgId = process.env.NEXT_PUBLIC_VERCEL_ORG_ID || "team_vhjzlMi6CfNow0IfBXnv2Yn2";
+  const vercelProjectName =
+    process.env.NEXT_PUBLIC_VERCEL_PROJECT_NAME || "web";
+  const vercelOrgId =
+    process.env.NEXT_PUBLIC_VERCEL_ORG_ID || "team_vhjzlMi6CfNow0IfBXnv2Yn2";
 
   return (
     <IdeAIPageTemplate
@@ -77,13 +79,13 @@ export default function AppsIndex() {
       subtitle="Local Development Environment Overview"
       vercelProjectName={vercelProjectName}
       vercelOrgId={vercelOrgId}
-      headerActions={<IdeaIButton appName="web">Open alert</IdeaIButton>}
     >
       <div className={styles.index}>
         <div className={styles.header}>
           <h1>IdeaI Apps Index</h1>
           <p className={styles.subtitle}>
-            Overview of all apps in the IdeaI monorepo. Status updates every 5 seconds.
+            Overview of all apps in the IdeaI monorepo. Status updates every 5
+            seconds.
           </p>
         </div>
 
@@ -105,13 +107,21 @@ export default function AppsIndex() {
               <Card key={app.id} className={styles.card}>
                 <CardHeader className={styles.cardHeader}>
                   <div className={styles.cardHeaderTop}>
-                    <CardTitle className={styles.cardTitle}>{app.name}</CardTitle>
+                    <CardTitle className={styles.cardTitle}>
+                      {app.name}
+                    </CardTitle>
                     {app.status?.running ? (
-                      <Badge variant="default" className={styles.statusBadgeRunning}>
+                      <Badge
+                        variant="default"
+                        className={styles.statusBadgeRunning}
+                      >
                         🟢 Running
                       </Badge>
                     ) : (
-                      <Badge variant="destructive" className={styles.statusBadgeStopped}>
+                      <Badge
+                        variant="destructive"
+                        className={styles.statusBadgeStopped}
+                      >
                         🔴 Stopped
                       </Badge>
                     )}
@@ -142,7 +152,11 @@ export default function AppsIndex() {
                   {/* CSS Tags */}
                   <div className={styles.cssTags}>
                     {app.css.map((css) => (
-                      <Badge key={css} variant="outline" className={styles.cssTag}>
+                      <Badge
+                        key={css}
+                        variant="outline"
+                        className={styles.cssTag}
+                      >
                         {css}
                       </Badge>
                     ))}
@@ -152,7 +166,9 @@ export default function AppsIndex() {
                   <div className={styles.metadata}>
                     <div className={styles.metaItem}>
                       <span className={styles.metaLabel}>Port:</span>
-                      <span className={styles.metaValue}>{app.port || "N/A"}</span>
+                      <span className={styles.metaValue}>
+                        {app.port || "N/A"}
+                      </span>
                     </div>
                     <div className={styles.metaItem}>
                       <span className={styles.metaLabel}>Category:</span>

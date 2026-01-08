@@ -24,7 +24,6 @@ export default function Home() {
       subtitle="MVP.css Only - Semantic HTML Styling"
       vercelProjectName={vercelProjectName}
       vercelOrgId={vercelOrgId}
-      headerActions={<IdeaIButton appName="mvp">Open alert</IdeaIButton>}
     >
       <div>
         <IdeAICSSSummary

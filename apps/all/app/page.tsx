@@ -36,7 +36,6 @@ export default function Home() {
       subtitle="Complete HTML5 Test Page and Component Showcase"
       vercelProjectName={vercelProjectName}
       vercelOrgId={vercelOrgId}
-      headerActions={<IdeaIButton appName="all">Open alert</IdeaIButton>}
     >
       <div className={styles.page}>
         <div className={styles.main}>

@@ -84,6 +84,7 @@ export const IdeaIHeader = ({
   return (
     <>
       {/* Extra Navigation Bar - Appears above header when menu is open */}
+      {/* COMMENTED OUT: Bounce-down dropdown menu
       {isExtraNavOpen && (
         <nav
           className={`ideai-header-extra ${fullWidth ? "ideai-header-extra--full-width" : ""}`}
@@ -107,6 +108,7 @@ export const IdeaIHeader = ({
           </div>
         </nav>
       )}
+      */}
 
       {/* Main Header */}
       <header
@@ -177,7 +179,8 @@ export const IdeaIHeader = ({
               ))}
             </ul>
 
-            {/* Bounce-down Menu Button */}
+            {/* Bounce-down Menu Button - REMOVED */}
+            {/* 
             <button
               type="button"
               className="ideai-header__menu-toggle"
@@ -190,6 +193,7 @@ export const IdeaIHeader = ({
               </span>
               <span className="ideai-header__menu-text">More</span>
             </button>
+            */}
           </nav>
 
           {/* Right: Theme Toggle + Mobile Nav + Accounts */}

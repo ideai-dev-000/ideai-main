@@ -1,123 +1,230 @@
-/**
- * @fileoverview Styles for the main landing page
- * 
- * @module WebAppPageStyles
- * @description
- * CSS module for the home page component.
- * Uses centralized IdeaI CSS from @repo/ui/styles/ideai.css.
- * All shared styles use standard Tailwind classes for perfect consistency.
- */
-
-.page {
-  @apply grid items-center justify-items-center min-h-screen p-20 gap-16;
-  grid-template-rows: 20px 1fr 20px;
-  font-synthesis: none;
-  width: 100%; /* Explicit width for consistency */
-  max-width: 100%; /* Ensure full width */
+.index {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem;
 }
 
-.main {
-  @apply flex flex-col gap-8 items-center text-center;
-  @apply max-w-[600px] w-full;
-  grid-row-start: 2;
-  width: 100%; /* Explicit width for consistency */
-  max-width: 600px; /* Explicit max-width for consistency */
+.header {
+  margin-bottom: 2rem;
+  text-align: center;
 }
 
-/* Button centering handled by ideai-header__actions */
-
-.main h1 {
-  font-family: var(--font-geist-sans);
-  font-size: clamp(2.5rem, 5vw, 4rem);
+.header h1 {
+  font-size: 2.5rem;
   font-weight: 700;
-  line-height: 1.1;
-  letter-spacing: -0.02em;
-  @apply m-0 text-slate-900 dark:text-slate-50;
+  margin: 0 0 0.5rem 0;
+  color: rgb(15 23 42); /* slate-900 */
 }
 
-.main p {
-  font-family: var(--font-geist-sans);
-  font-size: clamp(1rem, 2vw, 1.25rem);
-  line-height: 1.6;
-  opacity: 0.7;
-  @apply m-0 text-slate-900 dark:text-slate-50;
-}
-
-.main ol {
-  font-family: var(--font-geist-mono);
-  padding-left: 0;
+.subtitle {
+  font-size: 1rem;
+  color: rgb(100 116 139); /* slate-500 */
   margin: 0;
-  font-size: 14px;
-  line-height: 24px;
-  letter-spacing: -0.01em;
-  list-style-position: inside;
 }
 
-.main li:not(:last-of-type) {
-  margin-bottom: 8px;
+.loading,
+.error {
+  text-align: center;
+  padding: 2rem;
+  color: rgb(100 116 139);
 }
 
-.main code {
-  font-family: inherit;
-  background: rgba(0, 0, 0, 0.05);
-  padding: 2px 4px;
-  border-radius: 4px;
+.error {
+  color: rgb(239 68 68); /* red-500 */
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+.card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.cardHeader {
+  padding: 0.75rem;
+  padding-bottom: 0.5rem;
+}
+
+.cardHeaderTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.cardTitle {
+  font-size: 1rem;
   font-weight: 600;
+  margin: 0;
+  line-height: 1.2;
+  flex: 1;
 }
 
-@media (prefers-color-scheme: dark) {
-  .main code {
-    background: rgba(255, 255, 255, 0.06);
-  }
-}
-
-/* Button styles now in centralized ideai-button-secondary class */
-
-.footer {
-  font-family: var(--font-geist-sans);
-  grid-row-start: 3;
-  display: flex;
-  gap: 24px;
-}
-
-.footer a {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.footer img {
+.statusBadgeRunning,
+.statusBadgeStopped {
+  font-size: 0.625rem;
+  padding: 0.125rem 0.5rem;
   flex-shrink: 0;
 }
 
-/* Hover states handled by centralized CSS */
+.description {
+  font-size: 0.75rem;
+  margin: 0;
+  line-height: 1.4;
+  color: rgb(100 116 139); /* slate-500 */
+}
 
-/* Responsive - IDENTICAL across all apps */
-@media (max-width: 600px) {
-  .page {
-    @apply p-8;
-    padding-bottom: 80px;
-  }
+.cardContent {
+  padding: 0.75rem;
+  padding-top: 0.5rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
 
-  .main {
-    align-items: center;
-  }
+/* Iframe Container - Scaled Down Preview */
+.iframeContainer {
+  width: 100%;
+  height: 400px;
+  border: 1px solid rgb(226 232 240); /* slate-200 */
+  border-radius: 0.375rem;
+  overflow: hidden;
+  background: white;
+  position: relative;
+  margin-bottom: 0.5rem;
+  /* Improve rendering quality */
+  isolation: isolate;
+  /* Center the scaled iframe */
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  /* Ensure proper stacking context */
+  z-index: 0;
+}
 
-  .main ol {
-    text-align: center;
-  }
+.previewIframe {
+  /* Use desktop viewport size for proper CSS framework rendering */
+  /* 1200px is a standard desktop width that works well with Bootstrap, Tailwind, etc. */
+  /* This ensures media queries and viewport-based CSS work correctly */
+  width: 1200px;
+  height: 800px;
+  border: none;
+  /* Scale to fit container - 33.3% scale fits 800px height into ~267px */
+  /* Using transform preserves the internal viewport size for CSS calculations */
+  transform: scale(0.333);
+  transform-origin: top center;
+  pointer-events: none;
+  /* Ensure proper positioning */
+  position: relative;
+  /* Improve rendering quality */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  /* Ensure smooth rendering */
+  image-rendering: auto;
+  /* Force hardware acceleration for smooth scaling */
+  will-change: transform;
+}
 
-  /* Button responsive handled by centralized CSS */
+.iframePlaceholder {
+  width: 100%;
+  height: 400px;
+  border: 1px solid rgb(226 232 240); /* slate-200 */
+  border-radius: 0.375rem;
+  background: rgb(248 250 252); /* slate-50 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgb(148 163 184); /* slate-400 */
+  font-size: 0.75rem;
+  margin-bottom: 0.5rem;
+}
 
-  .footer {
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
-  }
+.cssTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+}
+
+.cssTag {
+  font-size: 0.625rem;
+  padding: 0.125rem 0.5rem;
+  height: auto;
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+}
+
+.metadata {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.75rem;
+}
+
+.metaItem {
+  display: flex;
+  gap: 0.5rem;
+  color: rgb(71 85 105); /* slate-600 */
+}
+
+.metaLabel {
+  font-weight: 600;
+  color: rgb(15 23 42); /* slate-900 */
+  min-width: fit-content;
+}
+
+.metaValue {
+  color: rgb(100 116 139); /* slate-500 */
+}
+
+.cardFooter {
+  padding: 0.75rem;
+  padding-top: 0.5rem;
+}
+
+.openButton {
+  width: 100%;
+  font-size: 0.75rem;
+  height: auto;
+  padding: 0.375rem 0.75rem;
 }
 
 @media (prefers-color-scheme: dark) {
-  .logo {
-    filter: invert();
+  .header h1 {
+    color: rgb(248 250 252); /* slate-50 */
+  }
+
+  .subtitle {
+    color: rgb(148 163 184); /* slate-400 */
+  }
+
+  .description {
+    color: rgb(148 163 184); /* slate-400 */
+  }
+
+  .iframeContainer {
+    border-color: rgb(51 65 85); /* slate-700 */
+    background: rgb(15 23 42); /* slate-900 */
+  }
+
+  .iframePlaceholder {
+    border-color: rgb(51 65 85); /* slate-700 */
+    background: rgb(30 41 59); /* slate-800 */
+    color: rgb(148 163 184); /* slate-400 */
+  }
+
+  .metaLabel {
+    color: rgb(248 250 252); /* slate-50 */
+  }
+
+  .metaValue {
+    color: rgb(203 213 225); /* slate-300 */
   }
 }

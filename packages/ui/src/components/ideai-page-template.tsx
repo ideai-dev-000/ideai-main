@@ -110,16 +110,14 @@ export const IdeAIPageTemplate = ({
               ? []
               : [
                   { label: "Home", href: "/" },
-                  { label: "About", href: "/about" },
+                  { label: "MetaFramework", href: "/metaframework" },
                   { label: "Documentation", href: "/docs" },
                   // Cloud Manager - DEVELOPMENT ONLY (never in production for security)
                   ...(process.env.NODE_ENV === "development"
                     ? [{ label: "Cloud Manager", href: "/cloud" }]
                     : []),
-                  { label: "Animations", href: "/animations" },
-                  { label: "Drawings", href: "/drawings" },
+                  { label: "FX", href: "/fx" },
                   { label: "Page Templates", href: "/page-templates" },
-                  { label: "Apps", href: "/index" },
                 ]
           }
           extraNav={

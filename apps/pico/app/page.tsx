@@ -24,7 +24,6 @@ export default function Home() {
       subtitle="Pico CSS Only - Semantic HTML Styling"
       vercelProjectName={vercelProjectName}
       vercelOrgId={vercelOrgId}
-      headerActions={<IdeaIButton appName="pico">Open alert</IdeaIButton>}
     >
       <div>
         <IdeAICSSSummary

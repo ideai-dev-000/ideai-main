@@ -34,9 +34,6 @@ export default function FrameworksIndex() {
       subtitle="Unified CSS Framework Showcase"
       vercelProjectName={vercelProjectName}
       vercelOrgId={vercelOrgId}
-      headerActions={
-        <IdeaIButton appName="ideai-frameworks">Open alert</IdeaIButton>
-      }
     >
       <div className="max-w-6xl mx-auto p-8">
         <div className="mb-8">

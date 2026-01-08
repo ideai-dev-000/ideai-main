@@ -59,9 +59,6 @@ export default function FrameworkPage({ params }: PageProps) {
       subtitle={`${framework.name} - ${framework.cssType} Framework`}
       vercelProjectName={vercelProjectName}
       vercelOrgId={vercelOrgId}
-      headerActions={
-        <IdeaIButton appName="ideai-frameworks">Open alert</IdeaIButton>
-      }
     >
       <div>
         <IdeAICSSSummary
