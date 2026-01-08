@@ -13,6 +13,7 @@ import { useAtom } from "jotai";
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { api } from "@/lib/api-client";
+import { useSession } from "@/lib/auth-client";
 import {
   currentWorkflowIdAtom,
   currentWorkflowNameAtom,
@@ -21,12 +22,25 @@ import type { NavMenuItem } from "./nav-item-with-menu";
 
 export function useWorkflowNav() {
   const router = useRouter();
+  const { data: session } = useSession();
   const [currentWorkflowId] = useAtom(currentWorkflowIdAtom);
   const [workflowName] = useAtom(currentWorkflowNameAtom);
   const [workflows, setWorkflows] = useState<NavMenuItem[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
+  // Check if user is authenticated
+  const isAuthenticated =
+    session?.user &&
+    session.user.name !== "Anonymous" &&
+    !session.user.email?.startsWith("temp-");
+
   const loadWorkflows = useCallback(async () => {
+    // Don't try to load if not authenticated
+    if (!isAuthenticated) {
+      setWorkflows([]);
+      return;
+    }
+
     setIsLoading(true);
     try {
       const allWorkflows = await api.workflow.getAll();
@@ -41,16 +55,22 @@ export function useWorkflowNav() {
       setWorkflows(filtered);
     } catch (error) {
       console.error("Failed to load workflows:", error);
-      setWorkflows([]);
+      // Don't clear workflows on error - keep existing ones
+      // This prevents clearing the list if API temporarily fails
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [isAuthenticated]);
 
-  // Load workflows on mount
+  // Load workflows once on mount and when authentication status changes
   useEffect(() => {
-    loadWorkflows();
-  }, [loadWorkflows]);
+    if (isAuthenticated) {
+      loadWorkflows();
+    } else {
+      setWorkflows([]);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAuthenticated]); // Reload when auth status changes
 
   return {
     workflows,

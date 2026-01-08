@@ -527,12 +527,22 @@ const WorkflowEditor = ({ params }: WorkflowPageProps) => {
     }
 
     // User signed in - restore last active workflow if available
+    // Only restore if we're on a generic page (not already on a specific workflow)
+    // This prevents redirecting when user explicitly navigates to a different workflow
     if (!prevSession?.user && session?.user) {
       const lastWorkflowId = localStorage.getItem("lastActiveWorkflowId");
-      if (lastWorkflowId && lastWorkflowId !== workflowId) {
+      // Only restore if we're not already on a specific workflow page
+      // This allows users to navigate to different workflows without being redirected back
+      if (
+        lastWorkflowId &&
+        lastWorkflowId !== workflowId &&
+        !workflowId // Only restore if workflowId is empty/undefined (not on specific workflow page)
+      ) {
         // Redirect to last active workflow
         window.location.href = `/workflow/workflows/${lastWorkflowId}`;
       }
+      // Clear the stored workflow ID after checking to prevent future redirects
+      localStorage.removeItem("lastActiveWorkflowId");
     }
   }, [
     session,

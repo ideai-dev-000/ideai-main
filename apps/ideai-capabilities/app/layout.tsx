@@ -18,6 +18,7 @@ import { OverlayProvider } from "@/components/overlays/overlay-provider";
 import { Toaster } from "@/components/ui/sonner";
 import { PersistentCanvas } from "@/components/workflow/persistent-canvas";
 import { CapabilitiesHeader } from "@/components/capabilities-header";
+import { IdeAISideMenuWrapper } from "@/components/ideai-side-menu-wrapper";
 import { mono, sans } from "@/lib/fonts";
 import { cn } from "@/lib/utils";
 import "./globals.css";
@@ -38,8 +39,14 @@ function LayoutContent({ children }: { children: ReactNode }) {
         <div className="pointer-events-auto">
           <CapabilitiesHeader />
         </div>
+        {/* IdeaI Side Menu - needs pointer events */}
+        {/* Desktop sidebar is fixed, mobile trigger is part of component */}
+        <div className="pointer-events-auto">
+          <IdeAISideMenuWrapper />
+        </div>
         {/* Main content - allow clicks through to canvas */}
-        <main className="pointer-events-none min-h-screen pt-16">
+        {/* Add left padding on desktop to account for sidebar */}
+        <main className="pointer-events-none min-h-screen pt-16 md:pl-[280px]">
           {children}
         </main>
       </div>
