@@ -17,7 +17,7 @@
 
 import { useEffect, useState } from "react";
 import { IdeAIPageTemplate } from "@repo/ui/components/ideai-page-template";
-import { IdeAIAppCard, type EnhancedAppMetadata } from "@repo/ui";
+import { IdeAIAppCard, IdeAIDevMenu, type EnhancedAppMetadata } from "@repo/ui";
 import styles from "./page.module.css";
 
 export default function Home() {
@@ -26,22 +26,36 @@ export default function Home() {
   const [error, setError] = useState<string | null>(null);
   const isDevelopment = process.env.NODE_ENV === "development";
 
-  useEffect(() => {
-    async function loadApps() {
-      try {
-        const response = await fetch("/api/apps-enhanced");
-        if (!response.ok) {
-          throw new Error("Failed to load apps");
-        }
-        const data = await response.json();
-        setApps(data);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : "Unknown error");
-      } finally {
-        setLoading(false);
+  const loadApps = async () => {
+    try {
+      setError(null);
+      const response = await fetch("/api/apps-enhanced");
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(
+          errorData.error ||
+            errorData.details ||
+            `HTTP ${response.status}: Failed to load apps`,
+        );
       }
-    }
+      const data = await response.json();
 
+      // Handle error response format
+      if (data.error) {
+        throw new Error(data.error + (data.details ? `: ${data.details}` : ""));
+      }
+
+      setApps(Array.isArray(data) ? data : []);
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : "Unknown error";
+      setError(errorMessage);
+      console.error("Failed to load apps:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
     loadApps();
 
     // Refresh status every 5 seconds
@@ -64,10 +78,13 @@ export default function Home() {
       <div className={styles.index}>
         <div className={styles.header}>
           <h1>IdeaI Apps Index</h1>
-          <p className={styles.subtitle}>
-            Overview of all apps in the IdeaI monorepo. Status updates every 5
-            seconds.
-          </p>
+          <div className="flex items-center justify-between gap-4 mt-4 mb-2">
+            <p className={styles.subtitle}>
+              Overview of all apps in the IdeaI monorepo. Status updates every 5
+              seconds.
+            </p>
+            <IdeAIDevMenu apps={apps} onRefresh={loadApps} />
+          </div>
         </div>
 
         {loading && (

@@ -37,6 +37,8 @@ export type {
   VercelDomain,
   EnhancedAppMetadata,
 } from "./components/ideai-app-card";
+export { IdeAIDevMenu } from "./components/ideai-dev-menu";
+export type { IdeAIDevMenuProps } from "./components/ideai-dev-menu";
 export { IdeAIDiagnostics } from "./components/ideai-diagnostics";
 export type { IdeAIDiagnosticsProps } from "./components/ideai-diagnostics";
 export { IdeAIDeployment } from "./components/ideai-deployment";

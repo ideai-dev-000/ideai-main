@@ -7,7 +7,6 @@
 
 .header {
   margin-bottom: 2rem;
-  text-align: center;
 }
 
 .header h1 {
@@ -15,12 +14,14 @@
   font-weight: 700;
   margin: 0 0 0.5rem 0;
   color: rgb(15 23 42); /* slate-900 */
+  text-align: center;
 }
 
 .subtitle {
   font-size: 1rem;
   color: rgb(100 116 139); /* slate-500 */
   margin: 0;
+  flex: 1;
 }
 
 .loading,
