@@ -154,6 +154,7 @@ export const IdeAIPageTemplate = ({
       >
         {/* Main content - ALWAYS shown (useful for embedding) */}
         <main
+          className="ideai-main-content"
           style={{
             flex: 1,
             padding: "20px",

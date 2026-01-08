@@ -573,15 +573,21 @@
   transition: padding 0.3s ease, box-shadow 0.3s ease;
 }
 
+/* Add padding-top to main content when header is fixed to prevent content from going under header */
+.ideai-main-content {
+  padding-top: 80px !important;
+}
+
 .ideai-header--full-width {
   width: 100vw;
   max-width: 100%;
 }
 
 .ideai-header--sticky {
-  position: -webkit-sticky !important;
-  position: sticky !important;
+  position: fixed !important;
   top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
   z-index: 100 !important;
   background-color: white !important;
   will-change: transform;
@@ -948,18 +954,24 @@
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   gap: 2rem;
-  align-items: start;
+  align-items: center;
 }
 
 .ideai-footer__column {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  justify-content: center;
 }
 
 .ideai-footer__column--right {
   align-items: flex-end;
   text-align: right;
+  justify-content: center;
+}
+
+.ideai-footer__column--left {
+  justify-content: center;
 }
 
 .ideai-footer__column-title {
@@ -1014,6 +1026,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  height: 100%;
 }
 
 .ideai-footer__copyright {
