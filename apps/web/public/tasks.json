@@ -1,0 +1,759 @@
+{
+  "tasks": [
+    {
+      "id": "unified-mode-packages",
+      "title": "Extract Capabilities to Packages for True Unified Mode",
+      "description": "Transform IdeaI from separate apps into true shared codebase where capabilities are packages",
+      "priority": "high",
+      "status": "pending",
+      "category": "Architecture",
+      "tags": ["unified-mode", "packages", "shared-codebase"],
+      "markdown": "### Goal\nTransform IdeaI into true shared codebase:\n- Extract workflow builder to @repo/workflow package\n- Extract lead agent to @repo/lead-agent package\n- Extract app builder to @repo/app-builder package\n- All apps become thin wrappers using shared packages\n\n### Implementation Steps\n1. Create @repo/workflow package from ideai-workflow app\n2. Create @repo/lead-agent package from lead-processing-agent app\n3. Create @repo/app-builder package from ideai-builder app\n4. Refactor apps to use packages\n5. Implement true unified mode (remove iframes/rewrites)\n6. Update build system for component imports\n\n**Estimated**: 13-19 days"
+    },
+    {
+      "id": "submodule-deployment",
+      "title": "Submodule Deployment Strategy Decision",
+      "description": "Decide how submodules should be deployed to Vercel",
+      "priority": "high",
+      "status": "pending",
+      "category": "Architecture",
+      "tags": ["submodules", "deployment", "vercel"]
+    },
+    {
+      "id": "submodule-development",
+      "title": "Submodule Development Workflow Research",
+      "description": "Research proper submodule development workflow for IdeaI alignment",
+      "priority": "high",
+      "status": "pending",
+      "category": "Architecture",
+      "tags": ["submodules", "development", "v0"]
+    },
+    {
+      "id": "build-memory-monitoring",
+      "title": "Real-time Memory Monitoring in Build UI",
+      "priority": "medium",
+      "status": "pending",
+      "category": "Build System",
+      "tags": ["build", "monitoring", "ui"]
+    },
+    {
+      "id": "build-history",
+      "title": "Build History Tracking and Reporting",
+      "priority": "medium",
+      "status": "pending",
+      "category": "Build System",
+      "tags": ["build", "tracking", "history"]
+    },
+    {
+      "id": "auto-dependency-sync",
+      "title": "Automatic Dependency Sync on Build",
+      "priority": "medium",
+      "status": "pending",
+      "category": "Build System",
+      "tags": ["build", "dependencies", "automation"]
+    },
+    {
+      "id": "auto-submodule-updates",
+      "title": "Automatic Submodule Updates Before Build",
+      "priority": "medium",
+      "status": "pending",
+      "category": "Build System",
+      "tags": ["build", "submodules", "automation"]
+    },
+    {
+      "id": "build-docs-verification",
+      "title": "Enhanced Documentation Verification (Code Snippet Testing)",
+      "priority": "medium",
+      "status": "pending",
+      "category": "Build System",
+      "tags": ["build", "documentation", "verification"]
+    },
+    {
+      "id": "build-rules-ui",
+      "title": "Rules Management UI Integration",
+      "priority": "medium",
+      "status": "pending",
+      "category": "Build System",
+      "tags": ["build", "rules", "ui"]
+    },
+    {
+      "id": "build-execute-output",
+      "title": "Execute All Build Commands with Output",
+      "priority": "medium",
+      "status": "pending",
+      "category": "Build System",
+      "tags": ["build", "commands", "output"]
+    },
+    {
+      "id": "build-status-realtime",
+      "title": "Show Build Status in Real-time",
+      "priority": "medium",
+      "status": "pending",
+      "category": "Build System",
+      "tags": ["build", "status", "realtime"]
+    },
+    {
+      "id": "build-test-results",
+      "title": "Show Test Results",
+      "priority": "medium",
+      "status": "pending",
+      "category": "Build System",
+      "tags": ["build", "testing", "results"]
+    },
+    {
+      "id": "build-docs-results",
+      "title": "Documentation Verification Results",
+      "priority": "medium",
+      "status": "pending",
+      "category": "Build System",
+      "tags": ["build", "documentation", "verification"]
+    },
+    {
+      "id": "centralized-cache",
+      "title": "Implement Centralized Cache Management",
+      "description": "Move from per-app caches to centralized .cache/ location",
+      "priority": "medium",
+      "status": "pending",
+      "category": "Infrastructure",
+      "tags": ["cache", "performance", "cleanup"],
+      "markdown": "### Goal\nCreate centralized cache location to improve disk space management.\n\n### Current State\n- Each app has .next/ cache (200MB+ per app)\n- 13 apps × 200MB = potential 2.6GB+ cache\n- No centralized cleanup mechanism\n\n### Proposed Solution\n- Create .cache/ at repo root\n- Configure Next.js/Turbopack to use centralized cache\n- Update cleanup scripts\n- Shared cache across apps (faster builds)\n\n**Estimated**: 4-6 hours"
+    },
+    {
+      "id": "v0-components-review",
+      "title": "Review and Apply IdeaI Standards to v0 Components",
+      "description": "Review all v0 components and ensure they meet IdeaI standards",
+      "priority": "medium",
+      "status": "pending",
+      "category": "UI Components",
+      "tags": ["v0", "standards", "review"],
+      "markdown": "### Components Needing Review\n- ideai-icon.tsx\n- kute-logo.tsx\n- motion-one-logo.tsx\n- react-spring-logo.tsx\n- particles-logo.tsx\n- vivus-logo.tsx\n- svg-selector.tsx\n- animation-controls.tsx\n- rocket-icon.tsx\n- music-icon.tsx\n- cat-icon.tsx\n- brain-icon.tsx\n- geometric-icon.tsx\n- circle-icon.tsx\n- framer-motion-logo.tsx\n- logo-preview.tsx\n\nAll have @todo: Review and apply IdeaI standards"
+    },
+    {
+      "id": "uf-button-enhancements",
+      "title": "UF Button: Add icon support, loading spinner, size variants",
+      "priority": "low",
+      "status": "pending",
+      "category": "UniFrame Components",
+      "tags": ["uniframe", "button", "enhancements"]
+    },
+    {
+      "id": "uf-badge-variants",
+      "title": "UF Badge: Add color variants, size variants, dismissible option",
+      "priority": "low",
+      "status": "pending",
+      "category": "UniFrame Components",
+      "tags": ["uniframe", "badge", "enhancements"]
+    },
+    {
+      "id": "uf-form-field-types",
+      "title": "UF Form Field: Add textarea, select, checkbox/radio group support",
+      "priority": "low",
+      "status": "pending",
+      "category": "UniFrame Components",
+      "tags": ["uniframe", "form", "enhancements"]
+    },
+    {
+      "id": "uf-input-enhancements",
+      "title": "UF Input: Add validation states, size variants, icon support",
+      "priority": "low",
+      "status": "pending",
+      "category": "UniFrame Components",
+      "tags": ["uniframe", "input", "enhancements"]
+    },
+    {
+      "id": "uf-card-layouts",
+      "title": "UF Card: Add custom layouts, framework transitions",
+      "priority": "low",
+      "status": "pending",
+      "category": "UniFrame Components",
+      "tags": ["uniframe", "card", "enhancements"]
+    },
+    {
+      "id": "uf-header-enhancements",
+      "title": "UF Header: Add custom layouts, icon support",
+      "priority": "low",
+      "status": "pending",
+      "category": "UniFrame Components",
+      "tags": ["uniframe", "header", "enhancements"]
+    },
+    {
+      "id": "uf-body-enhancements",
+      "title": "UF Body: Add custom layouts, grid/flex options",
+      "priority": "low",
+      "status": "pending",
+      "category": "UniFrame Components",
+      "tags": ["uniframe", "body", "enhancements"]
+    },
+    {
+      "id": "uf-footer-enhancements",
+      "title": "UF Footer: Add footer actions, timestamp/date display",
+      "priority": "low",
+      "status": "pending",
+      "category": "UniFrame Components",
+      "tags": ["uniframe", "footer", "enhancements"]
+    },
+    {
+      "id": "uf-framework-transitions",
+      "title": "UF: Add framework transition animations",
+      "priority": "low",
+      "status": "pending",
+      "category": "UniFrame Components",
+      "tags": ["uniframe", "animations", "transitions"]
+    },
+    {
+      "id": "uf-framework-theme",
+      "title": "UF: Add framework-specific theme customization",
+      "priority": "low",
+      "status": "pending",
+      "category": "UniFrame Components",
+      "tags": ["uniframe", "theming", "frameworks"]
+    },
+    {
+      "id": "uf-framework-comparison",
+      "title": "UF: Add framework comparison mode",
+      "priority": "low",
+      "status": "pending",
+      "category": "UniFrame Components",
+      "tags": ["uniframe", "comparison", "frameworks"]
+    },
+    {
+      "id": "docs-inline-help",
+      "title": "Add Inline Help for Each Action",
+      "priority": "medium",
+      "status": "pending",
+      "category": "Documentation",
+      "tags": ["documentation", "help", "ui"]
+    },
+    {
+      "id": "docs-tooltips",
+      "title": "Add Tooltips for Options",
+      "priority": "medium",
+      "status": "pending",
+      "category": "Documentation",
+      "tags": ["documentation", "tooltips", "ui"]
+    },
+    {
+      "id": "docs-context-help",
+      "title": "Add Context-Sensitive Help",
+      "priority": "low",
+      "status": "pending",
+      "category": "Documentation",
+      "tags": ["documentation", "help", "ui"]
+    },
+    {
+      "id": "docs-video-tutorials",
+      "title": "Video Tutorials (Future)",
+      "priority": "low",
+      "status": "pending",
+      "category": "Documentation",
+      "tags": ["documentation", "video", "future"]
+    },
+    {
+      "id": "perf-ui-rendering",
+      "title": "Optimize UI Rendering",
+      "priority": "medium",
+      "status": "pending",
+      "category": "Performance",
+      "tags": ["performance", "rendering", "optimization"]
+    },
+    {
+      "id": "perf-lazy-load",
+      "title": "Lazy Load Modules",
+      "priority": "medium",
+      "status": "pending",
+      "category": "Performance",
+      "tags": ["performance", "lazy-loading", "optimization"]
+    },
+    {
+      "id": "perf-cache-status",
+      "title": "Cache Status Data",
+      "priority": "medium",
+      "status": "pending",
+      "category": "Performance",
+      "tags": ["performance", "caching", "optimization"]
+    },
+    {
+      "id": "perf-reduce-memory",
+      "title": "Reduce Memory Usage",
+      "priority": "medium",
+      "status": "pending",
+      "category": "Performance",
+      "tags": ["performance", "memory", "optimization"]
+    },
+    {
+      "id": "test-comprehensive",
+      "title": "Comprehensive Test Suite",
+      "priority": "low",
+      "status": "pending",
+      "category": "Testing",
+      "tags": ["testing", "coverage", "quality"]
+    },
+    {
+      "id": "test-integration",
+      "title": "Integration Tests",
+      "priority": "low",
+      "status": "pending",
+      "category": "Testing",
+      "tags": ["testing", "integration", "quality"]
+    },
+    {
+      "id": "test-e2e",
+      "title": "E2E Tests for UI",
+      "priority": "low",
+      "status": "pending",
+      "category": "Testing",
+      "tags": ["testing", "e2e", "ui"]
+    },
+    {
+      "id": "test-performance",
+      "title": "Performance Benchmarks",
+      "priority": "low",
+      "status": "pending",
+      "category": "Testing",
+      "tags": ["testing", "performance", "benchmarks"]
+    },
+    {
+      "id": "eslint-warning",
+      "title": "Fix Remaining ESLint Warning (1 false positive)",
+      "description": "1 warning in ideai-icon.tsx - prop-types false positive",
+      "priority": "low",
+      "status": "pending",
+      "category": "Code Quality",
+      "tags": ["eslint", "typescript", "cleanup"]
+    },
+    {
+      "id": "boot-log-viewer",
+      "title": "Log Viewer Integration in UI",
+      "priority": "medium",
+      "status": "pending",
+      "category": "Boot System",
+      "tags": ["boot", "logs", "ui"]
+    },
+    {
+      "id": "boot-health-monitoring",
+      "title": "Health Monitoring Display",
+      "priority": "medium",
+      "status": "pending",
+      "category": "Boot System",
+      "tags": ["boot", "monitoring", "health"]
+    },
+    {
+      "id": "boot-memory-monitoring",
+      "title": "Memory Monitoring Display",
+      "priority": "medium",
+      "status": "pending",
+      "category": "Boot System",
+      "tags": ["boot", "monitoring", "memory"]
+    },
+    {
+      "id": "boot-parallel",
+      "title": "Parallel Boot Option for Faster Startup",
+      "priority": "low",
+      "status": "pending",
+      "category": "Boot System",
+      "tags": ["boot", "performance", "parallel"]
+    },
+    {
+      "id": "boot-config-file",
+      "title": "Boot Configuration File Support",
+      "priority": "low",
+      "status": "pending",
+      "category": "Boot System",
+      "tags": ["boot", "configuration"]
+    },
+    {
+      "id": "boot-realtime-status",
+      "title": "Real-time Server Status",
+      "priority": "medium",
+      "status": "pending",
+      "category": "Boot System",
+      "tags": ["boot", "status", "realtime"]
+    },
+    {
+      "id": "boot-progress-tracking",
+      "title": "Boot Progress Tracking",
+      "priority": "low",
+      "status": "pending",
+      "category": "Boot System",
+      "tags": ["boot", "progress", "tracking"]
+    },
+    {
+      "id": "boot-health-check",
+      "title": "Health Check Display",
+      "priority": "low",
+      "status": "pending",
+      "category": "Boot System",
+      "tags": ["boot", "health", "monitoring"]
+    },
+    {
+      "id": "dev-deployment-tracking",
+      "title": "Deployment Tracking and History",
+      "priority": "medium",
+      "status": "pending",
+      "category": "Develop Tools",
+      "tags": ["deployment", "tracking", "history"]
+    },
+    {
+      "id": "dev-aws-integration",
+      "title": "AWS Integration (Future)",
+      "priority": "low",
+      "status": "pending",
+      "category": "Develop Tools",
+      "tags": ["aws", "integration", "future"]
+    },
+    {
+      "id": "dev-docker-integration",
+      "title": "Docker Integration (Future)",
+      "priority": "low",
+      "status": "pending",
+      "category": "Develop Tools",
+      "tags": ["docker", "integration", "future"]
+    },
+    {
+      "id": "dev-vercel-enhancements",
+      "title": "Enhanced Vercel Project Management",
+      "priority": "medium",
+      "status": "pending",
+      "category": "Develop Tools",
+      "tags": ["vercel", "management", "ui"]
+    },
+    {
+      "id": "dev-subdomain-verification",
+      "title": "Automated Subdomain Verification",
+      "priority": "medium",
+      "status": "pending",
+      "category": "Develop Tools",
+      "tags": ["vercel", "subdomain", "automation"]
+    },
+    {
+      "id": "dev-vercel-linking-ui",
+      "title": "Vercel Project Linking UI",
+      "priority": "medium",
+      "status": "pending",
+      "category": "Develop Tools",
+      "tags": ["vercel", "linking", "ui"]
+    },
+    {
+      "id": "dev-secrets-ui",
+      "title": "Secrets Management UI",
+      "priority": "medium",
+      "status": "pending",
+      "category": "Develop Tools",
+      "tags": ["vercel", "secrets", "ui"]
+    },
+    {
+      "id": "dev-subdomain-wizard",
+      "title": "Subdomain Setup Wizard",
+      "priority": "medium",
+      "status": "pending",
+      "category": "Develop Tools",
+      "tags": ["vercel", "subdomain", "wizard"]
+    },
+    {
+      "id": "dev-sync-status",
+      "title": "Sync Status Display",
+      "priority": "low",
+      "status": "pending",
+      "category": "Develop Tools",
+      "tags": ["vercel", "sync", "status"]
+    },
+    {
+      "id": "ui-realtime-status",
+      "title": "Real-time Status Updates",
+      "priority": "medium",
+      "status": "pending",
+      "category": "UI Enhancements",
+      "tags": ["ui", "realtime", "status"]
+    },
+    {
+      "id": "ui-command-execution",
+      "title": "Command Execution with Output Capture",
+      "priority": "medium",
+      "status": "pending",
+      "category": "UI Enhancements",
+      "tags": ["ui", "commands", "output"]
+    },
+    {
+      "id": "ui-error-handling",
+      "title": "Enhanced Error Handling and Display",
+      "priority": "medium",
+      "status": "pending",
+      "category": "UI Enhancements",
+      "tags": ["ui", "errors", "handling"]
+    },
+    {
+      "id": "ui-progress-indicators",
+      "title": "Progress Indicators for Long Tasks",
+      "priority": "medium",
+      "status": "pending",
+      "category": "UI Enhancements",
+      "tags": ["ui", "progress", "feedback"]
+    },
+    {
+      "id": "ui-keyboard-shortcuts",
+      "title": "Keyboard Shortcuts Help",
+      "priority": "low",
+      "status": "pending",
+      "category": "UI Enhancements",
+      "tags": ["ui", "keyboard", "shortcuts"]
+    },
+    {
+      "id": "ui-command-formatting",
+      "title": "Command Output Formatting",
+      "priority": "medium",
+      "status": "pending",
+      "category": "UI Enhancements",
+      "tags": ["ui", "commands", "formatting"]
+    },
+    {
+      "id": "ui-loading-indicators",
+      "title": "Loading Indicators",
+      "priority": "medium",
+      "status": "pending",
+      "category": "UI Enhancements",
+      "tags": ["ui", "loading", "feedback"]
+    },
+    {
+      "id": "ui-notifications",
+      "title": "Success/Error Notifications",
+      "priority": "medium",
+      "status": "pending",
+      "category": "UI Enhancements",
+      "tags": ["ui", "notifications", "feedback"]
+    },
+    {
+      "id": "ui-better-errors",
+      "title": "Better Error Messages",
+      "priority": "medium",
+      "status": "pending",
+      "category": "UI Enhancements",
+      "tags": ["ui", "errors", "ux"]
+    },
+    {
+      "id": "integration-tool-modules",
+      "title": "Connect All Tool Modules to UI",
+      "priority": "medium",
+      "status": "pending",
+      "category": "Integration",
+      "tags": ["integration", "tools", "ui"]
+    },
+    {
+      "id": "integration-status-polling",
+      "title": "Real-time Status Polling",
+      "priority": "medium",
+      "status": "pending",
+      "category": "Integration",
+      "tags": ["integration", "status", "polling"]
+    },
+    {
+      "id": "integration-event-driven",
+      "title": "Event-driven Updates",
+      "priority": "medium",
+      "status": "pending",
+      "category": "Integration",
+      "tags": ["integration", "events", "updates"]
+    },
+    {
+      "id": "integration-config-management",
+      "title": "Configuration Management",
+      "priority": "medium",
+      "status": "pending",
+      "category": "Integration",
+      "tags": ["integration", "configuration", "management"]
+    },
+    {
+      "id": "integration-state-persistence",
+      "title": "State Persistence",
+      "priority": "medium",
+      "status": "pending",
+      "category": "Integration",
+      "tags": ["integration", "state", "persistence"]
+    },
+    {
+      "id": "advanced-plugin-system",
+      "title": "Plugin System",
+      "priority": "low",
+      "status": "pending",
+      "category": "Advanced Features",
+      "tags": ["plugins", "extensibility", "future"]
+    },
+    {
+      "id": "advanced-command-history",
+      "title": "Command History",
+      "priority": "low",
+      "status": "pending",
+      "category": "Advanced Features",
+      "tags": ["commands", "history", "ux"]
+    },
+    {
+      "id": "advanced-favorites",
+      "title": "Favorites/Bookmarks",
+      "priority": "low",
+      "status": "pending",
+      "category": "Advanced Features",
+      "tags": ["favorites", "bookmarks", "ux"]
+    },
+    {
+      "id": "advanced-search",
+      "title": "Search Functionality",
+      "priority": "low",
+      "status": "pending",
+      "category": "Advanced Features",
+      "tags": ["search", "functionality", "ux"]
+    },
+    {
+      "id": "advanced-web-version",
+      "title": "Web Version",
+      "priority": "low",
+      "status": "pending",
+      "category": "Advanced Features",
+      "tags": ["web", "version", "future"]
+    },
+    {
+      "id": "integration-checklist-build",
+      "title": "All Build Commands Accessible via UI",
+      "priority": "medium",
+      "status": "pending",
+      "category": "Integration Checklist",
+      "tags": ["integration", "build", "ui"]
+    },
+    {
+      "id": "integration-checklist-boot",
+      "title": "All Boot Commands Accessible via UI",
+      "priority": "medium",
+      "status": "pending",
+      "category": "Integration Checklist",
+      "tags": ["integration", "boot", "ui"]
+    },
+    {
+      "id": "integration-checklist-develop",
+      "title": "All Develop Commands Accessible via UI",
+      "priority": "medium",
+      "status": "pending",
+      "category": "Integration Checklist",
+      "tags": ["integration", "develop", "ui"]
+    },
+    {
+      "id": "integration-checklist-verify",
+      "title": "All Verification Checks Runnable",
+      "priority": "medium",
+      "status": "pending",
+      "category": "Integration Checklist",
+      "tags": ["integration", "verify", "ui"]
+    },
+    {
+      "id": "verify-automatic",
+      "title": "Automatic Verification",
+      "priority": "medium",
+      "status": "pending",
+      "category": "Verify System",
+      "tags": ["verification", "automation"]
+    },
+    {
+      "id": "verify-report-generation",
+      "title": "Report Generation",
+      "priority": "medium",
+      "status": "pending",
+      "category": "Verify System",
+      "tags": ["verification", "reporting"]
+    },
+    {
+      "id": "verify-state-persistence",
+      "title": "State Persistence for Verification",
+      "priority": "medium",
+      "status": "pending",
+      "category": "Verify System",
+      "tags": ["verification", "state", "persistence"]
+    },
+    {
+      "id": "verify-run-all",
+      "title": "Run All Checks Automatically",
+      "priority": "medium",
+      "status": "pending",
+      "category": "Verify System",
+      "tags": ["verification", "automation"]
+    },
+    {
+      "id": "verify-display-results",
+      "title": "Display Check Results",
+      "priority": "medium",
+      "status": "pending",
+      "category": "Verify System",
+      "tags": ["verification", "results", "ui"]
+    },
+    {
+      "id": "verify-signoff",
+      "title": "Sign-off Confirmation",
+      "priority": "low",
+      "status": "pending",
+      "category": "Verify System",
+      "tags": ["verification", "signoff"]
+    },
+    {
+      "id": "verify-export-report",
+      "title": "Export Verification Report",
+      "priority": "low",
+      "status": "pending",
+      "category": "Verify System",
+      "tags": ["verification", "report", "export"]
+    },
+    {
+      "id": "verify-save-state",
+      "title": "Save Verification State",
+      "priority": "low",
+      "status": "pending",
+      "category": "Verify System",
+      "tags": ["verification", "state", "save"]
+    },
+    {
+      "id": "legacy-mappings-cleanup",
+      "title": "Remove Legacy Action Mappings",
+      "description": "Remove legacy-mappings.ts once all workflows migrated to new format",
+      "priority": "medium",
+      "status": "pending",
+      "category": "Code Cleanup",
+      "tags": ["legacy", "migration", "cleanup"],
+      "markdown": "### Location\n\\`apps/ideai-capabilities/plugins/legacy-mappings.ts\\`\n\n### Action\nRemove this file once all workflows have been migrated to new namespaced format.\n\n### Current State\nMaps old action type names to new namespaced action IDs for backward compatibility.\n\n**TODO**: Remove this file once all workflows have been migrated to the new format."
+    },
+    {
+      "id": "unified-mode-docs-package-extraction",
+      "title": "Document Package Extraction Process",
+      "priority": "medium",
+      "status": "pending",
+      "category": "Architecture",
+      "tags": ["documentation", "unified-mode", "packages"]
+    },
+    {
+      "id": "unified-mode-docs-create-capabilities",
+      "title": "Document How to Create New Capabilities as Packages",
+      "priority": "medium",
+      "status": "pending",
+      "category": "Architecture",
+      "tags": ["documentation", "unified-mode", "packages"]
+    },
+    {
+      "id": "unified-mode-docs-use-packages",
+      "title": "Document How to Use Packages in Apps",
+      "priority": "medium",
+      "status": "pending",
+      "category": "Architecture",
+      "tags": ["documentation", "unified-mode", "packages"]
+    },
+    {
+      "id": "unified-mode-docs-update",
+      "title": "Update Unified Mode Documentation",
+      "priority": "medium",
+      "status": "pending",
+      "category": "Architecture",
+      "tags": ["documentation", "unified-mode"]
+    },
+    {
+      "id": "unified-mode-docs-examples",
+      "title": "Create Examples of Building New Sites from Shared Packages",
+      "priority": "medium",
+      "status": "pending",
+      "category": "Architecture",
+      "tags": ["documentation", "unified-mode", "examples"]
+    }
+  ]
+}

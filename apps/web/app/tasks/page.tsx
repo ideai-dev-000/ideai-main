@@ -19,10 +19,12 @@ import {
   Clock,
   CheckCircle2,
 } from "lucide-react";
-import { tasks } from "./tasks-data";
 
-type Priority = "high" | "medium" | "low" | "completed";
-type Status = "pending" | "in-progress" | "blocked" | "completed";
+// Dev-only: Tasks page only available in development
+const isDevelopment = process.env.NODE_ENV === "development";
+
+type Priority = "high" | "medium" | "low";
+type Status = "pending" | "in-progress" | "blocked";
 type Category = string;
 
 interface Task {
@@ -38,6 +40,8 @@ interface Task {
 }
 
 export default function TasksPage() {
+  const [tasks, setTasks] = React.useState<Task[]>([]);
+  const [loading, setLoading] = React.useState(true);
   const [searchQuery, setSearchQuery] = React.useState("");
   const [selectedPriority, setSelectedPriority] = React.useState<
     Priority | "all"
@@ -52,14 +56,33 @@ export default function TasksPage() {
     new Set(),
   );
 
-  // Extract unique categories
+  // Load tasks from JSON file (dev-only)
+  React.useEffect(() => {
+    if (!isDevelopment) {
+      setLoading(false);
+      return;
+    }
+
+    fetch("/tasks.json")
+      .then((res) => res.json())
+      .then((data) => {
+        setTasks(data.tasks || []);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Failed to load tasks:", err);
+        setLoading(false);
+      });
+  }, []);
+
+  // Extract unique categories - MUST be called before any conditional returns
   const categories = React.useMemo(() => {
     const cats = new Set<string>();
     tasks.forEach((task) => cats.add(task.category));
     return Array.from(cats).sort();
-  }, []);
+  }, [tasks]);
 
-  // Filter tasks
+  // Filter tasks - MUST be called before any conditional returns
   const filteredTasks = React.useMemo(() => {
     return tasks.filter((task) => {
       // Search filter
@@ -93,6 +116,7 @@ export default function TasksPage() {
       return true;
     });
   }, [
+    tasks,
     searchQuery,
     selectedPriority,
     selectedStatus,
