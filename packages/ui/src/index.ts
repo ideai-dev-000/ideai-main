@@ -15,6 +15,7 @@ export { IdeaIButton } from "./components/ideai-button";
 export { IdeAILogo } from "./components/ideai-logo";
 export { IdeAIHTMLTest } from "./components/ideai-html-test";
 export { IdeAIPageTemplate } from "./components/ideai-page-template";
+export { IdeAINotFound } from "./components/ideai-not-found";
 export {
   useIFrameContext,
   detectIFrame,
