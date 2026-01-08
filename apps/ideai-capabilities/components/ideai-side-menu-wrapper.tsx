@@ -130,7 +130,7 @@ export function IdeAISideMenuWrapper() {
             usedSuffixes.add(0); // Base name counts as suffix 0
           } else {
             const match = w.name.match(/^(.+)-(\d{3})$/);
-            if (match && match[1] === baseName) {
+            if (match && match[1] === baseName && match[2]) {
               usedSuffixes.add(parseInt(match[2], 10));
             }
           }
