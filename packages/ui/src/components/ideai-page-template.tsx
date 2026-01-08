@@ -118,6 +118,7 @@ export const IdeAIPageTemplate = ({
                     : []),
                   { label: "FX", href: "/fx" },
                   { label: "Page Templates", href: "/page-templates" },
+                  { label: "V0", href: "/v0" },
                 ]
           }
           extraNav={

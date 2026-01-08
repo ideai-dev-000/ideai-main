@@ -48,8 +48,12 @@ export const IdeaIHeader = ({
   siteName,
   mainNav = [
     { label: "Home", href: "/" },
+    { label: "MetaFramework", href: "/metaframework" },
     { label: "Documentation", href: "/docs" },
-    { label: "Apps", href: "/index" },
+    { label: "Cloud Manager", href: "/cloud" },
+    { label: "FX", href: "/fx" },
+    { label: "Page Template", href: "/page-template" },
+    { label: "V0", href: "/v0" },
   ],
   extraNav = [
     { label: "About", href: "/about" },
