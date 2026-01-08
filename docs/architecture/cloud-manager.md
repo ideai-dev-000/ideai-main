@@ -42,6 +42,8 @@ packages/cloud-manager/
 - ✅ **Auto-Configuration**: One-click setup for new projects
 - ✅ **Validation**: Verify settings are correct for monorepo structure
 - ✅ **Error Handling**: Clear error messages with setup instructions
+- ✅ **Domain Display**: View live domains for each project
+- ✅ **Database Management**: Connect, sync, and manage databases
 
 ### Planned (Other Providers)
 
@@ -213,12 +215,24 @@ Vercel-specific management UI:
 
 ## Future Enhancements
 
-1. **Subdomain Management**: Configure custom domains per project
-2. **Sub-app Management**: Manage child app configurations
-3. **Deployment History**: View and manage deployments
-4. **Issue Tracking**: Link to deployment tickets/issues
-5. **Multi-Provider**: Support AWS, GCP, Azure, Hostinger
-6. **Bulk Operations**: Update multiple projects at once
+1. **Environment Variable Management** ⚠️ **CRITICAL PRIORITY**
+   - **GOAL**: Codify (automate) all Vercel dashboard clicks
+   - **Short-term**: Use CLI directly to fast-track operations (see `docs/deployment/vercel-env-management.md`)
+   - **Long-term**: Cloud Manager UI automates all CLI operations (no more dashboard clicks)
+   - View all environment variables for a project
+   - Set/update environment variables via UI (using CLI under the hood)
+   - Sync from local `.env.local` files to Vercel
+   - Bulk operations (set multiple variables at once)
+   - **Standard Method**: Use Vercel CLI commands (`vercel env add`)
+   - **Learning Rule**: Document each CLI operation so Cloud Manager can automate it later
+   - **Pattern**: Extract from `.env.local` → Set in Vercel via CLI → Cloud Manager codifies this
+
+2. **Subdomain Management**: Configure custom domains per project
+3. **Sub-app Management**: Manage child app configurations
+4. **Deployment History**: View and manage deployments
+5. **Issue Tracking**: Link to deployment tickets/issues
+6. **Multi-Provider**: Support AWS, GCP, Azure, Hostinger
+7. **Bulk Operations**: Update multiple projects at once
 
 ## Related Documentation
 
