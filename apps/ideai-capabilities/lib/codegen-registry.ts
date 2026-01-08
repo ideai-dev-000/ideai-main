@@ -816,6 +816,12 @@ export async function falGenerateImageStep(
     }
 
     const image = result.images[0];
+    if (!image) {
+      return {
+        success: false,
+        error: { message: "No image generated" },
+      };
+    }
     return {
       success: true,
       data: { imageUrl: image.url, width: image.width, height: image.height },
@@ -1850,9 +1856,10 @@ export async function createTicketStep(
       );
 
       if (teamsResult.errors?.length) {
+        const firstError = teamsResult.errors[0];
         return {
           success: false,
-          error: { message: teamsResult.errors[0].message },
+          error: { message: firstError?.message || "Unknown error" },
         };
       }
 
@@ -1886,9 +1893,10 @@ export async function createTicketStep(
     );
 
     if (createResult.errors?.length) {
+      const firstError = createResult.errors[0];
       return {
         success: false,
-        error: { message: createResult.errors[0].message },
+        error: { message: firstError?.message || "Unknown error" },
       };
     }
 
@@ -1992,9 +2000,10 @@ export async function findIssuesStep(
     );
 
     if (result.errors?.length) {
+      const firstError = result.errors[0];
       return {
         success: false,
-        error: { message: result.errors[0].message },
+        error: { message: firstError?.message || "Unknown error" },
       };
     }
 
@@ -2668,7 +2677,14 @@ export async function getCustomerStep(
           error: \`No customer found with email: \${input.email}\`,
         };
       }
-      customer = data.data[0];
+      const firstCustomer = data.data[0];
+      if (!firstCustomer) {
+        return {
+          success: false,
+          error: \`No customer found with email: \${input.email}\`,
+        };
+      }
+      customer = firstCustomer;
     }
 
     if (!customer) {
