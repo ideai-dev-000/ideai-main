@@ -132,6 +132,9 @@ export function generateWorkflowCode(
     const withoutDollar = trimmed.substring(1);
     const parts = withoutDollar.split(".");
     const nodeId = parts[0];
+    if (!nodeId) {
+      return match; // Invalid format, keep original
+    }
     const fieldPath = parts.slice(1).join(".");
 
     const varName = nodeIdToVarName.get(nodeId);
@@ -184,6 +187,9 @@ export function generateWorkflowCode(
     const withoutDollar = trimmed.substring(1);
     const parts = withoutDollar.split(".");
     const nodeId = parts[0];
+    if (!nodeId) {
+      return match; // Invalid format, keep original
+    }
     const fieldPath = parts.slice(1).join(".");
 
     const varName = nodeIdToVarName.get(nodeId);
@@ -1027,7 +1033,11 @@ export function generateWorkflowCode(
       return [];
     }
     if (unvisited.length === 1) {
-      return generateBranchCode(unvisited[0], indent, branchVisited);
+      const firstUnvisited = unvisited[0];
+      if (!firstUnvisited) {
+        return [];
+      }
+      return generateBranchCode(firstUnvisited, indent, branchVisited);
     }
 
     // Multiple children - generate Promise.all with async IIFEs
@@ -1040,6 +1050,9 @@ export function generateWorkflowCode(
 
       // Create a new visited set for this branch
       const childBranchVisited = new Set(branchVisited);
+      if (!childId) {
+        continue;
+      }
       const branchCode = generateBranchCode(
         childId,
         `${indent}    `,
@@ -1104,9 +1117,13 @@ export function generateWorkflowCode(
       return [];
     }
     if (unvisited.length === 1) {
+      const firstUnvisited = unvisited[0];
+      if (!firstUnvisited) {
+        return [];
+      }
       const branchVisited = new Set(visited);
-      visited.add(unvisited[0]);
-      return generateBranchCode(unvisited[0], indent, branchVisited);
+      visited.add(firstUnvisited);
+      return generateBranchCode(firstUnvisited, indent, branchVisited);
     }
 
     // Mark all as visited first to prevent cross-branch processing
@@ -1117,12 +1134,12 @@ export function generateWorkflowCode(
     // Multiple branches - wrap each in async IIFE
     const lines: string[] = [`${indent}await Promise.all([`];
     for (let i = 0; i < unvisited.length; i++) {
+      const childId = unvisited[i];
+      if (!childId) {
+        continue;
+      }
       lines.push(
-        ...generateAsyncIIFEBranch(
-          unvisited[i],
-          indent,
-          i === unvisited.length - 1,
-        ),
+        ...generateAsyncIIFEBranch(childId, indent, i === unvisited.length - 1),
       );
     }
     lines.push(`${indent}]);`);

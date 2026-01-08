@@ -40,6 +40,10 @@ export async function logStepStartDb(
     })
     .returning();
 
+  if (!log || !log.id) {
+    throw new Error("Failed to create workflow log entry");
+  }
+
   return {
     logId: log.id,
     startTime: Date.now(),

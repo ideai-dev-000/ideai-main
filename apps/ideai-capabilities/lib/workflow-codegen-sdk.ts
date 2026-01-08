@@ -52,7 +52,7 @@ function loadStepImplementation(actionType: string): string | null {
     // Extract just the function body (remove export statement and function declaration)
     const functionMatch = template.match(FUNCTION_BODY_REGEX);
 
-    if (functionMatch) {
+    if (functionMatch && functionMatch[1]) {
       return functionMatch[1].trim();
     }
 
@@ -111,6 +111,9 @@ function processLegacyDollarRef(trimmed: string): string {
 
   const parts = withoutDollar.split(".");
   const nodeId = parts[0];
+  if (!nodeId) {
+    return withoutDollar;
+  }
   const sanitizedNodeId = nodeId.replace(/[^a-zA-Z0-9]/g, "_");
   const fieldPath = parts.slice(1).join(".");
 

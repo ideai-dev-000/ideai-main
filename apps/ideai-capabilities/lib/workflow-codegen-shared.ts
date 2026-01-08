@@ -21,6 +21,9 @@ export function findNodeReferences(template: string): Set<string> {
   let match: RegExpExecArray | null;
   // biome-ignore lint/suspicious/noAssignInExpressions: pattern.exec() is the standard way to iterate regex matches
   while ((match = TEMPLATE_PATTERN.exec(template)) !== null) {
+    if (!match[1]) {
+      continue;
+    }
     const expression = match[1].trim();
 
     // Handle @nodeId:DisplayName.field format
@@ -36,7 +39,7 @@ export function findNodeReferences(template: string): Set<string> {
     else if (expression.startsWith("$")) {
       const withoutDollar = expression.substring(1);
       const parts = withoutDollar.split(".");
-      if (parts.length > 0) {
+      if (parts.length > 0 && parts[0]) {
         refs.add(parts[0]);
       }
     }

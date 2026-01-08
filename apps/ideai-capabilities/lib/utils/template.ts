@@ -218,6 +218,9 @@ function resolveFieldPath(data: unknown, fieldPath: string): unknown {
     const arrayMatch = trimmedPart.match(ARRAY_ACCESS_PATTERN);
     if (arrayMatch) {
       const [, field, index] = arrayMatch;
+      if (!field || !index) {
+        break;
+      }
       const fieldValue = (current as Record<string, unknown>)?.[field];
       if (Array.isArray(fieldValue)) {
         current = fieldValue[Number.parseInt(index, 10)];
@@ -268,7 +271,7 @@ function resolveExpressionById(
   // Split by dots, but handle array brackets
   const parts = expression.split(".");
 
-  if (parts.length === 0) {
+  if (parts.length === 0 || !parts[0]) {
     return;
   }
 
@@ -285,7 +288,7 @@ function resolveExpressionById(
 
   // Navigate through remaining parts
   for (let i = 1; i < parts.length; i++) {
-    const part = parts[i].trim();
+    const part = parts[i]?.trim();
 
     if (!part) {
       continue;
@@ -295,6 +298,9 @@ function resolveExpressionById(
     const arrayMatch = part.match(ARRAY_ACCESS_PATTERN);
     if (arrayMatch) {
       const [, field, index] = arrayMatch;
+      if (!field || !index) {
+        break;
+      }
       const fieldValue = (current as Record<string, unknown>)?.[field];
       if (Array.isArray(fieldValue)) {
         current = fieldValue[Number.parseInt(index, 10)];
@@ -329,7 +335,7 @@ function resolveExpression(
   // Split by dots, but handle array brackets
   const parts = expression.split(".");
 
-  if (parts.length === 0) {
+  if (parts.length === 0 || !parts[0]) {
     return;
   }
 
@@ -346,7 +352,7 @@ function resolveExpression(
 
   // Navigate through remaining parts
   for (let i = 1; i < parts.length; i++) {
-    const part = parts[i].trim();
+    const part = parts[i]?.trim();
 
     if (!part) {
       continue;
@@ -356,6 +362,9 @@ function resolveExpression(
     const arrayMatch = part.match(ARRAY_ACCESS_PATTERN);
     if (arrayMatch) {
       const [, field, index] = arrayMatch;
+      if (!field || !index) {
+        break;
+      }
       const fieldValue = (current as Record<string, unknown>)?.[field];
       if (Array.isArray(fieldValue)) {
         current = fieldValue[Number.parseInt(index, 10)];
@@ -457,7 +466,9 @@ export function extractTemplateVariables(template: string): string[] {
   const variables: string[] = [];
 
   for (const match of template.matchAll(pattern)) {
-    variables.push(match[1].trim());
+    if (match[1]) {
+      variables.push(match[1].trim());
+    }
   }
 
   return variables;

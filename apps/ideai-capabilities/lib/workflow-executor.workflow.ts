@@ -231,6 +231,9 @@ async function executeActionStep(input: {
   // Special handling for Condition action - needs template evaluation
   if (actionType === "Condition") {
     const systemAction = SYSTEM_ACTIONS.Condition;
+    if (!systemAction) {
+      throw new Error("Condition system action not found");
+    }
     const module = await systemAction.importer();
     const originalExpression = stepInput.condition;
     const { result: evaluatedCondition, resolvedValues } =
