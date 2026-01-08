@@ -112,6 +112,7 @@ export const IdeAIPageTemplate = ({
                   { label: "Home", href: "/" },
                   { label: "MetaFramework", href: "/metaframework" },
                   { label: "Documentation", href: "/docs" },
+                  { label: "Tasks", href: "/tasks" },
                   // Cloud Manager - DEVELOPMENT ONLY (never in production for security)
                   ...(process.env.NODE_ENV === "development"
                     ? [{ label: "Cloud Manager", href: "/cloud" }]
