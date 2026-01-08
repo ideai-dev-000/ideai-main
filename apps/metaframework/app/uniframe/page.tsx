@@ -22,7 +22,7 @@ import { IdeaIButton } from "@repo/ui/components/ideai-button";
 
 export default function UniFramePage() {
   const vercelProjectName =
-    process.env.NEXT_PUBLIC_VERCEL_PROJECT_NAME || "pico";
+    process.env.NEXT_PUBLIC_VERCEL_PROJECT_NAME || "metaframework";
   const vercelOrgId =
     process.env.NEXT_PUBLIC_VERCEL_ORG_ID || "team_vhjzlMi6CfNow0IfBXnv2Yn2";
 

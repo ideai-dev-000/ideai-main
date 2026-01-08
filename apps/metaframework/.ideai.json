@@ -1,0 +1,20 @@
+{
+  "name": "metaframework",
+  "version": "0.1.0",
+  "role": "child",
+  "description": "MetaFramework showcase - demonstrates Pico CSS and semantic HTML styling",
+  "localPort": 3013,
+  "metadata": {
+    "id": "metaframework",
+    "port": 3013,
+    "css": ["Pico CSS"],
+    "capabilities": ["semantic-html", "framework-demo"],
+    "path": "/metaframework",
+    "category": "metaframework"
+  },
+  "vercelProject": {
+    "projectName": "metaframework",
+    "orgId": "team_vhjzlMi6CfNow0IfBXnv2Yn2",
+    "forkToNew": true
+  }
+}

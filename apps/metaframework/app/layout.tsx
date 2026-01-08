@@ -1,5 +1,5 @@
 /**
- * @fileoverview Root layout for /pico - Pico CSS only
+ * @fileoverview Root layout for /metaframework - MetaFramework showcase with Pico CSS
  */
 
 import type { Metadata } from "next";
@@ -18,8 +18,9 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "IdeaI /pico",
-  description: "IdeaI app with Pico CSS only - semantic HTML styling",
+  title: "IdeaI /metaframework",
+  description:
+    "IdeaI MetaFramework - Pico CSS showcase and semantic HTML styling",
   ...getIdeAIFaviconMetadata(),
 };
 
@@ -32,7 +33,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         {children}
-        <IdeAIDiagnostics appName="pico" />
+        <IdeAIDiagnostics appName="metaframework" />
       </body>
     </html>
   );

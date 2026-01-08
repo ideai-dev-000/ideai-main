@@ -1,5 +1,5 @@
 /**
- * @fileoverview Pico CSS page - Semantic HTML styling only
+ * @fileoverview MetaFramework page - Pico CSS showcase and semantic HTML styling
  */
 
 import { lazy, Suspense } from "react";
@@ -14,14 +14,14 @@ import { IdeaIButton } from "@repo/ui/components/ideai-button";
 
 export default function Home() {
   const vercelProjectName =
-    process.env.NEXT_PUBLIC_VERCEL_PROJECT_NAME || "pico";
+    process.env.NEXT_PUBLIC_VERCEL_PROJECT_NAME || "metaframework";
   const vercelOrgId =
     process.env.NEXT_PUBLIC_VERCEL_ORG_ID || "team_vhjzlMi6CfNow0IfBXnv2Yn2";
 
   return (
     <IdeAIPageTemplate
-      siteName="IdeaI /pico"
-      subtitle="Pico CSS Only - Semantic HTML Styling"
+      siteName="IdeaI /metaframework"
+      subtitle="MetaFramework - Pico CSS & Semantic HTML Showcase"
       vercelProjectName={vercelProjectName}
       vercelOrgId={vercelOrgId}
     >
