@@ -94,6 +94,16 @@ export { frameworkConfigs } from "./components/uniframe/uf-card/uf-card-types";
 // Theme Components
 export { ThemeProvider } from "./components/theme-provider";
 export { ThemeToggle } from "./components/theme-toggle";
+export { IdeAIThemeSelector } from "./components/ideai-theme-selector";
+export {
+  themes,
+  getTheme,
+  getAllThemes,
+  getThemeNames,
+  type ThemeName,
+} from "./themes";
+export { rainbowNeonTheme } from "./themes/rainbow-neon-theme";
+export { orangeTheme } from "./themes/orange-theme";
 export { MobileNav } from "./components/mobile-nav";
 export {
   IdeAISideMenu,

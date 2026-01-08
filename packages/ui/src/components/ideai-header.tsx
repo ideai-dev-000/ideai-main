@@ -21,6 +21,7 @@ const IdeAIDiagnostics = lazy(() =>
   })),
 ) as React.LazyExoticComponent<React.ComponentType<IdeAIDiagnosticsProps>>;
 import { ThemeToggle } from "./theme-toggle";
+import { IdeAIThemeSelector } from "./ideai-theme-selector";
 import { MobileNav } from "./mobile-nav";
 
 interface NavItem {
@@ -210,6 +211,10 @@ export const IdeaIHeader = ({
                     {headerActions}
                   </li>
                 )}
+                {/* Theme Selector - Color Theme Selection */}
+                <li className="ideai-header__accounts-item">
+                  <IdeAIThemeSelector />
+                </li>
                 {/* Theme Toggle - Top Right */}
                 <li className="ideai-header__accounts-item">
                   <ThemeToggle />

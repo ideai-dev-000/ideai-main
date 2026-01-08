@@ -584,21 +584,15 @@
 }
 
 .ideai-header--sticky {
+  @apply bg-white dark:bg-slate-950 border-b border-slate-200 dark:border-slate-800;
   position: fixed !important;
   top: 0 !important;
   left: 0 !important;
   right: 0 !important;
   z-index: 100 !important;
-  background-color: white !important;
   will-change: transform;
   width: 100vw !important;
   max-width: 100% !important;
-}
-
-@media (prefers-color-scheme: dark) {
-  .ideai-header--sticky {
-    background-color: rgb(2 6 23); /* slate-950 */
-  }
 }
 
 /* When extra nav is open, header should be below it */
@@ -1253,6 +1247,81 @@
  * Theme Toggle Component Styles
  * Dark/light mode toggle button
  */
+/* IdeaI Theme Selector - Color Theme Selection */
+.ideai-theme-selector {
+  position: relative;
+}
+
+.ideai-color-control {
+  @apply flex items-center justify-center w-10 h-10 rounded-lg;
+  @apply text-slate-600 dark:text-slate-400;
+  @apply bg-transparent border border-transparent;
+  @apply hover:bg-slate-100 dark:hover:bg-slate-800;
+  @apply transition-colors duration-200;
+  @apply focus:outline-none focus:ring-2 focus:ring-slate-400 dark:focus:ring-slate-500 focus:ring-offset-2;
+  cursor: pointer;
+}
+
+.ideai-color-control--active {
+  @apply text-purple-600 dark:text-purple-400;
+  @apply bg-purple-50 dark:bg-purple-950/20;
+  @apply border-purple-200 dark:border-purple-800;
+}
+
+.ideai-color-control:focus-visible {
+  @apply ring-2 ring-slate-400 dark:ring-slate-500 ring-offset-2;
+}
+
+/* Theme Selector Popover */
+.ideai-theme-selector__popover {
+  @apply absolute right-0 top-full mt-2 w-48;
+  @apply bg-white dark:bg-slate-900;
+  @apply border border-slate-200 dark:border-slate-700;
+  @apply rounded-lg shadow-lg;
+  @apply z-50;
+  @apply overflow-hidden;
+}
+
+.ideai-theme-selector__header {
+  @apply px-4 py-2;
+  @apply border-b border-slate-200 dark:border-slate-700;
+}
+
+.ideai-theme-selector__title {
+  @apply text-sm font-medium;
+  @apply text-slate-900 dark:text-slate-100;
+}
+
+.ideai-theme-selector__list {
+  @apply py-1;
+}
+
+.ideai-theme-selector__item {
+  @apply w-full flex items-center justify-between px-4 py-2;
+  @apply text-sm;
+  @apply text-slate-700 dark:text-slate-300;
+  @apply hover:bg-slate-100 dark:hover:bg-slate-800;
+  @apply transition-colors;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  text-align: left;
+}
+
+.ideai-theme-selector__item--active {
+  @apply bg-slate-100 dark:bg-slate-800;
+  @apply text-purple-600 dark:text-purple-400;
+}
+
+.ideai-theme-selector__item-name {
+  @apply flex-1;
+}
+
+.ideai-theme-selector__item svg {
+  @apply text-purple-600 dark:text-purple-400;
+  flex-shrink: 0;
+}
+
 .ideai-theme-toggle {
   @apply p-2 rounded-md text-slate-700 dark:text-slate-300;
   @apply hover:bg-slate-100 dark:hover:bg-slate-800;

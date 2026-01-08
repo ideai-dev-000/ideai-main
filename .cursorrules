@@ -478,6 +478,40 @@ Never skip CI checks. All PRs must pass CI before merge.
 
 **CRITICAL**: Starting dev servers must follow a clear, predictable workflow to avoid confusion.
 
+### ⚠️ CRITICAL RULE: Starting the Main App (Port 3000)
+
+**ALWAYS use this exact command to start the main IdeaI web app:**
+
+```bash
+pnpm --filter web dev
+```
+
+**This command**:
+- ✅ Starts the main IdeaI web app on port 3000
+- ✅ Defined in `apps/web/package.json` as `"dev": "next dev --port 3000"`
+- ✅ Accessible at `http://localhost:3000`
+- ✅ This is THE main app - always start this first
+
+**NEVER confuse this with**:
+- ❌ `pnpm dev` - Starts ALL apps (13 apps), not just main app
+- ❌ `cd apps/web && pnpm dev` - Works but not the standard monorepo way
+- ❌ `npm run dev` - Wrong package manager, use `pnpm`
+- ❌ Any reference to `dev-manager.mjs` - This script does NOT exist
+
+**To run in background** (if needed):
+```bash
+pnpm --filter web dev &
+```
+
+**To verify it's running**:
+```bash
+# Check port
+lsof -ti:3000 && echo "✅ Running" || echo "❌ Not running"
+
+# Check HTTP response
+curl -s http://localhost:3000 >/dev/null && echo "✅ Responding" || echo "❌ Not responding"
+```
+
 ### Primary Method: Turbo (All Apps)
 
 **Command**: `pnpm dev`
@@ -507,7 +541,7 @@ Never skip CI checks. All PRs must pass CI before merge.
 
 **When to use**:
 - ✅ Turbo failed and some apps didn't start
-- ✅ Need to start specific apps only
+- ✅ Need to start specific apps only (especially the main app on port 3000)
 - ✅ Debugging a specific app
 
 **Example**:
@@ -569,7 +603,9 @@ lsof -ti:3000,3001,3002,3003,3004,3005,3006,3007,3008,3009,3010,3011,3012 | xarg
 
 ### Important Notes
 
-1. **`dev-manager.mjs` doesn't exist**: Documentation may reference `scripts/dev-manager.mjs`, but this script does not exist. Use `pnpm dev` (Turbo) or individual `pnpm --filter` commands instead.
+1. **Main App on Port 3000**: The main IdeaI web app MUST be started with `pnpm --filter web dev`. This is the primary app and always runs on port 3000.
+
+2. **`dev-manager.mjs` doesn't exist**: Any references to `scripts/dev-manager.mjs` are broken. Use `pnpm dev` (all apps) or `pnpm --filter web dev` (main app only) instead.
 
 2. **Turbo concurrency**: The `dev` script uses `--concurrency=20` to handle all 13 apps. This is required because Turbo's default is 10, which is insufficient.
 

@@ -30,18 +30,35 @@ pnpm install
 
 ### 3. Start Development Server
 
+**⚠️ CRITICAL: To start the main IdeaI web app (port 3000):**
+
 \`\`\`bash
 
-# Start all apps (web: 3000, docs: 3001, all: 3002)
+# This is THE command to start the main app
+
+pnpm --filter web dev
+\`\`\`
+
+The main app will be available at: `http://localhost:3000`
+
+**To start all apps at once:**
+
+\`\`\`bash
+
+# Start all apps (web: 3000, docs: 3001, all: 3002, etc.)
 
 pnpm dev
-
-# Start specific app
-
-pnpm dev --filter=web
-pnpm dev --filter=docs
-pnpm dev --filter=@repo/all
 \`\`\`
+
+**To start specific apps individually:**
+
+\`\`\`bash
+pnpm --filter web dev # Main app (port 3000)
+pnpm --filter docs dev # Docs app (port 3001)
+pnpm --filter all dev # Component showcase (port 3002)
+\`\`\`
+
+**Note**: If you need to run in background, add `&` at the end: `pnpm --filter web dev &`
 
 ### 4. Access Applications
 
@@ -79,9 +96,37 @@ ideai-main/
 
 ## Available Scripts
 
-### Root Level
+### Starting/Stopping Dev Servers
 
-- `pnpm dev` - Start all development servers
+**⚠️ CRITICAL: To start the main IdeaI web app (port 3000):**
+
+```bash
+pnpm --filter web dev
+```
+
+**Start all apps:**
+
+```bash
+pnpm dev
+```
+
+**Stop all dev servers:**
+
+```bash
+pnpm dev:stop          # Graceful shutdown (recommended)
+pnpm dev:stop:force    # Force kill if graceful fails
+```
+
+**Cold refresh (stop, clean caches, rebuild):**
+
+```bash
+pnpm build:cold        # Full cold refresh with rebuild
+pnpm build:clean       # Clean only, no rebuild
+```
+
+### Root Level Scripts
+
+- `pnpm dev` - Start all development servers (13 apps)
 - `pnpm build` - Build all applications
 - `pnpm build:cold` - **Cold refresh**: Stop all servers, clean caches, sync submodules, rebuild
 - `pnpm build:clean` - Clean only (no rebuild): Stop servers, clean caches
