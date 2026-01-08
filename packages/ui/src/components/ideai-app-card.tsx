@@ -103,7 +103,10 @@ export function IdeAIAppCard({
   const showCloudButton = showCloudActions && isDevelopment;
 
   const statusBadge = app.status?.running ? (
-    <Badge variant="default" className="bg-green-500 hover:bg-green-600">
+    <Badge
+      variant="default"
+      className="bg-green-500 hover:bg-green-600 dark:bg-green-600 dark:hover:bg-green-500 text-white"
+    >
       🟢 Running
     </Badge>
   ) : (
@@ -115,16 +118,14 @@ export function IdeAIAppCard({
     : undefined;
 
   return (
-    <Card className="w-full hover:shadow-lg transition-all duration-200 border-2 border-slate-200 hover:border-slate-400 bg-white overflow-hidden group">
+    <Card className="w-full hover:shadow-lg transition-all duration-200 border-2 border-border hover:border-slate-400 dark:hover:border-slate-600 overflow-hidden group">
       <CardHeader className="pb-3">
         <div className="flex items-start justify-between gap-4">
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 mb-1">
-              <CardTitle className="text-xl font-bold text-slate-900">
-                {app.name}
-              </CardTitle>
+              <CardTitle className="text-xl font-bold">{app.name}</CardTitle>
             </div>
-            <CardDescription className="text-sm text-slate-600 line-clamp-2">
+            <CardDescription className="text-sm line-clamp-2">
               {app.description}
             </CardDescription>
           </div>
@@ -145,31 +146,35 @@ export function IdeAIAppCard({
         )}
 
         {/* Metadata */}
-        <div className="space-y-2 text-xs text-slate-500 bg-slate-50 rounded-md p-3 border border-slate-100">
+        <div className="space-y-2 text-xs text-muted-foreground bg-muted/50 dark:bg-muted rounded-md p-3 border border-border">
           <div className="flex items-center justify-between">
-            <span className="font-semibold text-slate-700">Port:</span>
-            <span className="font-mono">{app.port || "N/A"}</span>
+            <span className="font-semibold text-foreground">Port:</span>
+            <span className="font-mono text-muted-foreground">
+              {app.port || "N/A"}
+            </span>
           </div>
           <div className="flex items-center justify-between">
-            <span className="font-semibold text-slate-700">Category:</span>
-            <span>{app.category}</span>
+            <span className="font-semibold text-foreground">Category:</span>
+            <span className="text-muted-foreground">{app.category}</span>
           </div>
           {vercelProject && (
             <div className="flex items-center justify-between">
-              <span className="font-semibold text-slate-700">Vercel:</span>
-              <span className="text-green-600">✓ Deployed</span>
+              <span className="font-semibold text-foreground">Vercel:</span>
+              <span className="text-green-600 dark:text-green-400">
+                ✓ Deployed
+              </span>
             </div>
           )}
           {vercelDomains.length > 0 && (
-            <div className="flex flex-col gap-1 mt-2 pt-2 border-t border-slate-200">
-              <span className="font-semibold text-slate-700">Domains:</span>
+            <div className="flex flex-col gap-1 mt-2 pt-2 border-t border-border">
+              <span className="font-semibold text-foreground">Domains:</span>
               {vercelDomains.map((domain) => (
                 <a
                   key={domain.domain}
                   href={`https://${domain.domain}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-2 text-blue-600 hover:underline"
+                  className="flex items-center gap-2 text-blue-600 dark:text-blue-400 hover:underline"
                 >
                   <Globe className="h-3 w-3" />
                   <span className="font-mono text-xs">{domain.domain}</span>
@@ -185,7 +190,7 @@ export function IdeAIAppCard({
         </div>
       </CardContent>
 
-      <CardFooter className="flex flex-wrap gap-2 pt-4 bg-slate-50/50">
+      <CardFooter className="flex flex-wrap gap-2 pt-4 bg-muted/30 dark:bg-muted/50">
         {/* Local App Actions */}
         {app.status?.url ? (
           <Button
@@ -228,7 +233,7 @@ export function IdeAIAppCard({
                   <h4 className="font-semibold text-sm mb-2">
                     Cloud Management
                   </h4>
-                  <p className="text-xs text-slate-500 mb-3">
+                  <p className="text-xs text-muted-foreground mb-3">
                     Quick actions for {app.name}
                   </p>
                 </div>
@@ -250,8 +255,8 @@ export function IdeAIAppCard({
                       </Button>
 
                       {vercelDomains.length > 0 && (
-                        <div className="pt-2 border-t">
-                          <p className="text-xs font-semibold mb-2">
+                        <div className="pt-2 border-t border-border">
+                          <p className="text-xs font-semibold mb-2 text-foreground">
                             Live Domains:
                           </p>
                           {vercelDomains.map((domain) => (
@@ -260,7 +265,7 @@ export function IdeAIAppCard({
                               href={`https://${domain.domain}`}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="flex items-center gap-2 text-xs text-blue-600 hover:underline mb-1"
+                              className="flex items-center gap-2 text-xs text-blue-600 dark:text-blue-400 hover:underline mb-1"
                               onClick={() => setCloudPopoverOpen(false)}
                             >
                               <Globe className="h-3 w-3" />
@@ -289,7 +294,7 @@ export function IdeAIAppCard({
                 )}
 
                 {!vercelProject && (
-                  <p className="text-xs text-slate-500">
+                  <p className="text-xs text-muted-foreground">
                     Not deployed to Vercel yet. Go to Cloud Manager to set up.
                   </p>
                 )}
