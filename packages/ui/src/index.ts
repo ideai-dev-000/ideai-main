@@ -82,6 +82,15 @@ export { frameworkConfigs } from "./components/uniframe/uf-card/uf-card-types";
 export { ThemeProvider } from "./components/theme-provider";
 export { ThemeToggle } from "./components/theme-toggle";
 export { MobileNav } from "./components/mobile-nav";
+export {
+  IdeAISideMenu,
+  IdeAISideMenuWorkflows,
+  IdeAISideMenuCards,
+  IdeAISideMenuControls,
+  IdeAISideMenuBlocks,
+  type WorkflowItem,
+  type IdeAISideMenuProps,
+} from "./components/ideai-side-menu";
 
 // Animation System
 export {
