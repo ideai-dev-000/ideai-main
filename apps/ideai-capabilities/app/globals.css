@@ -1,15 +1,10 @@
 /* All @import rules must come first (before @tailwind) */
-@import "../../../packages/ui/src/styles/normalize.css";
+/* Use same CSS structure as web app for consistency */
+@import "../../../packages/ui/src/styles/globals.css";
 @import "../../../packages/ui/src/styles/ideai.css";
 @import "@xyflow/react/dist/style.css";
-@import "@xyflow/react/dist/style.css";
 
-/* Tailwind CSS */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-/* Workflow CSS Variables (merged from workflow app) */
+/* App-specific CSS Variables for workflow features */
 :root {
   --radius: 0.625rem;
   --background: oklch(1 0 0);
@@ -81,36 +76,6 @@
   --sidebar-ring: oklch(0.83 0 0);
 }
 
-/* Base styles */
-@layer base {
-  * {
-    @apply border-slate-200;
-  }
-
-  html {
-    @apply bg-white;
-    color-scheme: light;
-  }
-
-  body {
-    @apply bg-white text-slate-900;
-    color: rgb(15 23 42);
-    background-color: rgb(255 255 255);
-  }
-
-  .dark * {
-    @apply border-slate-800;
-  }
-
-  .dark html {
-    @apply bg-slate-950;
-    color-scheme: dark;
-  }
-
-  .dark body {
-    @apply bg-slate-950 text-slate-50;
-    color: rgb(248 250 252);
-    background-color: rgb(2 6 23);
-  }
-}
+/* Base styles are handled by globals.css from @repo/ui */
+/* Only add app-specific overrides here if needed */
 

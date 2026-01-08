@@ -13,6 +13,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { IdeAILogo } from "@repo/ui";
 import { ThemeToggle } from "@repo/ui";
+import { IdeAIThemeSelector } from "@repo/ui";
 import { MobileNav } from "@repo/ui";
 import { Workflow, UserSearch, Code, Home } from "lucide-react";
 import { UserMenu } from "@/components/workflow/user-menu";
@@ -103,8 +104,9 @@ export function CapabilitiesHeader() {
           </nav>
 
           {/* Right Side */}
-          <div className="relative z-50 flex items-center gap-4">
+          <div className="relative z-50 flex items-center gap-2">
             <UserMenu />
+            <IdeAIThemeSelector />
             <ThemeToggle />
             <MobileNav navItems={mainNav} />
           </div>
