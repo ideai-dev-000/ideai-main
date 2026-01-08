@@ -61,19 +61,23 @@ git checkout main
 git push origin main
 \`\`\`
 
-## Current Apps (9 total)
+## Current Apps (11 total)
 
-| App      | Port | Vercel Project | Status    |
-| -------- | ---- | -------------- | --------- |
-| web      | 3000 | `web`          | ✅ Linked |
-| docs     | 3001 | `docs`         | ✅ Linked |
-| all      | 3002 | -              | Ready     |
-| nocss    | 3003 | -              | Ready     |
-| mvp      | 3004 | -              | Ready     |
-| tailwind | 3005 | -              | Ready     |
-| allcss   | 3006 | -              | Ready     |
-| unocss   | 3008 | -              | Ready     |
-| shadcn   | 3009 | -              | Ready     |
+| App                | Port | Vercel Project       | Status    |
+| ------------------ | ---- | -------------------- | --------- |
+| web                | 3000 | `web`                | ✅ Linked |
+| docs               | 3001 | `docs`               | ✅ Linked |
+| all                | 3002 | -                    | Ready     |
+| nocss              | 3003 | -                    | Ready     |
+| mvp                | 3004 | `mvp`                | ✅ Linked |
+| ideai-frameworks   | 3016 | `ideai-frameworks`   | ✅ Linked |
+| ideai-reactflow    | 3017 | `ideai-reactflow`    | ✅ Linked |
+| ideai-capabilities | 3018 | `ideai-capabilities` | ✅ Linked |
+| ideai-designer     | 3013 | -                    | Submodule |
+| v0-prototype       | 3014 | -                    | Prototype |
+| v0-000             | 3015 | -                    | Prototype |
+
+**Note**: Old framework apps (tailwind, allcss, bootstrap, unocss, shadcn, material, chakra, radix) have been unified into `ideai-frameworks`.
 
 ## Required GitHub Secrets
 
@@ -146,5 +150,3 @@ cat apps/web/.vercel/project.json
 - [Unified Deployment Guide](./unified-deployment.md) - How deploy.sh works
 - [Vercel Configuration](./vercel.md) - Dashboard setup
 - [CI/CD Workflows](./ci-cd.md) - GitHub Actions details
-
-

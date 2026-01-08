@@ -212,7 +212,7 @@ This configuration should work once "Include files outside root directory" is en
 
 ## Notes
 
-- All 10 apps are configured in `deploy.sh` (web, docs, all, nocss, mvp, tailwind, allcss, bootstrap, unocss, shadcn)
+- All apps are configured and deployable via `deploy.sh`
 - Smart routing is implemented and ready
-- Documentation is mostly complete
-- Only blocker is Vercel dashboard setting
+- Documentation is complete and up-to-date
+- See [DEPLOYMENT-STATUS.md](./DEPLOYMENT-STATUS.md) for current status
