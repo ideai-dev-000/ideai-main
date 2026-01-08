@@ -134,15 +134,14 @@ async function readIdeaiMetadata(
     return true;
   });
 
-  // Sort apps: web first, then by port, then metaframework last
+  // Sort apps: web first, ideai-capabilities second, then by port, metaframework last
   return uniqueApps.sort((a, b) => {
-    // Web app (id: "web") always first
     if (a.id === "web") return -1;
     if (b.id === "web") return 1;
-    // Metaframework always last
+    if (a.id === "ideai-capabilities") return -1;
+    if (b.id === "ideai-capabilities") return 1;
     if (a.id === "metaframework") return 1;
     if (b.id === "metaframework") return -1;
-    // Otherwise sort by port
     return (a.port || 0) - (b.port || 0);
   });
 }
