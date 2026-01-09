@@ -1,0 +1,27 @@
+{
+  "role": "child",
+  "name": "IdeaI VibeCoder",
+  "description": "AI-powered vibe coding platform using v0 SDK - The world's most performant forward-facing vibe coding UI for generating React components",
+  "parentApp": "web",
+  "localPort": 3020,
+  "vercelProject": {
+    "projectName": "ideai-vibecoder",
+    "orgId": "team_vhjzlMi6CfNow0IfBXnv2Yn2",
+    "forkToNew": false
+  },
+  "metadata": {
+    "id": "ideai-vibecoder",
+    "port": 3020,
+    "css": ["Tailwind CSS", "Shadcn/UI"],
+    "capabilities": [
+      "AI Component Generation (v0 SDK)",
+      "Vibe Coding UI",
+      "Real-time Chat Interface",
+      "Component Preview",
+      "Code Download",
+      "Project Management"
+    ],
+    "path": "/apps/ideai-vibecoder",
+    "category": "capability"
+  }
+}
