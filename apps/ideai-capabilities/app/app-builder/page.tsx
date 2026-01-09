@@ -3,63 +3,62 @@
  *
  * @module AppBuilderPage
  * @description
- * Placeholder page for app builder component integration.
- * Will be updated once app builder is extracted to @repo/app-builder package.
+ * App Builder page using Cloud Manager UI for Vercel project management.
+ * Protected by authentication - redirects anonymous users to landing page.
  */
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Info } from "lucide-react";
+"use client";
+
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useSession } from "@/lib/auth-client";
+import { CloudManagerUI } from "@repo/cloud-manager/components/cloud-manager-ui";
 
 export default function AppBuilderPage() {
-  return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="mb-6">
-        <div className="mb-2 flex items-center gap-2">
-          <h1 className="text-3xl font-bold">App Builder</h1>
-          <Badge variant="outline">Coming Soon</Badge>
+  const router = useRouter();
+  const { data: session, isPending } = useSession();
+
+  // Check if user is authenticated (not anonymous)
+  const isAnonymous =
+    !session?.user ||
+    session.user.name === "Anonymous" ||
+    session.user.email?.startsWith("temp-");
+
+  // Show loading state while checking session
+  if (isPending) {
+    return (
+      <div className="pointer-events-auto flex min-h-screen items-center justify-center">
+        <div className="text-center">
+          <div className="mb-4 h-8 w-8 animate-spin rounded-full border-4 border-slate-300 border-t-slate-600 mx-auto" />
+          <p className="text-slate-600 dark:text-slate-400">Loading...</p>
         </div>
-        <p className="text-slate-600 dark:text-slate-400">
-          Build apps with AI using v0 SDK integration. This page will be updated
-          once the app builder is extracted to @repo/app-builder package.
-        </p>
       </div>
+    );
+  }
 
-      <Alert>
-        <Info className="h-4 w-4" />
-        <AlertTitle>Component Integration Pending</AlertTitle>
-        <AlertDescription>
-          App builder component integration will be added once extracted to
-          @repo/app-builder package. This demonstrates the pattern for future
-          component integration.
-        </AlertDescription>
-      </Alert>
+  // Redirect to landing page if not authenticated
+  useEffect(() => {
+    if (!isPending && isAnonymous) {
+      router.replace("/");
+    }
+  }, [isPending, isAnonymous, router]);
 
-      <Card className="mt-6">
-        <CardHeader>
-          <CardTitle>Architecture</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p className="text-sm text-slate-600 dark:text-slate-400">
-            Once app builder is extracted to `@repo/app-builder` package, this
-            page will import the component directly:
+  // Don't render anything if anonymous (redirect is in progress)
+  if (isAnonymous) {
+    return null;
+  }
+
+  return (
+    <div className="pointer-events-auto min-h-screen">
+      <div className="container mx-auto px-4 py-8">
+        <div className="mb-6">
+          <h1 className="text-3xl font-bold">App Builder</h1>
+          <p className="mt-2 text-slate-600 dark:text-slate-400">
+            Manage your Vercel projects and cloud deployments.
           </p>
-          <pre className="mt-2 rounded bg-slate-100 p-3 text-xs dark:bg-slate-900">
-            {`import { AppBuilder } from "@repo/app-builder";
-
-export default function AppBuilderPage() {
-  return <AppBuilder />;
-}`}
-          </pre>
-        </CardContent>
-      </Card>
+        </div>
+        <CloudManagerUI />
+      </div>
     </div>
   );
 }
