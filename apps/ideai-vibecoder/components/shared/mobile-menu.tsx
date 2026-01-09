@@ -4,26 +4,15 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useSession } from "@/lib/auth-client";
-import { Menu, X, Info } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { GitHubIcon, VercelIcon } from "@/components/ui/icons";
+import { VercelIcon } from "@/components/ui/icons";
 import { DEPLOY_URL } from "@/lib/constants";
 import { ChatSelector } from "./chat-selector";
 import { useStreaming } from "@/contexts/streaming-context";
 import { Zap, ZapOff } from "lucide-react";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
 
-interface MobileMenuProps {
-  onInfoDialogOpen: () => void;
-}
-
-export function MobileMenu({ onInfoDialogOpen }: MobileMenuProps) {
+export function MobileMenu() {
   const [isOpen, setIsOpen] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
   const pathname = usePathname();
@@ -161,48 +150,6 @@ export function MobileMenu({ onInfoDialogOpen }: MobileMenuProps) {
                   <Button
                     variant="ghost"
                     className="w-full justify-start h-auto p-3 text-left"
-                    onClick={() => {
-                      onInfoDialogOpen();
-                      closeMenu();
-                    }}
-                  >
-                    <div className="flex items-center gap-3 w-full">
-                      <Info className="h-4 w-4 flex-shrink-0" />
-                      <div className="flex-1">
-                        <div className="font-medium">What's This?</div>
-                        <div className="text-sm text-muted-foreground">
-                          Learn about IdeaI Vibes
-                        </div>
-                      </div>
-                    </div>
-                  </Button>
-
-                  <Button
-                    variant="ghost"
-                    className="w-full justify-start h-auto p-3 text-left"
-                    asChild
-                  >
-                    <Link
-                      href="https://github.com/vercel/v0-sdk"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      onClick={closeMenu}
-                    >
-                      <div className="flex items-center gap-3 w-full">
-                        <GitHubIcon size={16} />
-                        <div className="flex-1">
-                          <div className="font-medium">GitHub</div>
-                          <div className="text-sm text-muted-foreground">
-                            vercel/v0-sdk
-                          </div>
-                        </div>
-                      </div>
-                    </Link>
-                  </Button>
-
-                  <Button
-                    variant="ghost"
-                    className="w-full justify-start h-auto p-3 text-left"
                     asChild
                   >
                     <Link
@@ -214,7 +161,7 @@ export function MobileMenu({ onInfoDialogOpen }: MobileMenuProps) {
                       <div className="flex items-center gap-3 w-full">
                         <VercelIcon size={16} />
                         <div className="flex-1">
-                          <div className="font-medium">Deploy with Vercel</div>
+                          <div className="font-medium">Deploy</div>
                           <div className="text-sm text-muted-foreground">
                             Get your own IdeaI Vibes
                           </div>

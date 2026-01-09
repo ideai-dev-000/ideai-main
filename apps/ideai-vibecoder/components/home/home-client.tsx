@@ -772,19 +772,6 @@ export function HomeClient() {
               />
             </Suggestions>
           </div>
-
-          {/* Footer */}
-          <div className="mt-8 md:mt-16 text-center text-sm text-muted-foreground">
-            <p>
-              Powered by{" "}
-              <Link
-                href="https://v0-sdk.dev"
-                className="text-foreground hover:underline"
-              >
-                v0 SDK
-              </Link>
-            </p>
-          </div>
         </div>
       </div>
     </div>
