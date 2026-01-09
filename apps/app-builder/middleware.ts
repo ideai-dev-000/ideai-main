@@ -1,6 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { getToken } from "next-auth/jwt";
-import { guestRegex, isDevelopmentEnvironment } from "./lib/constants";
+import { auth } from "./lib/auth";
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -13,25 +12,17 @@ export async function middleware(request: NextRequest) {
     return new Response("pong", { status: 200 });
   }
 
+  // Allow Better Auth API routes to pass through
   if (pathname.startsWith("/api/auth")) {
     return NextResponse.next();
   }
 
-  // Check for required environment variables
-  if (!process.env.AUTH_SECRET) {
-    console.error(
-      "❌ Missing AUTH_SECRET environment variable. Please check your .env file.",
-    );
-    return NextResponse.next(); // Let the app handle the error with better UI
-  }
-
-  const token = await getToken({
-    req: request,
-    secret: process.env.AUTH_SECRET,
-    secureCookie: !isDevelopmentEnvironment,
+  // Get session using Better Auth
+  const session = await auth.api.getSession({
+    headers: request.headers,
   });
 
-  if (!token) {
+  if (!session?.user) {
     // Allow API routes to proceed without authentication for anonymous chat creation
     if (pathname.startsWith("/api/")) {
       return NextResponse.next();
@@ -52,13 +43,12 @@ export async function middleware(request: NextRequest) {
       return NextResponse.next();
     }
 
-    // For any other protected routes, redirect to login
-    return NextResponse.redirect(new URL("/login", request.url));
+    // For any other protected routes, allow anonymous (Better Auth handles this)
+    return NextResponse.next();
   }
 
-  const isGuest = guestRegex.test(token?.email ?? "");
-
-  if (token && !isGuest && ["/login", "/register"].includes(pathname)) {
+  // If authenticated and trying to access login/register, redirect home
+  if (session?.user && ["/login", "/register"].includes(pathname)) {
     return NextResponse.redirect(new URL("/", request.url));
   }
 

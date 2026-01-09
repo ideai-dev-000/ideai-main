@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import { ChatSelector } from "./chat-selector";
 import { MobileMenu } from "./mobile-menu";
-import { useSession } from "next-auth/react";
+import { useSession } from "@/lib/auth-client";
 import { UserNav } from "@/components/user-nav";
 import { Button } from "@/components/ui/button";
 import { VercelIcon, GitHubIcon } from "@/components/ui/icons";

@@ -1,6 +1,6 @@
 "use client";
 
-import { signOut } from "next-auth/react";
+import { signOut } from "@/lib/auth-client";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -12,7 +12,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { LogOut, User } from "lucide-react";
-import { Session } from "next-auth";
+import type { Session } from "better-auth/types";
 
 interface UserNavProps {
   session: Session | null;
@@ -22,7 +22,8 @@ export function UserNav({ session }: UserNavProps) {
   const initials =
     session?.user?.email?.split("@")[0]?.slice(0, 2)?.toUpperCase() || "U";
 
-  const isGuest = session?.user?.type === "guest";
+  // Better Auth doesn't have a "guest" type - use anonymous check instead
+  const isAnonymous = !session?.user || session.user.name === "Anonymous";
   const isSignedOut = !session;
 
   return (
@@ -40,7 +41,11 @@ export function UserNav({ session }: UserNavProps) {
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
             <p className="text-sm font-medium leading-none">
-              {isSignedOut ? "Not signed in" : isGuest ? "Guest User" : "User"}
+              {isSignedOut
+                ? "Not signed in"
+                : isAnonymous
+                  ? "Anonymous User"
+                  : "User"}
             </p>
             {session?.user?.email && (
               <p className="text-xs leading-none text-muted-foreground">
@@ -50,7 +55,7 @@ export function UserNav({ session }: UserNavProps) {
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        {(isGuest || isSignedOut) && (
+        {(isAnonymous || isSignedOut) && (
           <>
             <DropdownMenuItem asChild>
               <a href="/register" className="cursor-pointer">
