@@ -1,5 +1,10 @@
 import { boolean, pgTable, text, timestamp } from "drizzle-orm/pg-core";
 
+// Helper function for generating UUIDs (must be defined before use)
+function generateUUID(): string {
+  return Math.random().toString(36).substring(2, 15);
+}
+
 // Better Auth tables - minimal schema for app-builder
 export const users = pgTable("users", {
   id: text("id").primaryKey(),
@@ -53,5 +58,29 @@ export const verifications = pgTable("verifications", {
   updatedAt: timestamp("updated_at"),
 });
 
+// Chat ownership tracking (for v0 SDK integration)
+export const chat_ownerships = pgTable("chat_ownerships", {
+  id: text("id")
+    .primaryKey()
+    .$defaultFn(() => generateUUID()),
+  v0_chat_id: text("v0_chat_id").notNull().unique(),
+  user_id: text("user_id")
+    .notNull()
+    .references(() => users.id),
+  created_at: timestamp("created_at").notNull().defaultNow(),
+});
+
+// Anonymous chat logging (for rate limiting)
+export const anonymous_chat_logs = pgTable("anonymous_chat_logs", {
+  id: text("id")
+    .primaryKey()
+    .$defaultFn(() => generateUUID()),
+  ip_address: text("ip_address").notNull(),
+  v0_chat_id: text("v0_chat_id").notNull(),
+  created_at: timestamp("created_at").notNull().defaultNow(),
+});
+
 export type User = typeof users.$inferSelect;
 export type Session = typeof sessions.$inferSelect;
+export type ChatOwnership = typeof chat_ownerships.$inferSelect;
+export type AnonymousChatLog = typeof anonymous_chat_logs.$inferSelect;

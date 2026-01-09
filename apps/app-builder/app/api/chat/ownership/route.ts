@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@/app/(auth)/auth";
+import { auth } from "@/lib/auth";
 import { createChatOwnership, createAnonymousChatLog } from "@/lib/db/queries";
 
 function getClientIP(request: NextRequest): string {
@@ -20,7 +20,9 @@ function getClientIP(request: NextRequest): string {
 
 export async function POST(request: NextRequest) {
   try {
-    const session = await auth();
+    const session = await auth.api.getSession({
+      headers: request.headers,
+    });
     const { chatId } = await request.json();
 
     if (!chatId) {

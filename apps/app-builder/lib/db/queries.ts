@@ -22,8 +22,9 @@ import {
   type AnonymousChatLog,
 } from "./schema";
 import { generateUUID } from "../utils";
-import { generateHashedPassword } from "./utils";
-import db from "./connection";
+import { db } from "./index";
+
+// Note: Better Auth handles password hashing, so generateHashedPassword is no longer needed
 
 export async function getUser(email: string): Promise<Array<User>> {
   try {
@@ -38,19 +39,12 @@ export async function createUser(
   email: string,
   password: string,
 ): Promise<User[]> {
-  try {
-    const hashedPassword = generateHashedPassword(password);
-    return await db
-      .insert(users)
-      .values({
-        email,
-        password: hashedPassword,
-      })
-      .returning();
-  } catch (error) {
-    console.error("Failed to create user in database");
-    throw error;
-  }
+  // Better Auth handles user creation - this is kept for compatibility
+  // but shouldn't be used. Use Better Auth's signUp instead.
+  console.warn(
+    "createUser is deprecated - use Better Auth's signUp.email() instead",
+  );
+  return [];
 }
 
 export async function createGuestUser(): Promise<User[]> {

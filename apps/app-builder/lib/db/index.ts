@@ -1,7 +1,14 @@
 import type { PostgresJsDatabase } from "drizzle-orm/postgres-js";
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
-import { accounts, sessions, users, verifications } from "./schema";
+import {
+  accounts,
+  anonymous_chat_logs,
+  chat_ownerships,
+  sessions,
+  users,
+  verifications,
+} from "./schema";
 
 // Construct schema object for drizzle
 const schema = {
@@ -9,6 +16,8 @@ const schema = {
   sessions,
   accounts,
   verifications,
+  chat_ownerships,
+  anonymous_chat_logs,
 };
 
 const connectionString =

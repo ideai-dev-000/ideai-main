@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient, ChatDetail } from "v0-sdk";
-import { auth } from "@/app/(auth)/auth";
+import { auth } from "@/lib/auth";
 import {
   createChatOwnership,
   createAnonymousChatLog,
@@ -37,7 +37,9 @@ function getClientIP(request: NextRequest): string {
 
 export async function POST(request: NextRequest) {
   try {
-    const session = await auth();
+    const session = await auth.api.getSession({
+      headers: request.headers,
+    });
     const { message, chatId, streaming, attachments, projectId } =
       await request.json();
 
@@ -56,7 +58,9 @@ export async function POST(request: NextRequest) {
         differenceInHours: 24,
       });
 
-      const userType = session.user.type;
+      // Better Auth doesn't have user.type - use anonymous check instead
+      const isAnonymous = !session.user || session.user.name === "Anonymous";
+      const userType: "guest" | "regular" = isAnonymous ? "guest" : "regular";
       if (chatCount >= entitlementsByUserType[userType].maxMessagesPerDay) {
         return new ChatSDKError("rate_limit:chat").toResponse();
       }
