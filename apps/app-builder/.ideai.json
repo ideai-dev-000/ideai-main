@@ -1,0 +1,25 @@
+{
+  "role": "child",
+  "name": "App Builder",
+  "description": "AI-powered app builder using v0 SDK - Vibe coding UI for generating React components",
+  "parentApp": "web",
+  "localPort": 3019,
+  "vercelProject": {
+    "projectName": "app-builder",
+    "orgId": "team_vhjzlMi6CfNow0IfBXnv2Yn2",
+    "forkToNew": false
+  },
+  "metadata": {
+    "id": "app-builder",
+    "port": 3019,
+    "css": ["Tailwind CSS", "Shadcn/UI"],
+    "capabilities": [
+      "AI Component Generation (v0 SDK)",
+      "Vibe Coding UI",
+      "Real-time Chat Interface",
+      "Component Preview"
+    ],
+    "path": "/apps/app-builder",
+    "category": "capability"
+  }
+}
