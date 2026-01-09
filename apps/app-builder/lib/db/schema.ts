@@ -1,6 +1,6 @@
 import { boolean, pgTable, text, timestamp } from "drizzle-orm/pg-core";
 
-// Helper function for generating UUIDs (must be defined before use)
+// Helper function for generating UUIDs
 function generateUUID(): string {
   return Math.random().toString(36).substring(2, 15);
 }
