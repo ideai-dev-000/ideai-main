@@ -9,6 +9,7 @@
 import type { Metadata } from "next";
 import { ThemeProvider } from "@repo/ui";
 import { type ReactNode } from "react";
+import { Toaster } from "sonner";
 import { StreamingProvider } from "@/contexts/streaming-context";
 import { SWRProvider } from "@/components/providers/swr-provider";
 import { SessionProvider } from "@/components/providers/session-provider";
@@ -41,6 +42,7 @@ export default function RootLayout({
               <StreamingProvider>{children}</StreamingProvider>
             </SWRProvider>
           </SessionProvider>
+          <Toaster position="top-center" richColors />
         </ThemeProvider>
       </body>
     </html>
