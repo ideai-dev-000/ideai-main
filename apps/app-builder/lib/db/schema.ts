@@ -76,6 +76,7 @@ export const anonymous_chat_logs = pgTable("anonymous_chat_logs", {
     .primaryKey()
     .$defaultFn(() => generateUUID()),
   ip_address: text("ip_address").notNull(),
+
   v0_chat_id: text("v0_chat_id").notNull(),
   created_at: timestamp("created_at").notNull().defaultNow(),
 });
