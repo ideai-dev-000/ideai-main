@@ -198,7 +198,10 @@ export function HomeClient() {
           const contentType = response.headers.get("content-type");
           if (contentType && contentType.includes("application/json")) {
             const errorData = await response.json();
-            console.error("API Error Response:", errorData);
+            console.error(
+              "API Error Response:",
+              JSON.stringify(errorData, null, 2),
+            );
             // Prioritize error messages in order: details > error > message
             if (errorData.details) {
               errorMessage = errorData.details;
@@ -428,7 +431,10 @@ export function HomeClient() {
           const contentType = response.headers.get("content-type");
           if (contentType && contentType.includes("application/json")) {
             const errorData = await response.json();
-            console.error("API Error Response:", errorData);
+            console.error(
+              "API Error Response:",
+              JSON.stringify(errorData, null, 2),
+            );
             // Prioritize error messages in order: details > error > message
             if (errorData.details) {
               errorMessage = errorData.details;

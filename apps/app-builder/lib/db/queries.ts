@@ -74,6 +74,13 @@ export async function createChatOwnership({
   userId: string;
 }) {
   try {
+    if (!db) {
+      console.warn(
+        "Database not initialized, skipping chat ownership creation",
+      );
+      return;
+    }
+
     return await db
       .insert(chat_ownerships)
       .values({
@@ -82,8 +89,8 @@ export async function createChatOwnership({
       })
       .onConflictDoNothing({ target: chat_ownerships.v0_chat_id });
   } catch (error) {
-    console.error("Failed to create chat ownership in database");
-    throw error;
+    console.error("Failed to create chat ownership in database:", error);
+    // Fail silently - ownership tracking is not critical
   }
 }
 
@@ -139,6 +146,11 @@ export async function getChatCountByUserId({
   differenceInHours: number;
 }): Promise<number> {
   try {
+    if (!db) {
+      console.warn("Database not initialized, skipping rate limit check");
+      return 0;
+    }
+
     const hoursAgo = new Date(Date.now() - differenceInHours * 60 * 60 * 1000);
 
     const [stats] = await db
@@ -153,8 +165,9 @@ export async function getChatCountByUserId({
 
     return stats?.count || 0;
   } catch (error) {
-    console.error("Failed to get chat count by user from database");
-    throw error;
+    console.error("Failed to get chat count by user from database:", error);
+    // Fail open - allow request if database check fails
+    return 0;
   }
 }
 
@@ -166,6 +179,11 @@ export async function getChatCountByIP({
   differenceInHours: number;
 }): Promise<number> {
   try {
+    if (!db) {
+      console.warn("Database not initialized, skipping rate limit check");
+      return 0;
+    }
+
     const hoursAgo = new Date(Date.now() - differenceInHours * 60 * 60 * 1000);
 
     const [stats] = await db
@@ -180,8 +198,9 @@ export async function getChatCountByIP({
 
     return stats?.count || 0;
   } catch (error) {
-    console.error("Failed to get chat count by IP from database");
-    throw error;
+    console.error("Failed to get chat count by IP from database:", error);
+    // Fail open - allow request if database check fails
+    return 0;
   }
 }
 
@@ -193,12 +212,17 @@ export async function createAnonymousChatLog({
   v0ChatId: string;
 }) {
   try {
+    if (!db) {
+      console.warn("Database not initialized, skipping anonymous chat log");
+      return;
+    }
+
     return await db.insert(anonymous_chat_logs).values({
       ip_address: ipAddress,
       v0_chat_id: v0ChatId,
     });
   } catch (error) {
-    console.error("Failed to create anonymous chat log in database");
-    throw error;
+    console.error("Failed to create anonymous chat log in database:", error);
+    // Fail silently - rate limiting logging is not critical
   }
 }
