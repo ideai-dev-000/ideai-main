@@ -1,0 +1,28 @@
+{
+  "role": "child",
+  "name": "Capability2.0",
+  "description": "Unified platform combining Vibe Coding and Workflow tools - One login for both AI-powered component generation and workflow automation",
+  "parentApp": "web",
+  "localPort": 3021,
+  "vercelProject": {
+    "projectName": "capability2.0",
+    "orgId": "team_vhjzlMi6CfNow0IfBXnv2Yn2",
+    "forkToNew": false
+  },
+  "metadata": {
+    "id": "capability2.0",
+    "port": 3021,
+    "css": ["Tailwind CSS", "Shadcn/UI"],
+    "capabilities": [
+      "AI Component Generation (v0 SDK)",
+      "Vibe Coding UI",
+      "Workflow Automation",
+      "Real-time Chat Interface",
+      "Component Preview",
+      "Code Download",
+      "Unified Authentication"
+    ],
+    "path": "/apps/capability2.0",
+    "category": "capability"
+  }
+}
