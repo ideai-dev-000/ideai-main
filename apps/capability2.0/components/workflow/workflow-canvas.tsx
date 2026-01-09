@@ -42,8 +42,8 @@ import {
   type WorkflowNode,
   type WorkflowNodeType,
 } from "@/lib/workflow-store";
-import { Edge } from "../ai-elements/edge";
-import { Panel } from "../ai-elements/panel";
+import { Edge } from "@/components/ai-elements/edge";
+import { Panel } from "@/components/ai-elements/panel";
 import { ActionNode } from "./nodes/action-node";
 import { AddNode } from "./nodes/add-node";
 import { TriggerNode } from "./nodes/trigger-node";

@@ -16,6 +16,7 @@ import { Toaster } from "sonner";
 import { StreamingProvider } from "@/contexts/streaming-context";
 import { SWRProvider } from "@/components/providers/swr-provider";
 import { SessionProvider } from "@/components/providers/session-provider";
+import { PersistentCanvas } from "@/components/workflow/persistent-canvas";
 import { mono, sans } from "@/lib/fonts";
 import { cn } from "@/lib/utils";
 import "./globals.css";
@@ -44,7 +45,10 @@ export default function RootLayout({
             <ReactFlowProvider>
               <SessionProvider>
                 <SWRProvider>
-                  <StreamingProvider>{children}</StreamingProvider>
+                  <StreamingProvider>
+                    <PersistentCanvas />
+                    {children}
+                  </StreamingProvider>
                 </SWRProvider>
               </SessionProvider>
             </ReactFlowProvider>

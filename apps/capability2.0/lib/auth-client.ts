@@ -16,8 +16,8 @@ function getBaseURL() {
   if (process.env.VERCEL_URL) {
     return `https://${process.env.VERCEL_URL}`;
   }
-  // Default to ideai-vibecoder app port
-  return "http://localhost:3020";
+  // Default to capability2.0 app port
+  return "http://localhost:3021";
 }
 
 export const authClient = createAuthClient({

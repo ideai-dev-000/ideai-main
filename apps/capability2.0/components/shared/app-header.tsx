@@ -25,29 +25,29 @@ interface AppHeaderProps {
 // Component that uses useSearchParams - needs to be wrapped in Suspense
 function SearchParamsHandler() {
   const searchParams = useSearchParams();
-  const { update } = useSession();
+  const session = useSession();
 
   // Force session refresh when redirected after auth
   useEffect(() => {
     const shouldRefresh = searchParams.get("refresh") === "session";
 
-    if (shouldRefresh) {
+    if (shouldRefresh && session.refetch) {
       // Force session update
-      update();
+      session.refetch();
 
       // Clean up URL without causing navigation
       const url = new URL(window.location.href);
       url.searchParams.delete("refresh");
       window.history.replaceState({}, "", url.pathname);
     }
-  }, [searchParams, update]);
+  }, [searchParams, session]);
 
   return null;
 }
 
 export function AppHeader({ className = "" }: AppHeaderProps) {
   const pathname = usePathname();
-  const { data: session } = useSession();
+  const { data: sessionData } = useSession();
   const isHomepage = pathname === "/";
   const { isStreamingEnabled, toggleStreaming } = useStreaming();
 
@@ -130,12 +130,12 @@ export function AppHeader({ className = "" }: AppHeaderProps) {
                 Deploy
               </Link>
             </Button>
-            <UserNav session={session} />
+            <UserNav session={sessionData || null} />
           </div>
 
           {/* Mobile right side - Only menu button and user avatar */}
           <div className="flex lg:hidden items-center gap-2">
-            <UserNav session={session} />
+            <UserNav session={sessionData || null} />
             <MobileMenu />
           </div>
         </div>

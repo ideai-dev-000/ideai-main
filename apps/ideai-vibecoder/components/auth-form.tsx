@@ -25,9 +25,12 @@ export function AuthForm({ type }: AuthFormProps) {
 
     try {
       if (type === "signup") {
+        // Extract name from email (before @) or use a default
+        const name = email.split("@")[0] || "User";
         const signUpResponse = await signUp.email({
           email,
           password,
+          name,
         });
         if (signUpResponse.error) {
           setError(signUpResponse.error.message || "Sign up failed");

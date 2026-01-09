@@ -48,11 +48,20 @@ export async function GET(
       where: eq(workflowExecutionLogs.executionId, executionId),
     });
 
-    // Map logs to node statuses
-    const nodeStatuses: NodeStatus[] = logs.map((log) => ({
-      nodeId: log.nodeId,
-      status: log.status,
-    }));
+    // Map logs to node statuses (filter out logs without nodeId or status)
+    const nodeStatuses: NodeStatus[] = logs
+      .filter(
+        (
+          log,
+        ): log is typeof log & {
+          nodeId: string;
+          status: NonNullable<typeof log.status>;
+        } => log.nodeId !== null && log.status !== null,
+      )
+      .map((log) => ({
+        nodeId: log.nodeId,
+        status: log.status,
+      }));
 
     return NextResponse.json({
       status: execution.status,

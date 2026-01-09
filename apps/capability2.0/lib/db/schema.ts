@@ -116,11 +116,14 @@ export const workflowExecutions = pgTable("workflow_executions", {
   workflowId: text("workflow_id")
     .notNull()
     .references(() => workflows.id, { onDelete: "cascade" }),
+  userId: text("user_id").references(() => users.id),
   status: text("status")
     .notNull()
-    .$type<"pending" | "running" | "completed" | "failed">(),
+    .$type<"pending" | "running" | "completed" | "failed" | "error">(),
   startedAt: timestamp("started_at"),
   completedAt: timestamp("completed_at"),
+  // biome-ignore lint/suspicious/noExplicitAny: JSONB type - execution input stored as JSON
+  input: jsonb("input").$type<any>(),
   // biome-ignore lint/suspicious/noExplicitAny: JSONB type - execution results stored as JSON
   result: jsonb("result").$type<any>(),
   error: text("error"),
@@ -137,7 +140,12 @@ export const workflowExecutionLogs = pgTable("workflow_execution_logs", {
     .references(() => workflowExecutions.id, { onDelete: "cascade" }),
   nodeId: text("node_id"),
   level: text("level").notNull().$type<"info" | "warning" | "error">(),
+  status: text("status").$type<"pending" | "running" | "success" | "error">(),
   message: text("message").notNull(),
+  // biome-ignore lint/suspicious/noExplicitAny: JSONB type - log input stored as JSON
+  input: jsonb("input").$type<any>(),
+  // biome-ignore lint/suspicious/noExplicitAny: JSONB type - log output stored as JSON
+  output: jsonb("output").$type<any>(),
   // biome-ignore lint/suspicious/noExplicitAny: JSONB type - log data stored as JSON
   data: jsonb("data").$type<any>(),
   timestamp: timestamp("timestamp").notNull().defaultNow(),
@@ -184,8 +192,12 @@ export const apiKeys = pgTable("api_keys", {
   name: text("name").notNull(),
   // Encrypted API key value
   encryptedKey: text("encrypted_key").notNull(),
+  // Hash of the API key for quick lookups
+  keyHash: text("key_hash"),
   // Last 4 characters for display purposes
   lastFour: text("last_four"),
+  // Last used timestamp for tracking API usage
+  lastUsedAt: timestamp("last_used_at"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });

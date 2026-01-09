@@ -15,7 +15,7 @@ import { LogOut, User } from "lucide-react";
 import type { Session } from "better-auth/types";
 
 interface UserNavProps {
-  session: Session | null;
+  session: { user: Session["user"]; session: Session["session"] } | null;
 }
 
 export function UserNav({ session }: UserNavProps) {

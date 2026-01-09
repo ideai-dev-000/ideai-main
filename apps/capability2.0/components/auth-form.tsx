@@ -1,18 +1,19 @@
 "use client";
 
-import { useState, FormEvent } from "react";
+import { useState, FormEvent, Suspense } from "react";
 import { signIn, signUp } from "@/lib/auth-client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 interface AuthFormProps {
   type: "signin" | "signup";
 }
 
-export function AuthForm({ type }: AuthFormProps) {
+function AuthFormInner({ type }: AuthFormProps) {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -25,9 +26,12 @@ export function AuthForm({ type }: AuthFormProps) {
 
     try {
       if (type === "signup") {
+        // Extract name from email (before @) or use a default
+        const name = email.split("@")[0] || "User";
         const signUpResponse = await signUp.email({
           email,
           password,
+          name,
         });
         if (signUpResponse.error) {
           setError(signUpResponse.error.message || "Sign up failed");
@@ -57,8 +61,15 @@ export function AuthForm({ type }: AuthFormProps) {
         }
       }
 
-      // Success - redirect to home
-      router.push("/");
+      // Success - redirect based on redirect parameter or default to home
+      const redirectTo = searchParams.get("redirect");
+      if (redirectTo === "vibe-code") {
+        router.push("/?tab=vibe-code");
+      } else if (redirectTo === "workflow") {
+        router.push("/workflow");
+      } else {
+        router.push("/");
+      }
       router.refresh();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Authentication failed");
@@ -125,5 +136,13 @@ export function AuthForm({ type }: AuthFormProps) {
         )}
       </div>
     </form>
+  );
+}
+
+export function AuthForm({ type }: AuthFormProps) {
+  return (
+    <Suspense fallback={<div className="text-center">Loading...</div>}>
+      <AuthFormInner type={type} />
+    </Suspense>
   );
 }

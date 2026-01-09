@@ -1,29 +1,48 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
-import { AuthForm } from "@/components/auth-form";
+import { AuthDialog } from "@/components/auth/dialog";
+import React from "react";
 
-export default async function LoginPage() {
+async function LoginPageInner({ redirectTo }: { redirectTo?: string }) {
   const session = await auth.api.getSession({
     headers: new Headers(),
   });
 
   if (session) {
-    redirect("/");
+    // Redirect authenticated users to the intended page or home
+    if (redirectTo === "vibe-code") {
+      redirect("/?tab=vibe-code");
+    } else if (redirectTo === "workflow") {
+      redirect("/workflow");
+    } else {
+      redirect("/");
+    }
   }
 
   return (
     <div className="flex h-screen w-screen items-center justify-center bg-background">
-      <div className="w-full max-w-md overflow-hidden rounded-2xl border border-border shadow-xl">
-        <div className="flex flex-col items-center justify-center space-y-3 border-b border-border bg-background px-4 py-6 pt-8 text-center sm:px-16">
-          <h3 className="text-xl font-semibold text-foreground">Sign In</h3>
-          <p className="text-sm text-muted-foreground">
-            Use your email and password to sign in
-          </p>
-        </div>
-        <div className="flex flex-col space-y-4 bg-muted/50 px-4 py-8 sm:px-16">
-          <AuthForm type="signin" />
-        </div>
-      </div>
+      <AuthDialog open={true} defaultMode="signin" />
     </div>
+  );
+}
+
+export default async function LoginPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ redirect?: string }>;
+}) {
+  const params = await searchParams;
+  return (
+    <React.Suspense
+      fallback={
+        <div className="flex h-screen w-screen items-center justify-center">
+          <div className="text-center">
+            <p className="text-gray-600">Loading...</p>
+          </div>
+        </div>
+      }
+    >
+      <LoginPageInner redirectTo={params.redirect} />
+    </React.Suspense>
   );
 }

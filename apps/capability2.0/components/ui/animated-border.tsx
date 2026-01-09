@@ -9,7 +9,8 @@ interface AnimatedBorderProps {
 export const AnimatedBorder = ({ className }: AnimatedBorderProps) => {
   return (
     <>
-      <style jsx>{`
+      {/* @ts-expect-error - styled-jsx jsx prop is valid in Next.js */}
+      <style jsx={true}>{`
         @property --angle {
           syntax: "<angle>";
           initial-value: 0deg;

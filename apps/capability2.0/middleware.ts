@@ -18,9 +18,17 @@ export async function middleware(request: NextRequest) {
   }
 
   // Get session using Better Auth
-  const session = await auth.api.getSession({
-    headers: request.headers,
-  });
+  // Wrap in try-catch to handle invalid/expired tokens gracefully
+  let session = null;
+  try {
+    session = await auth.api.getSession({
+      headers: request.headers,
+    });
+  } catch (error) {
+    // Invalid/expired session token - continue as unauthenticated
+    // This prevents errors when cookies contain stale tokens
+    console.debug("Session check failed (likely expired token):", error);
+  }
 
   if (!session?.user) {
     // Allow API routes to proceed without authentication for anonymous chat creation

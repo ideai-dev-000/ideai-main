@@ -25,22 +25,22 @@ interface AppHeaderProps {
 // Component that uses useSearchParams - needs to be wrapped in Suspense
 function SearchParamsHandler() {
   const searchParams = useSearchParams();
-  const { update } = useSession();
+  const session = useSession();
 
   // Force session refresh when redirected after auth
   useEffect(() => {
     const shouldRefresh = searchParams.get("refresh") === "session";
 
-    if (shouldRefresh) {
+    if (shouldRefresh && session.refetch) {
       // Force session update
-      update();
+      session.refetch();
 
       // Clean up URL without causing navigation
       const url = new URL(window.location.href);
       url.searchParams.delete("refresh");
       window.history.replaceState({}, "", url.pathname);
     }
-  }, [searchParams, update]);
+  }, [searchParams, session]);
 
   return null;
 }

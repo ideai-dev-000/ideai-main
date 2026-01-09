@@ -66,6 +66,7 @@ export function IdeAIThemeSelector() {
       // Remove theme - reset to default
       const allThemeNames = Object.keys(themes) as ThemeName[];
       allThemeNames.forEach((themeName) => {
+        if (!themeName) return;
         const themeToRemove = themes[themeName];
         if (themeToRemove) {
           Object.keys(themeToRemove.colors).forEach((key) => {

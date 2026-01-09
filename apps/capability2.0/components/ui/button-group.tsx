@@ -1,4 +1,4 @@
-import { Slot as SlotPrimitive } from "radix-ui";
+import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
 
 import { cn } from "@/lib/utils";
@@ -26,13 +26,15 @@ function ButtonGroup({
   orientation,
   ...props
 }: React.ComponentProps<"div"> & VariantProps<typeof buttonGroupVariants>) {
+  // Type assertion needed due to React type version mismatch in monorepo
+  const divProps = props as any;
   return (
     <div
       role="group"
       data-slot="button-group"
       data-orientation={orientation}
       className={cn(buttonGroupVariants({ orientation }), className)}
-      {...props}
+      {...divProps}
     />
   );
 }
@@ -44,16 +46,16 @@ function ButtonGroupText({
 }: React.ComponentProps<"div"> & {
   asChild?: boolean;
 }) {
-  const Comp = asChild ? SlotPrimitive.Slot : "div";
+  const Comp = asChild ? Slot : "div";
 
   if (asChild) {
     return (
-      <SlotPrimitive.Slot
+      <Slot.Slot
         className={cn(
           "bg-muted flex items-center gap-2 rounded-md border px-4 text-sm font-medium shadow-xs [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4",
           className,
         )}
-        {...(props as React.ComponentProps<typeof SlotPrimitive.Slot>)}
+        {...(props as React.ComponentProps<typeof Slot.Slot>)}
       />
     );
   }

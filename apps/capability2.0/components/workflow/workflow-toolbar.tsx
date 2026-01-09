@@ -79,7 +79,7 @@ import { MakePublicOverlay } from "../overlays/make-public-overlay";
 import { useOverlay } from "../overlays/overlay-provider";
 import { WorkflowIssuesOverlay } from "../overlays/workflow-issues-overlay";
 import { WorkflowIcon } from "../ui/workflow-icon";
-import { UserMenu } from "../workflows/user-menu";
+import { UserMenu } from "./user-menu";
 import { WorkflowStatusPanel } from "./workflow-status-panel";
 
 type WorkflowToolbarProps = {

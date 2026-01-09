@@ -26,11 +26,11 @@ export type ThemeName = keyof typeof themes | null;
 
 export function getTheme(name: ThemeName): Theme | null {
   if (!name) return null;
-  return themes[name] || null;
+  return (themes[name as keyof typeof themes] as Theme) || null;
 }
 
 export function getAllThemes(): Theme[] {
-  return Object.values(themes);
+  return Object.values(themes) as Theme[];
 }
 
 export function getThemeNames(): ThemeName[] {

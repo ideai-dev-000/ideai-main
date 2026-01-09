@@ -55,8 +55,12 @@ export async function createGuestUser(): Promise<User[]> {
     return await db
       .insert(users)
       .values({
+        id: generateUUID(),
         email: guestEmail,
-        password: null,
+        name: "Guest User",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        isAnonymous: true,
       })
       .returning();
   } catch (error) {
