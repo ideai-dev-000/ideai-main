@@ -1,15 +1,11 @@
 import { relations } from "drizzle-orm";
 import { boolean, jsonb, pgTable, text, timestamp } from "drizzle-orm/pg-core";
 import type { IntegrationType } from "../types/integration";
+import { generateId } from "../utils/id";
 
 // Helper function for generating UUIDs
 function generateUUID(): string {
   return Math.random().toString(36).substring(2, 15);
-}
-
-// Helper function for generating IDs (used by workflow schema)
-function generateId(): string {
-  return `wf_${Math.random().toString(36).substring(2, 15)}`;
 }
 
 // Better Auth tables - minimal schema for ideai-vibecoder
@@ -83,12 +79,123 @@ export const anonymous_chat_logs = pgTable("anonymous_chat_logs", {
     .primaryKey()
     .$defaultFn(() => generateUUID()),
   ip_address: text("ip_address").notNull(),
-
   v0_chat_id: text("v0_chat_id").notNull(),
   created_at: timestamp("created_at").notNull().defaultNow(),
+});
+
+// Workflow visibility type
+export type WorkflowVisibility = "private" | "public";
+
+// Workflows table with user association
+export const workflows = pgTable("workflows", {
+  id: text("id")
+    .primaryKey()
+    .$defaultFn(() => generateId()),
+  name: text("name").notNull(),
+  description: text("description"),
+  userId: text("user_id")
+    .notNull()
+    .references(() => users.id),
+  // biome-ignore lint/suspicious/noExplicitAny: JSONB type - structure validated at application level
+  nodes: jsonb("nodes").notNull().$type<any[]>(),
+  // biome-ignore lint/suspicious/noExplicitAny: JSONB type - structure validated at application level
+  edges: jsonb("edges").notNull().$type<any[]>(),
+  visibility: text("visibility")
+    .notNull()
+    .default("private")
+    .$type<WorkflowVisibility>(),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+});
+
+// Workflow executions table
+export const workflowExecutions = pgTable("workflow_executions", {
+  id: text("id")
+    .primaryKey()
+    .$defaultFn(() => generateId()),
+  workflowId: text("workflow_id")
+    .notNull()
+    .references(() => workflows.id, { onDelete: "cascade" }),
+  status: text("status")
+    .notNull()
+    .$type<"pending" | "running" | "completed" | "failed">(),
+  startedAt: timestamp("started_at"),
+  completedAt: timestamp("completed_at"),
+  // biome-ignore lint/suspicious/noExplicitAny: JSONB type - execution results stored as JSON
+  result: jsonb("result").$type<any>(),
+  error: text("error"),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+});
+
+// Workflow execution logs table
+export const workflowExecutionLogs = pgTable("workflow_execution_logs", {
+  id: text("id")
+    .primaryKey()
+    .$defaultFn(() => generateId()),
+  executionId: text("execution_id")
+    .notNull()
+    .references(() => workflowExecutions.id, { onDelete: "cascade" }),
+  nodeId: text("node_id"),
+  level: text("level").notNull().$type<"info" | "warning" | "error">(),
+  message: text("message").notNull(),
+  // biome-ignore lint/suspicious/noExplicitAny: JSONB type - log data stored as JSON
+  data: jsonb("data").$type<any>(),
+  timestamp: timestamp("timestamp").notNull().defaultNow(),
+});
+
+// Relations for workflow executions
+export const workflowExecutionsRelations = relations(
+  workflowExecutions,
+  ({ one, many }) => ({
+    workflow: one(workflows, {
+      fields: [workflowExecutions.workflowId],
+      references: [workflows.id],
+    }),
+    logs: many(workflowExecutionLogs),
+  }),
+);
+
+// Integrations table for storing user credentials
+export const integrations = pgTable("integrations", {
+  id: text("id")
+    .primaryKey()
+    .$defaultFn(() => generateId()),
+  userId: text("user_id")
+    .notNull()
+    .references(() => users.id),
+  name: text("name").notNull(),
+  type: text("type").notNull().$type<IntegrationType>(),
+  // biome-ignore lint/suspicious/noExplicitAny: JSONB type - encrypted credentials stored as JSON
+  config: jsonb("config").notNull().$type<any>(),
+  // Whether this integration was created via OAuth (managed by app) vs manual entry
+  isManaged: boolean("is_managed").default(false),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+});
+
+// API keys table for storing user API keys
+export const apiKeys = pgTable("api_keys", {
+  id: text("id")
+    .primaryKey()
+    .$defaultFn(() => generateId()),
+  userId: text("user_id")
+    .notNull()
+    .references(() => users.id),
+  name: text("name").notNull(),
+  // Encrypted API key value
+  encryptedKey: text("encrypted_key").notNull(),
+  // Last 4 characters for display purposes
+  lastFour: text("last_four"),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
 
 export type User = typeof users.$inferSelect;
 export type Session = typeof sessions.$inferSelect;
 export type ChatOwnership = typeof chat_ownerships.$inferSelect;
 export type AnonymousChatLog = typeof anonymous_chat_logs.$inferSelect;
+export type Workflow = typeof workflows.$inferSelect;
+export type WorkflowExecution = typeof workflowExecutions.$inferSelect;
+export type WorkflowExecutionLog = typeof workflowExecutionLogs.$inferSelect;
+export type Integration = typeof integrations.$inferSelect;
+export type ApiKey = typeof apiKeys.$inferSelect;
