@@ -68,3 +68,10 @@ tools/code-context/*.zip
 
 # Zip files
 *.zip
+
+# TypeScript build info
+*.tsbuildinfo
+
+# Environment backup files
+.env.local.backup
+.env*.backup
