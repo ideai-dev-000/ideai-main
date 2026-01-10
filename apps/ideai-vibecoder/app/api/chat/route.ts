@@ -40,6 +40,21 @@ export async function POST(request: NextRequest) {
     const session = await auth.api.getSession({
       headers: request.headers,
     });
+
+    // CRITICAL: Require authentication - block anonymous users
+    const isAuthenticated =
+      session?.user &&
+      session.user.name !== "Anonymous" &&
+      !session.user.email?.startsWith("temp-") &&
+      !session.user.isAnonymous;
+
+    if (!isAuthenticated) {
+      return NextResponse.json(
+        { error: "Authentication required" },
+        { status: 401 },
+      );
+    }
+
     const { message, chatId, streaming, attachments, projectId } =
       await request.json();
 
@@ -51,54 +66,33 @@ export async function POST(request: NextRequest) {
     }
 
     // Rate limiting (disabled in development mode)
+    // CRITICAL: Only authenticated users can reach here
     const isDevelopment = process.env.NODE_ENV === "development";
-    if (!isDevelopment) {
-      if (session?.user?.id) {
-        // Authenticated user rate limiting
-        const chatCount = await getChatCountByUserId({
-          userId: session.user.id,
-          differenceInHours: 24,
-        });
+    if (!isDevelopment && session?.user?.id) {
+      // Authenticated user rate limiting
+      const chatCount = await getChatCountByUserId({
+        userId: session.user.id,
+        differenceInHours: 24,
+      });
 
-        // Better Auth doesn't have user.type - use anonymous check instead
-        const isAnonymous = !session.user || session.user.name === "Anonymous";
-        const userType: "guest" | "regular" = isAnonymous ? "guest" : "regular";
-        if (chatCount >= entitlementsByUserType[userType].maxMessagesPerDay) {
-          return new ChatSDKError("rate_limit:chat").toResponse();
-        }
-
-        console.log("API request:", {
-          message,
-          chatId,
-          streaming,
-          userId: session.user.id,
-        });
-      } else {
-        // Anonymous user rate limiting
-        const clientIP = getClientIP(request);
-        const chatCount = await getChatCountByIP({
-          ipAddress: clientIP,
-          differenceInHours: 24,
-        });
-
-        if (chatCount >= anonymousEntitlements.maxMessagesPerDay) {
-          return new ChatSDKError("rate_limit:chat").toResponse();
-        }
-
-        console.log("API request (anonymous):", {
-          message,
-          chatId,
-          streaming,
-          ip: clientIP,
-        });
+      const userType: "regular" = "regular"; // All users are authenticated now
+      if (chatCount >= entitlementsByUserType[userType].maxMessagesPerDay) {
+        return new ChatSDKError("rate_limit:chat").toResponse();
       }
+
+      console.log("API request:", {
+        message,
+        chatId,
+        streaming,
+        userId: session.user.id,
+      });
     } else {
       // Development mode: skip rate limiting
       console.log("API request (dev mode - rate limiting disabled):", {
         message,
         chatId,
         streaming,
-        userId: session?.user?.id || "anonymous",
+        userId: session?.user?.id,
       });
     }
 
@@ -206,27 +200,18 @@ export async function POST(request: NextRequest) {
 
     const chatDetail = chat as ChatDetail;
 
-    // Create ownership mapping or anonymous log for new chat
-    if (!chatId && chatDetail.id) {
+    // Create ownership mapping for new chat
+    // CRITICAL: Only authenticated users can reach here
+    if (!chatId && chatDetail.id && session?.user?.id) {
       try {
-        if (session?.user?.id) {
-          // Authenticated user - create ownership mapping
-          await createChatOwnership({
-            v0ChatId: chatDetail.id,
-            userId: session.user.id,
-          });
-          console.log("Chat ownership created:", chatDetail.id);
-        } else {
-          // Anonymous user - log for rate limiting
-          const clientIP = getClientIP(request);
-          await createAnonymousChatLog({
-            ipAddress: clientIP,
-            v0ChatId: chatDetail.id,
-          });
-          console.log("Anonymous chat logged:", chatDetail.id, "IP:", clientIP);
-        }
+        // Authenticated user - create ownership mapping
+        await createChatOwnership({
+          v0ChatId: chatDetail.id,
+          userId: session.user.id,
+        });
+        console.log("Chat ownership created:", chatDetail.id);
       } catch (error) {
-        console.error("Failed to create chat ownership/log:", error);
+        console.error("Failed to create chat ownership:", error);
         // Don't fail the request if database save fails
       }
     }

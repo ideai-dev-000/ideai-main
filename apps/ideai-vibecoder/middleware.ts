@@ -1,3 +1,13 @@
+/**
+ * @fileoverview Middleware for IdeaI VibeCoder - Authentication protection
+ *
+ * @module Middleware
+ * @description
+ * CRITICAL: Protects all routes except auth API routes.
+ * Requires authentication for all vibe suite functionality.
+ * Anonymous users are blocked from accessing any content.
+ */
+
 import { NextResponse, type NextRequest } from "next/server";
 import { auth } from "./lib/auth";
 
@@ -12,7 +22,8 @@ export async function middleware(request: NextRequest) {
     return new Response("pong", { status: 200 });
   }
 
-  // Allow Better Auth API routes to pass through
+  // CRITICAL: Allow ONLY Better Auth API routes to pass through
+  // All other routes require authentication
   if (pathname.startsWith("/api/auth")) {
     return NextResponse.next();
   }
@@ -22,33 +33,27 @@ export async function middleware(request: NextRequest) {
     headers: request.headers,
   });
 
-  if (!session?.user) {
-    // Allow API routes to proceed without authentication for anonymous chat creation
-    if (pathname.startsWith("/api/")) {
-      return NextResponse.next();
-    }
+  // Check if user is authenticated (not anonymous)
+  const isAuthenticated =
+    session?.user &&
+    session.user.name !== "Anonymous" &&
+    !session.user.email?.startsWith("temp-") &&
+    !session.user.isAnonymous;
 
-    // Allow homepage for anonymous users
-    if (pathname === "/") {
-      return NextResponse.next();
-    }
-
-    // Redirect protected pages to login
-    if (["/chats", "/projects"].some((path) => pathname.startsWith(path))) {
-      return NextResponse.redirect(new URL("/login", request.url));
-    }
-
-    // Allow login and register pages
-    if (["/login", "/register"].includes(pathname)) {
-      return NextResponse.next();
-    }
-
-    // For any other protected routes, allow anonymous (Better Auth handles this)
-    return NextResponse.next();
+  // CRITICAL: Block ALL API routes except auth for unauthenticated users
+  if (pathname.startsWith("/api/") && !isAuthenticated) {
+    return NextResponse.json(
+      { error: "Authentication required" },
+      { status: 401 },
+    );
   }
 
-  // If authenticated and trying to access login/register, redirect home
-  if (session?.user && ["/login", "/register"].includes(pathname)) {
+  // CRITICAL: All other routes are handled by AuthGuard component
+  // Middleware allows through, but AuthGuard will show landing page
+  // for unauthenticated users and protected content for authenticated users
+
+  // If authenticated and trying to access login/register pages, redirect home
+  if (isAuthenticated && ["/login", "/register"].includes(pathname)) {
     return NextResponse.redirect(new URL("/", request.url));
   }
 

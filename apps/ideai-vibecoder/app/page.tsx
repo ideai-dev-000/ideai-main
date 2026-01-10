@@ -1,6 +1,16 @@
+/**
+ * @fileoverview Home page for IdeaI VibeCoder
+ *
+ * @module HomePage
+ * @description
+ * Protected home page - requires authentication to access.
+ * Shows landing page for logged-out users, full vibe service for authenticated users.
+ */
+
 import { Suspense } from "react";
 import { HomeClient } from "@/components/home/home-client";
 import { EnvSetup } from "@/components/env-setup";
+import { AuthProtectedPage } from "@/components/auth/protected-page";
 
 function hasEnvVars(): boolean {
   try {
@@ -61,17 +71,21 @@ export default function Home() {
     return <EnvSetup missingVars={missingVars} />;
   }
 
+  // CRITICAL: Protect all routes - require authentication
+  // Shows landing page for logged-out users, full vibe service for authenticated users
   return (
-    <Suspense
-      fallback={
-        <div className="min-h-screen flex items-center justify-center">
-          <div className="text-center">
-            <p className="text-gray-600">Loading...</p>
+    <AuthProtectedPage>
+      <Suspense
+        fallback={
+          <div className="min-h-screen flex items-center justify-center">
+            <div className="text-center">
+              <p className="text-gray-600">Loading...</p>
+            </div>
           </div>
-        </div>
-      }
-    >
-      <HomeClient />
-    </Suspense>
+        }
+      >
+        <HomeClient />
+      </Suspense>
+    </AuthProtectedPage>
   );
 }
