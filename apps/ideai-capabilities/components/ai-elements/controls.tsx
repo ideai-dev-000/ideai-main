@@ -45,7 +45,7 @@ export const Controls = () => {
         <ZoomIn className="size-4" />
       </Button>
       <Button
-        className="border hover:bg-black/5 disabled:opacity-100 dark:hover:bg-white/5 disabled:[&>svg]:text-muted-foreground"
+        className="border hover:bg-black/5 disabled:opacity-100 dark:hover:bg-white/5 disabled:opacity-100 dark:hover:bg-white/5 disabled:[&>svg]:text-muted-foreground"
         onClick={handleZoomOut}
         size="icon"
         title="Zoom out"

@@ -19,6 +19,9 @@ import { Toaster } from "@/components/ui/sonner";
 import { PersistentCanvas } from "@/components/workflow/persistent-canvas";
 import { CapabilitiesHeader } from "@/components/capabilities-header";
 import { IdeAISideMenuWrapper } from "@/components/ideai-side-menu-wrapper";
+import { StreamingProvider } from "@/contexts/streaming-context";
+import { SWRProvider } from "@/components/providers/swr-provider";
+import { SessionProvider } from "@/components/providers/session-provider";
 import { mono, sans } from "@/lib/fonts";
 import { cn } from "@/lib/utils";
 import "./globals.css";
@@ -70,11 +73,17 @@ export default function RootLayout({
         >
           <Provider>
             <AuthProvider>
-              <OverlayProvider>
-                <LayoutContent>{children}</LayoutContent>
-                <GlobalModals />
-                <Toaster />
-              </OverlayProvider>
+              <SessionProvider>
+                <SWRProvider>
+                  <StreamingProvider>
+                    <OverlayProvider>
+                      <LayoutContent>{children}</LayoutContent>
+                      <GlobalModals />
+                      <Toaster />
+                    </OverlayProvider>
+                  </StreamingProvider>
+                </SWRProvider>
+              </SessionProvider>
             </AuthProvider>
           </Provider>
         </ThemeProvider>
