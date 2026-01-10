@@ -1,16 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient, ChatDetail } from "v0-sdk";
 import { auth } from "@/lib/auth";
-import {
-  createChatOwnership,
-  createAnonymousChatLog,
-  getChatCountByUserId,
-  getChatCountByIP,
-} from "@/lib/db/queries";
-import {
-  entitlementsByUserType,
-  anonymousEntitlements,
-} from "@/lib/entitlements";
+import { createChatOwnership, getChatCountByUserId } from "@/lib/db/queries";
+import { entitlementsByUserType } from "@/lib/entitlements";
 import { ChatSDKError } from "@/lib/errors";
 
 // Create v0 client with custom baseUrl if V0_API_URL is set

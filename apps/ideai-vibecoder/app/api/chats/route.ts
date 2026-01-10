@@ -14,9 +14,18 @@ export async function GET(request: NextRequest) {
       headers: request.headers,
     });
 
-    // Anonymous users don't have saved chats
-    if (!session?.user?.id) {
-      return NextResponse.json({ data: [] });
+    // CRITICAL: Require authentication - block anonymous users
+    const isAuthenticated =
+      session?.user &&
+      session.user.name !== "Anonymous" &&
+      !session.user.email?.startsWith("temp-") &&
+      !session.user.isAnonymous;
+
+    if (!isAuthenticated || !session?.user?.id) {
+      return NextResponse.json(
+        { error: "Authentication required" },
+        { status: 401 },
+      );
     }
 
     console.log("Fetching chats for user:", session.user.id);
