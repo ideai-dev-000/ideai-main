@@ -59,6 +59,47 @@ const user = await userService.getById(userId);
 const canAccess = await permissionService.canAccessWorkflow(userId, workflowId);
 ```
 
+### Shared Components
+
+#### AuthDialog
+
+Flexible authentication dialog that works with any UI library:
+
+```typescript
+import { AuthDialog } from "@repo/ideai-user/components/auth";
+import { Button, Dialog } from "@/components/ui";
+import { toast } from "sonner";
+
+<AuthDialog
+  Button={Button}
+  Dialog={Dialog}
+  DialogContent={DialogContent}
+  Input={Input}
+  Label={Label}
+  toast={toast}
+>
+  <Button>Sign In</Button>
+</AuthDialog>
+```
+
+#### IdeAIHeader
+
+Shared header component for consistent navigation:
+
+```typescript
+import { IdeAIHeader } from "@repo/ideai-user/components/header";
+import { UserMenu } from "@/components/user-menu";
+
+<IdeAIHeader
+  siteName="Capabilities"
+  navItems={[
+    { label: "Home", href: "/", icon: <Home /> },
+    { label: "Workflows", href: "/workflow" },
+  ]}
+  rightContent={<UserMenu />}
+/>
+```
+
 ## Documentation
 
 See `apps/ideai-user-module/` for:
