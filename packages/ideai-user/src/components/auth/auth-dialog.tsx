@@ -457,13 +457,15 @@ export const AuthDialog = ({
 
   return (
     <DialogComp open={open} onOpenChange={handleOpenChange}>
-      <DialogTriggerComp asChild>
-        {children || (
+      {children ? (
+        <DialogTriggerComp asChild>{children}</DialogTriggerComp>
+      ) : (
+        <DialogTriggerComp asChild>
           <ButtonComp size="sm" variant="default">
             Sign In
           </ButtonComp>
-        )}
-      </DialogTriggerComp>
+        </DialogTriggerComp>
+      )}
       {DialogContentComp && (
         <DialogContentComp className="sm:max-w-md">
           {DialogHeaderComp && (
