@@ -29,6 +29,7 @@
 "use client";
 
 import React, { type ReactNode, useState } from "react";
+import { AlertCircle } from "lucide-react";
 import { signIn, signUp } from "../../lib/auth-client";
 import {
   getEnabledAuthProviders,
@@ -371,7 +372,14 @@ export const AuthDialog = ({
                     required
                   />
                 </div>
-                {error && <div className="text-sm text-red-600">{error}</div>}
+                {error && (
+                  <div className="rounded-md border border-red-500/50 bg-red-500/10 p-3 flex items-start gap-2">
+                    <AlertCircle className="h-4 w-4 text-red-500 dark:text-red-400 mt-0.5 shrink-0" />
+                    <p className="text-sm text-red-700 dark:text-red-300">
+                      {error}
+                    </p>
+                  </div>
+                )}
                 <button
                   type="submit"
                   disabled={loading}
@@ -633,7 +641,12 @@ export const AuthDialog = ({
                   </>
                 )}
                 {error && (
-                  <div className="text-destructive text-sm">{error}</div>
+                  <div className="rounded-md border border-red-500/50 bg-red-500/10 p-3 flex items-start gap-2">
+                    <AlertCircle className="h-4 w-4 text-red-500 dark:text-red-400 mt-0.5 shrink-0" />
+                    <p className="text-sm text-red-700 dark:text-red-300">
+                      {error}
+                    </p>
+                  </div>
                 )}
                 <ButtonComp className="w-full" disabled={loading} type="submit">
                   {loading
