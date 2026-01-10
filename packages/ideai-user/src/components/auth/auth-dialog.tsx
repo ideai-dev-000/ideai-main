@@ -28,7 +28,7 @@
 
 "use client";
 
-import { type ReactNode, useState } from "react";
+import React, { type ReactNode, useState } from "react";
 import { signIn, signUp } from "../../lib/auth-client";
 import {
   getEnabledAuthProviders,
