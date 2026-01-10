@@ -8,8 +8,6 @@ import { MobileMenu } from "./mobile-menu";
 import { useSession } from "@/lib/auth-client";
 import { UserNavWithAuth } from "@/components/user-nav-with-auth";
 import { Button } from "@/components/ui/button";
-import { VercelIcon } from "@/components/ui/icons";
-import { DEPLOY_URL } from "@/lib/constants";
 import { Zap, ZapOff } from "lucide-react";
 import { useStreaming } from "@/contexts/streaming-context";
 import {
@@ -87,8 +85,8 @@ export function AppHeader({ className = "" }: AppHeaderProps) {
             </div>
           </div>
 
-          {/* Desktop right side - Streaming Toggle, Deploy, and User */}
-          <div className="hidden lg:flex items-center gap-4">
+          {/* Desktop right side - Streaming Toggle and User */}
+          <div className="hidden lg:flex items-center gap-3">
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button
@@ -119,17 +117,6 @@ export function AppHeader({ className = "" }: AppHeaderProps) {
                 </p>
               </TooltipContent>
             </Tooltip>
-
-            {/* Deploy button - hidden on mobile */}
-            <Button
-              className="bg-zinc-900 dark:bg-zinc-100 hover:bg-zinc-800 dark:hover:bg-zinc-200 text-zinc-50 dark:text-zinc-900 py-1.5 px-2 h-fit text-sm"
-              asChild
-            >
-              <Link href={DEPLOY_URL} target="_blank" rel="noopener noreferrer">
-                <VercelIcon size={16} />
-                Deploy
-              </Link>
-            </Button>
             <UserNavWithAuth session={session} />
           </div>
 

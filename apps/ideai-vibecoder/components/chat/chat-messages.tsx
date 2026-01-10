@@ -48,12 +48,14 @@ export function ChatMessages({
     }
   }, [isLoading]);
 
-  if (chatHistory.length === 0) {
+  if (chatHistory.length === 0 && !isLoading) {
     return (
       <Conversation>
         <ConversationContent>
-          <div>
-            {/* Empty conversation - messages will appear here when they load */}
+          <div className="flex items-center justify-center h-full text-muted-foreground">
+            {isLoading
+              ? "Loading chat..."
+              : "No messages yet. Start the conversation!"}
           </div>
         </ConversationContent>
       </Conversation>

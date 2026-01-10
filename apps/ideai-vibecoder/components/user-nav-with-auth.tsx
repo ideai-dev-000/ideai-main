@@ -64,6 +64,8 @@ interface UserNavProps {
 export function UserNavWithAuth({ session }: UserNavProps) {
   const initials =
     session?.user?.email?.split("@")[0]?.slice(0, 2)?.toUpperCase() || "U";
+  const displayName =
+    session?.user?.name || session?.user?.email?.split("@")[0] || "User";
 
   // Better Auth doesn't have a "guest" type - use anonymous check instead
   const isAnonymous = !session?.user || session.user.name === "Anonymous";
@@ -79,29 +81,57 @@ export function UserNavWithAuth({ session }: UserNavProps) {
     <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-            <Avatar className="h-8 w-8">
-              <AvatarFallback className="bg-primary text-primary-foreground">
-                {isSignedOut ? <User className="h-4 w-4" /> : initials}
-              </AvatarFallback>
+          <Button
+            variant="ghost"
+            className="relative h-9 w-9 rounded-full hover:bg-accent transition-colors"
+          >
+            <Avatar className="h-9 w-9 border-2 border-border">
+              {session?.user?.image ? (
+                <img
+                  src={session.user.image}
+                  alt={displayName}
+                  className="h-full w-full rounded-full"
+                />
+              ) : (
+                <AvatarFallback className="bg-gradient-to-br from-blue-500 to-purple-600 text-white font-medium text-sm">
+                  {isSignedOut ? <User className="h-4 w-4" /> : initials}
+                </AvatarFallback>
+              )}
             </Avatar>
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-56" align="end" forceMount>
-          <DropdownMenuLabel className="font-normal">
-            <div className="flex flex-col space-y-1">
-              <p className="text-sm font-medium leading-none">
-                {isSignedOut
-                  ? "Not signed in"
-                  : isAnonymous
-                    ? "Anonymous User"
-                    : "User"}
-              </p>
-              {session?.user?.email && (
-                <p className="text-xs leading-none text-muted-foreground">
-                  {session.user.email}
-                </p>
-              )}
+        <DropdownMenuContent className="w-64" align="end" forceMount>
+          <DropdownMenuLabel className="font-normal px-3 py-3 pb-2">
+            <div className="flex flex-col space-y-1.5">
+              <div className="flex items-center gap-3">
+                <Avatar className="h-10 w-10 border border-border">
+                  {session?.user?.image ? (
+                    <img
+                      src={session.user.image}
+                      alt={displayName}
+                      className="h-full w-full rounded-full"
+                    />
+                  ) : (
+                    <AvatarFallback className="bg-gradient-to-br from-blue-500 to-purple-600 text-white font-semibold">
+                      {isSignedOut ? <User className="h-5 w-5" /> : initials}
+                    </AvatarFallback>
+                  )}
+                </Avatar>
+                <div className="flex flex-col space-y-0.5 flex-1 min-w-0">
+                  <p className="text-sm font-semibold leading-none truncate">
+                    {isSignedOut
+                      ? "Not signed in"
+                      : isAnonymous
+                        ? "Anonymous"
+                        : displayName}
+                  </p>
+                  {session?.user?.email && (
+                    <p className="text-xs leading-none text-muted-foreground truncate">
+                      {session.user.email}
+                    </p>
+                  )}
+                </div>
+              </div>
             </div>
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
@@ -122,7 +152,10 @@ export function UserNavWithAuth({ session }: UserNavProps) {
                   Spinner={Spinner}
                   toast={toast}
                 >
-                  <Button variant="ghost" className="w-full justify-start">
+                  <Button
+                    variant="ghost"
+                    className="w-full justify-start font-medium"
+                  >
                     Sign In
                   </Button>
                 </AuthDialog>
@@ -133,7 +166,7 @@ export function UserNavWithAuth({ session }: UserNavProps) {
           {!isSignedOut && (
             <DropdownMenuItem
               onClick={handleSignOut}
-              className="cursor-pointer"
+              className="cursor-pointer text-red-600 dark:text-red-400 focus:text-red-600 dark:focus:text-red-400 focus:bg-red-50 dark:focus:bg-red-950/20"
             >
               <LogOut className="mr-2 h-4 w-4" />
               <span>Sign out</span>

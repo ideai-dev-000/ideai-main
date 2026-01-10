@@ -29,7 +29,7 @@
 
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
-import { anonymous, genericOAuth } from "better-auth/plugins";
+import { anonymous } from "better-auth/plugins";
 import { db } from "./db";
 import { accounts, sessions, users, verifications } from "./db/schema";
 
@@ -89,26 +89,8 @@ function getBaseURL(): string {
 const plugins = [
   // Anonymous auth plugin - enables temporary users
   anonymous(),
-
-  // Generic OAuth plugin - supports GitHub and Google
-  ...(process.env.GITHUB_CLIENT_ID || process.env.GOOGLE_CLIENT_ID
-    ? [
-        genericOAuth({
-          id: "github",
-          clientId: process.env.GITHUB_CLIENT_ID || "",
-          clientSecret: process.env.GITHUB_CLIENT_SECRET || "",
-          scope: ["user:email"],
-          enabled: !!process.env.GITHUB_CLIENT_ID,
-        }),
-        genericOAuth({
-          id: "google",
-          clientId: process.env.GOOGLE_CLIENT_ID || "",
-          clientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
-          scope: ["openid", "email", "profile"],
-          enabled: !!process.env.GOOGLE_CLIENT_ID,
-        }),
-      ]
-    : []),
+  // Note: GitHub and Google OAuth are handled via socialProviders in betterAuth config
+  // genericOAuth is only used for custom OAuth providers (like Vercel)
 ];
 
 /**
@@ -123,6 +105,7 @@ const plugins = [
  */
 export const auth = betterAuth({
   baseURL: getBaseURL(),
+  secret: process.env.BETTER_AUTH_SECRET, // Required for session encryption
   database: drizzleAdapter(db, {
     provider: "pg",
     schema: authSchema,

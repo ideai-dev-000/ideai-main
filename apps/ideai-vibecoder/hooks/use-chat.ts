@@ -30,11 +30,22 @@ export function useChat(chatId: string) {
   const [isStreaming, setIsStreaming] = useState(false);
   const [chatHistory, setChatHistory] = useState<ChatMessage[]>([]);
 
+  // Reset chat history when chatId changes (navigating to different chat)
+  useEffect(() => {
+    if (chatId) {
+      setChatHistory([]);
+      setIsStreaming(false);
+      setIsLoading(false);
+      console.log("[useChat] Chat ID changed, resetting state for:", chatId);
+    }
+  }, [chatId]);
+
   // Use SWR to fetch chat data
   const {
     data: currentChat,
     error,
     isLoading: isLoadingChat,
+    mutate: mutateChat,
   } = useSWR<Chat>(chatId ? `/api/chats/${chatId}` : null, {
     onError: (error) => {
       console.error("Error loading chat:", error);
@@ -44,17 +55,23 @@ export function useChat(chatId: string) {
     onSuccess: (chat) => {
       // Update chat history with existing messages when chat loads
       // But skip if we have a handoff (streaming from homepage) to avoid duplicates
-      if (
-        chat.messages &&
-        chatHistory.length === 0 &&
-        !(handoff.chatId === chatId && handoff.stream)
-      ) {
+      if (chat.messages && !(handoff.chatId === chatId && handoff.stream)) {
+        console.log(
+          "[useChat] Loading existing chat history:",
+          chat.messages.length,
+          "messages for chat:",
+          chatId,
+        );
         setChatHistory(
           chat.messages.map((msg) => ({
             type: msg.role,
             // Use experimental_content if available, otherwise fall back to plain content
             content: msg.experimental_content || msg.content,
           })),
+        );
+      } else if (handoff.chatId === chatId && handoff.stream) {
+        console.log(
+          "[useChat] Skipping chat history load - streaming handoff active",
         );
       }
     },
@@ -183,38 +200,19 @@ export function useChat(chatId: string) {
     setIsLoading(false);
 
     console.log(
-      "Stream completed with final content:",
+      "[useChat] Stream completed with final content:",
       JSON.stringify(finalContent, null, 2),
     );
 
     // Always try to fetch updated chat details after streaming completes
-    // This ensures we get the latest demoUrl even for existing chats
-    try {
-      const response = await fetch(`/api/chats/${chatId}`);
-      if (response.ok) {
-        const chatDetails = await response.json();
-
-        const demoUrl =
-          chatDetails?.latestVersion?.demoUrl || chatDetails?.demo;
-
-        // Update SWR cache with the latest chat data
-        mutate(
-          `/api/chats/${chatId}`,
-          {
-            ...chatDetails,
-            demo: demoUrl,
-          },
-          false,
-        );
-      } else {
-        console.warn("Failed to fetch updated chat details:", response.status);
-        // Fallback to just refreshing the cache
-        mutate(`/api/chats/${chatId}`);
+    // This ensures we get the latest demoUrl and messages even for existing chats
+    if (chatId && mutateChat) {
+      try {
+        console.log("[useChat] Refreshing chat data after streaming");
+        await mutateChat(); // This will fetch latest chat and update history via onSuccess
+      } catch (error) {
+        console.error("[useChat] Error refreshing chat data:", error);
       }
-    } catch (error) {
-      console.error("Error fetching updated chat details:", error);
-      // Fallback to just refreshing the cache
-      mutate(`/api/chats/${chatId}`);
     }
 
     // Try to extract chat ID from the final content if we don't have one yet

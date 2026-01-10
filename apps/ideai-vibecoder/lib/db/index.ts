@@ -20,10 +20,12 @@ const schema = {
   anonymous_chat_logs,
 };
 
+// Unified database connection - same as capabilities app
+// This enables shared user accounts and sessions across IdeaI apps
 const connectionString =
   process.env.DATABASE_URL ||
   process.env.POSTGRES_URL ||
-  "postgres://localhost:5432/ideai-vibecoder";
+  "postgres://localhost:5432/ideai";
 
 // Determine SSL config - check if connection string has sslmode or if it's a cloud DB
 const needsSSL =
