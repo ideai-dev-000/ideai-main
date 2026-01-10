@@ -30,11 +30,18 @@ interface NavItem {
 const mainNav: NavItem[] = [
   { label: "Home", href: "/", icon: <Home className="h-4 w-4" /> },
   {
-    label: "Workflow Builder",
+    label: "Workflows",
     href: "/workflow",
     icon: <Workflow className="h-4 w-4" />,
     basePath: "/workflow",
     showMenu: true,
+  },
+  {
+    label: "Vibe",
+    href: "/vibe",
+    icon: <Code className="h-4 w-4" />,
+    basePath: "/vibe",
+    showMenu: false,
   },
   {
     label: "Lead Agent",
