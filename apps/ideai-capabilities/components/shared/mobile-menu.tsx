@@ -6,8 +6,6 @@ import { usePathname } from "next/navigation";
 import { useSession } from "@/lib/auth-client";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { VercelIcon } from "@/components/ui/icons";
-import { DEPLOY_URL } from "@/lib/constants";
 import { ChatSelector } from "./chat-selector";
 import { useStreaming } from "@/contexts/streaming-context";
 import { Zap, ZapOff } from "lucide-react";
@@ -171,29 +169,6 @@ export function MobileMenu() {
                         </div>
                       </div>
                     </div>
-                  </Button>
-
-                  <Button
-                    variant="ghost"
-                    className="w-full justify-start h-auto p-3 text-left"
-                    asChild
-                  >
-                    <Link
-                      href={DEPLOY_URL}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      onClick={closeMenu}
-                    >
-                      <div className="flex items-center gap-3 w-full">
-                        <VercelIcon size={16} />
-                        <div className="flex-1">
-                          <div className="font-medium">Deploy</div>
-                          <div className="text-sm text-muted-foreground">
-                            Get your own IdeaI Vibes
-                          </div>
-                        </div>
-                      </div>
-                    </Link>
                   </Button>
                 </div>
               </div>
