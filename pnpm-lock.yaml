@@ -880,9 +880,6 @@ importers:
       "@repo/cloud-manager":
         specifier: workspace:*
         version: link:../../packages/cloud-manager
-      "@repo/ideai-user":
-        specifier: workspace:*
-        version: link:../../packages/ideai-user
       "@repo/ui":
         specifier: workspace:*
         version: link:../../packages/ui
@@ -1418,9 +1415,6 @@ importers:
       "@radix-ui/react-use-controllable-state":
         specifier: ^1.2.2
         version: 1.2.2(@types/react@19.2.7)(react@19.2.3)
-      "@repo/ideai-user":
-        specifier: workspace:*
-        version: link:../../packages/ideai-user
       "@repo/ui":
         specifier: workspace:*
         version: link:../../packages/ui
@@ -2090,58 +2084,6 @@ importers:
       "@types/react-dom":
         specifier: 19.2.2
         version: 19.2.2(@types/react@19.2.2)
-      typescript:
-        specifier: 5.9.2
-        version: 5.9.2
-
-  packages/ideai-user:
-    dependencies:
-      better-auth:
-        specifier: ^1.3.34
-        version: 1.4.10(drizzle-kit@0.31.8)(drizzle-orm@0.44.7(@neondatabase/serverless@0.9.5)(@opentelemetry/api@1.9.0)(@types/pg@8.11.6)(@vercel/postgres@0.10.0)(kysely@0.28.9)(postgres@3.4.7))(next@16.1.1(@babel/core@7.28.5)(@opentelemetry/api@1.9.0)(@playwright/test@1.57.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(vitest@2.1.9(@edge-runtime/vm@5.0.0)(@types/node@22.15.3)(@vitest/browser@4.0.16)(@vitest/ui@4.0.16)(happy-dom@20.1.0(bufferutil@4.1.0))(jsdom@27.4.0(bufferutil@4.1.0))(lightningcss@1.30.2)(terser@5.44.1))(vue@3.5.26(typescript@5.9.2))
-      drizzle-orm:
-        specifier: ^0.44.7
-        version: 0.44.7(@neondatabase/serverless@0.9.5)(@opentelemetry/api@1.9.0)(@types/pg@8.11.6)(@vercel/postgres@0.10.0)(kysely@0.28.9)(postgres@3.4.7)
-      lucide-react:
-        specifier: ^0.468.0
-        version: 0.468.0(react@19.2.3)
-      postgres:
-        specifier: ^3.4.7
-        version: 3.4.7
-    devDependencies:
-      "@repo/eslint-config":
-        specifier: workspace:*
-        version: link:../eslint-config
-      "@repo/typescript-config":
-        specifier: workspace:*
-        version: link:../typescript-config
-      "@repo/ui":
-        specifier: workspace:*
-        version: link:../ui
-      "@types/node":
-        specifier: ^22.15.3
-        version: 22.15.3
-      "@types/react":
-        specifier: ^19.2.2
-        version: 19.2.7
-      "@types/react-dom":
-        specifier: ^19.2.2
-        version: 19.2.3(@types/react@19.2.7)
-      drizzle-kit:
-        specifier: ^0.31.6
-        version: 0.31.8
-      eslint:
-        specifier: ^9.39.1
-        version: 9.39.2(jiti@2.6.1)
-      next:
-        specifier: ^16.1.0
-        version: 16.1.1(@babel/core@7.28.5)(@opentelemetry/api@1.9.0)(@playwright/test@1.57.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      react:
-        specifier: ^19.2.0
-        version: 19.2.3
-      react-dom:
-        specifier: ^19.2.0
-        version: 19.2.3(react@19.2.3)
       typescript:
         specifier: 5.9.2
         version: 5.9.2
@@ -15753,14 +15695,6 @@ packages:
     resolution:
       {
         integrity: sha512-hw7zMDwykCLnEzgncEEjHeA6+45aeEzRYuKHuyRSOPkhko+J3ySGjGIzu+mmMfDFG1vazHepMaYFYHbTFAZAAQ==,
-      }
-    peerDependencies:
-      react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0-rc
-
-  lucide-react@0.468.0:
-    resolution:
-      {
-        integrity: sha512-6koYRhnM2N0GGZIdXzSeiNwguv1gt/FAjZOiPl76roBi3xKEXa4WmfpxgQwTTL4KipXjefrnf3oV4IsYhi4JFA==,
       }
     peerDependencies:
       react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0-rc
@@ -32459,10 +32393,6 @@ snapshots:
   lru-cache@7.18.3: {}
 
   lucide-react@0.454.0(react@19.2.3):
-    dependencies:
-      react: 19.2.3
-
-  lucide-react@0.468.0(react@19.2.3):
     dependencies:
       react: 19.2.3
 
