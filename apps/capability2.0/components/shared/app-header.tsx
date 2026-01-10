@@ -72,15 +72,38 @@ export function AppHeader({ className = "" }: AppHeaderProps) {
 
       <div className="px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          {/* Left side - Logo and Selector */}
+          {/* Left side - Logo, Nav, and Selector */}
           <div className="flex items-center gap-4">
             <Link
               href="/"
               onClick={handleLogoClick}
               className="text-lg font-semibold text-gray-900 dark:text-white hover:text-gray-700 dark:hover:text-gray-300"
             >
-              IdeaI Vibes
+              IdeaI
             </Link>
+            {/* Navigation Items */}
+            <nav className="hidden md:flex items-center gap-1">
+              <Link
+                href="/workflow"
+                className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
+                  pathname.startsWith("/workflow")
+                    ? "bg-accent text-accent-foreground"
+                    : "text-muted-foreground hover:text-foreground hover:bg-accent/50"
+                }`}
+              >
+                Workflows
+              </Link>
+              <Link
+                href="/vibe"
+                className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
+                  pathname.startsWith("/vibe") || pathname === "/"
+                    ? "bg-accent text-accent-foreground"
+                    : "text-muted-foreground hover:text-foreground hover:bg-accent/50"
+                }`}
+              >
+                Vibe
+              </Link>
+            </nav>
             {/* Hide ChatSelector on mobile */}
             <div className="hidden lg:block">
               <ChatSelector />

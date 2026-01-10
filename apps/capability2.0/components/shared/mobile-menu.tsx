@@ -119,8 +119,34 @@ export function MobileMenu() {
                   </div>
                 )}
 
-                {/* Menu items */}
+                {/* Navigation Links */}
                 <div className="space-y-2">
+                  <Link
+                    href="/workflow"
+                    className={`block px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                      pathname.startsWith("/workflow")
+                        ? "bg-accent text-accent-foreground"
+                        : "text-muted-foreground hover:text-foreground hover:bg-accent/50"
+                    }`}
+                    onClick={closeMenu}
+                  >
+                    Workflows
+                  </Link>
+                  <Link
+                    href="/vibe"
+                    className={`block px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                      pathname.startsWith("/vibe") || pathname === "/"
+                        ? "bg-accent text-accent-foreground"
+                        : "text-muted-foreground hover:text-foreground hover:bg-accent/50"
+                    }`}
+                    onClick={closeMenu}
+                  >
+                    Vibe
+                  </Link>
+                </div>
+
+                {/* Menu items */}
+                <div className="space-y-2 pt-4 border-t border-border">
                   <Button
                     variant="ghost"
                     className="w-full justify-start h-auto p-3 text-left"
