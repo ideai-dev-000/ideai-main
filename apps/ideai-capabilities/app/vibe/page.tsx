@@ -13,45 +13,21 @@ import { EnvSetup } from "@/components/env-setup";
 import { AuthProtectedPage } from "@/components/auth/protected-page";
 
 export default function VibePage() {
-  const router = useRouter();
-  const { data: session, isPending } = useSession();
+  const isDevelopment = process.env.NODE_ENV === "development";
+  const envVarsPresent = hasEnvVars();
 
-  // Check if user is authenticated (not anonymous)
-  const isAnonymous =
-    !session?.user ||
-    session.user.name === "Anonymous" ||
-    session.user.email?.startsWith("temp-");
-
-  // Show loading state while checking session
-  if (isPending) {
-    return (
-      <div className="pointer-events-auto flex min-h-screen items-center justify-center pt-16">
-        <div className="text-center">
-          <div className="mb-4 h-8 w-8 animate-spin rounded-full border-4 border-slate-300 border-t-slate-600 mx-auto" />
-          <p className="text-slate-600 dark:text-slate-400">Loading...</p>
-        </div>
-      </div>
-    );
+  // Only show setup screen in development if environment variables are missing
+  if (!envVarsPresent && isDevelopment) {
+    const missingVars = getMissingVars();
+    return <EnvSetup missingVars={missingVars} />;
   }
 
-  // Redirect to landing page if not authenticated
-  useEffect(() => {
-    if (!isPending && isAnonymous) {
-      router.replace("/");
-    }
-  }, [isPending, isAnonymous, router]);
-
-  // Don't render anything if anonymous (redirect is in progress)
-  if (isAnonymous) {
-    return null;
-  }
-
-  // Protected page - shows vibe service for authenticated users
+  // Protected page - shows landing for logged-out, full vibe service for authenticated
   return (
-    <div className="pointer-events-auto min-h-screen">
+    <AuthProtectedPage>
       <Suspense
         fallback={
-          <div className="min-h-screen flex items-center justify-center pt-16">
+          <div className="min-h-screen flex items-center justify-center">
             <div className="text-center">
               <p className="text-gray-600">Loading...</p>
             </div>
@@ -60,6 +36,6 @@ export default function VibePage() {
       >
         <HomeClient />
       </Suspense>
-    </div>
+    </AuthProtectedPage>
   );
 }
