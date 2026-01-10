@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { MoreHorizontal, Copy, Trash2, ExternalLink } from "lucide-react";
 import {
   DropdownMenu,
