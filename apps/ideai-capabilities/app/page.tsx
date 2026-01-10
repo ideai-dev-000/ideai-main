@@ -159,6 +159,12 @@ function LandingWorkflowMenu() {
 export default function CapabilitiesLanding() {
   const { data: session, isPending } = useSession();
   const router = useRouter();
+  const [isMounted, setIsMounted] = useState(false);
+
+  // Track client-side mount to prevent hydration mismatch
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   // Check if user is authenticated (not anonymous)
   const isAnonymous =
@@ -166,8 +172,8 @@ export default function CapabilitiesLanding() {
     session.user.name === "Anonymous" ||
     session.user.email?.startsWith("temp-");
 
-  // Show loading state while checking session
-  if (isPending) {
+  // Show loading state while checking session OR during initial render (prevent hydration mismatch)
+  if (isPending || !isMounted) {
     return (
       <div className="pointer-events-auto flex min-h-screen items-center justify-center">
         <div className="text-center">

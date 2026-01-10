@@ -12,10 +12,10 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { LogOut, User } from "lucide-react";
-import type { Session } from "better-auth/types";
-
 interface UserNavProps {
-  session: { user: Session["user"]; session: Session["session"] } | null;
+  session: {
+    user?: { email?: string; name?: string; image?: string | null };
+  } | null;
 }
 
 export function UserNav({ session }: UserNavProps) {
@@ -74,7 +74,7 @@ export function UserNav({ session }: UserNavProps) {
           <DropdownMenuItem
             onClick={async () => {
               // Clear any local session data first
-              await signOut({ callbackUrl: "/", redirect: true });
+              await signOut();
             }}
             className="cursor-pointer"
           >

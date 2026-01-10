@@ -130,12 +130,12 @@ export function AppHeader({ className = "" }: AppHeaderProps) {
                 Deploy
               </Link>
             </Button>
-            <UserNav session={sessionData || null} />
+            <UserNav session={(sessionData as any) || null} />
           </div>
 
           {/* Mobile right side - Only menu button and user avatar */}
           <div className="flex lg:hidden items-center gap-2">
-            <UserNav session={sessionData || null} />
+            <UserNav session={(sessionData as any) || null} />
             <MobileMenu />
           </div>
         </div>

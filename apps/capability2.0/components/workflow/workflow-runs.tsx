@@ -281,7 +281,9 @@ function OutputDisplay({
 
   // Get the effective built-in config (plugin config if not component, else auto-generated)
   const effectiveBuiltInConfig =
-    pluginConfig?.type !== "component" ? pluginConfig : builtInConfig;
+    pluginConfig && pluginConfig.type !== "component"
+      ? pluginConfig
+      : builtInConfig;
 
   // Get display value for built-in types (image/video/url)
   const displayValue = effectiveBuiltInConfig

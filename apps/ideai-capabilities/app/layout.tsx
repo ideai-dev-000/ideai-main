@@ -11,7 +11,7 @@ import type { Metadata } from "next";
 import { ThemeProvider } from "@repo/ui";
 import { ReactFlowProvider } from "@xyflow/react";
 import { Provider } from "jotai";
-import { type ReactNode, Suspense } from "react";
+import { type ReactNode } from "react";
 import { AuthProvider } from "@/components/auth/provider";
 import { GlobalModals } from "@/components/global-modals";
 import { OverlayProvider } from "@/components/overlays/overlay-provider";
@@ -71,9 +71,7 @@ export default function RootLayout({
           <Provider>
             <AuthProvider>
               <OverlayProvider>
-                <Suspense fallback={<LayoutContent>{children}</LayoutContent>}>
-                  <LayoutContent>{children}</LayoutContent>
-                </Suspense>
+                <LayoutContent>{children}</LayoutContent>
                 <GlobalModals />
                 <Toaster />
               </OverlayProvider>

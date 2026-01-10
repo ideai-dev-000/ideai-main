@@ -71,7 +71,7 @@ function useAllActions(): ActionType[] {
       id: action.id,
       label: action.label,
       description: action.description,
-      category: action.category,
+      category: action.category || "General",
       integration: action.integration,
     }));
 
