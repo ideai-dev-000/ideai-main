@@ -270,23 +270,35 @@ export async function GET(
       );
     }
 
-    // Check authentication and ownership
-    if (session?.user?.id) {
-      const ownership = await getChatOwnership({ v0ChatId: chatId });
+    // CRITICAL: Require authentication - block anonymous users
+    const isAuthenticated =
+      session?.user &&
+      session.user.name !== "Anonymous" &&
+      !session.user.email?.startsWith("temp-") &&
+      !session.user.isAnonymous;
 
-      if (!ownership) {
-        return NextResponse.json(
-          { success: false, error: "Chat not found" },
-          { status: 404 },
-        );
-      }
+    if (!isAuthenticated || !session?.user?.id) {
+      return NextResponse.json(
+        { success: false, error: "Authentication required" },
+        { status: 401 },
+      );
+    }
 
-      if (ownership.user_id !== session.user.id) {
-        return NextResponse.json(
-          { success: false, error: "Forbidden" },
-          { status: 403 },
-        );
-      }
+    // Check ownership
+    const ownership = await getChatOwnership({ v0ChatId: chatId });
+
+    if (!ownership) {
+      return NextResponse.json(
+        { success: false, error: "Chat not found" },
+        { status: 404 },
+      );
+    }
+
+    if (ownership.user_id !== session.user.id) {
+      return NextResponse.json(
+        { success: false, error: "Forbidden" },
+        { status: 403 },
+      );
     }
 
     // Fetch chat details from v0 API

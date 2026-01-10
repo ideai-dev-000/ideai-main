@@ -1,28 +1,35 @@
+/**
+ * @fileoverview Chat ownership API route - protected
+ *
+ * @module ChatOwnershipRoute
+ * @description
+ * CRITICAL: Requires authentication. Creates chat ownership mapping for authenticated users only.
+ */
+
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
-import { createChatOwnership, createAnonymousChatLog } from "@/lib/db/queries";
-
-function getClientIP(request: NextRequest): string {
-  const forwarded = request.headers.get("x-forwarded-for");
-  const realIP = request.headers.get("x-real-ip");
-
-  if (forwarded) {
-    return forwarded.split(",")[0].trim();
-  }
-
-  if (realIP) {
-    return realIP;
-  }
-
-  // Fallback to connection remote address or unknown
-  return "unknown";
-}
+import { createChatOwnership } from "@/lib/db/queries";
 
 export async function POST(request: NextRequest) {
   try {
     const session = await auth.api.getSession({
       headers: request.headers,
     });
+
+    // CRITICAL: Require authentication - block anonymous users
+    const isAuthenticated =
+      session?.user &&
+      session.user.name !== "Anonymous" &&
+      !session.user.email?.startsWith("temp-") &&
+      !session.user.isAnonymous;
+
+    if (!isAuthenticated || !session?.user?.id) {
+      return NextResponse.json(
+        { error: "Authentication required" },
+        { status: 401 },
+      );
+    }
+
     const { chatId } = await request.json();
 
     if (!chatId) {
@@ -32,26 +39,16 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    if (session?.user?.id) {
-      // Authenticated user - create ownership mapping
-      await createChatOwnership({
-        v0ChatId: chatId,
-        userId: session.user.id,
-      });
-      console.log("Chat ownership created via API:", chatId);
-    } else {
-      // Anonymous user - log for rate limiting
-      const clientIP = getClientIP(request);
-      await createAnonymousChatLog({
-        ipAddress: clientIP,
-        v0ChatId: chatId,
-      });
-      console.log("Anonymous chat logged via API:", chatId, "IP:", clientIP);
-    }
+    // Authenticated user - create ownership mapping
+    await createChatOwnership({
+      v0ChatId: chatId,
+      userId: session.user.id,
+    });
+    console.log("Chat ownership created via API:", chatId);
 
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error("Failed to create chat ownership/log:", error);
+    console.error("Failed to create chat ownership:", error);
     return NextResponse.json(
       { error: "Failed to create ownership record" },
       { status: 500 },

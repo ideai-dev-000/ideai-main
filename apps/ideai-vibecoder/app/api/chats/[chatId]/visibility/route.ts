@@ -18,7 +18,14 @@ export async function PATCH(
     });
     const { chatId } = await params;
 
-    if (!session?.user?.id) {
+    // CRITICAL: Require authentication - block anonymous users
+    const isAuthenticated =
+      session?.user &&
+      session.user.name !== "Anonymous" &&
+      !session.user.email?.startsWith("temp-") &&
+      !session.user.isAnonymous;
+
+    if (!isAuthenticated || !session?.user?.id) {
       return NextResponse.json(
         { error: "Authentication required" },
         { status: 401 },

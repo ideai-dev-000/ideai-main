@@ -1,5 +1,15 @@
+/**
+ * @fileoverview Delete chat API route - protected
+ *
+ * @module DeleteChatRoute
+ * @description
+ * CRITICAL: Requires authentication. Allows authenticated users to delete their chats.
+ */
+
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "v0-sdk";
+import { auth } from "@/lib/auth";
+import { getChatOwnership } from "@/lib/db/queries";
 
 // Create v0 client with custom baseUrl if V0_API_URL is set
 const v0 = createClient(
@@ -8,12 +18,39 @@ const v0 = createClient(
 
 export async function POST(request: NextRequest) {
   try {
+    const session = await auth.api.getSession({
+      headers: request.headers,
+    });
+
+    // CRITICAL: Require authentication - block anonymous users
+    const isAuthenticated =
+      session?.user &&
+      session.user.name !== "Anonymous" &&
+      !session.user.email?.startsWith("temp-") &&
+      !session.user.isAnonymous;
+
+    if (!isAuthenticated || !session?.user?.id) {
+      return NextResponse.json(
+        { error: "Authentication required" },
+        { status: 401 },
+      );
+    }
+
     const { chatId } = await request.json();
 
     if (!chatId) {
       return NextResponse.json(
         { error: "Chat ID is required" },
         { status: 400 },
+      );
+    }
+
+    // Check if user owns this chat
+    const ownership = await getChatOwnership({ v0ChatId: chatId });
+    if (!ownership || ownership.user_id !== session.user.id) {
+      return NextResponse.json(
+        { error: "Chat not found or access denied" },
+        { status: 403 },
       );
     }
 
