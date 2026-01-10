@@ -28,6 +28,11 @@
 // Core exports
 export * from "./lib/auth";
 export * from "./lib/auth-client";
+export * from "./lib/auth-providers";
 export * from "./lib/db";
 export * from "./lib/services";
 export * from "./types";
+
+// Component exports
+export * from "./components/auth";
+export * from "./components/header";

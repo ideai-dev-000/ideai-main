@@ -7,9 +7,17 @@
   "exports": {
     ".": "./src/index.ts",
     "./auth": "./src/lib/auth.ts",
+    "./auth-client": "./src/lib/auth-client.ts",
+    "./auth-providers": "./src/lib/auth-providers.ts",
     "./schema": "./src/lib/db/schema.ts",
     "./types": "./src/types/index.ts",
-    "./components/*": "./src/components/*.tsx"
+    "./components/auth": "./src/components/auth/index.ts",
+    "./components/header": "./src/components/header/index.ts"
+  },
+  "peerDependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "next": "^16.0.0"
   },
   "scripts": {
     "lint": "eslint . --max-warnings 0",
@@ -27,9 +35,15 @@
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
+    "@repo/ui": "workspace:*",
     "@types/node": "^22.15.3",
+    "@types/react": "^19.2.2",
+    "@types/react-dom": "^19.2.2",
     "drizzle-kit": "^0.31.6",
     "eslint": "^9.39.1",
+    "next": "^16.1.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
     "typescript": "5.9.2"
   }
 }
