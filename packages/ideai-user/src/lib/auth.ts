@@ -30,8 +30,17 @@
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { anonymous, genericOAuth } from "better-auth/plugins";
+import { eq } from "drizzle-orm";
 import { db } from "./db";
-import { accounts, sessions, users, verifications } from "./db/schema";
+import {
+  accounts,
+  sessions,
+  users,
+  verifications,
+  workflows,
+  workflowExecutions,
+  workflowIntegrations,
+} from "./db/schema";
 
 /**
  * Construct schema object for Drizzle adapter
@@ -88,7 +97,48 @@ function getBaseURL(): string {
  */
 const plugins = [
   // Anonymous auth plugin - enables temporary users
-  anonymous(),
+  // Migrates workflows, executions, and integrations when anonymous user signs up
+  anonymous({
+    async onLinkAccount(data) {
+      // When an anonymous user links to a real account, migrate their data
+      const fromUserId = data.anonymousUser.user.id;
+      const toUserId = data.newUser.user.id;
+
+      console.log(
+        `[Anonymous Migration] Migrating from user ${fromUserId} to ${toUserId}`,
+      );
+
+      try {
+        // Migrate workflows
+        await db
+          .update(workflows)
+          .set({ userId: toUserId })
+          .where(eq(workflows.userId, fromUserId));
+
+        // Migrate workflow executions
+        await db
+          .update(workflowExecutions)
+          .set({ userId: toUserId })
+          .where(eq(workflowExecutions.userId, fromUserId));
+
+        // Migrate workflow integrations
+        await db
+          .update(workflowIntegrations)
+          .set({ userId: toUserId })
+          .where(eq(workflowIntegrations.userId, fromUserId));
+
+        console.log(
+          `[Anonymous Migration] Successfully migrated data from ${fromUserId} to ${toUserId}`,
+        );
+      } catch (error) {
+        console.error(
+          "[Anonymous Migration] Error migrating user data:",
+          error,
+        );
+        throw error;
+      }
+    },
+  }),
   // Vercel OAuth plugin - enables Vercel OAuth for deployments
   // Only enabled if VERCEL_CLIENT_ID is set
   ...(process.env.VERCEL_CLIENT_ID
