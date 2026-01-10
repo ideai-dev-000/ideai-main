@@ -6,7 +6,7 @@ import { usePathname, useSearchParams } from "next/navigation";
 import { ChatSelector } from "./chat-selector";
 import { MobileMenu } from "./mobile-menu";
 import { useSession } from "@/lib/auth-client";
-import { UserNav } from "@/components/user-nav";
+import { UserNavWithAuth } from "@/components/user-nav-with-auth";
 import { Button } from "@/components/ui/button";
 import { VercelIcon } from "@/components/ui/icons";
 import { DEPLOY_URL } from "@/lib/constants";
@@ -130,12 +130,12 @@ export function AppHeader({ className = "" }: AppHeaderProps) {
                 Deploy
               </Link>
             </Button>
-            <UserNav session={session} />
+            <UserNavWithAuth session={session} />
           </div>
 
           {/* Mobile right side - Only menu button and user avatar */}
           <div className="flex lg:hidden items-center gap-2">
-            <UserNav session={session} />
+            <UserNavWithAuth session={session} />
             <MobileMenu />
           </div>
         </div>
