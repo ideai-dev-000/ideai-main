@@ -856,6 +856,12 @@ importers:
       "@monaco-editor/react":
         specifier: ^4.7.0
         version: 4.7.0(monaco-editor@0.55.1)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      "@radix-ui/react-alert-dialog":
+        specifier: ^1.1.15
+        version: 1.1.15(@types/react-dom@19.2.3(@types/react@19.2.7))(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      "@radix-ui/react-avatar":
+        specifier: ^1.1.11
+        version: 1.1.11(@types/react-dom@19.2.3(@types/react@19.2.7))(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       "@radix-ui/react-checkbox":
         specifier: ^1.3.3
         version: 1.3.3(@types/react-dom@19.2.3(@types/react@19.2.7))(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
@@ -868,24 +874,54 @@ importers:
       "@radix-ui/react-dialog":
         specifier: ^1.1.15
         version: 1.1.15(@types/react-dom@19.2.3(@types/react@19.2.7))(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      "@radix-ui/react-dropdown-menu":
+        specifier: ^2.1.16
+        version: 2.1.16(@types/react-dom@19.2.3(@types/react@19.2.7))(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      "@radix-ui/react-hover-card":
+        specifier: ^1.1.15
+        version: 1.1.15(@types/react-dom@19.2.3(@types/react@19.2.7))(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      "@radix-ui/react-label":
+        specifier: ^2.1.8
+        version: 2.1.8(@types/react-dom@19.2.3(@types/react@19.2.7))(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       "@radix-ui/react-popover":
         specifier: ^1.1.15
         version: 1.1.15(@types/react-dom@19.2.3(@types/react@19.2.7))(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      "@radix-ui/react-scroll-area":
+        specifier: ^1.2.10
+        version: 1.2.10(@types/react-dom@19.2.3(@types/react@19.2.7))(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      "@radix-ui/react-select":
+        specifier: ^2.2.6
+        version: 2.2.6(@types/react-dom@19.2.3(@types/react@19.2.7))(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       "@radix-ui/react-slot":
         specifier: ^1.1.0
         version: 1.2.4(@types/react@19.2.7)(react@19.2.3)
+      "@radix-ui/react-tabs":
+        specifier: ^1.1.13
+        version: 1.1.13(@types/react-dom@19.2.3(@types/react@19.2.7))(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       "@radix-ui/react-tooltip":
         specifier: ^1.2.8
         version: 1.2.8(@types/react-dom@19.2.3(@types/react@19.2.7))(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      "@radix-ui/react-use-controllable-state":
+        specifier: ^1.2.2
+        version: 1.2.2(@types/react@19.2.7)(react@19.2.3)
       "@repo/cloud-manager":
         specifier: workspace:*
         version: link:../../packages/cloud-manager
+      "@repo/ideai-user":
+        specifier: workspace:*
+        version: link:../../packages/ideai-user
       "@repo/ui":
         specifier: workspace:*
         version: link:../../packages/ui
       "@slack/web-api":
         specifier: ^7.12.0
         version: 7.13.0
+      "@types/react-syntax-highlighter":
+        specifier: ^15.5.13
+        version: 15.5.13
+      "@v0-sdk/react":
+        specifier: ^0.4.1
+        version: 0.4.1(react@19.2.3)
       "@vercel/analytics":
         specifier: ^1.5.0
         version: 1.6.1(next@16.1.1(@babel/core@7.28.5)(@opentelemetry/api@1.9.0)(@playwright/test@1.57.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(react@19.2.3)(vue-router@4.6.4(vue@3.5.26(typescript@5.9.2)))(vue@3.5.26(typescript@5.9.2))
@@ -919,6 +955,9 @@ importers:
       drizzle-orm:
         specifier: ^0.44.7
         version: 0.44.7(@neondatabase/serverless@0.9.5)(@opentelemetry/api@1.9.0)(@types/pg@8.11.6)(@vercel/postgres@0.10.0)(kysely@0.28.9)(postgres@3.4.7)
+      embla-carousel-react:
+        specifier: ^8.6.0
+        version: 8.6.0(react@19.2.3)
       jose:
         specifier: ^6.1.3
         version: 6.1.3
@@ -961,18 +1000,33 @@ importers:
       react-resizable-panels:
         specifier: ^3.0.6
         version: 3.0.6(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      react-syntax-highlighter:
+        specifier: ^15.6.6
+        version: 15.6.6(react@19.2.3)
       resend:
         specifier: ^6.4.1
         version: 6.6.0
       server-only:
         specifier: ^0.0.1
         version: 0.0.1
+      shiki:
+        specifier: ^3.12.2
+        version: 3.21.0
       sonner:
         specifier: ^2.0.7
         version: 2.0.7(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      streamdown:
+        specifier: ^1.0.12
+        version: 1.6.11(@types/mdast@4.0.4)(micromark-util-types@2.0.2)(micromark@4.0.2)(react@19.2.3)
+      swr:
+        specifier: ^2.3.6
+        version: 2.3.8(react@19.2.3)
       tailwind-merge:
         specifier: ^3.4.0
         version: 3.4.0
+      use-stick-to-bottom:
+        specifier: ^1.1.1
+        version: 1.1.1(react@19.2.3)
       v0-sdk:
         specifier: ^0.15.1
         version: 0.15.3
@@ -1415,6 +1469,9 @@ importers:
       "@radix-ui/react-use-controllable-state":
         specifier: ^1.2.2
         version: 1.2.2(@types/react@19.2.7)(react@19.2.3)
+      "@repo/ideai-user":
+        specifier: workspace:*
+        version: link:../../packages/ideai-user
       "@repo/ui":
         specifier: workspace:*
         version: link:../../packages/ui
@@ -2084,6 +2141,58 @@ importers:
       "@types/react-dom":
         specifier: 19.2.2
         version: 19.2.2(@types/react@19.2.2)
+      typescript:
+        specifier: 5.9.2
+        version: 5.9.2
+
+  packages/ideai-user:
+    dependencies:
+      better-auth:
+        specifier: ^1.3.34
+        version: 1.4.10(drizzle-kit@0.31.8)(drizzle-orm@0.44.7(@neondatabase/serverless@0.9.5)(@opentelemetry/api@1.9.0)(@types/pg@8.11.6)(@vercel/postgres@0.10.0)(kysely@0.28.9)(postgres@3.4.7))(next@16.1.1(@babel/core@7.28.5)(@opentelemetry/api@1.9.0)(@playwright/test@1.57.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(vitest@2.1.9(@edge-runtime/vm@5.0.0)(@types/node@22.15.3)(@vitest/browser@4.0.16)(@vitest/ui@4.0.16)(happy-dom@20.1.0(bufferutil@4.1.0))(jsdom@27.4.0(bufferutil@4.1.0))(lightningcss@1.30.2)(terser@5.44.1))(vue@3.5.26(typescript@5.9.2))
+      drizzle-orm:
+        specifier: ^0.44.7
+        version: 0.44.7(@neondatabase/serverless@0.9.5)(@opentelemetry/api@1.9.0)(@types/pg@8.11.6)(@vercel/postgres@0.10.0)(kysely@0.28.9)(postgres@3.4.7)
+      lucide-react:
+        specifier: ^0.468.0
+        version: 0.468.0(react@19.2.3)
+      postgres:
+        specifier: ^3.4.7
+        version: 3.4.7
+    devDependencies:
+      "@repo/eslint-config":
+        specifier: workspace:*
+        version: link:../eslint-config
+      "@repo/typescript-config":
+        specifier: workspace:*
+        version: link:../typescript-config
+      "@repo/ui":
+        specifier: workspace:*
+        version: link:../ui
+      "@types/node":
+        specifier: ^22.15.3
+        version: 22.15.3
+      "@types/react":
+        specifier: ^19.2.2
+        version: 19.2.7
+      "@types/react-dom":
+        specifier: ^19.2.2
+        version: 19.2.3(@types/react@19.2.7)
+      drizzle-kit:
+        specifier: ^0.31.6
+        version: 0.31.8
+      eslint:
+        specifier: ^9.39.1
+        version: 9.39.2(jiti@2.6.1)
+      next:
+        specifier: ^16.1.0
+        version: 16.1.1(@babel/core@7.28.5)(@opentelemetry/api@1.9.0)(@playwright/test@1.57.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      react:
+        specifier: ^19.2.0
+        version: 19.2.3
+      react-dom:
+        specifier: ^19.2.0
+        version: 19.2.3(react@19.2.3)
       typescript:
         specifier: 5.9.2
         version: 5.9.2
@@ -6028,6 +6137,22 @@ packages:
       "@types/react-dom":
         optional: true
 
+  "@radix-ui/react-avatar@1.1.11":
+    resolution:
+      {
+        integrity: sha512-0Qk603AHGV28BOBO34p7IgD5m+V5Sg/YovfayABkoDDBM5d3NCx0Mp4gGrjzLGes1jV5eNOE1r3itqOR33VC6Q==,
+      }
+    peerDependencies:
+      "@types/react": "*"
+      "@types/react-dom": "*"
+      react: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+      react-dom: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+    peerDependenciesMeta:
+      "@types/react":
+        optional: true
+      "@types/react-dom":
+        optional: true
+
   "@radix-ui/react-avatar@1.1.2":
     resolution:
       {
@@ -6212,6 +6337,18 @@ packages:
     resolution:
       {
         integrity: sha512-jCi/QKUM2r1Ju5a3J64TH2A5SpKAgh0LpknyqdQ4m6DCV0xJ2HG1xARRwNGPQfi1SLdLWZ1OJz6F4OMBBNiGJA==,
+      }
+    peerDependencies:
+      "@types/react": "*"
+      react: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+    peerDependenciesMeta:
+      "@types/react":
+        optional: true
+
+  "@radix-ui/react-context@1.1.3":
+    resolution:
+      {
+        integrity: sha512-ieIFACdMpYfMEjF0rEf5KLvfVyIkOz6PDGyNnP+u+4xQ6jny3VCgA4OgXOwNx2aUkxn8zx9fiVcM8CfFYv9Lxw==,
       }
     peerDependencies:
       "@types/react": "*"
@@ -15699,6 +15836,14 @@ packages:
     peerDependencies:
       react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0-rc
 
+  lucide-react@0.468.0:
+    resolution:
+      {
+        integrity: sha512-6koYRhnM2N0GGZIdXzSeiNwguv1gt/FAjZOiPl76roBi3xKEXa4WmfpxgQwTTL4KipXjefrnf3oV4IsYhi4JFA==,
+      }
+    peerDependencies:
+      react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0-rc
+
   lucide-react@0.469.0:
     resolution:
       {
@@ -23708,6 +23853,19 @@ snapshots:
       "@types/react": 19.2.7
       "@types/react-dom": 19.2.3(@types/react@19.2.7)
 
+  "@radix-ui/react-avatar@1.1.11(@types/react-dom@19.2.3(@types/react@19.2.7))(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)":
+    dependencies:
+      "@radix-ui/react-context": 1.1.3(@types/react@19.2.7)(react@19.2.3)
+      "@radix-ui/react-primitive": 2.1.4(@types/react-dom@19.2.3(@types/react@19.2.7))(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      "@radix-ui/react-use-callback-ref": 1.1.1(@types/react@19.2.7)(react@19.2.3)
+      "@radix-ui/react-use-is-hydrated": 0.1.0(@types/react@19.2.7)(react@19.2.3)
+      "@radix-ui/react-use-layout-effect": 1.1.1(@types/react@19.2.7)(react@19.2.3)
+      react: 19.2.3
+      react-dom: 19.2.3(react@19.2.3)
+    optionalDependencies:
+      "@types/react": 19.2.7
+      "@types/react-dom": 19.2.3(@types/react@19.2.7)
+
   "@radix-ui/react-avatar@1.1.2(@types/react-dom@19.2.3(@types/react@19.2.7))(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)":
     dependencies:
       "@radix-ui/react-context": 1.1.1(@types/react@19.2.7)(react@19.2.3)
@@ -23961,6 +24119,12 @@ snapshots:
       "@types/react": 19.2.7
 
   "@radix-ui/react-context@1.1.2(@types/react@19.2.7)(react@19.2.3)":
+    dependencies:
+      react: 19.2.3
+    optionalDependencies:
+      "@types/react": 19.2.7
+
+  "@radix-ui/react-context@1.1.3(@types/react@19.2.7)(react@19.2.3)":
     dependencies:
       react: 19.2.3
     optionalDependencies:
@@ -27992,7 +28156,7 @@ snapshots:
       sirv: 3.0.2
       tinyglobby: 0.2.15
       tinyrainbow: 3.0.3
-      vitest: 2.1.9(@edge-runtime/vm@5.0.0)(@types/node@25.0.3)(@vitest/browser@4.0.16)(@vitest/ui@4.0.16)(happy-dom@20.0.11)(jsdom@27.4.0(bufferutil@4.1.0))(lightningcss@1.30.2)(terser@5.44.1)
+      vitest: 2.1.9(@edge-runtime/vm@5.0.0)(@types/node@22.15.3)(@vitest/browser@4.0.16)(@vitest/ui@4.0.16)(happy-dom@20.1.0(bufferutil@4.1.0))(jsdom@27.4.0(bufferutil@4.1.0))(lightningcss@1.30.2)(terser@5.44.1)
 
   "@vitest/utils@2.1.9":
     dependencies:
@@ -32393,6 +32557,10 @@ snapshots:
   lru-cache@7.18.3: {}
 
   lucide-react@0.454.0(react@19.2.3):
+    dependencies:
+      react: 19.2.3
+
+  lucide-react@0.468.0(react@19.2.3):
     dependencies:
       react: 19.2.3
 
