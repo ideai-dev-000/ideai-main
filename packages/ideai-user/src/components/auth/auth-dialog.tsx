@@ -466,49 +466,39 @@ export const AuthDialog = ({
   // Render trigger - only use asChild if DialogTrigger is provided
   // CRITICAL: asChild requires a single React element, not fragments or arrays
   const renderTrigger = () => {
+    if (children) {
+      // Ensure children is a single element (React.Children handles this)
+      const childArray = React.Children.toArray(children);
+      if (childArray.length === 0) {
+        // No children, use default
+        const defaultButton = (
+          <ButtonComp size="sm" variant="default">
+            Sign In
+          </ButtonComp>
+        );
+        return DialogTrigger ? (
+          <DialogTriggerComp asChild>{defaultButton}</DialogTriggerComp>
+        ) : (
+          defaultButton
+        );
+      }
+
+      // Get first child element (asChild needs single element)
+      const firstChild = childArray[0];
+
+      // If DialogTrigger is provided, use asChild pattern
+      if (DialogTrigger && React.isValidElement(firstChild)) {
+        return <DialogTriggerComp asChild>{firstChild}</DialogTriggerComp>;
+      }
+      // Otherwise, render children directly
+      return <>{children}</>;
+    }
     // Default trigger
     const defaultButton = (
       <ButtonComp size="sm" variant="default">
         Sign In
       </ButtonComp>
     );
-
-    if (!children) {
-      // No children provided, use default
-      if (DialogTrigger) {
-        return <DialogTriggerComp asChild>{defaultButton}</DialogTriggerComp>;
-      }
-      return defaultButton;
-    }
-
-    // Check if children is a single valid React element
-    // React.Children.count returns 1 for a single element, even if it's wrapped
-    const childCount = React.Children.count(children);
-
-    if (childCount === 0) {
-      // Empty children, use default
-      if (DialogTrigger) {
-        return <DialogTriggerComp asChild>{defaultButton}</DialogTriggerComp>;
-      }
-      return defaultButton;
-    }
-
-    if (childCount === 1) {
-      // Single child - check if it's a valid element
-      const child = React.Children.only(children);
-
-      if (React.isValidElement(child)) {
-        // If DialogTrigger is provided, use asChild pattern
-        if (DialogTrigger) {
-          return <DialogTriggerComp asChild>{child}</DialogTriggerComp>;
-        }
-        // Otherwise, render child directly
-        return child;
-      }
-    }
-
-    // Multiple children or invalid child - wrap in default button
-    // This shouldn't happen in normal usage, but handle gracefully
     if (DialogTrigger) {
       return <DialogTriggerComp asChild>{defaultButton}</DialogTriggerComp>;
     }

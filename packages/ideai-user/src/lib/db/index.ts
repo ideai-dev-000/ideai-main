@@ -25,21 +25,10 @@ import * as schema from "./schema";
 
 /**
  * Database connection string
- * Uses the same DATABASE_URL/POSTGRES_URL as the consuming app to ensure
- * sessions and users are stored in the same database.
- *
- * CRITICAL: This MUST match the app's database connection for auth to work.
- * If the app uses a different database, auth sessions won't be found.
- *
- * Priority:
- * 1. DATABASE_URL (standard)
- * 2. POSTGRES_URL (some apps use this)
- * 3. Fallback to local development database
+ * Defaults to local development database if not provided
  */
 const connectionString =
-  process.env.DATABASE_URL ||
-  process.env.POSTGRES_URL ||
-  "postgres://localhost:5432/ideai";
+  process.env.DATABASE_URL || "postgres://localhost:5432/ideai-user";
 
 /**
  * PostgreSQL client instance

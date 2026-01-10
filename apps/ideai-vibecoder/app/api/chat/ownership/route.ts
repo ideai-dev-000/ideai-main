@@ -7,7 +7,7 @@
  */
 
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@repo/ideai-user/auth";
+import { auth } from "@/lib/auth";
 import { createChatOwnership } from "@/lib/db/queries";
 
 export async function POST(request: NextRequest) {
