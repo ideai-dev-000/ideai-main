@@ -58,6 +58,7 @@ export function LandingPage() {
               Separator={Separator}
               Spinner={Spinner}
               toast={toast}
+              initialMode="signin"
             >
               <Button size="sm" variant="default">
                 Sign In
@@ -154,6 +155,7 @@ export function LandingPage() {
                 Separator={Separator}
                 Spinner={Spinner}
                 toast={toast}
+                initialMode="signup"
               >
                 <Button size="lg" variant="default" className="text-lg px-8">
                   Get Started

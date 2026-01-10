@@ -57,6 +57,8 @@ export interface AuthDialogProps {
     success: (message: string) => void;
     error: (message: string) => void;
   };
+  // Initial mode: "signin" or "signup"
+  initialMode?: "signin" | "signup";
 }
 
 // Provider icons - can be customized by apps
@@ -190,9 +192,10 @@ export const AuthDialog = ({
   Separator,
   Spinner,
   toast,
+  initialMode = "signin",
 }: AuthDialogProps) => {
   const [open, setOpen] = useState(false);
-  const [mode, setMode] = useState<"signin" | "signup">("signin");
+  const [mode, setMode] = useState<"signin" | "signup">(initialMode);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -290,6 +293,18 @@ export const AuthDialog = ({
   const toggleMode = () => {
     setMode(mode === "signin" ? "signup" : "signin");
     setError("");
+  };
+
+  // Reset mode when dialog opens to ensure initialMode is used
+  const handleOpenChange = (newOpen: boolean) => {
+    setOpen(newOpen);
+    if (newOpen) {
+      setMode(initialMode);
+      setError("");
+      setName("");
+      setEmail("");
+      setPassword("");
+    }
   };
 
   // If no UI components provided, return a basic implementation
@@ -441,7 +456,7 @@ export const AuthDialog = ({
     enabledProviders.google;
 
   return (
-    <DialogComp open={open} onOpenChange={setOpen}>
+    <DialogComp open={open} onOpenChange={handleOpenChange}>
       <DialogTriggerComp asChild>
         {children || (
           <ButtonComp size="sm" variant="default">
