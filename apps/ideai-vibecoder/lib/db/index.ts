@@ -25,8 +25,23 @@ const connectionString =
   process.env.POSTGRES_URL ||
   "postgres://localhost:5432/ideai-vibecoder";
 
+// Determine SSL config - check if connection string has sslmode or if it's a cloud DB
+const needsSSL =
+  connectionString.includes("sslmode=require") ||
+  connectionString.includes("neon.tech") ||
+  connectionString.includes("vercel-storage.com") ||
+  connectionString.includes("supabase.co");
+
+const postgresConfig = {
+  max: 10,
+  ...(needsSSL && { ssl: "require" as const }),
+};
+
 // For migrations
-export const migrationClient = postgres(connectionString, { max: 1 });
+export const migrationClient = postgres(connectionString, {
+  max: 1,
+  ...(needsSSL && { ssl: "require" as const }),
+});
 
 // Use global singleton to prevent connection exhaustion during HMR
 const globalForDb = globalThis as unknown as {
@@ -36,7 +51,7 @@ const globalForDb = globalThis as unknown as {
 
 // For queries - reuse connection in development
 const queryClient =
-  globalForDb.queryClient ?? postgres(connectionString, { max: 10 });
+  globalForDb.queryClient ?? postgres(connectionString, postgresConfig);
 export const db = globalForDb.db ?? drizzle(queryClient, { schema });
 
 if (process.env.NODE_ENV !== "production") {

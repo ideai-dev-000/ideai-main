@@ -1,10 +1,19 @@
+/**
+ * @fileoverview Auth for IdeaI VibeCoder
+ *
+ * @module IdeAIVibeCoderAuth
+ * @description
+ * Better Auth configuration for ideai-vibecoder app.
+ * Uses vibecoder's own database and schema (not shared yet - see TODO.md).
+ */
+
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
-import { anonymous, genericOAuth } from "better-auth/plugins";
+import { anonymous } from "better-auth/plugins";
 import { db } from "./db";
 import { accounts, sessions, users, verifications } from "./db/schema";
 
-// Construct schema object for drizzle adapter
+// Construct schema object for drizzle adapter (using shared schema)
 const schema = {
   user: users,
   session: sessions,
@@ -12,7 +21,7 @@ const schema = {
   verification: verifications,
 };
 
-// Determine the base URL for authentication
+// Determine the base URL for authentication (vibecoder-specific port)
 function getBaseURL() {
   // Priority 1: Explicit BETTER_AUTH_URL (set manually for production/dev)
   if (process.env.BETTER_AUTH_URL) {
@@ -33,48 +42,7 @@ function getBaseURL() {
   return "http://localhost:3020";
 }
 
-// Build plugins array conditionally
-const plugins = [
-  anonymous(),
-  ...(process.env.VERCEL_CLIENT_ID
-    ? [
-        genericOAuth({
-          config: [
-            {
-              providerId: "vercel",
-              clientId: process.env.VERCEL_CLIENT_ID,
-              clientSecret: process.env.VERCEL_CLIENT_SECRET || "",
-              authorizationUrl: "https://vercel.com/oauth/authorize",
-              tokenUrl: "https://api.vercel.com/login/oauth/token",
-              userInfoUrl: "https://api.vercel.com/login/oauth/userinfo",
-              scopes: ["openid", "email", "profile"],
-              discoveryUrl: undefined,
-              pkce: true,
-              getUserInfo: async (tokens) => {
-                const response = await fetch(
-                  "https://api.vercel.com/login/oauth/userinfo",
-                  {
-                    headers: {
-                      Authorization: `Bearer ${tokens.accessToken}`,
-                    },
-                  },
-                );
-                const profile = await response.json();
-                return {
-                  id: profile.sub,
-                  email: profile.email,
-                  name: profile.name ?? profile.preferred_username,
-                  emailVerified: profile.email_verified ?? true,
-                  image: profile.picture,
-                };
-              },
-            },
-          ],
-        }),
-      ]
-    : []),
-];
-
+// Use shared database and schema, but vibecoder-specific baseURL
 export const auth = betterAuth({
   baseURL: getBaseURL(),
   database: drizzleAdapter(db, {
@@ -97,5 +65,5 @@ export const auth = betterAuth({
       enabled: !!process.env.GOOGLE_CLIENT_ID,
     },
   },
-  plugins,
+  plugins: [anonymous()],
 });

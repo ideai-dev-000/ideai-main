@@ -64,6 +64,17 @@ export function MessageRenderer({
     );
   }
 
+  // If content is empty or null/undefined, show placeholder
+  if (!content || (Array.isArray(content) && content.length === 0)) {
+    return (
+      <div className={className}>
+        <p className="mb-4 text-gray-500 dark:text-gray-400 italic">
+          No content to display
+        </p>
+      </div>
+    );
+  }
+
   // If content is MessageBinaryFormat (from v0 API), use the Message component
   // Preprocess content to remove V0_FILE markers and shell placeholders
   const processedContent = preprocessMessageContent(content);

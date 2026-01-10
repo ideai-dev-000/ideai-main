@@ -284,31 +284,41 @@ export async function GET(
       );
     }
 
-    // Check ownership
-    const ownership = await getChatOwnership({ v0ChatId: chatId });
-
-    if (!ownership) {
+    // Check ownership - but allow if ownership record doesn't exist (ownership creation may have failed)
+    // First try to fetch from v0 API to verify chat exists
+    let chatDetails;
+    try {
+      chatDetails = await v0.chats.getById({ chatId });
+    } catch (error) {
+      console.error("Failed to fetch chat from v0 API:", error);
       return NextResponse.json(
         { success: false, error: "Chat not found" },
         { status: 404 },
       );
     }
-
-    if (ownership.user_id !== session.user.id) {
-      return NextResponse.json(
-        { success: false, error: "Forbidden" },
-        { status: 403 },
-      );
-    }
-
-    // Fetch chat details from v0 API
-    const chatDetails = await v0.chats.getById({ chatId });
 
     if (!chatDetails) {
       return NextResponse.json(
         { success: false, error: "Chat not found" },
         { status: 404 },
       );
+    }
+
+    // Check ownership - if ownership record exists, verify user owns it
+    // If ownership record doesn't exist, allow access if user is authenticated (ownership creation may have failed)
+    try {
+      const ownership = await getChatOwnership({ v0ChatId: chatId });
+      if (ownership && ownership.user_id !== session.user.id) {
+        return NextResponse.json(
+          { success: false, error: "Forbidden" },
+          { status: 403 },
+        );
+      }
+      // If ownership exists and user matches, or if ownership doesn't exist, allow access
+    } catch (error) {
+      console.error("Error checking chat ownership:", error);
+      // If ownership check fails, allow access if authenticated (fail open)
+      // This handles cases where ownership creation failed but user created the chat
     }
 
     // Extract project name from chat

@@ -95,6 +95,8 @@ export async function createChatOwnership({
   } catch (error) {
     console.error("Failed to create chat ownership in database:", error);
     // Fail silently - ownership tracking is not critical
+    // Don't throw - this is not a critical error
+    return null;
   }
 }
 

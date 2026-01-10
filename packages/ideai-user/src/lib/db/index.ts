@@ -30,12 +30,20 @@ import * as schema from "./schema";
 const connectionString =
   process.env.DATABASE_URL || "postgres://localhost:5432/ideai-user";
 
+// Determine SSL config - check if connection string has sslmode or if it's a cloud DB
+const needsSSL =
+  connectionString.includes("sslmode=require") ||
+  connectionString.includes("neon.tech") ||
+  connectionString.includes("vercel-storage.com") ||
+  connectionString.includes("supabase.co");
+
 /**
  * PostgreSQL client instance
  * Connection pooling is handled automatically by postgres-js
  */
 const client = postgres(connectionString, {
   max: 10, // Maximum number of connections in the pool
+  ...(needsSSL && { ssl: "require" as const }),
 });
 
 /**

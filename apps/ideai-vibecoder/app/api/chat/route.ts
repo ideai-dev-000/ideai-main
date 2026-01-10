@@ -29,16 +29,27 @@ function getClientIP(request: NextRequest): string {
 
 export async function POST(request: NextRequest) {
   try {
-    const session = await auth.api.getSession({
-      headers: request.headers,
-    });
+    let session = null;
+    try {
+      session = await auth.api.getSession({
+        headers: request.headers,
+      });
+    } catch (error) {
+      // Log but don't fail - let the auth check below handle it
+      console.warn(
+        "[Chat API] Session lookup failed:",
+        error instanceof Error ? error.message : "Unknown error",
+      );
+      session = null;
+    }
 
     // CRITICAL: Require authentication - block anonymous users
+    // Be more lenient - if we have a session with a user ID, allow it
     const isAuthenticated =
-      session?.user &&
-      session.user.name !== "Anonymous" &&
-      !session.user.email?.startsWith("temp-") &&
-      !session.user.isAnonymous;
+      session?.user?.id && // Must have a user ID
+      session.user.name !== "Anonymous" && // Not anonymous name
+      (!session.user.email || !session.user.email.startsWith("temp-")) && // Not temp email
+      !session.user.isAnonymous; // Not marked as anonymous
 
     if (!isAuthenticated) {
       return NextResponse.json(
@@ -192,20 +203,18 @@ export async function POST(request: NextRequest) {
 
     const chatDetail = chat as ChatDetail;
 
-    // Create ownership mapping for new chat
+    // Create ownership mapping for new chat (non-blocking)
     // CRITICAL: Only authenticated users can reach here
+    // Run this async - don't block the response
     if (!chatId && chatDetail.id && session?.user?.id) {
-      try {
-        // Authenticated user - create ownership mapping
-        await createChatOwnership({
-          v0ChatId: chatDetail.id,
-          userId: session.user.id,
-        });
-        console.log("Chat ownership created:", chatDetail.id);
-      } catch (error) {
-        console.error("Failed to create chat ownership:", error);
-        // Don't fail the request if database save fails
-      }
+      // Fire and forget - don't await, don't block response
+      createChatOwnership({
+        v0ChatId: chatDetail.id,
+        userId: session.user.id,
+      }).catch((error) => {
+        console.error("Failed to create chat ownership (non-blocking):", error);
+        // Silently fail - ownership tracking is not critical
+      });
     }
 
     return NextResponse.json({

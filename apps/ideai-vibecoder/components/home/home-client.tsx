@@ -238,7 +238,8 @@ export function HomeClient() {
           throw new Error("No response body for streaming");
         }
 
-        setIsLoading(false);
+        // Don't set isLoading to false yet - let StreamingMessage handle it
+        // setIsLoading(false);
 
         // Add streaming assistant response
         setChatHistory((prev) => [
@@ -255,13 +256,9 @@ export function HomeClient() {
         const chatData = await response.json();
         setIsLoading(false);
 
-        // Handle chat data
+        // Handle chat data (will set demo URL if available)
         if (chatData.id) {
-          setCurrentChatId(chatData.id);
-          setCurrentChat({ id: chatData.id, demo: chatData.demo });
-
-          // Update URL without triggering Next.js routing
-          window.history.pushState(null, "", `/chats/${chatData.id}`);
+          await handleChatData(chatData);
         }
 
         // Add complete assistant response
@@ -278,8 +275,9 @@ export function HomeClient() {
           ]);
         }
 
-        // Update preview if demo URL is available
+        // Update preview panel if demo URL is available
         if (chatData.demo) {
+          console.log("[handleSendMessage] Demo URL received:", chatData.demo);
           setCurrentChat((prev) =>
             prev
               ? { ...prev, demo: chatData.demo }
@@ -288,6 +286,10 @@ export function HomeClient() {
           if (window.innerWidth < 768) {
             setActivePanel("preview");
           }
+        } else {
+          console.log(
+            "[handleSendMessage] No demo URL in response, will fetch after streaming if needed",
+          );
         }
       }
     } catch (error) {
@@ -311,14 +313,38 @@ export function HomeClient() {
   };
 
   const handleChatData = async (chatData: any) => {
+    console.log("[handleChatData] Received chatData:", {
+      id: chatData.id,
+      hasDemo: !!chatData.demo,
+      demo: chatData.demo,
+      object: chatData.object,
+    });
+
     if (chatData.id) {
       // Only set currentChat if it's not already set or if this is the main chat object
       if (!currentChatId || chatData.object === "chat") {
         setCurrentChatId(chatData.id);
-        setCurrentChat({ id: chatData.id });
+        setCurrentChat({
+          id: chatData.id,
+          demo: chatData.demo || undefined,
+        });
+        console.log("[handleChatData] Set currentChat:", {
+          id: chatData.id,
+          demo: chatData.demo,
+        });
 
         // Update URL without triggering Next.js routing
         window.history.pushState(null, "", `/chats/${chatData.id}`);
+      }
+
+      // If demo URL is provided, update it
+      if (chatData.demo) {
+        console.log("[handleChatData] Updating demo URL:", chatData.demo);
+        setCurrentChat((prev) =>
+          prev
+            ? { ...prev, demo: chatData.demo }
+            : { id: chatData.id, demo: chatData.demo },
+        );
       }
 
       // Create ownership record for new chat (only if this is a new chat)
@@ -342,6 +368,7 @@ export function HomeClient() {
   };
 
   const handleStreamingComplete = async (finalContent: any) => {
+    console.log("[handleStreamingComplete] Stream complete");
     setIsLoading(false);
 
     // Update chat history with final content
@@ -360,9 +387,12 @@ export function HomeClient() {
     });
 
     // Fetch demo URL after streaming completes
-    // Use the current state by accessing it in the state updater
     setCurrentChat((prevCurrentChat) => {
-      if (prevCurrentChat?.id) {
+      if (prevCurrentChat?.id && !prevCurrentChat.demo) {
+        console.log(
+          "[handleStreamingComplete] Fetching demo URL for chat:",
+          prevCurrentChat.id,
+        );
         // Fetch demo URL asynchronously
         fetch(`/api/chats/${prevCurrentChat.id}`)
           .then((response) => {
@@ -376,25 +406,43 @@ export function HomeClient() {
           .then((chatDetails) => {
             if (chatDetails) {
               const demoUrl =
-                chatDetails?.latestVersion?.demoUrl || chatDetails?.demo;
+                chatDetails?.latestVersion?.demoUrl ||
+                chatDetails?.demo ||
+                chatDetails?.demoUrl;
+
+              console.log(
+                "[handleStreamingComplete] Demo URL fetched:",
+                demoUrl,
+              );
 
               // Update the current chat with demo URL
               if (demoUrl) {
                 setCurrentChat((prev) =>
-                  prev ? { ...prev, demo: demoUrl } : null,
+                  prev
+                    ? { ...prev, demo: demoUrl }
+                    : { id: prevCurrentChat.id, demo: demoUrl },
                 );
                 if (window.innerWidth < 768) {
                   setActivePanel("preview");
                 }
+              } else {
+                console.warn(
+                  "[handleStreamingComplete] No demo URL found in chat details",
+                );
               }
             }
           })
           .catch((error) => {
             console.error("Error fetching demo URL:", error);
           });
+      } else if (prevCurrentChat?.demo) {
+        console.log(
+          "[handleStreamingComplete] Demo URL already set:",
+          prevCurrentChat.demo,
+        );
       }
 
-      // Return the current state unchanged for now
+      // Return the current state unchanged
       return prevCurrentChat;
     });
   };
@@ -471,7 +519,9 @@ export function HomeClient() {
           throw new Error("No response body for streaming");
         }
 
-        setIsLoading(false);
+        console.log(
+          "[handleChatSendMessage] Adding streaming response - isLoading will be set to false when stream starts",
+        );
 
         // Add streaming response
         setChatHistory((prev) => [
@@ -488,15 +538,29 @@ export function HomeClient() {
         const chatData = await response.json();
         setIsLoading(false);
 
+        console.log("[handleChatSendMessage] Received chatData:", {
+          hasId: !!chatData.id,
+          hasMessages: !!chatData.messages,
+          messageCount: chatData.messages?.length || 0,
+          hasDemo: !!chatData.demo,
+        });
+
+        // Handle chat data (will set demo URL if available)
+        if (chatData.id) {
+          await handleChatData(chatData);
+        }
+
         // Add complete assistant response
         if (chatData.messages && chatData.messages.length > 0) {
           const lastMessage = chatData.messages[chatData.messages.length - 1];
+          const assistantContent =
+            lastMessage.content || lastMessage.experimental_content || [];
+
           setChatHistory((prev) => [
             ...prev,
             {
               type: "assistant",
-              content:
-                lastMessage.content || lastMessage.experimental_content || [],
+              content: assistantContent,
               isStreaming: false,
             },
           ]);
