@@ -467,7 +467,7 @@ export const AuthDialog = ({
         </DialogTriggerComp>
       )}
       {DialogContentComp && (
-        <DialogContentComp className="sm:max-w-md">
+        <DialogContentComp className="max-w-md mx-auto">
           {DialogHeaderComp && (
             <DialogHeaderComp>
               {DialogTitleComp && (
