@@ -1,0 +1,10 @@
+{
+  "role": "package",
+  "name": "IdeaI User Module",
+  "metadata": {
+    "id": "ideai-user",
+    "description": "Centralized user/auth/access module for IdeaI",
+    "type": "shared-package",
+    "capabilities": ["authentication", "user-management", "access-control"]
+  }
+}

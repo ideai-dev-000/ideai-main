@@ -27,5 +27,7 @@
 
 // Core exports
 export * from "./lib/auth";
+export * from "./lib/auth-client";
 export * from "./lib/db";
+export * from "./lib/services";
 export * from "./types";
