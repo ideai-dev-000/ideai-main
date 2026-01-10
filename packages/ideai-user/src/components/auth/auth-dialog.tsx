@@ -455,17 +455,51 @@ export const AuthDialog = ({
     enabledProviders.github ||
     enabledProviders.google;
 
-  return (
-    <DialogComp open={open} onOpenChange={handleOpenChange}>
-      {children ? (
-        <DialogTriggerComp asChild>{children}</DialogTriggerComp>
-      ) : (
-        <DialogTriggerComp asChild>
+  // Render trigger - only use asChild if DialogTrigger is provided
+  // CRITICAL: asChild requires a single React element, not fragments or arrays
+  const renderTrigger = () => {
+    if (children) {
+      // Ensure children is a single element (React.Children handles this)
+      const childArray = React.Children.toArray(children);
+      if (childArray.length === 0) {
+        // No children, use default
+        const defaultButton = (
           <ButtonComp size="sm" variant="default">
             Sign In
           </ButtonComp>
-        </DialogTriggerComp>
-      )}
+        );
+        return DialogTrigger ? (
+          <DialogTriggerComp asChild>{defaultButton}</DialogTriggerComp>
+        ) : (
+          defaultButton
+        );
+      }
+
+      // Get first child element (asChild needs single element)
+      const firstChild = childArray[0];
+
+      // If DialogTrigger is provided, use asChild pattern
+      if (DialogTrigger && React.isValidElement(firstChild)) {
+        return <DialogTriggerComp asChild>{firstChild}</DialogTriggerComp>;
+      }
+      // Otherwise, render children directly
+      return <>{children}</>;
+    }
+    // Default trigger
+    const defaultButton = (
+      <ButtonComp size="sm" variant="default">
+        Sign In
+      </ButtonComp>
+    );
+    if (DialogTrigger) {
+      return <DialogTriggerComp asChild>{defaultButton}</DialogTriggerComp>;
+    }
+    return defaultButton;
+  };
+
+  return (
+    <DialogComp open={open} onOpenChange={handleOpenChange}>
+      {renderTrigger()}
       {DialogContentComp && (
         <DialogContentComp className="max-w-md mx-auto">
           {DialogHeaderComp && (
