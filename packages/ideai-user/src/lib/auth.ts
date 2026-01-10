@@ -112,6 +112,50 @@ const plugins = [
 ];
 
 /**
+ * Get trusted origins for Better Auth
+ *
+ * Includes all localhost ports used by IdeaI apps during development
+ * and production URLs from environment variables.
+ */
+function getTrustedOrigins(): string[] {
+  const origins: string[] = [];
+
+  // Add base URL
+  const baseURL = getBaseURL();
+  if (baseURL) {
+    origins.push(baseURL);
+  }
+
+  // Add explicit trusted origins from env
+  if (process.env.BETTER_AUTH_TRUSTED_ORIGINS) {
+    const envOrigins = process.env.BETTER_AUTH_TRUSTED_ORIGINS.split(",").map(
+      (o) => o.trim(),
+    );
+    origins.push(...envOrigins);
+  }
+
+  // Development: Add common localhost ports for IdeaI apps
+  if (process.env.NODE_ENV === "development" || !process.env.NODE_ENV) {
+    const devOrigins = [
+      "http://localhost:3000", // web
+      "http://localhost:3001", // docs
+      "http://localhost:3018", // capabilities (default auth endpoint)
+      "http://localhost:3020", // vibecoder
+      "http://localhost:3021", // capability2.0
+      "http://127.0.0.1:3000",
+      "http://127.0.0.1:3001",
+      "http://127.0.0.1:3018",
+      "http://127.0.0.1:3020",
+      "http://127.0.0.1:3021",
+    ];
+    origins.push(...devOrigins);
+  }
+
+  // Remove duplicates
+  return [...new Set(origins)];
+}
+
+/**
  * Better Auth instance
  *
  * Configured with:
@@ -120,9 +164,12 @@ const plugins = [
  * - Social providers (GitHub, Google)
  * - Anonymous sessions
  * - Dynamic base URL
+ * - Trusted origins for development and production
  */
 export const auth = betterAuth({
   baseURL: getBaseURL(),
+  trustedOrigins: getTrustedOrigins(),
+  secret: process.env.BETTER_AUTH_SECRET || process.env.AUTH_SECRET,
   database: drizzleAdapter(db, {
     provider: "pg",
     schema: authSchema,

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient, ChatDetail } from "v0-sdk";
-import { auth } from "@/lib/auth";
+import { auth } from "@repo/ideai-user/auth";
 import { createChatOwnership, getChatCountByUserId } from "@/lib/db/queries";
 import { entitlementsByUserType } from "@/lib/entitlements";
 import { ChatSDKError } from "@/lib/errors";
@@ -29,9 +29,44 @@ function getClientIP(request: NextRequest): string {
 
 export async function POST(request: NextRequest) {
   try {
-    const session = await auth.api.getSession({
-      headers: request.headers,
-    });
+    let session;
+    try {
+      session = await auth.api.getSession({
+        headers: request.headers,
+      });
+    } catch (sessionError) {
+      // Enhanced error logging
+      console.error("Failed to get session:", {
+        error: sessionError,
+        message:
+          sessionError instanceof Error
+            ? sessionError.message
+            : "Unknown error",
+        stack: sessionError instanceof Error ? sessionError.stack : undefined,
+        name:
+          sessionError instanceof Error
+            ? sessionError.name
+            : typeof sessionError,
+      });
+
+      // Log database connection info for debugging
+      const dbUrl = process.env.DATABASE_URL || process.env.POSTGRES_URL;
+      console.error("Database connection:", {
+        hasDatabaseUrl: !!dbUrl,
+        databaseUrlPreview: dbUrl ? `${dbUrl.substring(0, 20)}...` : "none",
+      });
+
+      return NextResponse.json(
+        {
+          error: "Failed to get session",
+          details:
+            sessionError instanceof Error
+              ? sessionError.message
+              : "Unknown error",
+        },
+        { status: 500 },
+      );
+    }
 
     // CRITICAL: Require authentication - block anonymous users
     const isAuthenticated =

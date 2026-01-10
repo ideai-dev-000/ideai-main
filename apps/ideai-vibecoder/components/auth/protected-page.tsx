@@ -11,6 +11,7 @@
 
 import { type ReactNode } from "react";
 import { AuthGuard } from "./auth-guard";
+import { AuthErrorBoundary } from "./auth-error-boundary";
 import { LandingPage } from "./landing-page";
 
 interface ProtectedPageProps {
@@ -24,7 +25,12 @@ interface ProtectedPageProps {
  * 1. Logged-out users see ONLY the landing page
  * 2. Authenticated users see the protected content (full vibe service)
  * 3. All existing vibe functionality is preserved for authenticated users
+ * 4. Errors from auth hooks are caught and landing page is shown
  */
 export function AuthProtectedPage({ children }: ProtectedPageProps) {
-  return <AuthGuard fallback={<LandingPage />}>{children}</AuthGuard>;
+  return (
+    <AuthErrorBoundary fallback={<LandingPage />}>
+      <AuthGuard fallback={<LandingPage />}>{children}</AuthGuard>
+    </AuthErrorBoundary>
+  );
 }

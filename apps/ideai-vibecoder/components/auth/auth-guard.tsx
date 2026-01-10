@@ -13,7 +13,7 @@
 
 "use client";
 
-import { type ReactNode, useState, useEffect } from "react";
+import { type ReactNode, useState, useEffect, Suspense } from "react";
 import { useSession } from "@/lib/auth-client";
 
 interface AuthGuardProps {
@@ -28,16 +28,55 @@ interface AuthGuardProps {
  * If user is authenticated, shows the protected content (full vibe service).
  */
 export function AuthGuard({ children, fallback }: AuthGuardProps) {
-  const { data: session, isPending } = useSession();
   const [isMounted, setIsMounted] = useState(false);
+  const [showFallback, setShowFallback] = useState(false);
+
+  // Wrap useSession in Suspense to catch errors
+  // Better Auth's useSession might throw errors that prevent rendering
+  let sessionResult;
+  try {
+    sessionResult = useSession();
+  } catch (error) {
+    // If useSession throws, show fallback immediately
+    console.warn("useSession error caught, showing landing page:", error);
+    setShowFallback(true);
+    // Return fallback immediately
+    return <>{fallback}</>;
+  }
+
+  const {
+    data: session,
+    isPending,
+    error,
+  } = sessionResult || {
+    data: null,
+    isPending: false,
+    error: null,
+  };
+
+  // Track session errors and set fallback flag
+  useEffect(() => {
+    if (error) {
+      console.warn("Session check error (showing landing page):", error);
+      setShowFallback(true);
+    }
+  }, [error]);
 
   // Ensure client-side hydration
   useEffect(() => {
     setIsMounted(true);
   }, []);
 
-  // Show loading state while checking session or until mounted
-  if (isPending || !isMounted) {
+  // CRITICAL: If there's any error or fallback flag is set, show landing page
+  if (showFallback || error) {
+    return <>{fallback}</>;
+  }
+
+  // Show loading state ONLY if we're actually loading and mounted
+  // But only briefly - if it takes too long, show landing page
+  if ((isPending && isMounted) || !isMounted) {
+    // Show loading only for a brief moment
+    // After mounting, if still pending, it likely means an error occurred
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
         <div className="text-center">
@@ -48,6 +87,11 @@ export function AuthGuard({ children, fallback }: AuthGuardProps) {
     );
   }
 
+  // If no session, show landing page
+  if (!session?.user) {
+    return <>{fallback}</>;
+  }
+
   // Check if user is authenticated (not anonymous and has session)
   const isAuthenticated =
     session?.user &&
@@ -56,6 +100,7 @@ export function AuthGuard({ children, fallback }: AuthGuardProps) {
     !session.user.isAnonymous;
 
   // If not authenticated, show fallback (landing page)
+  // This should already be handled above, but keeping as safety check
   if (!isAuthenticated) {
     return <>{fallback}</>;
   }
