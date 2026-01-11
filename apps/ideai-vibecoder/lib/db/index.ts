@@ -36,12 +36,15 @@ const needsSSL =
 
 const postgresConfig = {
   max: 10,
+  connect_timeout: 5, // 5 second connection timeout
+  idle_timeout: 30, // 30 second idle timeout
   ...(needsSSL && { ssl: "require" as const }),
 };
 
 // For migrations
 export const migrationClient = postgres(connectionString, {
   max: 1,
+  connect_timeout: 5, // 5 second connection timeout
   ...(needsSSL && { ssl: "require" as const }),
 });
 

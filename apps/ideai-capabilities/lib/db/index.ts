@@ -3,10 +3,13 @@ import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
 import {
   accounts,
+  anonymous_chat_logs,
   apiKeys,
+  chat_ownerships,
   integrations,
   sessions,
   users,
+  userServiceKeys,
   verifications,
   workflowExecutionLogs,
   workflowExecutions,
@@ -20,16 +23,21 @@ const schema = {
   sessions,
   accounts,
   verifications,
+  chat_ownerships,
+  anonymous_chat_logs,
   workflows,
   workflowExecutions,
   workflowExecutionLogs,
   workflowExecutionsRelations,
   apiKeys,
   integrations,
+  userServiceKeys,
 };
 
 const connectionString =
-  process.env.DATABASE_URL || "postgres://localhost:5432/workflow";
+  process.env.DATABASE_URL ||
+  process.env.POSTGRES_URL ||
+  "postgres://localhost:5432/workflow";
 
 // For migrations
 export const migrationClient = postgres(connectionString, { max: 1 });

@@ -48,6 +48,8 @@ export type {
   DeploymentOption,
 } from "./components/ideai-deployment";
 export { IdeAIDocsViewer } from "./components/ideai-docs-viewer";
+export { IdeAIAssets } from "./components/ideai-assets";
+export type { IdeAIAssetsProps, AssetItem } from "./components/ideai-assets";
 export type { IdeAIDocsViewerProps } from "./components/ideai-docs-viewer";
 export { IdeAIHero } from "./components/ideai-hero";
 export type { IdeAIHeroProps } from "./components/ideai-hero";
@@ -108,10 +110,13 @@ export { MobileNav } from "./components/mobile-nav";
 export {
   IdeAISideMenu,
   IdeAISideMenuWorkflows,
+  IdeAISideMenuVibes,
   IdeAISideMenuCards,
   IdeAISideMenuControls,
   IdeAISideMenuBlocks,
   type WorkflowItem,
+  type VibeItem,
+  type ContentMode,
   type IdeAISideMenuProps,
 } from "./components/ideai-side-menu";
 

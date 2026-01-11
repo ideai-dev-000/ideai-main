@@ -14,6 +14,7 @@ import {
   EyeOff,
   Users,
   Lock,
+  Plus,
 } from "lucide-react";
 import {
   Select,
@@ -119,19 +120,37 @@ export function ChatSelector() {
     const fetchChats = async () => {
       setIsLoading(true);
       try {
+        console.log("[ChatSelector] Fetching chats for user:", session.user.id);
         const response = await fetch("/api/chats");
         if (response.ok) {
           const data = await response.json();
+          console.log(
+            "[ChatSelector] Chats received:",
+            data.data?.length || 0,
+            "chats",
+          );
           setChats(data.data || []);
+        } else {
+          const errorData = await response
+            .json()
+            .catch(() => ({ error: "Unknown error" }));
+          console.error(
+            "[ChatSelector] Failed to fetch chats:",
+            response.status,
+            errorData,
+          );
         }
       } catch (error) {
-        console.error("Failed to fetch chats:", error);
+        console.error("[ChatSelector] Error fetching chats:", error);
       } finally {
         setIsLoading(false);
       }
     };
 
     fetchChats();
+    // Refresh chats every 30 seconds
+    const interval = setInterval(fetchChats, 30000);
+    return () => clearInterval(interval);
   }, [session?.user?.id]);
 
   const handleValueChange = (chatId: string) => {
@@ -275,7 +294,7 @@ export function ChatSelector() {
 
   return (
     <>
-      <div className="flex items-center gap-1">
+      <div className="flex items-center gap-2">
         <Select value={currentChatId || ""} onValueChange={handleValueChange}>
           <SelectTrigger
             className="w-fit min-w-[150px] max-w-[250px]"
@@ -293,15 +312,31 @@ export function ChatSelector() {
             </SelectValue>
           </SelectTrigger>
           <SelectContent>
-            {chats.length > 0 ? (
-              chats.slice(0, 15).map((chat) => (
-                <SelectItem key={chat.id} value={chat.id}>
-                  <div className="flex items-center gap-2">
-                    <MessageSquare className="h-4 w-4" />
-                    <span className="truncate">{getChatDisplayName(chat)}</span>
+            {isLoading ? (
+              <div className="px-2 py-1.5 text-sm text-muted-foreground">
+                Loading chats...
+              </div>
+            ) : chats.length > 0 ? (
+              <>
+                <div className="px-2 py-1.5 text-xs text-muted-foreground border-b">
+                  Your Chats ({chats.length})
+                </div>
+                {chats.slice(0, 15).map((chat) => (
+                  <SelectItem key={chat.id} value={chat.id}>
+                    <div className="flex items-center gap-2">
+                      <MessageSquare className="h-4 w-4" />
+                      <span className="truncate">
+                        {getChatDisplayName(chat)}
+                      </span>
+                    </div>
+                  </SelectItem>
+                ))}
+                {chats.length > 15 && (
+                  <div className="px-2 py-1.5 text-xs text-muted-foreground border-t">
+                    Showing first 15 chats
                   </div>
-                </SelectItem>
-              ))
+                )}
+              </>
             ) : (
               <div className="px-2 py-1.5 text-sm text-muted-foreground">
                 No chats yet
@@ -309,6 +344,17 @@ export function ChatSelector() {
             )}
           </SelectContent>
         </Select>
+
+        {/* New Chat Button */}
+        <Button
+          variant="outline"
+          size="sm"
+          className="h-8 px-2"
+          onClick={() => router.push("/")}
+          title="New Chat"
+        >
+          <Plus className="h-4 w-4" />
+        </Button>
 
         {/* Chat Context Menu */}
         {currentChat && (

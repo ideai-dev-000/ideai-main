@@ -10,8 +10,8 @@
 
 "use client";
 
-import { useMemo, useRef, useCallback, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useMemo, useRef, useCallback, useEffect, useState } from "react";
+import { useRouter, usePathname } from "next/navigation";
 import { useAtomValue } from "jotai";
 import { toast } from "sonner";
 import {
@@ -19,6 +19,8 @@ import {
   IdeAISideMenuCards,
   IdeAISideMenuControls,
   type WorkflowItem,
+  type VibeItem,
+  type ContentMode,
 } from "@repo/ui";
 import { useWorkflowNav } from "@/components/nav/use-workflow-nav";
 import { useSession } from "@/lib/auth-client";
@@ -41,10 +43,41 @@ export function IdeAISideMenuWrapper() {
   const { data: session } = useSession();
   const workflowNav = useWorkflowNav();
   const router = useRouter();
+  const pathname = usePathname();
   const currentWorkflowName = useAtomValue(currentWorkflowNameAtom);
   const currentWorkflowId = useAtomValue(currentWorkflowIdAtom);
   const clearWorkflow = useSetAtom(clearWorkflowAtom);
   const setHasUnsavedChanges = useSetAtom(hasUnsavedChangesAtom);
+
+  // State for vibes (vibe coded chats)
+  const [vibes, setVibes] = useState<VibeItem[]>([]);
+  const [isLoadingVibes, setIsLoadingVibes] = useState(false);
+  const [contentMode, setContentMode] = useState<ContentMode>("workflows");
+
+  // Determine content mode based on current route
+  useEffect(() => {
+    if (pathname?.startsWith("/vibe") || pathname?.startsWith("/chats/")) {
+      setContentMode("vibes");
+    } else if (pathname?.startsWith("/workflow")) {
+      setContentMode("workflows");
+    }
+  }, [pathname]);
+
+  // Get current vibe ID from pathname
+  const currentVibeId = useMemo(() => {
+    if (pathname?.startsWith("/chats/")) {
+      return pathname.split("/")[2] || null;
+    }
+    return null;
+  }, [pathname]);
+
+  // Determine menu title based on current route
+  const workflowsTitle = useMemo(() => {
+    if (pathname?.startsWith("/vibe")) {
+      return "Vibes";
+    }
+    return "Workflows";
+  }, [pathname]);
 
   // Check if user is authenticated
   const isAuthenticated = useMemo(
@@ -79,6 +112,102 @@ export function IdeAISideMenuWrapper() {
 
   // loadWorkflows from hook should already be stable (useCallback), but use it directly
   const loadWorkflows = workflowNav.loadWorkflows;
+
+  // Load vibes (chats) from API
+  const loadVibes = useCallback(async () => {
+    if (!session?.user?.id) {
+      setVibes([]);
+      return;
+    }
+
+    setIsLoadingVibes(true);
+    try {
+      // Use proxy API route to avoid CORS issues
+      // The proxy handles authentication and forwards to vibecoder API
+      const response = await fetch("/api/vibes", {
+        credentials: "include",
+      }).catch((err) => {
+        console.error("[loadVibes] Fetch error:", err);
+        return null;
+      });
+
+      if (response && response.ok) {
+        const data = await response.json();
+        const vibecoderApi =
+          process.env.NEXT_PUBLIC_VIBECODER_URL || "http://localhost:3020";
+        const chats = (data.data || []).map((chat: any) => ({
+          id: chat.id,
+          name: chat.name || undefined,
+          // Always route to vibecoder app for vibe chats
+          href: `${vibecoderApi}/chats/${chat.id}`,
+          createdAt: chat.createdAt,
+          privacy: chat.privacy,
+        }));
+        console.log(
+          "[loadVibes] ✅ Loaded",
+          chats.length,
+          "vibes:",
+          chats.map((c) => ({ id: c.id, name: c.name })),
+        );
+        setVibes(chats);
+      } else if (response) {
+        const errorData = await response
+          .json()
+          .catch(() => ({ error: "Unknown error" }));
+        console.error(
+          "[loadVibes] ❌ API error:",
+          response.status,
+          response.statusText,
+          errorData,
+        );
+      } else {
+        console.log("[loadVibes] ❌ No response from API");
+      }
+    } catch (error) {
+      console.error("[loadVibes] Failed to load vibes:", error);
+      // Silently fail - vibes section will just be empty
+    } finally {
+      setIsLoadingVibes(false);
+    }
+  }, [session?.user?.id]);
+
+  // Load vibes on mount and when session changes
+  useEffect(() => {
+    if (session?.user?.id) {
+      console.log(
+        "[IdeAISideMenuWrapper] Loading vibes for user:",
+        session.user.id,
+      );
+      loadVibes();
+    } else {
+      console.log("[IdeAISideMenuWrapper] No session, skipping vibes load");
+      setVibes([]);
+    }
+  }, [session?.user?.id, loadVibes]);
+
+  // Debug: Log vibes state changes
+  useEffect(() => {
+    console.log("[IdeAISideMenuWrapper] Vibes state changed:", {
+      count: vibes.length,
+      vibes: vibes.map((v) => ({ id: v.id, name: v.name })),
+      isLoading: isLoadingVibes,
+    });
+  }, [vibes, isLoadingVibes]);
+
+  // Also reload vibes when content mode changes to vibes
+  useEffect(() => {
+    if (
+      contentMode === "vibes" &&
+      session?.user?.id &&
+      vibes.length === 0 &&
+      !isLoadingVibes
+    ) {
+      console.log(
+        "[IdeAISideMenuWrapper] Content mode changed to vibes, loading...",
+      );
+      loadVibes();
+    }
+  }, [contentMode, session?.user?.id, vibes.length, isLoadingVibes, loadVibes]);
 
   // Handler to create a new workflow
   const handleCreateWorkflow = useCallback(async () => {
@@ -186,6 +315,14 @@ export function IdeAISideMenuWrapper() {
     [loadWorkflows, router, workflowNav.currentWorkflowId],
   );
 
+  // Handler to create a new vibe
+  const handleCreateVibe = useCallback(async () => {
+    // Navigate to vibe creation page (vibecoder app)
+    const vibecoderUrl =
+      process.env.NEXT_PUBLIC_VIBECODER_URL || "http://localhost:3020";
+    window.location.href = `${vibecoderUrl}/`;
+  }, []);
+
   // Handler to clear the current workflow (clears all nodes and edges)
   const handleClearWorkflow = useCallback(async () => {
     if (!currentWorkflowId) {
@@ -216,12 +353,19 @@ export function IdeAISideMenuWrapper() {
     <div style={{ display: isAuthenticated ? "block" : "none" }}>
       <IdeAISideMenu
         workflows={workflows}
+        vibes={vibes}
         onLoadWorkflows={loadWorkflows}
+        onLoadVibes={loadVibes}
         currentWorkflowId={workflowNav.currentWorkflowId}
+        currentVibeId={currentVibeId}
         onCreateWorkflow={handleCreateWorkflow}
+        onCreateVibe={handleCreateVibe}
         onCloneWorkflow={handleCloneWorkflow}
         onDeleteWorkflow={handleDeleteWorkflow}
         onClearWorkflow={handleClearWorkflow}
+        workflowsTitle={workflowsTitle}
+        contentMode={contentMode}
+        onContentModeChange={setContentMode}
       >
         {/* Cards section - ready for custom cards */}
         <IdeAISideMenuCards title="Quick Actions">

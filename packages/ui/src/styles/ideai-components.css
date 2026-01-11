@@ -1913,6 +1913,41 @@
   @apply flex items-center justify-end gap-3;
 }
 
+/* Content Mode Toggle (Workflows/Vibes) */
+.ideai-side-menu-mode-toggle {
+  @apply flex gap-1 px-4 mb-4;
+  @apply border-b border-slate-200 dark:border-slate-700;
+  padding-bottom: 0.75rem;
+}
+
+.ideai-side-menu-mode-button {
+  @apply flex items-center gap-2 px-3 py-2 rounded-md;
+  @apply text-sm font-medium;
+  @apply bg-transparent;
+  @apply text-slate-600 dark:text-slate-400;
+  @apply hover:bg-slate-100 dark:hover:bg-slate-800;
+  @apply transition-colors;
+  border: none;
+  cursor: pointer;
+  flex: 1;
+  justify-content: center;
+}
+
+.ideai-side-menu-mode-button--active {
+  @apply bg-slate-100 dark:bg-slate-800;
+  @apply text-slate-900 dark:text-slate-100;
+  @apply font-semibold;
+}
+
+.ideai-side-menu-mode-button svg {
+  @apply h-4 w-4;
+}
+
+.ideai-side-menu-item-icon {
+  @apply h-4 w-4 flex-shrink-0;
+  margin-right: 0.5rem;
+}
+
 .ideai-side-menu-confirm-cancel {
   @apply px-4 py-2 rounded-md text-sm font-medium;
   @apply bg-slate-100 dark:bg-slate-800;
@@ -1959,6 +1994,134 @@
   to {
     transform: translateX(0);
   }
+}
+
+/* IdeAI Assets Component */
+.ideai-assets {
+  @apply flex flex-col h-full bg-white dark:bg-slate-900;
+  @apply border border-slate-200 dark:border-slate-700 rounded-lg;
+  @apply overflow-hidden;
+}
+
+.ideai-assets-header {
+  @apply flex items-center justify-between px-4 py-3;
+  @apply border-b border-slate-200 dark:border-slate-700;
+}
+
+.ideai-assets-header-left {
+  @apply flex items-center gap-2;
+}
+
+.ideai-assets-title {
+  @apply text-sm font-semibold text-slate-900 dark:text-slate-50;
+  margin: 0;
+}
+
+.ideai-assets-count {
+  @apply px-2 py-0.5 rounded-full text-xs font-medium;
+  @apply bg-slate-100 dark:bg-slate-800;
+  @apply text-slate-600 dark:text-slate-400;
+}
+
+.ideai-assets-header-actions {
+  @apply flex items-center gap-2;
+}
+
+.ideai-assets-button {
+  @apply p-1.5 rounded-md;
+  @apply text-slate-600 dark:text-slate-400;
+  @apply hover:bg-slate-100 dark:hover:bg-slate-800;
+  @apply transition-colors;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ideai-assets-content {
+  @apply flex-1 overflow-y-auto p-4;
+}
+
+.ideai-assets-empty {
+  @apply flex flex-col items-center justify-center;
+  @apply py-12 px-4 text-center;
+  @apply text-slate-500 dark:text-slate-400;
+}
+
+.ideai-assets-empty svg {
+  @apply h-12 w-12 mb-3;
+  @apply text-slate-300 dark:text-slate-600;
+}
+
+.ideai-assets-empty p {
+  @apply text-sm mb-1;
+  margin: 0;
+}
+
+.ideai-assets-empty-hint {
+  @apply text-xs text-slate-400 dark:text-slate-500;
+}
+
+.ideai-assets-list {
+  @apply space-y-2;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ideai-assets-item {
+  @apply flex items-center gap-3 px-3 py-2;
+  @apply rounded-md;
+  @apply hover:bg-slate-50 dark:hover:bg-slate-800/50;
+  @apply transition-colors;
+}
+
+.ideai-assets-item-icon {
+  @apply flex-shrink-0;
+  @apply text-slate-400 dark:text-slate-500;
+}
+
+.ideai-assets-item-info {
+  @apply flex-1 min-w-0;
+}
+
+.ideai-assets-item-name {
+  @apply text-sm font-medium text-slate-900 dark:text-slate-50;
+  @apply truncate;
+}
+
+.ideai-assets-item-meta {
+  @apply flex items-center gap-2 mt-0.5;
+  @apply text-xs text-slate-500 dark:text-slate-400;
+}
+
+.ideai-assets-item-path {
+  @apply truncate;
+}
+
+.ideai-assets-item-size {
+  @apply flex-shrink-0;
+}
+
+.ideai-assets-item-actions {
+  @apply flex items-center gap-1;
+  @apply flex-shrink-0;
+}
+
+.ideai-assets-item-button {
+  @apply p-1.5 rounded-md;
+  @apply text-slate-500 dark:text-slate-400;
+  @apply hover:bg-slate-100 dark:hover:bg-slate-800;
+  @apply hover:text-slate-700 dark:hover:text-slate-200;
+  @apply transition-colors;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 @keyframes slideInLeft {

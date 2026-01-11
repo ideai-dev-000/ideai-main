@@ -14,10 +14,12 @@ import {
   Minimize,
   Download,
   Loader2,
+  Package,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { toast } from "sonner";
+import { IdeAIAssets } from "@repo/ui";
 
 interface Chat {
   id: string;
@@ -41,6 +43,8 @@ export function PreviewPanel({
   setRefreshKey,
 }: PreviewPanelProps) {
   const [isDownloading, setIsDownloading] = useState(false);
+  const [isExtractingAssets, setIsExtractingAssets] = useState(false);
+  const [showAssets, setShowAssets] = useState(false);
 
   const handleDownload = async () => {
     if (!currentChat?.id) {
@@ -105,6 +109,77 @@ export function PreviewPanel({
     }
   };
 
+  const handleExtractAssets = async () => {
+    if (!currentChat?.id) {
+      toast.error("No chat selected");
+      return;
+    }
+
+    setIsExtractingAssets(true);
+    toast.info("Extracting assets...");
+
+    try {
+      // Fetch download data from API (reuse download endpoint)
+      const response = await fetch(`/api/chats/${currentChat.id}/download`);
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(
+          errorData.error || `Failed to extract assets: ${response.statusText}`,
+        );
+      }
+
+      const result = await response.json();
+
+      if (!result.success) {
+        throw new Error(result.error || "Failed to prepare assets");
+      }
+
+      if (!result.files) {
+        throw new Error("No files to extract");
+      }
+
+      // Extract assets to server
+      const extractResponse = await fetch(
+        `/api/chats/${currentChat.id}/assets/extract`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            files: result.files,
+            projectName: result.projectName,
+          }),
+        },
+      );
+
+      if (!extractResponse.ok) {
+        const errorData = await extractResponse.json().catch(() => ({}));
+        throw new Error(
+          errorData.error ||
+            `Failed to extract assets: ${extractResponse.statusText}`,
+        );
+      }
+
+      const extractResult = await extractResponse.json();
+
+      if (!extractResult.success) {
+        throw new Error(extractResult.error || "Failed to extract assets");
+      }
+
+      toast.success("Assets extracted successfully!");
+      setShowAssets(true);
+    } catch (error) {
+      console.error("Extract assets error:", error);
+      toast.error(
+        error instanceof Error ? error.message : "Failed to extract assets",
+      );
+    } finally {
+      setIsExtractingAssets(false);
+    }
+  };
+
   return (
     <div
       className={cn(
@@ -145,6 +220,21 @@ export function PreviewPanel({
               <Download className="h-4 w-4" />
             )}
           </WebPreviewNavigationButton>
+          <WebPreviewNavigationButton
+            onClick={handleExtractAssets}
+            tooltip={
+              isExtractingAssets
+                ? "Extracting assets..."
+                : "Extract assets to IdeAI Assets"
+            }
+            disabled={!currentChat?.id || isExtractingAssets}
+          >
+            {isExtractingAssets ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              <Package className="h-4 w-4" />
+            )}
+          </WebPreviewNavigationButton>
           <WebPreviewUrl
             readOnly
             placeholder="Your app will appear here..."
@@ -162,7 +252,17 @@ export function PreviewPanel({
             )}
           </WebPreviewNavigationButton>
         </WebPreviewNavigation>
-        {currentChat?.demo ? (
+        {showAssets ? (
+          <div className="flex-1 overflow-hidden">
+            <IdeAIAssets
+              sourceId={currentChat?.id || ""}
+              sourceType="chat"
+              showClose={true}
+              onClose={() => setShowAssets(false)}
+              className="h-full"
+            />
+          </div>
+        ) : currentChat?.demo ? (
           <WebPreviewBody key={refreshKey} src={currentChat.demo} />
         ) : (
           <div className="flex-1 flex items-center justify-center bg-gray-50 dark:bg-black">

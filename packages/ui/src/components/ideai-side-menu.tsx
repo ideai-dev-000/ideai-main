@@ -37,7 +37,16 @@
 
 import * as React from "react";
 import * as Dialog from "@radix-ui/react-dialog";
-import { Menu, X, Workflow, ChevronRight, Copy, Eraser } from "lucide-react";
+import {
+  Menu,
+  X,
+  Workflow,
+  ChevronRight,
+  Copy,
+  Eraser,
+  Code2,
+  MessageSquare,
+} from "lucide-react";
 import { cn } from "../lib/utils";
 import { useRouter } from "next/navigation";
 
@@ -48,9 +57,31 @@ export interface WorkflowItem {
   updatedAt?: string;
 }
 
+export interface VibeItem {
+  id: string;
+  name?: string;
+  href: string;
+  createdAt?: string;
+  privacy?: string;
+}
+
+export type ContentMode = "workflows" | "vibes";
+
 export interface IdeAISideMenuProps {
   /** Workflow items to display in workflows section */
   workflows?: WorkflowItem[];
+  /** Vibe items (vibe coded chats) to display in vibes section */
+  vibes?: VibeItem[];
+  /** Current content mode (workflows or vibes) */
+  contentMode?: ContentMode;
+  /** Callback when content mode changes */
+  onContentModeChange?: (mode: ContentMode) => void;
+  /** Function to load vibes (chats) */
+  onLoadVibes?: () => Promise<void> | void;
+  /** Current vibe ID */
+  currentVibeId?: string | null;
+  /** Callback to create new vibe */
+  onCreateVibe?: () => void | Promise<void>;
   /** Callback to load workflows (called on mount and when workflows section opens) */
   onLoadWorkflows?: () => Promise<void> | void;
   /** Currently active workflow ID */
@@ -69,6 +100,8 @@ export interface IdeAISideMenuProps {
   ) => void | Promise<void>;
   /** Callback to clear the current workflow (clears all nodes and edges) */
   onClearWorkflow?: () => void | Promise<void>;
+  /** Title for the workflows section (defaults to "Workflows") */
+  workflowsTitle?: string;
   /** Cards section content (custom cards/blocks) */
   children?: React.ReactNode;
   /** Custom className */
@@ -89,6 +122,115 @@ interface IdeAISideMenuSectionProps {
 }
 
 /**
+ * Vibes Section - Shows list of vibe coded chats
+ */
+export function IdeAISideMenuVibes({
+  vibes = [],
+  onLoadVibes,
+  currentVibeId,
+  onCreateVibe,
+  title = "Vibes",
+  className,
+}: {
+  vibes?: VibeItem[];
+  onLoadVibes?: () => Promise<void> | void;
+  currentVibeId?: string | null;
+  onCreateVibe?: () => void | Promise<void>;
+  title?: string;
+  className?: string;
+}) {
+  const [isExpanded, setIsExpanded] = React.useState(true);
+  const router = useRouter();
+
+  // Memoize vibe items to prevent re-renders
+  const vibeItems = React.useMemo(() => {
+    return vibes.map((vibe) => ({
+      ...vibe,
+      isActive: currentVibeId === vibe.id,
+    }));
+  }, [vibes, currentVibeId]);
+
+  const getVibeDisplayName = (vibe: VibeItem): string => {
+    return vibe.name || `Vibe ${vibe.id.slice(0, 8)}...`;
+  };
+
+  return (
+    <div className={cn("ideai-side-menu-section", className)}>
+      <button
+        type="button"
+        className="ideai-side-menu-section-header"
+        onClick={() => setIsExpanded(!isExpanded)}
+      >
+        <Code2 className="ideai-side-menu-section-icon" />
+        <span className="ideai-side-menu-section-title">{title}</span>
+        <ChevronRight
+          className={cn(
+            "ideai-side-menu-section-chevron",
+            isExpanded && "ideai-side-menu-section-chevron--expanded",
+          )}
+        />
+      </button>
+      {isExpanded && (
+        <div className="ideai-side-menu-section-content">
+          {/* New Vibe Card */}
+          {onCreateVibe && (
+            <div className="ideai-side-menu-new-card">
+              <button
+                type="button"
+                className="ideai-side-menu-new-button"
+                onClick={onCreateVibe}
+              >
+                <span className="ideai-side-menu-new-icon">+</span>
+                <span className="ideai-side-menu-new-text">New Vibe</span>
+              </button>
+            </div>
+          )}
+
+          {/* Vibes List */}
+          {vibeItems.length === 0 ? (
+            <div className="ideai-side-menu-empty">No vibes found</div>
+          ) : (
+            <ul className="ideai-side-menu-list">
+              {vibeItems.map((vibe) => {
+                const handleClick = (e: React.MouseEvent) => {
+                  e.preventDefault();
+                  router.push(vibe.href);
+                };
+
+                return (
+                  <li key={vibe.id}>
+                    <div className="ideai-side-menu-item-wrapper group">
+                      <button
+                        type="button"
+                        onClick={handleClick}
+                        className={cn(
+                          "ideai-side-menu-item",
+                          vibe.isActive && "ideai-side-menu-item--active",
+                        )}
+                      >
+                        <MessageSquare className="ideai-side-menu-item-icon" />
+                        <span className="ideai-side-menu-item-name">
+                          {getVibeDisplayName(vibe)}
+                        </span>
+                        {vibe.createdAt && (
+                          <span className="ideai-side-menu-item-meta">
+                            {new Date(vibe.createdAt).toLocaleDateString()}
+                          </span>
+                        )}
+                      </button>
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+/**
  * Workflows Section - Shows list of workflows from API
  */
 export function IdeAISideMenuWorkflows({
@@ -99,6 +241,7 @@ export function IdeAISideMenuWorkflows({
   onCloneWorkflow,
   onDeleteWorkflow,
   onClearWorkflow,
+  title = "Workflows",
   className,
 }: {
   workflows?: WorkflowItem[];
@@ -114,6 +257,7 @@ export function IdeAISideMenuWorkflows({
     workflowName: string,
   ) => void | Promise<void>;
   onClearWorkflow?: () => void | Promise<void>;
+  title?: string;
   className?: string;
 }) {
   const [isExpanded, setIsExpanded] = React.useState(true);
@@ -170,7 +314,7 @@ export function IdeAISideMenuWorkflows({
         onClick={() => setIsExpanded(!isExpanded)}
       >
         <Workflow className="ideai-side-menu-section-icon" />
-        <span className="ideai-side-menu-section-title">Workflows</span>
+        <span className="ideai-side-menu-section-title">{title}</span>
         <ChevronRight
           className={cn(
             "ideai-side-menu-section-chevron",
@@ -641,25 +785,72 @@ export function IdeAISideMenuBlocks({
 }
 
 /**
+ * Content Mode Toggle - Switch between Workflows and Vibes
+ */
+function ContentModeToggle({
+  mode,
+  onModeChange,
+}: {
+  mode: ContentMode;
+  onModeChange: (mode: ContentMode) => void;
+}) {
+  return (
+    <div className="ideai-side-menu-mode-toggle">
+      <button
+        type="button"
+        onClick={() => onModeChange("workflows")}
+        className={cn(
+          "ideai-side-menu-mode-button",
+          mode === "workflows" && "ideai-side-menu-mode-button--active",
+        )}
+      >
+        <Workflow className="h-4 w-4" />
+        <span>Workflows</span>
+      </button>
+      <button
+        type="button"
+        onClick={() => onModeChange("vibes")}
+        className={cn(
+          "ideai-side-menu-mode-button",
+          mode === "vibes" && "ideai-side-menu-mode-button--active",
+        )}
+      >
+        <MessageSquare className="h-4 w-4" />
+        <span>Vibes</span>
+      </button>
+    </div>
+  );
+}
+
+/**
  * IdeaI Side Menu Component
  *
- * Composable side menu with workflows section and custom slots for cards,
+ * Composable side menu with workflows/vibes toggle and custom slots for cards,
  * controls, and blocks. Persistent sidebar on desktop, drawer on mobile.
  */
 export function IdeAISideMenu({
   workflows = [],
+  vibes = [],
   onLoadWorkflows,
+  onLoadVibes,
   currentWorkflowId,
+  currentVibeId,
   onCreateWorkflow,
+  onCreateVibe,
   onCloneWorkflow,
   onDeleteWorkflow,
   onClearWorkflow,
+  workflowsTitle = "Workflows",
+  contentMode: contentModeProp = "workflows",
+  onContentModeChange,
   children,
   className,
   open: openProp,
   onOpenChange: onOpenChangeProp,
 }: IdeAISideMenuProps) {
   const [open, setOpen] = React.useState(false);
+  const [contentMode, setContentMode] =
+    React.useState<ContentMode>(contentModeProp);
 
   // Use controlled state if provided, otherwise use internal state
   const isOpen = openProp !== undefined ? openProp : open;
@@ -667,6 +858,23 @@ export function IdeAISideMenu({
     onOpenChangeProp !== undefined
       ? onOpenChangeProp
       : (newOpen: boolean) => setOpen(newOpen);
+
+  // Sync content mode with prop if provided
+  React.useEffect(() => {
+    if (contentModeProp !== undefined) {
+      setContentMode(contentModeProp);
+    }
+  }, [contentModeProp]);
+
+  const handleContentModeChange = React.useCallback(
+    (newMode: ContentMode) => {
+      setContentMode(newMode);
+      if (onContentModeChange) {
+        onContentModeChange(newMode);
+      }
+    },
+    [onContentModeChange],
+  );
 
   // Memoize children check to prevent unnecessary re-renders
   const hasWorkflowsSection = React.useMemo(() => {
@@ -679,6 +887,8 @@ export function IdeAISideMenu({
   // Memoize workflows content to prevent re-creating component on every render
   const workflowsContent = React.useMemo(() => {
     if (hasWorkflowsSection) return null;
+    // Only show when in workflows mode
+    if (contentMode !== "workflows") return null;
     // Always show workflows section if workflows prop is provided or onLoadWorkflows exists
     // (even if empty - parent manages loading)
     if (!workflows && !onLoadWorkflows) return null;
@@ -691,6 +901,7 @@ export function IdeAISideMenu({
         onCloneWorkflow={onCloneWorkflow}
         onDeleteWorkflow={onDeleteWorkflow}
         onClearWorkflow={onClearWorkflow}
+        title={workflowsTitle}
       />
     );
   }, [
@@ -702,7 +913,35 @@ export function IdeAISideMenu({
     onDeleteWorkflow,
     onCloneWorkflow,
     onClearWorkflow,
+    workflowsTitle,
+    contentMode,
   ]);
+
+  // Memoize vibes content
+  const vibesContent = React.useMemo(() => {
+    // Only show when in vibes mode
+    if (contentMode !== "vibes") return null;
+    // Always show vibes section if vibes prop is provided or onLoadVibes exists
+    if (!vibes && !onLoadVibes) return null;
+    return (
+      <IdeAISideMenuVibes
+        vibes={vibes || []}
+        onLoadVibes={onLoadVibes}
+        currentVibeId={currentVibeId}
+        onCreateVibe={onCreateVibe}
+        title="Vibe Coded"
+      />
+    );
+  }, [contentMode, vibes, onLoadVibes, currentVibeId, onCreateVibe]);
+
+  // Show toggle if workflows OR vibes support exists
+  // Show even if arrays are empty (content may load later)
+  const showModeToggle = React.useMemo(() => {
+    const hasWorkflows =
+      workflows !== undefined || onLoadWorkflows !== undefined;
+    const hasVibes = vibes !== undefined || onLoadVibes !== undefined;
+    return hasWorkflows && hasVibes;
+  }, [workflows, onLoadWorkflows, vibes, onLoadVibes]);
 
   const SideMenuContent = () => (
     <div className={cn("ideai-side-menu-content", className)}>
@@ -718,8 +957,19 @@ export function IdeAISideMenu({
         </button>
       </div>
       <div className="ideai-side-menu-body">
+        {/* Content Mode Toggle (Workflows/Vibes) */}
+        {showModeToggle && (
+          <ContentModeToggle
+            mode={contentMode}
+            onModeChange={handleContentModeChange}
+          />
+        )}
+
         {/* Auto-populated Workflows Section (if not provided in children) */}
         {workflowsContent}
+
+        {/* Auto-populated Vibes Section */}
+        {vibesContent}
 
         {/* Custom Sections (Cards, Controls, Blocks, etc.) */}
         {children}

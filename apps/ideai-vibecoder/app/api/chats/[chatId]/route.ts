@@ -13,9 +13,21 @@ export async function GET(
   { params }: { params: Promise<{ chatId: string }> },
 ) {
   try {
-    const session = await auth.api.getSession({
-      headers: request.headers,
-    });
+    // Timeout wrapper for session lookup to prevent hangs
+    let session = null;
+    try {
+      const sessionPromise = auth.api.getSession({
+        headers: request.headers,
+      });
+      const timeoutPromise = new Promise((_, reject) =>
+        setTimeout(() => reject(new Error("Session lookup timeout")), 3000),
+      );
+      session = await Promise.race([sessionPromise, timeoutPromise]);
+    } catch (error) {
+      // Fail gracefully if session lookup times out
+      console.warn("[Chat Details API] Session lookup failed:", error);
+      session = null;
+    }
     const { chatId } = await params;
 
     console.log("Fetching chat details for ID:", chatId);

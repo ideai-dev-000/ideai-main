@@ -210,7 +210,7 @@ function DesktopOverlayContainer() {
   return (
     <AnimatePresence onExitComplete={handleExitComplete}>
       {isOpen && (
-        <Dialog modal={false} open>
+        <Dialog modal={false} open onOpenChange={() => {}}>
           <DialogPortal forceMount>
             {/* Backdrop - standalone clickable div */}
             <motion.div

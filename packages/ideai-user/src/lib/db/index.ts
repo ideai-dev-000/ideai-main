@@ -40,9 +40,12 @@ const needsSSL =
 /**
  * PostgreSQL client instance
  * Connection pooling is handled automatically by postgres-js
+ * Connection timeout set to prevent hangs on slow connections
  */
 const client = postgres(connectionString, {
   max: 10, // Maximum number of connections in the pool
+  connect_timeout: 5, // 5 second connection timeout
+  idle_timeout: 30, // 30 second idle timeout
   ...(needsSSL && { ssl: "require" as const }),
 });
 

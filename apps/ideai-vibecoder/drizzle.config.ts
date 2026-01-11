@@ -12,5 +12,12 @@ export default defineConfig({
   dbCredentials: {
     // biome-ignore lint: Forbidden non-null assertion.
     url: process.env.POSTGRES_URL || process.env.DATABASE_URL!,
+    ssl:
+      process.env.POSTGRES_URL?.includes("sslmode=require") ||
+      process.env.DATABASE_URL?.includes("sslmode=require") ||
+      process.env.POSTGRES_URL?.includes("neon.tech") ||
+      process.env.DATABASE_URL?.includes("neon.tech")
+        ? "require"
+        : undefined,
   },
 });

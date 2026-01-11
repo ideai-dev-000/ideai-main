@@ -125,11 +125,7 @@ export default function Home() {
                 title="Feature 1"
                 description="This is a feature card block"
               />
-              <StatsBlock
-                label="Total Users"
-                value="1,234"
-                description="Active this month"
-              />
+              <StatsBlock stats={[{ label: "Total Users", value: "1,234" }]} />
             </div>
           </div>
         </section>

@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
-import { createChatOwnership, createAnonymousChatLog } from "@/lib/db/queries";
+import {
+  createChatOwnership,
+  createAnonymousChatLog,
+} from "../../../../lib/db/queries";
 
 function getClientIP(request: NextRequest): string {
   const forwarded = request.headers.get("x-forwarded-for");

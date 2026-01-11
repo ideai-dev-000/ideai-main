@@ -273,12 +273,23 @@ export async function POST(request: Request) {
       );
     }
 
-    const apiKey = process.env.AI_GATEWAY_API_KEY || process.env.OPENAI_API_KEY;
+    // Check if user has a key configured, otherwise use env vars
+    let apiKey = null;
+    if (session?.user?.id) {
+      const { getUserKey } = await import("@/lib/services/user-keys");
+      apiKey =
+        (await getUserKey(session.user.id, "ai_gateway", "production")) ||
+        (await getUserKey(session.user.id, "openai", "production"));
+    }
+
+    apiKey =
+      apiKey || process.env.AI_GATEWAY_API_KEY || process.env.OPENAI_API_KEY;
 
     if (!apiKey) {
       return NextResponse.json(
         {
-          error: "AI API key not configured on server. Please contact support.",
+          error:
+            "API key not configured. Please add AI Gateway or OpenAI key in Settings > Service Keys, or configure server environment variables.",
         },
         { status: 500 },
       );
@@ -333,16 +344,15 @@ Example: If user says "connect node A to node B", output:
 
     let result;
     try {
-      // Ensure we have an API key configured
-      const openaiApiKey = apiKey || process.env.OPENAI_API_KEY;
-      if (!openaiApiKey) {
-        throw new Error("OpenAI API key not configured in environment");
-      }
+      // Use the apiKey we already fetched above, determine if it's AI Gateway
+      const openaiApiKey = apiKey;
 
       // Determine if we're using AI Gateway or direct OpenAI
+      // AI Gateway keys typically start with "vck_"
       const isAiGateway =
-        process.env.AI_GATEWAY_API_KEY &&
-        apiKey === process.env.AI_GATEWAY_API_KEY;
+        openaiApiKey.startsWith("vck_") ||
+        (process.env.AI_GATEWAY_API_KEY &&
+          openaiApiKey === process.env.AI_GATEWAY_API_KEY);
 
       if (isAiGateway) {
         // Use AI Gateway (Vercel AI Gateway)

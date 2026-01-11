@@ -20,17 +20,19 @@ export type EnvVarConfig = {
 
 /**
  * Get credentials based on source
+ * If userId provided, tries to fetch from user_service_keys first, then falls back to env vars
  */
-export function getCredentials(
+export async function getCredentials(
   source: CredentialSource,
   userEnvVars?: EnvVarConfig,
-): EnvVarConfig {
+  userId?: string,
+): Promise<EnvVarConfig> {
   if (source === "user" && userEnvVars) {
     return userEnvVars;
   }
 
-  // For production, use system environment variables
-  return {
+  // Base config from environment variables
+  const baseConfig: EnvVarConfig = {
     LINEAR_API_KEY: process.env.LINEAR_API_KEY,
     LINEAR_TEAM_ID: process.env.LINEAR_TEAM_ID,
     RESEND_API_KEY: process.env.RESEND_API_KEY,
@@ -41,6 +43,29 @@ export function getCredentials(
     DATABASE_URL: process.env.DATABASE_URL,
     FIRECRAWL_API_KEY: process.env.FIRECRAWL_API_KEY,
   };
+
+  // If userId provided, try to get user keys first (overrides env vars)
+  if (userId && source === "user") {
+    try {
+      const { getUserKey } = await import("@/lib/services/user-keys");
+      const userAiGateway = await getUserKey(
+        userId,
+        "ai_gateway",
+        "production",
+      );
+      const userOpenai = await getUserKey(userId, "openai", "production");
+      const userFirecrawl = await getUserKey(userId, "firecrawl", "production");
+
+      if (userAiGateway) baseConfig.AI_GATEWAY_API_KEY = userAiGateway;
+      if (userOpenai) baseConfig.OPENAI_API_KEY = userOpenai;
+      if (userFirecrawl) baseConfig.FIRECRAWL_API_KEY = userFirecrawl;
+    } catch (error) {
+      console.error("[getCredentials] Failed to load user keys:", error);
+      // Continue with env vars as fallback
+    }
+  }
+
+  return baseConfig;
 }
 
 /**

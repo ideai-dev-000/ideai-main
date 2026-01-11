@@ -29,17 +29,29 @@ function getClientIP(request: NextRequest): string {
 
 export async function POST(request: NextRequest) {
   try {
+    // Timeout wrapper for session lookup to prevent hangs
     let session = null;
     try {
-      session = await auth.api.getSession({
+      const sessionPromise = auth.api.getSession({
         headers: request.headers,
       });
+      const timeoutPromise = new Promise((_, reject) =>
+        setTimeout(() => reject(new Error("Session lookup timeout")), 3000),
+      );
+      session = await Promise.race([sessionPromise, timeoutPromise]);
     } catch (error) {
       // Log but don't fail - let the auth check below handle it
-      console.warn(
-        "[Chat API] Session lookup failed:",
-        error instanceof Error ? error.message : "Unknown error",
-      );
+      if (
+        error instanceof Error &&
+        error.message === "Session lookup timeout"
+      ) {
+        console.warn("[Chat API] Session lookup timed out after 3s");
+      } else {
+        console.warn(
+          "[Chat API] Session lookup failed:",
+          error instanceof Error ? error.message : "Unknown error",
+        );
+      }
       session = null;
     }
 
@@ -72,15 +84,27 @@ export async function POST(request: NextRequest) {
     // CRITICAL: Only authenticated users can reach here
     const isDevelopment = process.env.NODE_ENV === "development";
     if (!isDevelopment && session?.user?.id) {
-      // Authenticated user rate limiting
-      const chatCount = await getChatCountByUserId({
-        userId: session.user.id,
-        differenceInHours: 24,
-      });
+      // Authenticated user rate limiting - with timeout to prevent hangs
+      try {
+        const rateLimitPromise = getChatCountByUserId({
+          userId: session.user.id,
+          differenceInHours: 24,
+        });
+        const timeoutPromise = new Promise<number>((resolve) =>
+          setTimeout(() => resolve(0), 2000),
+        );
+        const chatCount = await Promise.race([
+          rateLimitPromise,
+          timeoutPromise,
+        ]);
 
-      const userType: "regular" = "regular"; // All users are authenticated now
-      if (chatCount >= entitlementsByUserType[userType].maxMessagesPerDay) {
-        return new ChatSDKError("rate_limit:chat").toResponse();
+        const userType: "regular" = "regular"; // All users are authenticated now
+        if (chatCount >= entitlementsByUserType[userType].maxMessagesPerDay) {
+          return new ChatSDKError("rate_limit:chat").toResponse();
+        }
+      } catch (error) {
+        // Fail open - if rate limiting check fails, allow request
+        console.warn("[Chat API] Rate limit check failed:", error);
       }
 
       console.log("API request:", {
