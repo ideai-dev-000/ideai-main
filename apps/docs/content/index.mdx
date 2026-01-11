@@ -1,179 +1,85 @@
+# IdeaI Documentation
+
+**Last Updated**: 2026-01-11
+
 ---
-title: IdeaI Documentation
-description: Comprehensive documentation for the IdeaI monorepo, including setup guides, deployment instructions, and development workflows.
+
+## 🎯 Quick Navigation
+
+### For New Developers
+
+1. **Start Here**: [`DEVELOPER-SETUP-CONSOLIDATED.md`](./DEVELOPER-SETUP-CONSOLIDATED.md) - Complete setup checklist
+2. **Full Guide**: [`development/DEVELOPER-SETUP-COMPLETE.md`](./development/DEVELOPER-SETUP-COMPLETE.md)
+3. **Quick Start**: [`development/quick-start.md`](./development/quick-start.md)
+
+### Current Project Status
+
+- **Status**: [`PROJECT-STATUS.md`](./PROJECT-STATUS.md) - Current project state
+- **Recent Work**: See completed sections below
+
+### Feature Documentation
+
+- **Vibe Port**: [`VIBE-PORT-COMPLETE.md`](./VIBE-PORT-COMPLETE.md) - Vibe functionality documentation
+- **Features**: [`features/`](./features/) - Feature-specific docs
+
 ---
 
-# Documentation Index
+## 📁 Documentation Structure
 
-Welcome to the IdeaI monorepo documentation. This directory contains comprehensive documentation for development, deployment, and setup.
+### `/development/` - Developer Guides
 
-> **📊 Current Status**: See [STATUS.md](./STATUS.md) for project status, completed work, and pending tasks.  
-> **📋 Phased Plan**: See [PHASES.md](./PHASES.md) for detailed implementation phases.
+- Setup guides
+- Development workflows
+- Configuration guides
 
-## 📋 Quick Reference
+### `/architecture/` - Architecture Docs
 
-- **[Project Summary](./PROJECT-SUMMARY.md)** - High-level overview of the project
-- **[Getting Started](./development/getting-started.md)** - Start here for development
-- **[Deployment Overview](./deployment/overview.md)** - Deployment architecture
+- System architecture
+- Design patterns
+- Technical decisions
 
-## 📚 Documentation Structure
+### `/deployment/` - Deployment Guides
 
-### Setup Guides
+- Vercel deployment
+- Database management
+- CI/CD workflows
 
-- **[GitHub Secrets Setup](./setup/github-secrets.md)**
-  - Configure GitHub secrets for CI/CD
-  - Automated setup script documentation
-  - Manual configuration options
+### `/features/` - Feature Docs
 
-- **[Vercel Setup Checklist](./setup/vercel-checklist.md)**
-  - Quick reference for Vercel configuration
-  - Required dashboard settings
-  - Monorepo-specific requirements
+- Individual feature documentation
+- User guides
 
-- **[Commit Signing Setup](./setup/commit-signing.md)**
-  - ✅ GPG signing configured and working
-  - Verified commits show "Verified" badge on GitHub
-  - Required for Vercel deployment protection
-  - Security best practices
+### `/archive/` - Archived Docs
 
-### Deployment
+- Old handover notes
+- Completed work documentation
+- Historical status reports
 
-- **[Unified Deployment Guide](./deployment/unified-deployment.md)** ⭐ **Start here**
-  - Deploy all apps with single command: `./deploy.sh --prod`
-  - Complete deployment instructions
-  - Troubleshooting guide
+---
 
-- **[Deployment Overview](./deployment/overview.md)**
-  - Architecture and deployment process
-  - Environment descriptions
-  - Quick reference
+## 📚 Key Documents
 
-- **[Deployment Architecture](./architecture/deployment-architecture.md)**
-  - Main site with sub-apps
-  - Standalone deployment mode
-  - Routing configuration
+### Essential Reading
 
-- **[CI/CD Workflows](./deployment/ci-cd.md)**
-  - GitHub Actions workflow details
-  - Workflow configuration
-  - Customization guide
+- **Setup**: `DEVELOPER-SETUP-CONSOLIDATED.md` - Everything you need to get started
+- **Status**: `PROJECT-STATUS.md` - What's happening now
+- **Contributing**: `CONTRIBUTING.md` - How to contribute
 
-- **[Vercel Configuration](./deployment/vercel.md)**
-  - Vercel project setup
-  - Monorepo configuration
-  - Deployment process
+### Reference
 
-- **[Troubleshooting](./deployment/troubleshooting.md)**
-  - Common issues and solutions
-  - Error message reference
-  - Debugging tips
+- **Architecture**: See `architecture/` directory
+- **Deployment**: See `deployment/` directory
+- **Testing**: See `testing/` directory
 
-### Development
+---
 
-- **[Getting Started](./development/getting-started.md)**
-  - Initial setup instructions
-  - Development workflow
-  - Project structure
+## 🚀 Getting Started
 
-### Architecture
+1. **Read Setup Guide**: `DEVELOPER-SETUP-CONSOLIDATED.md`
+2. **Check Status**: `PROJECT-STATUS.md`
+3. **Start Developing**: Follow setup guide
+4. **Ask Questions**: Check relevant documentation
 
-- **[Design System Architecture](./architecture/design-system.md)**
-  - Centralized component library
-  - Shared UI components
-  - Design tokens and CSS architecture
+---
 
-- **[UI Consistency Standards](./architecture/ui-consistency.md)**
-  - Explicit color approach (RGB values)
-  - DOM inspection workflow
-  - Visual testing procedures
-  - All apps consistency (`/web`, `/docs`, `/all`)
-
-- **[CSS Showcase and Best Practices](./architecture/css-showcase.md)**
-  - CSS approach comparison (No CSS, MVP.css, Tailwind, Combined)
-  - Best practice configurations
-  - Hot reload support
-  - Showcase apps (`/nocss`, `/mvp`, `/tailwind`, `/allcss`, `/pico`)
-
-- **[Cloud Manager Architecture](./architecture/cloud-manager.md)**
-  - Centralized cloud provider management
-  - Vercel project configuration UI
-  - Auto-configuration and validation
-  - Multi-provider support (Vercel MVP, AWS/GCP/Azure/Hostinger planned)
-
-### Tools
-
-- **[Code Context Integration](./tools/code-context.md)**
-  - Codebase analysis tool
-  - Header generation and validation
-  - Dependency visualization
-  - Local development only (not in production)
-
-- **[Contentlayer Integration](./tools/contentlayer.md)**
-  - Type-safe content access for docs site
-  - SEO metadata generation
-  - Sitemap generation
-  - Semantic URLs
-
-## 🚀 Quick Links
-
-### Setup
-
-1. [Configure GitHub Secrets](./setup/github-secrets.md) - **Start here for CI/CD setup**
-
-### Deployment
-
-- [Unified Deployment Guide](./deployment/unified-deployment.md) ⭐ **Start here**
-- [Deployment Overview](./deployment/overview.md)
-- [Deployment Architecture](./architecture/deployment-architecture.md)
-- [CI/CD Workflows](./deployment/ci-cd.md)
-- [Vercel Configuration](./deployment/vercel.md)
-
-### Development
-
-- [Getting Started](./development/getting-started.md)
-
-## 📖 Documentation Best Practices
-
-This documentation follows these principles:
-
-- **Semantic Organization**: Files organized by purpose (setup, deployment, development)
-- **Clear Naming**: Descriptive filenames that indicate content
-- **Comprehensive Coverage**: All aspects of the project documented
-- **Easy Navigation**: Clear structure and cross-references
-- **Practical Examples**: Real commands and configurations
-- **Troubleshooting**: Common issues and solutions included
-
-## 🔄 Keeping Documentation Updated
-
-When making changes:
-
-1. Update relevant documentation files
-2. Keep examples current
-3. Update version numbers if applicable
-4. Add troubleshooting entries for new issues
-5. Update cross-references
-
-## 📝 Contributing to Documentation
-
-To improve documentation:
-
-1. Edit files in `docs/` directory
-2. Follow existing structure and style
-3. Add practical examples
-4. Include troubleshooting when relevant
-5. Update this index if adding new sections
-
-## 🔗 External Resources
-
-- [Turborepo Documentation](https://turbo.build/repo/docs)
-- [Next.js Documentation](https://nextjs.org/docs)
-- [Vercel Documentation](https://vercel.com/docs)
-- [GitHub Actions Documentation](https://docs.github.com/en/actions)
-
-## 📧 Support
-
-For questions or issues:
-
-- Check [Troubleshooting](./deployment/troubleshooting.md)
-- Review relevant documentation section
-- Open an issue on GitHub
+**Note**: All documentation is organized by topic. Check subdirectories for specific areas.

@@ -9,12 +9,14 @@ This document covers **everything** you need to know about the IdeaI developer s
 ## 📁 File Distinction: Product vs Developer
 
 ### `.ideai.json` - Product Configuration (READ-ONLY)
+
 - **Location**: Repository root (tracked in git)
 - **Purpose**: IdeaI framework rules, build config, tool requirements
 - **Who writes**: IdeaI product team
 - **Your role**: Read-only - do not modify
 
 ### `.ideai-dev.json` - Your Developer Setup (READ-WRITE)
+
 - **Location**: Repository root (gitignored - your personal file)
 - **Purpose**: Tracks your local environment setup status
 - **Who writes**: You + setup system (auto-updated)
@@ -48,6 +50,7 @@ When you first sign in, the **IdeaI Developer Setup Modal** appears automaticall
 
 1. Click **"Run Migration Now"** in the modal
 2. Watch the logs:
+
    ```
    📍 Step 1/5: Preparing migration...
    📍 Step 2/5: Checking database connection...
@@ -104,6 +107,7 @@ pnpm key-sync validate
 ```
 
 **Prerequisites:**
+
 - Set `IDEAI_USER_ID` in `.env.local`
 - Or use `--user=USER_ID` flag
 
@@ -116,6 +120,7 @@ pnpm key-sync validate
 The setup system integrates with **Cloud Manager DB Manager**:
 
 #### Push Schema (Local)
+
 ```bash
 # Via API
 POST /api/database/push
@@ -130,6 +135,7 @@ pnpm db:push
 ```
 
 #### Pull Schema (From Production)
+
 ```bash
 # Via API
 POST /api/database/sync
@@ -141,6 +147,7 @@ POST /api/database/sync
 ```
 
 #### Sync Schema (Bidirectional)
+
 - Pull from production → Apply to local
 - Or push from local → Apply to production (with confirmation)
 
@@ -163,6 +170,7 @@ Every migration tracks:
 ```
 
 **Check status:**
+
 ```bash
 cat .ideai-dev.json | jq '.setup.database.migration'
 ```
@@ -221,6 +229,7 @@ curl http://localhost:3018/api/dev-setup/status
 ### 📝 Manual Steps
 
 1. **Set environment variables:**
+
    ```bash
    # .env.local
    DATABASE_URL=postgres://...
@@ -230,6 +239,7 @@ curl http://localhost:3018/api/dev-setup/status
    ```
 
 2. **Run setup check:**
+
    ```bash
    pnpm dev-setup check
    ```
@@ -274,6 +284,7 @@ curl http://localhost:3018/api/dev-setup/status
 **Problem**: Migration times out after 90 seconds
 
 **Solutions**:
+
 1. Check database connection: `DATABASE_URL` correct?
 2. Check database is running
 3. Check network connectivity
@@ -284,6 +295,7 @@ curl http://localhost:3018/api/dev-setup/status
 **Problem**: Migration waits for user input
 
 **Solution**: The system now auto-answers prompts with "No" (safe option). If still hanging:
+
 1. Check logs - should see "Prompt detected"
 2. Try running manually: `cd apps/ideai-capabilities && pnpm db:push`
 3. Answer prompts manually if needed
@@ -293,6 +305,7 @@ curl http://localhost:3018/api/dev-setup/status
 **Problem**: `pnpm key-sync` fails
 
 **Solutions**:
+
 1. Set `IDEAI_USER_ID` in `.env.local`
 2. Or use `--user=USER_ID` flag
 3. Ensure you're logged in (session required)
@@ -303,6 +316,7 @@ curl http://localhost:3018/api/dev-setup/status
 **Problem**: Modal doesn't appear on sign-in
 
 **Solutions**:
+
 1. Check you're in dev mode: `NODE_ENV=development`
 2. Check you're authenticated (not anonymous)
 3. Check browser console for errors
@@ -337,6 +351,7 @@ curl http://localhost:3018/api/dev-setup/status
 ## 🎓 Next Steps for New Developers
 
 1. **Clone & Install:**
+
    ```bash
    git clone <repo>
    cd ideai-main
@@ -344,12 +359,14 @@ curl http://localhost:3018/api/dev-setup/status
    ```
 
 2. **Configure Environment:**
+
    ```bash
    cp .env.example .env.local
    # Edit .env.local with your values
    ```
 
 3. **Start Dev Server:**
+
    ```bash
    pnpm dev
    ```
@@ -374,6 +391,7 @@ curl http://localhost:3018/api/dev-setup/status
 ### Migration Logs
 
 All migrations log to:
+
 - Browser console (dev tools)
 - API response `logs` array
 - `.ideai-dev.json` `migration.error` (if failed)
@@ -381,6 +399,7 @@ All migrations log to:
 ### Setup Check Logs
 
 View in:
+
 - Modal (real-time)
 - `/dev-setup` page (full details)
 - `.ideai-dev.json` file

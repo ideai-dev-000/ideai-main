@@ -1,0 +1,21 @@
+{
+  "setup": {
+    "database": {
+      "migration_complete": false,
+      "connected": false,
+      "last_checked": "2026-01-11T15:29:27.867Z",
+      "last_error": "Migration output contains errors"
+    },
+    "auth": {
+      "configured": false
+    },
+    "service_keys": {
+      "configured": false
+    },
+    "environment": {
+      "variables_set": false
+    },
+    "dev_ready": false,
+    "last_full_check": "2026-01-11T15:29:27.867Z"
+  }
+}

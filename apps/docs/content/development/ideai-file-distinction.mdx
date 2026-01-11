@@ -16,6 +16,7 @@ IdeaI uses two separate JSON configuration files with distinct purposes:
 **Who writes it**: IdeaI product team / build system
 
 **Contains**:
+
 - Product build configuration
 - Rules for IdeaI framework
 - Tool requirements for IdeaI apps
@@ -24,6 +25,7 @@ IdeaI uses two separate JSON configuration files with distinct purposes:
 **Developer access**: READ-ONLY (do not modify)
 
 **Example**:
+
 ```json
 {
   "product": {
@@ -52,6 +54,7 @@ IdeaI uses two separate JSON configuration files with distinct purposes:
 **Who writes it**: Each developer / setup system
 
 **Contains**:
+
 - Database migration status
 - Auth configuration status
 - Service keys setup status
@@ -61,6 +64,7 @@ IdeaI uses two separate JSON configuration files with distinct purposes:
 **Developer access**: READ-WRITE (auto-updated by setup system)
 
 **Example**:
+
 ```json
 {
   "setup": {
@@ -91,12 +95,14 @@ IdeaI uses two separate JSON configuration files with distinct purposes:
 ## Why This Distinction?
 
 ### Product Config (`.ideai.json`)
+
 - **Shared**: Same for all developers
 - **Versioned**: Tracked in git
 - **Product**: Defines IdeaI framework behavior
 - **Tools**: Which tools IdeaI requires
 
 ### Developer Setup (`.ideai-dev.json`)
+
 - **Personal**: Each dev has their own
 - **Ignored**: Not in git (in `.gitignore`)
 - **Setup**: Tracks dev environment status
@@ -120,6 +126,7 @@ Both files work with Vercel:
 2. **`.ideai-dev.json`** - Generated on first setup (not in repo, per-environment)
 
 For Vercel deployments:
+
 - `.ideai.json` is included in deployment
 - `.ideai-dev.json` is generated from environment variables on first run
 - Each Vercel environment (preview/production) can have different `.ideai-dev.json`
@@ -127,11 +134,13 @@ For Vercel deployments:
 ## Rules
 
 ✅ **DO**:
+
 - Modify `.ideai-dev.json` (it's yours)
 - Read `.ideai.json` for product requirements
 - Let setup system auto-update `.ideai-dev.json`
 
 ❌ **DON'T**:
+
 - Modify `.ideai.json` (product config)
 - Commit `.ideai-dev.json` to git
 - Mix product config with dev setup
@@ -139,6 +148,7 @@ For Vercel deployments:
 ## Migration from Old Format
 
 If you have an old `.ideai.json` with setup data:
+
 1. Move setup section to `.ideai-dev.json`
 2. Keep product config in `.ideai.json`
 3. Update `.gitignore` to ignore `.ideai-dev.json`

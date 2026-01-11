@@ -36,6 +36,7 @@
 ### 1. Test Migration End-to-End
 
 **Action Items:**
+
 - [ ] Test migration button works (no hanging)
 - [ ] Verify tables are tracked correctly
 - [ ] Verify timestamps are accurate
@@ -43,18 +44,21 @@
 - [ ] Verify `.ideai-dev.json` updates correctly
 
 **Files to Test:**
+
 - `apps/ideai-capabilities/app/api/dev-setup/migrate/route.ts`
 - `apps/ideai-capabilities/components/dev-setup-modal.tsx`
 
 ### 2. DB Manager Full Integration
 
 **Action Items:**
+
 - [ ] Connect DB Manager UI to push/pull/sync APIs
 - [ ] Test schema sync between local/production
 - [ ] Add migration history view
 - [ ] Show table status in DB Manager
 
 **Files:**
+
 - `packages/cloud-manager/src/components/database/database-manager.tsx`
 - `apps/ideai-capabilities/app/api/database/push/route.ts`
 - `apps/ideai-capabilities/app/api/database/sync/route.ts`
@@ -62,12 +66,14 @@
 ### 3. Enhanced Migration Logging
 
 **Action Items:**
+
 - [ ] Add migration history to `.ideai-dev.json`
 - [ ] Track rollback capability
 - [ ] Show migration diff preview
 - [ ] Add migration backup before push
 
 **Enhancement Ideas:**
+
 ```json
 {
   "migration": {
@@ -88,6 +94,7 @@
 ### 4. Production Sync Workflow
 
 **Action Items:**
+
 - [ ] Implement production schema pull
 - [ ] Add diff viewer (local vs production)
 - [ ] Add sync confirmation flow
@@ -96,11 +103,13 @@
 ### 5. Real-Time Log Streaming
 
 **Action Items:**
+
 - [ ] Stream migration logs in real-time (SSE/WebSocket)
 - [ ] Show live progress bar
 - [ ] Update modal logs as they arrive
 
 **Technology:**
+
 - Server-Sent Events (SSE) for real-time logs
 - Or WebSocket for bidirectional
 
@@ -109,6 +118,7 @@
 ## 📋 Current Status
 
 ### Migration System
+
 - ✅ Step tracking (1/5 through 5/5)
 - ✅ Table extraction from output
 - ✅ Timestamp tracking
@@ -118,12 +128,14 @@
 - ⏳ Real-time log streaming (future)
 
 ### DB Manager Integration
+
 - ✅ Push API created
 - ✅ Sync API created
 - ✅ Integration points identified
 - ⏳ UI integration (next)
 
 ### Key Management
+
 - ✅ Database storage (encrypted)
 - ✅ Local/Production separation
 - ✅ CLI sync tool
@@ -132,6 +144,7 @@
 - ✅ Local mode support
 
 ### Setup System
+
 - ✅ Auto-check on sign-in
 - ✅ Modal with actionable buttons
 - ✅ Progress tracking
@@ -143,6 +156,7 @@
 ## 🔧 Quick Reference
 
 ### Run Migration
+
 ```bash
 # Via UI
 Click "Run Migration Now" in setup modal
@@ -156,6 +170,7 @@ pnpm db:push
 ```
 
 ### Check Status
+
 ```bash
 # Via UI
 Visit /dev-setup
@@ -171,6 +186,7 @@ cat .ideai-dev.json | jq '.setup'
 ```
 
 ### Sync Keys
+
 ```bash
 # Pull from DB to local
 pnpm key-sync pull
@@ -183,6 +199,7 @@ pnpm key-sync validate
 ```
 
 ### Database Operations
+
 ```bash
 # Push schema
 POST /api/database/push

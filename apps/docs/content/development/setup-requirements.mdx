@@ -15,8 +15,8 @@ All requirements must be met before the site is ready for development.
 ```json
 {
   "database": {
-    "migration_complete": true,    // ✅ Required
-    "connected": true,              // ✅ Required
+    "migration_complete": true, // ✅ Required
+    "connected": true, // ✅ Required
     "last_checked": "2026-01-11T...",
     "last_error": null
   }
@@ -24,6 +24,7 @@ All requirements must be met before the site is ready for development.
 ```
 
 **How to complete:**
+
 - Click "Run Migration Now" in the dev setup modal
 - Or run: `cd apps/ideai-capabilities && pnpm db:push`
 - Ensure `DATABASE_URL` is set in `.env.local`
@@ -33,15 +34,16 @@ All requirements must be met before the site is ready for development.
 ```json
 {
   "auth": {
-    "configured": true,             // ✅ Required
-    "secret_set": true,             // ✅ Required
-    "url_set": true,                // ✅ Required
+    "configured": true, // ✅ Required
+    "secret_set": true, // ✅ Required
+    "url_set": true, // ✅ Required
     "last_checked": "2026-01-11T..."
   }
 }
 ```
 
 **How to complete:**
+
 - Set `BETTER_AUTH_SECRET` in `.env.local`
 - Set `BETTER_AUTH_URL` (usually `http://localhost:3018`)
 
@@ -50,7 +52,7 @@ All requirements must be met before the site is ready for development.
 ```json
 {
   "service_keys": {
-    "configured": true,             // ✅ Required (or env vars)
+    "configured": true, // ✅ Required (or env vars)
     "keys_count": 1,
     "last_checked": "2026-01-11T..."
   }
@@ -58,6 +60,7 @@ All requirements must be met before the site is ready for development.
 ```
 
 **How to complete:**
+
 - Visit `/settings/service-keys`
 - Add at least one API key (AI Gateway, OpenAI, etc.)
 - Or set `AI_GATEWAY_API_KEY` / `OPENAI_API_KEY` in `.env.local`
@@ -67,14 +70,15 @@ All requirements must be met before the site is ready for development.
 ```json
 {
   "environment": {
-    "variables_set": true,          // ✅ Required
-    "api_keys_available": true,     // ✅ Required
+    "variables_set": true, // ✅ Required
+    "api_keys_available": true, // ✅ Required
     "last_checked": "2026-01-11T..."
   }
 }
 ```
 
 **How to complete:**
+
 - Ensure required env vars are set
 - At minimum: `DATABASE_URL`, `BETTER_AUTH_SECRET`, `BETTER_AUTH_URL`
 
@@ -82,7 +86,7 @@ All requirements must be met before the site is ready for development.
 
 ```json
 {
-  "dev_ready": true,                // ✅ Must be true
+  "dev_ready": true, // ✅ Must be true
   "last_full_check": "2026-01-11T..."
 }
 ```
@@ -94,6 +98,7 @@ All requirements must be met before the site is ready for development.
 Location: `/Users/sv/_IDEAI/ideai-main/.ideai-dev.json` (gitignored, personal)
 
 This file is automatically updated when:
+
 - You run migrations via the UI
 - Setup checks run
 - Requirements are met
@@ -101,6 +106,7 @@ This file is automatically updated when:
 **Note**: This file is **gitignored** - it's personal to each developer and tracks your local setup status.
 
 **Example complete file:**
+
 ```json
 {
   "setup": {
@@ -134,10 +140,12 @@ This file is automatically updated when:
 ## Dev Setup Modal
 
 When you sign in, the IdeaI Developer Setup Modal appears if:
+
 - **Failures detected** (always shows, cannot be dismissed)
 - **Warnings detected** (shows on first visit, can be dismissed)
 
 The modal shows:
+
 - ✅ Pass: Requirement met
 - ⚠️ Warning: Should fix but can proceed
 - ❌ Fail: Must fix before developing
@@ -153,6 +161,7 @@ All buttons in the modal are **fully functional**:
 ## Logs
 
 All actions log to:
+
 - Console (browser dev tools)
 - API response `logs` array
 - `.ideai.json` `last_error` field (if failed)
@@ -168,6 +177,7 @@ All actions log to:
 ## Status
 
 Check your current status:
+
 ```bash
 # Via API
 curl http://localhost:3018/api/dev-setup/status
@@ -181,6 +191,7 @@ cat .ideai-dev.json
 **Simple Rule:** All items in `.ideai-dev.json` setup must be `true` before `dev_ready` is `true`. The modal guides you through each step.
 
 **File Distinction:**
+
 - `.ideai.json` = IdeaI product config (read-only, tracked in git)
 - `.ideai-dev.json` = Your personal dev setup (read-write, gitignored)
 
