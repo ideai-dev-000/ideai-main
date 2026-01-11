@@ -41,6 +41,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { api } from "@/lib/api-client";
+import { IdeAISystemCards } from "@/components/ideai-system-cards";
 
 // Standalone workflow menu component for landing page
 function LandingWorkflowMenu() {
@@ -392,36 +393,44 @@ export default function CapabilitiesLanding() {
     );
   }
 
-  // Authenticated users - show workflow menu
+  // Authenticated users - show workflow menu and system cards
   return (
     <div className="pointer-events-auto min-h-screen">
       <div className="container mx-auto px-4 py-16">
-        <div className="mx-auto max-w-4xl">
+        <div className="mx-auto max-w-7xl">
           {/* Header with workflow menu */}
           <div className="mb-8 flex items-center justify-between">
-            <h1 className="text-3xl font-bold">My Workflows</h1>
+            <h1 className="text-3xl font-bold">IdeaI Dashboard</h1>
             <LandingWorkflowMenu />
           </div>
 
-          {/* Workflows list or empty state */}
-          <Card>
+          {/* Welcome Card */}
+          <Card className="mb-8">
             <CardHeader>
               <CardTitle>Welcome back!</CardTitle>
               <CardDescription>
-                Select a workflow from the menu above or create a new one to get
-                started.
+                Your IdeaI system overview. Access workflows, apps, modules, and
+                packages.
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="text-center py-8">
-                <Workflow className="mx-auto mb-4 h-12 w-12 text-slate-400" />
-                <p className="text-slate-600 dark:text-slate-400">
-                  Use the workflow menu above to access your workflows or create
-                  a new one.
-                </p>
+              <div className="flex items-center gap-4">
+                <Workflow className="h-12 w-12 text-slate-400" />
+                <div>
+                  <p className="text-slate-600 dark:text-slate-400">
+                    Use the workflow menu above to access your workflows or
+                    create a new one.
+                  </p>
+                  <p className="mt-2 text-sm text-slate-500 dark:text-slate-500">
+                    Explore the IdeaI apps, modules, and packages below.
+                  </p>
+                </div>
               </div>
             </CardContent>
           </Card>
+
+          {/* System Cards */}
+          <IdeAISystemCards />
         </div>
       </div>
     </div>

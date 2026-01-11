@@ -19,6 +19,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { PersistentCanvas } from "@/components/workflow/persistent-canvas";
 import { CapabilitiesHeader } from "@/components/capabilities-header";
 import { IdeAISideMenuWrapper } from "@/components/ideai-side-menu-wrapper";
+import { DevSetupModal } from "@/components/dev-setup-modal";
 import { StreamingProvider } from "@/contexts/streaming-context";
 import { SWRProvider } from "@/components/providers/swr-provider";
 import { SessionProvider } from "@/components/providers/session-provider";
@@ -47,9 +48,9 @@ function LayoutContent({ children }: { children: ReactNode }) {
         <div className="pointer-events-auto">
           <IdeAISideMenuWrapper />
         </div>
-        {/* Main content - allow clicks through to canvas */}
+        {/* Main content - needs pointer events for interactive elements */}
         {/* Add left padding on desktop to account for sidebar */}
-        <main className="pointer-events-none min-h-screen pt-16 md:pl-[280px]">
+        <main className="pointer-events-auto min-h-screen pt-16 md:pl-[280px]">
           {children}
         </main>
       </div>
@@ -79,6 +80,7 @@ export default function RootLayout({
                     <OverlayProvider>
                       <LayoutContent>{children}</LayoutContent>
                       <GlobalModals />
+                      <DevSetupModal />
                       <Toaster />
                     </OverlayProvider>
                   </StreamingProvider>

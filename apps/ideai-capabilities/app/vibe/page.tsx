@@ -8,9 +8,10 @@
  */
 
 import { Suspense } from "react";
-import { HomeClient } from "@/components/home/home-client";
+import { VibeHomeClient } from "@/components/vibe/vibe-home-client";
 import { EnvSetup } from "@/components/env-setup";
 import { AuthProtectedPage } from "@/components/auth/protected-page";
+import { VibeStreamingProvider } from "@/lib/vibe/contexts/streaming-context";
 
 function hasEnvVars(): boolean {
   try {
@@ -74,17 +75,19 @@ export default function VibePage() {
   // Protected page - shows landing for logged-out, full vibe service for authenticated
   return (
     <AuthProtectedPage>
-      <Suspense
-        fallback={
-          <div className="min-h-screen flex items-center justify-center">
-            <div className="text-center">
-              <p className="text-gray-600">Loading...</p>
+      <VibeStreamingProvider>
+        <Suspense
+          fallback={
+            <div className="min-h-screen flex items-center justify-center">
+              <div className="text-center">
+                <p className="text-gray-600">Loading...</p>
+              </div>
             </div>
-          </div>
-        }
-      >
-        <HomeClient />
-      </Suspense>
+          }
+        >
+          <VibeHomeClient />
+        </Suspense>
+      </VibeStreamingProvider>
     </AuthProtectedPage>
   );
 }

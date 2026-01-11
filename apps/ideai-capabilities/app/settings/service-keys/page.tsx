@@ -237,9 +237,19 @@ export default function ServiceKeysPage() {
 
   useEffect(() => {
     loadData();
-  }, [session?.user?.id, environment]);
+  }, [session?.user?.id, environment, localMode]);
 
   const handleAddKey = (serviceType: ServiceType) => {
+    if (localMode) {
+      toast.error(
+        "Cannot add keys in local mode. Sign in to manage keys, or use CLI: pnpm key-sync push",
+      );
+      return;
+    }
+    if (!session?.user?.id) {
+      toast.error("Please sign in to add keys");
+      return;
+    }
     setSelectedService(serviceType);
     setKeyValue("");
     setShowKey(false);
@@ -247,7 +257,22 @@ export default function ServiceKeysPage() {
   };
 
   const handleSaveKey = async () => {
-    if (!selectedService || !keyValue.trim() || !session?.user?.id) return;
+    if (!selectedService || !keyValue.trim()) {
+      toast.error("Please enter a key value");
+      return;
+    }
+
+    if (!session?.user?.id && !localMode) {
+      toast.error("Please sign in to save keys");
+      return;
+    }
+
+    if (localMode) {
+      toast.error(
+        "Cannot save keys in local mode. Use CLI: pnpm key-sync push",
+      );
+      return;
+    }
 
     setIsSaving(true);
     try {
@@ -301,8 +326,8 @@ export default function ServiceKeysPage() {
     }
   };
 
-  // Show login prompt or local mode option if not authenticated
-  if (!session?.user && !localMode) {
+  // Show login prompt or local mode option if not authenticated (only during initial load)
+  if (!session?.user && !localMode && !isLoading) {
     return (
       <div className="container mx-auto p-6 max-w-4xl">
         <div className="mb-6">
@@ -327,7 +352,13 @@ export default function ServiceKeysPage() {
               >
                 Sign In
               </Button>
-              <Button variant="outline" onClick={() => setLocalMode(true)}>
+              <Button
+                variant="outline"
+                onClick={() => {
+                  setLocalMode(true);
+                  loadData();
+                }}
+              >
                 Use Local Mode (Read-only)
               </Button>
             </div>
@@ -409,6 +440,20 @@ export default function ServiceKeysPage() {
             </span>
           )}
         </p>
+        {!session?.user?.id && !localMode && (
+          <div className="mt-4 p-3 bg-amber-50 dark:bg-amber-950 border border-amber-200 dark:border-amber-800 rounded-md">
+            <p className="text-sm text-amber-800 dark:text-amber-200">
+              ⚠️ <strong>Sign in required:</strong> Buttons are disabled. Please{" "}
+              <a
+                href="/api/auth/signin"
+                className="underline font-medium hover:text-amber-900 dark:hover:text-amber-100"
+              >
+                sign in
+              </a>{" "}
+              to add or manage keys.
+            </p>
+          </div>
+        )}
       </div>
 
       {isLoading ? (
@@ -471,14 +516,20 @@ export default function ServiceKeysPage() {
                             variant="outline"
                             size="sm"
                             onClick={() => handleDeleteKey(keyInfo.id)}
-                            title="Delete this key"
+                            disabled={localMode}
+                            title={
+                              localMode
+                                ? "Disabled in local mode"
+                                : "Delete this key"
+                            }
                           >
                             <Trash2 className="h-4 w-4" />
                           </Button>
-                          {otherEnvKey && (
+                          {otherEnvKey && !localMode && (
                             <Button
                               variant="outline"
                               size="sm"
+                              disabled={localMode}
                               onClick={async () => {
                                 // Copy key from other environment
                                 if (
@@ -523,6 +574,14 @@ export default function ServiceKeysPage() {
                         variant={keyInfo ? "outline" : "default"}
                         size="sm"
                         onClick={() => handleAddKey(status.serviceType)}
+                        disabled={localMode || !session?.user?.id}
+                        title={
+                          localMode
+                            ? "Disabled in local mode. Use CLI to sync keys."
+                            : !session?.user?.id
+                              ? "Please sign in to add keys"
+                              : undefined
+                        }
                       >
                         {keyInfo ? (
                           <>

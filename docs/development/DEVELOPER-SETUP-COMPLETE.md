@@ -1,0 +1,441 @@
+# IdeaI Developer Setup - Complete Guide
+
+## 🎯 What's Next - Full Developer Workflow
+
+This document covers **everything** you need to know about the IdeaI developer setup system.
+
+---
+
+## 📁 File Distinction: Product vs Developer
+
+### `.ideai.json` - Product Configuration (READ-ONLY)
+
+- **Location**: Repository root (tracked in git)
+- **Purpose**: IdeaI framework rules, build config, tool requirements
+- **Who writes**: IdeaI product team
+- **Your role**: Read-only - do not modify
+
+### `.ideai-dev.json` - Your Developer Setup (READ-WRITE)
+
+- **Location**: Repository root (gitignored - your personal file)
+- **Purpose**: Tracks your local environment setup status
+- **Who writes**: You + setup system (auto-updated)
+- **Your role**: Auto-managed, but you can check it
+
+**See**: [File Distinction Guide](./ideai-file-distinction.md) for details
+
+---
+
+## 🚀 Complete Setup Workflow
+
+### Step 1: Initial Setup Check
+
+When you first sign in, the **IdeaI Developer Setup Modal** appears automatically:
+
+1. **Modal shows setup status**
+   - ✅ Green = Passed
+   - ⚠️ Yellow = Warning (can proceed)
+   - ❌ Red = Fail (must fix)
+
+2. **Critical checks:**
+   - Database Migration
+   - Auth Configuration
+   - Service Keys Setup
+   - Environment Variables
+   - Key Sync CLI Setup
+
+### Step 2: Database Migration
+
+**If migration is needed:**
+
+1. Click **"Run Migration Now"** in the modal
+2. Watch the logs:
+
+   ```
+   📍 Step 1/5: Preparing migration...
+   📍 Step 2/5: Checking database connection...
+   📍 Step 3/5: Executing drizzle-kit push...
+   📋 Prompt detected - answering 'No' (safe option)
+   📍 Step 4/5: Analyzing migration output...
+   📊 Tables processed: user_service_keys, chat_ownerships, ...
+   📍 Step 5/5: Verifying migration completion...
+   ✅ Migration completed in 12s
+   ```
+
+3. **What's tracked:**
+   - Start time
+   - Completion time
+   - Tables processed
+   - Duration
+   - Any errors
+
+4. **Status saved to**: `.ideai-dev.json`
+
+### Step 3: Service Keys
+
+**Add your API keys:**
+
+1. Visit `/settings/service-keys`
+2. Click **"Add Key"** for each service:
+   - AI Gateway (recommended)
+   - OpenAI
+   - V0.dev
+   - Anthropic
+   - Firecrawl
+   - Exa
+
+3. **Environment separation:**
+   - Production keys (for deployed apps)
+   - Local keys (for testing new keys safely)
+
+4. **Copy between environments:**
+   - Click **"Copy from production"** to duplicate keys
+
+### Step 4: Key Sync (CLI)
+
+**Sync keys between database and local `.env.local`:**
+
+```bash
+# Pull keys from database to .env.local
+pnpm key-sync pull
+
+# Push keys from .env.local to database
+pnpm key-sync push
+
+# Validate keys are in sync
+pnpm key-sync validate
+```
+
+**Prerequisites:**
+
+- Set `IDEAI_USER_ID` in `.env.local`
+- Or use `--user=USER_ID` flag
+
+---
+
+## 🗄️ Database Management
+
+### DB Manager Integration
+
+The setup system integrates with **Cloud Manager DB Manager**:
+
+#### Push Schema (Local)
+
+```bash
+# Via API
+POST /api/database/push
+{
+  "app": "ideai-capabilities",
+  "env": "local"
+}
+
+# Via CLI
+cd apps/ideai-capabilities
+pnpm db:push
+```
+
+#### Pull Schema (From Production)
+
+```bash
+# Via API
+POST /api/database/sync
+{
+  "from": "production",
+  "to": "local",
+  "app": "ideai-capabilities"
+}
+```
+
+#### Sync Schema (Bidirectional)
+
+- Pull from production → Apply to local
+- Or push from local → Apply to production (with confirmation)
+
+### Migration Tracking
+
+Every migration tracks:
+
+```json
+{
+  "migration": {
+    "started": true,
+    "startedAt": "2026-01-11T15:30:00.000Z",
+    "completed": true,
+    "completedAt": "2026-01-11T15:30:12.000Z",
+    "tables": ["user_service_keys", "chat_ownerships", "users"],
+    "error": null,
+    "lastStep": "5/5 - Complete"
+  }
+}
+```
+
+**Check status:**
+
+```bash
+cat .ideai-dev.json | jq '.setup.database.migration'
+```
+
+---
+
+## 📊 Setup Status API
+
+### Check Current Status
+
+```bash
+# Via API
+curl http://localhost:3018/api/dev-setup/check
+
+# Via CLI
+pnpm dev-setup check
+
+# View file
+cat .ideai-dev.json
+```
+
+### Migration Status
+
+```bash
+# Check migration details
+curl http://localhost:3018/api/dev-setup/status
+```
+
+---
+
+## 🔄 Complete Setup Checklist
+
+### ✅ Requirements (All Must Be True)
+
+1. **Database Migration** ✅
+   - `migration_complete: true`
+   - Tables exist: `user_service_keys` (and others)
+   - Connection verified
+
+2. **Auth Configuration** ✅
+   - `BETTER_AUTH_SECRET` set
+   - `BETTER_AUTH_URL` set
+   - Auth working
+
+3. **Service Keys** ✅
+   - At least one key configured (database or env var)
+   - Keys are encrypted and secure
+
+4. **Environment Variables** ✅
+   - Required vars set in `.env.local`
+   - Or keys in database (preferred)
+
+5. **Dev Ready** ✅
+   - `dev_ready: true` (auto-set when all above true)
+
+### 📝 Manual Steps
+
+1. **Set environment variables:**
+
+   ```bash
+   # .env.local
+   DATABASE_URL=postgres://...
+   BETTER_AUTH_SECRET=...
+   BETTER_AUTH_URL=http://localhost:3018
+   IDEAI_USER_ID=your-user-id  # Optional, for CLI sync
+   ```
+
+2. **Run setup check:**
+
+   ```bash
+   pnpm dev-setup check
+   ```
+
+3. **Fix any failures:**
+   - Use modal "Run Migration" button
+   - Add keys via `/settings/service-keys`
+   - Check logs for details
+
+4. **Verify:**
+   ```bash
+   cat .ideai-dev.json | jq '.setup.dev_ready'
+   # Should be: true
+   ```
+
+---
+
+## 🎯 What Happens When Setup Completes
+
+1. **Modal disappears** (or shows "All checks passed")
+2. **`.ideai-dev.json` updated:**
+   ```json
+   {
+     "setup": {
+       "dev_ready": true,
+       "last_full_check": "2026-01-11T..."
+     }
+   }
+   ```
+3. **You can start developing:**
+   - Workflows work
+   - API calls work
+   - Database queries work
+   - Everything is configured
+
+---
+
+## 🛠️ Troubleshooting
+
+### Migration Timeout
+
+**Problem**: Migration times out after 90 seconds
+
+**Solutions**:
+
+1. Check database connection: `DATABASE_URL` correct?
+2. Check database is running
+3. Check network connectivity
+4. View logs for specific error
+
+### Prompt Hanging
+
+**Problem**: Migration waits for user input
+
+**Solution**: The system now auto-answers prompts with "No" (safe option). If still hanging:
+
+1. Check logs - should see "Prompt detected"
+2. Try running manually: `cd apps/ideai-capabilities && pnpm db:push`
+3. Answer prompts manually if needed
+
+### Keys Not Syncing
+
+**Problem**: `pnpm key-sync` fails
+
+**Solutions**:
+
+1. Set `IDEAI_USER_ID` in `.env.local`
+2. Or use `--user=USER_ID` flag
+3. Ensure you're logged in (session required)
+4. Check API is accessible: `curl http://localhost:3018/api/user-keys/status`
+
+### Setup Modal Not Showing
+
+**Problem**: Modal doesn't appear on sign-in
+
+**Solutions**:
+
+1. Check you're in dev mode: `NODE_ENV=development`
+2. Check you're authenticated (not anonymous)
+3. Check browser console for errors
+4. Visit `/dev-setup` manually
+
+---
+
+## 📚 API Reference
+
+### Dev Setup APIs
+
+- `GET /api/dev-setup/check` - Run all setup checks
+- `POST /api/dev-setup/migrate` - Run database migration
+- `GET /api/dev-setup/status` - Get setup status from `.ideai-dev.json`
+
+### Database APIs
+
+- `POST /api/database/push` - Push schema (local)
+- `POST /api/database/sync` - Sync schema (production ↔ local)
+
+### User Keys APIs
+
+- `GET /api/user-keys` - List all user keys
+- `POST /api/user-keys` - Save/update key
+- `DELETE /api/user-keys/[keyId]` - Delete key
+- `GET /api/user-keys/status` - Get service key status
+- `GET /api/user-keys/sync` - Get keys for local `.env`
+- `GET /api/user-keys/hashes` - Get key hashes for validation
+
+---
+
+## 🎓 Next Steps for New Developers
+
+1. **Clone & Install:**
+
+   ```bash
+   git clone <repo>
+   cd ideai-main
+   pnpm install
+   ```
+
+2. **Configure Environment:**
+
+   ```bash
+   cp .env.example .env.local
+   # Edit .env.local with your values
+   ```
+
+3. **Start Dev Server:**
+
+   ```bash
+   pnpm dev
+   ```
+
+4. **Sign In:**
+   - Modal appears automatically
+   - Fix any failures shown
+
+5. **Complete Setup:**
+   - Run migration if needed
+   - Add service keys
+   - Verify `dev_ready: true`
+
+6. **Start Developing:**
+   - Everything is ready!
+   - Use workflows, APIs, etc.
+
+---
+
+## 🔍 Monitoring & Logs
+
+### Migration Logs
+
+All migrations log to:
+
+- Browser console (dev tools)
+- API response `logs` array
+- `.ideai-dev.json` `migration.error` (if failed)
+
+### Setup Check Logs
+
+View in:
+
+- Modal (real-time)
+- `/dev-setup` page (full details)
+- `.ideai-dev.json` file
+
+### CLI Output
+
+```bash
+pnpm dev-setup check
+# Shows all checks with status
+
+pnpm key-sync validate
+# Shows key sync status
+```
+
+---
+
+## ✅ Success Criteria
+
+You're ready to develop when:
+
+- [ ] `.ideai-dev.json` shows `dev_ready: true`
+- [ ] All setup checks pass (green ✅)
+- [ ] Database migration complete
+- [ ] At least one service key configured
+- [ ] No critical errors in setup modal
+
+---
+
+## 📞 Support
+
+- **Setup Issues**: Check `/dev-setup` page
+- **Migration Problems**: Check logs in modal
+- **Key Sync Issues**: Use `pnpm key-sync validate`
+- **Database Issues**: Use DB Manager at `/app-builder`
+
+---
+
+**Last Updated**: 2026-01-11  
+**Status**: Complete & Ready for Developers

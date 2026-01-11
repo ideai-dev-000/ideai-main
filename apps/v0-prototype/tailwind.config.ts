@@ -7,16 +7,14 @@
  */
 
 import type { Config } from "tailwindcss";
-import sharedConfig from "../../packages/ui/tailwind.config.js";
+import sharedConfig from "../../packages/ui/tailwind.config";
 
-const config: Config = {
+const config = {
   ...sharedConfig,
   content: [
     "./app/**/*.{js,ts,jsx,tsx}",
     "../../packages/ui/src/**/*.{js,ts,jsx,tsx}",
   ],
-};
+} satisfies Config;
 
 export default config;
-
-

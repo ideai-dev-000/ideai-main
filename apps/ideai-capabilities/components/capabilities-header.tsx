@@ -3,8 +3,9 @@
  *
  * @module CapabilitiesHeader
  * @description
- * Enhanced header with dropdown menus for each section (Workflow Builder, Lead Agent, App Builder).
+ * Enhanced header with dropdown menus for each section (Workflow Builder, App Builder).
  * Shows active state and provides quick access to items within each section.
+ * Note: Lead Agent removed from header - will be added as module in future.
  */
 
 "use client";
@@ -15,7 +16,7 @@ import { IdeAILogo } from "@repo/ui";
 import { ThemeToggle } from "@repo/ui";
 import { IdeAIThemeSelector } from "@repo/ui";
 import { MobileNav } from "@repo/ui";
-import { Workflow, UserSearch, Code, Home } from "lucide-react";
+import { Workflow, Code, Home } from "lucide-react";
 import { UserMenu } from "@/components/workflow/user-menu";
 import { useSession } from "@/lib/auth-client";
 
@@ -42,13 +43,6 @@ const mainNav: NavItem[] = [
     icon: <Code className="h-4 w-4" />,
     basePath: "/vibe",
     showMenu: false,
-  },
-  {
-    label: "Lead Agent",
-    href: "/lead-agent",
-    icon: <UserSearch className="h-4 w-4" />,
-    basePath: "/lead-agent",
-    showMenu: false, // Can be enabled when Lead Agent has items
   },
   {
     label: "App Builder",

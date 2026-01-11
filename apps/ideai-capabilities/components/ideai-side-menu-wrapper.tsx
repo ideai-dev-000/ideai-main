@@ -133,13 +133,11 @@ export function IdeAISideMenuWrapper() {
 
       if (response && response.ok) {
         const data = await response.json();
-        const vibecoderApi =
-          process.env.NEXT_PUBLIC_VIBECODER_URL || "http://localhost:3020";
         const chats = (data.data || []).map((chat: any) => ({
           id: chat.id,
           name: chat.name || undefined,
-          // Always route to vibecoder app for vibe chats
-          href: `${vibecoderApi}/chats/${chat.id}`,
+          // Route to internal vibe chat detail page
+          href: `/vibe/chats/${chat.id}`,
           createdAt: chat.createdAt,
           privacy: chat.privacy,
         }));
@@ -317,11 +315,9 @@ export function IdeAISideMenuWrapper() {
 
   // Handler to create a new vibe
   const handleCreateVibe = useCallback(async () => {
-    // Navigate to vibe creation page (vibecoder app)
-    const vibecoderUrl =
-      process.env.NEXT_PUBLIC_VIBECODER_URL || "http://localhost:3020";
-    window.location.href = `${vibecoderUrl}/`;
-  }, []);
+    // Navigate to vibe creation page (internal route)
+    router.push("/vibe");
+  }, [router]);
 
   // Handler to clear the current workflow (clears all nodes and edges)
   const handleClearWorkflow = useCallback(async () => {

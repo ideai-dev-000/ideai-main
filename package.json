@@ -15,6 +15,7 @@
     "v0:export:watch": "node scripts/ideai-v0-export.mjs --watch",
     "v0:promote": "node scripts/ideai-v0-promote.mjs",
     "key-sync": "node scripts/ideai-key-sync.mjs",
+    "dev-setup": "node scripts/ideai-dev-setup.mjs",
     "check-types": "turbo run check-types",
     "dev": "turbo run dev --concurrency=20",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",

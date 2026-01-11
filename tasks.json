@@ -754,6 +754,36 @@
       "status": "pending",
       "category": "Architecture",
       "tags": ["documentation", "unified-mode", "examples"]
+    },
+    {
+      "id": "lead-agent-module",
+      "title": "Lead Agent Module - Future Package",
+      "description": "Extract Lead Agent functionality into @repo/lead-agent package. Currently removed from header navigation, will be re-added once module is created.",
+      "priority": "medium",
+      "status": "pending",
+      "category": "Architecture",
+      "tags": ["lead-agent", "module", "package", "future"],
+      "markdown": "### Goal\nCreate Lead Agent as a dedicated module/package:\n\n- Extract lead agent functionality from lead-processing-agent app\n- Create @repo/lead-agent package with composable components\n- Integrate into capabilities app via package import\n- Re-add to header navigation once module is ready\n\n### Current Status\n- Removed from header navigation (temporary)\n- Page exists at /lead-agent (placeholder)\n- Ready for module extraction\n\n### Implementation Steps\n1. Audit lead-processing-agent app functionality\n2. Create @repo/lead-agent package structure\n3. Extract components and utilities\n4. Create composable LeadAgent component\n5. Integrate into capabilities app\n6. Re-add to header navigation\n\n**Note**: This will follow the same pattern as workflow extraction."
+    },
+    {
+      "id": "vibe-testing",
+      "title": "Vibe Functionality Testing - Chat Messages Display",
+      "description": "Fix chat messages not displaying on left side. Debug and fix message rendering issues.",
+      "priority": "high",
+      "status": "in_progress",
+      "category": "Features",
+      "tags": ["vibe", "chat", "ui", "bug"],
+      "markdown": "### Issue\nChat messages not visible on left side in vibe chat interface.\n\n### Fix Needed\n- Debug chat history loading\n- Check ChatMessages component rendering\n- Verify message format conversion\n- Add better logging\n\n### Status\nIn progress - debugging message rendering."
+    },
+    {
+      "id": "vibe-performance",
+      "title": "Vibe Performance Optimization",
+      "description": "Optimize API call times and download performance. Calls and downloads taking longer than expected.",
+      "priority": "medium",
+      "status": "pending",
+      "category": "Performance",
+      "tags": ["vibe", "performance", "optimization"],
+      "markdown": "### Performance Issues\n- API calls taking longer\n- Download starting slowly\n\n### Optimization Areas\n- API response caching\n- Download streaming optimization\n- Reduce unnecessary re-renders\n- Optimize chat history loading"
     }
   ]
 }
