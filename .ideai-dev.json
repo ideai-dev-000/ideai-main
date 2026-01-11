@@ -1,0 +1,37 @@
+{
+  "setup": {
+    "database": {
+      "migration_complete": false,
+      "connected": false,
+      "last_checked": "2026-01-11T16:45:22.274Z",
+      "last_error": "Migration timed out after 90 seconds",
+      "migration": {
+        "started": true,
+        "startedAt": "2026-01-11T16:43:49.281Z",
+        "completed": false,
+        "completedAt": null,
+        "tables": [],
+        "error": "Migration timed out after 90 seconds",
+        "lastStep": "Failed"
+      }
+    },
+    "auth": {
+      "configured": false,
+      "secret_set": false,
+      "url_set": false,
+      "last_checked": null
+    },
+    "service_keys": {
+      "configured": false,
+      "keys_count": 0,
+      "last_checked": null
+    },
+    "environment": {
+      "variables_set": false,
+      "api_keys_available": false,
+      "last_checked": null
+    },
+    "dev_ready": false,
+    "last_full_check": "2026-01-11T16:45:22.274Z"
+  }
+}
