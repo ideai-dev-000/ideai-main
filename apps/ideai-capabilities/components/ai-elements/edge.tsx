@@ -35,8 +35,8 @@ const Temporary = ({
       path={edgePath}
       style={{
         stroke: selected
-          ? "hsl(var(--primary))"
-          : "hsl(var(--foreground) / 0.4)",
+          ? "var(--primary)"
+          : "color-mix(in oklch, var(--foreground) 40%, transparent)",
         strokeDasharray: "5, 5",
         strokeWidth: 2,
       }}
@@ -136,8 +136,8 @@ const Animated = ({ id, source, target, style, selected }: EdgeProps) => {
       style={{
         ...style,
         stroke: selected
-          ? "hsl(var(--primary))"
-          : "hsl(var(--foreground) / 0.5)",
+          ? "var(--primary)"
+          : "color-mix(in oklch, var(--foreground) 50%, transparent)",
         strokeWidth: 2.5,
         strokeDasharray: "8 4",
         strokeLinecap: "round",
