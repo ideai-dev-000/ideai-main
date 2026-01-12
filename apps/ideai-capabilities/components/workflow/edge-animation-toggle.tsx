@@ -21,12 +21,15 @@ import { EDGE_STYLE_PRESETS } from "@/lib/edge-styles";
 const stylePresets: Array<{
   preset: EdgeStylePreset;
   icon: React.ComponentType<{ className?: string }>;
+  color?: string; // Optional color override for icon
 }> = [
   { preset: "flowing-dots", icon: Circle },
   { preset: "dashed-flow", icon: Minus },
   { preset: "solid-pulse", icon: Zap },
   { preset: "bold-success", icon: TrendingUp },
   { preset: "subtle-guide", icon: Eye },
+  { preset: "green-dots", icon: Circle, color: "#22c55e" },
+  { preset: "red-dots", icon: Circle, color: "#ef4444" },
 ];
 
 export function EdgeAnimationToggle() {
@@ -34,7 +37,7 @@ export function EdgeAnimationToggle() {
 
   return (
     <div className="flex items-center gap-1 rounded-md border border-slate-200 bg-white p-1 shadow-sm dark:border-slate-700 dark:bg-slate-800">
-      {stylePresets.map(({ preset: presetKey, icon: Icon }) => {
+      {stylePresets.map(({ preset: presetKey, icon: Icon, color }) => {
         const config = EDGE_STYLE_PRESETS[presetKey];
         return (
           <Button
@@ -46,7 +49,10 @@ export function EdgeAnimationToggle() {
             title={config.description}
             aria-label={config.description}
           >
-            <Icon className="h-3.5 w-3.5" />
+            <Icon
+              className="h-3.5 w-3.5"
+              style={color ? { color } : undefined}
+            />
           </Button>
         );
       })}

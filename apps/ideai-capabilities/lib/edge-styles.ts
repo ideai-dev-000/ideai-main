@@ -11,7 +11,9 @@ export type EdgeStylePreset =
   | "dashed-flow"
   | "solid-pulse"
   | "bold-success"
-  | "subtle-guide";
+  | "subtle-guide"
+  | "green-dots"
+  | "red-dots";
 
 export interface EdgeStyleConfig {
   name: string;
@@ -118,6 +120,40 @@ export const EDGE_STYLE_PRESETS: Record<
       dashArray: "5 5",
     },
     className: "edge-subtle-guide",
+  },
+  "green-dots": {
+    name: "Green Dots",
+    description: "Green flowing dots",
+    normal: {
+      color: "#22c55e",
+      width: 2,
+      dashArray: "3 9",
+      animation: "flowing-dots 2s linear infinite",
+    },
+    success: {
+      color: "#22c55e",
+      width: 3.5,
+      dashArray: "10 4",
+      animation: "flowing-dots 2s linear infinite",
+    },
+    className: "edge-green-dots",
+  },
+  "red-dots": {
+    name: "Red Dots",
+    description: "Red flowing dots",
+    normal: {
+      color: "#ef4444",
+      width: 2,
+      dashArray: "3 9",
+      animation: "flowing-dots 2s linear infinite",
+    },
+    success: {
+      color: "#22c55e",
+      width: 3.5,
+      dashArray: "10 4",
+      animation: "flowing-dots 2s linear infinite",
+    },
+    className: "edge-red-dots",
   },
 };
 
