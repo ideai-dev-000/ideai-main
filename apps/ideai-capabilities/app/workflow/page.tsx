@@ -24,6 +24,7 @@ import {
   nodesAtom,
   type WorkflowNode,
 } from "@/lib/workflow-store";
+import { AddNode } from "@/components/workflow/nodes/add-node";
 
 // Helper function to create a default trigger node
 function createDefaultTriggerNode(triggerType: "Manual" | "Webhook" | "Schedule" = "Manual") {
