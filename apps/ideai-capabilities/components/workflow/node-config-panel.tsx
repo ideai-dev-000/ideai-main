@@ -35,6 +35,7 @@ import {
   deleteEdgeAtom,
   deleteNodeAtom,
   deleteSelectedItemsAtom,
+  demoModeAtom,
   edgesAtom,
   isGeneratingAtom,
   isWorkflowOwnerAtom,
