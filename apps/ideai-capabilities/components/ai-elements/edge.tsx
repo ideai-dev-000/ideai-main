@@ -20,7 +20,7 @@ import {
 } from "@xyflow/react";
 import { useAtomValue } from "jotai";
 import { edgeStylePresetAtom, executionLogsAtom } from "@/lib/workflow-store";
-import { getEdgeStyle } from "@/lib/edge-styles";
+import { getEdgeStyle, type EdgeState } from "@/lib/edge-styles";
 
 /**
  * Temporary edge shown during connection drag
@@ -67,11 +67,22 @@ const Temporary = ({
     targetLog?.status ||
     (targetNodeFromStore?.data?.status as string | undefined);
 
-  const isSuccess =
-    sourceStatus === "success" &&
-    (targetStatus === "running" || targetStatus === "success");
+  // Determine edge state: success, error, or normal
+  let edgeState: EdgeState = "normal";
 
-  const style = getEdgeStyle(preset, isSuccess, selected);
+  // Green: Source succeeded AND target has started/succeeded
+  if (
+    sourceStatus === "success" &&
+    (targetStatus === "running" || targetStatus === "success")
+  ) {
+    edgeState = "success";
+  }
+  // Red: Source or target has error (can't run)
+  else if (sourceStatus === "error" || targetStatus === "error") {
+    edgeState = "error";
+  }
+
+  const style = getEdgeStyle(preset, edgeState, selected);
 
   return (
     <BaseEdge
@@ -180,9 +191,20 @@ const Animated = ({ id, source, target, style, selected }: EdgeProps) => {
     (targetNodeFromStore?.data?.status as string | undefined) ||
     (targetNode.data?.status as string | undefined);
 
-  const isSuccess =
+  // Determine edge state: success, error, or normal
+  let edgeState: EdgeState = "normal";
+
+  // Green: Source succeeded AND target has started/succeeded
+  if (
     sourceStatus === "success" &&
-    (targetStatus === "running" || targetStatus === "success");
+    (targetStatus === "running" || targetStatus === "success")
+  ) {
+    edgeState = "success";
+  }
+  // Red: Source or target has error (can't run)
+  else if (sourceStatus === "error" || targetStatus === "error") {
+    edgeState = "error";
+  }
 
   const { sx, sy, tx, ty, sourcePos, targetPos } = getEdgeParams(
     sourceNode,
@@ -198,7 +220,7 @@ const Animated = ({ id, source, target, style, selected }: EdgeProps) => {
     targetPosition: targetPos,
   });
 
-  const edgeStyle = getEdgeStyle(preset, isSuccess, selected);
+  const edgeStyle = getEdgeStyle(preset, edgeState, selected);
 
   return (
     <BaseEdge

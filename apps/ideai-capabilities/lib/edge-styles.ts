@@ -158,11 +158,16 @@ export const EDGE_STYLE_PRESETS: Record<
 };
 
 /**
- * Get edge style config for a given preset and success state
+ * Edge state type: normal, success, or error
+ */
+export type EdgeState = "normal" | "success" | "error";
+
+/**
+ * Get edge style config for a given preset and state
  */
 export function getEdgeStyle(
   preset: EdgeStylePreset,
-  isSuccess: boolean,
+  state: EdgeState,
   isSelected: boolean,
 ): {
   stroke: string;
@@ -172,17 +177,42 @@ export function getEdgeStyle(
   className: string;
 } {
   const config = EDGE_STYLE_PRESETS[preset];
-  const style = isSuccess ? config.success : config.normal;
 
-  // Override with selected color if selected and not in success state
-  const finalColor =
-    isSelected && !isSuccess ? "#8b949e" : style.color;
+  let finalColor: string;
+  let finalWidth: number;
+  let finalDashArray: string;
+  let finalAnimation: string | undefined;
+
+  if (state === "success") {
+    // Green for successful edges
+    finalColor = "#22c55e";
+    finalWidth = config.success.width;
+    finalDashArray = config.success.dashArray;
+    finalAnimation = config.success.animation;
+  } else if (state === "error") {
+    // Red for edges that can't run
+    finalColor = "#ef4444";
+    // Use flowing dots animation for error state (matches dot presets)
+    const isDotPreset = preset.includes("dots");
+    finalWidth = isDotPreset ? 2.5 : config.normal.width;
+    finalDashArray = isDotPreset ? "3 9" : config.normal.dashArray;
+    finalAnimation = isDotPreset
+      ? "flowing-dots 2s linear infinite"
+      : config.normal.animation;
+  } else {
+    // Normal state - use preset defaults
+    const style = config.normal;
+    finalColor = isSelected ? "#8b949e" : style.color;
+    finalWidth = style.width;
+    finalDashArray = style.dashArray;
+    finalAnimation = style.animation;
+  }
 
   return {
     stroke: finalColor,
-    strokeWidth: style.width,
-    strokeDasharray: style.dashArray,
-    animation: style.animation,
+    strokeWidth: finalWidth,
+    strokeDasharray: finalDashArray,
+    animation: finalAnimation,
     className: config.className,
   };
 }
