@@ -104,13 +104,13 @@ function extractTables(output: string): string[] {
   for (const line of lines) {
     // Match CREATE TABLE "table_name"
     const createMatch = line.match(/CREATE TABLE\s+"?(\w+)"?/i);
-    if (createMatch && !tables.includes(createMatch[1])) {
+    if (createMatch && createMatch[1] && !tables.includes(createMatch[1])) {
       tables.push(createMatch[1]);
     }
 
     // Match ALTER TABLE "table_name"
     const alterMatch = line.match(/ALTER TABLE\s+"?(\w+)"?/i);
-    if (alterMatch && !tables.includes(alterMatch[1])) {
+    if (alterMatch && alterMatch[1] && !tables.includes(alterMatch[1])) {
       tables.push(alterMatch[1]);
     }
   }

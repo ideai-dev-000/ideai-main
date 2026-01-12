@@ -59,11 +59,10 @@ export async function GET(request: NextRequest) {
     // For now, this is a placeholder that requires the API route to be called
     // from the authenticated super admin panel
 
-    // Import database connection from capabilities app (shared database)
+    // Import database connection from shared auth package (shared database)
     // Note: This uses the same database as ideai-capabilities
-    const { db } = await import("../../../../ideai-capabilities/lib/db");
-    const { users } =
-      await import("../../../../ideai-capabilities/lib/db/schema");
+    const { db } = await import("@repo/ideai-auth/db");
+    const { users } = await import("@repo/ideai-auth/schema");
 
     const allUsers = await db.select().from(users);
 

@@ -24,7 +24,7 @@ import {
 const isDevelopment = process.env.NODE_ENV === "development";
 
 type Priority = "high" | "medium" | "low";
-type Status = "pending" | "in-progress" | "blocked";
+type Status = "pending" | "in-progress" | "completed" | "blocked";
 type Category = string;
 
 interface Task {
@@ -131,7 +131,7 @@ export default function TasksPage() {
       if (!groups[task.category]) {
         groups[task.category] = [];
       }
-      groups[task.category].push(task);
+      groups[task.category]!.push(task);
     });
     return groups;
   }, [filteredTasks]);

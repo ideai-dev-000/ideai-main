@@ -175,23 +175,13 @@ function DrawingCard({
         </Button>
       </div>
       <div className="mt-4 p-4 bg-slate-50 dark:bg-slate-900 rounded border border-slate-200 dark:border-slate-700 flex items-center justify-center min-h-[200px]">
-        {example.libraryId === "vivus" ? (
-          <VivusDraw
-            key={animationKey}
-            svgContent={sampleSVG}
-            type={example.type as any}
-            duration={example.duration || 2}
-            delay={example.delay}
-          />
-        ) : (
-          <SVGArtistaDraw
-            key={animationKey}
-            svgContent={sampleSVG}
-            animationType={example.type as any}
-            duration={example.duration || 2}
-            delay={example.delay}
-          />
-        )}
+        <SVGArtistaDraw
+          key={animationKey}
+          svgContent={sampleSVG}
+          animationType={example.type as any}
+          duration={example.duration || 2}
+          delay={example.delay}
+        />
       </div>
     </div>
   );

@@ -151,7 +151,7 @@ function buildPlugins() {
             },
           },
         ],
-      }),
+      }) as any, // Type cast to avoid TypeScript error with better-auth plugin types
     );
   }
 

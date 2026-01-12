@@ -2022,6 +2022,12 @@ importers:
       "@repo/ui":
         specifier: workspace:*
         version: link:../../packages/ui
+      better-auth:
+        specifier: ^1.3.34
+        version: 1.4.10(drizzle-kit@0.31.8)(drizzle-orm@0.44.7(@neondatabase/serverless@0.9.5)(@opentelemetry/api@1.9.0)(@types/pg@8.11.6)(@vercel/postgres@0.10.0)(kysely@0.28.9)(postgres@3.4.7))(next@16.1.0(@babel/core@7.28.5)(@opentelemetry/api@1.9.0)(@playwright/test@1.57.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(vitest@2.1.9(@edge-runtime/vm@5.0.0)(@types/node@22.15.3)(@vitest/browser@4.0.16)(@vitest/ui@4.0.16)(happy-dom@20.1.0(bufferutil@4.1.0))(jsdom@27.4.0(bufferutil@4.1.0))(lightningcss@1.30.2)(terser@5.44.1))(vue@3.5.26(typescript@5.9.2))
+      drizzle-orm:
+        specifier: ^0.44.7
+        version: 0.44.7(@neondatabase/serverless@0.9.5)(@opentelemetry/api@1.9.0)(@types/pg@8.11.6)(@vercel/postgres@0.10.0)(kysely@0.28.9)(postgres@3.4.7)
       framer-motion:
         specifier: 12.23.26
         version: 12.23.26(@emotion/is-prop-valid@1.4.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
@@ -2031,6 +2037,9 @@ importers:
       next-themes:
         specifier: ^0.4.6
         version: 0.4.6(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      postgres:
+        specifier: ^3.4.7
+        version: 3.4.7
       react:
         specifier: ^19.2.0
         version: 19.2.0
@@ -29698,6 +29707,29 @@ snapshots:
   basic-ftp@5.1.0: {}
 
   bcrypt-ts@7.1.0: {}
+
+  better-auth@1.4.10(drizzle-kit@0.31.8)(drizzle-orm@0.44.7(@neondatabase/serverless@0.9.5)(@opentelemetry/api@1.9.0)(@types/pg@8.11.6)(@vercel/postgres@0.10.0)(kysely@0.28.9)(postgres@3.4.7))(next@16.1.0(@babel/core@7.28.5)(@opentelemetry/api@1.9.0)(@playwright/test@1.57.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(vitest@2.1.9(@edge-runtime/vm@5.0.0)(@types/node@22.15.3)(@vitest/browser@4.0.16)(@vitest/ui@4.0.16)(happy-dom@20.1.0(bufferutil@4.1.0))(jsdom@27.4.0(bufferutil@4.1.0))(lightningcss@1.30.2)(terser@5.44.1))(vue@3.5.26(typescript@5.9.2)):
+    dependencies:
+      "@better-auth/core": 1.4.10(@better-auth/utils@0.3.0)(@better-fetch/fetch@1.1.21)(better-call@1.1.7(zod@4.3.4))(jose@6.1.3)(kysely@0.28.9)(nanostores@1.1.0)
+      "@better-auth/telemetry": 1.4.10(@better-auth/core@1.4.10(@better-auth/utils@0.3.0)(@better-fetch/fetch@1.1.21)(better-call@1.1.7(zod@4.3.4))(jose@6.1.3)(kysely@0.28.9)(nanostores@1.1.0))
+      "@better-auth/utils": 0.3.0
+      "@better-fetch/fetch": 1.1.21
+      "@noble/ciphers": 2.1.1
+      "@noble/hashes": 2.0.1
+      better-call: 1.1.7(zod@4.3.4)
+      defu: 6.1.4
+      jose: 6.1.3
+      kysely: 0.28.9
+      nanostores: 1.1.0
+      zod: 4.3.4
+    optionalDependencies:
+      drizzle-kit: 0.31.8
+      drizzle-orm: 0.44.7(@neondatabase/serverless@0.9.5)(@opentelemetry/api@1.9.0)(@types/pg@8.11.6)(@vercel/postgres@0.10.0)(kysely@0.28.9)(postgres@3.4.7)
+      next: 16.1.0(@babel/core@7.28.5)(@opentelemetry/api@1.9.0)(@playwright/test@1.57.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      react: 19.2.0
+      react-dom: 19.2.0(react@19.2.0)
+      vitest: 2.1.9(@edge-runtime/vm@5.0.0)(@types/node@22.15.3)(@vitest/browser@4.0.16)(@vitest/ui@4.0.16)(happy-dom@20.1.0(bufferutil@4.1.0))(jsdom@27.4.0(bufferutil@4.1.0))(lightningcss@1.30.2)(terser@5.44.1)
+      vue: 3.5.26(typescript@5.9.2)
 
   better-auth@1.4.10(drizzle-kit@0.31.8)(drizzle-orm@0.44.7(@neondatabase/serverless@0.9.5)(@opentelemetry/api@1.9.0)(@types/pg@8.11.6)(@vercel/postgres@0.10.0)(kysely@0.28.9)(postgres@3.4.7))(next@16.1.1(@babel/core@7.28.5)(@opentelemetry/api@1.9.0)(@playwright/test@1.57.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(vitest@2.1.9(@edge-runtime/vm@5.0.0)(@types/node@22.15.3)(@vitest/browser@4.0.16)(@vitest/ui@4.0.16)(happy-dom@20.1.0(bufferutil@4.1.0))(jsdom@27.4.0(bufferutil@4.1.0))(lightningcss@1.30.2)(terser@5.44.1))(vue@3.5.26(typescript@5.9.2)):
     dependencies:
