@@ -43,6 +43,7 @@ import {
   workflowNotFoundAtom,
 } from "@/lib/workflow-store";
 import { findActionById } from "@/plugins";
+import { AddNode } from "@/components/workflow/nodes/add-node";
 
 type WorkflowPageProps = {
   params: Promise<{ workflowId: string }>;
