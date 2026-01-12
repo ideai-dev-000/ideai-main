@@ -475,6 +475,11 @@ export const PanelInner = () => {
         newConfig = { ...newConfig, integrationId: undefined };
       }
 
+      // Update actionType immediately so UI reflects the change right away
+      if (key === "actionType") {
+        updateNodeData({ id: selectedNode.id, data: { config: newConfig } });
+      }
+
       // When action type changes, initialize default values from configFields
       if (key === "actionType") {
         const action = findActionById(value);
