@@ -484,41 +484,52 @@ export const PanelInner = () => {
 
           // If demo mode is ON, try to load demo data from .ideai.json
           if (demoMode) {
-            // Fetch demo workflow data
+            // Fetch demo workflow data and populate immediately
             fetch("/api/workflows/demo")
               .then((res) => res.json())
               .then((demoWorkflow) => {
                 if (demoWorkflow?.nodes) {
-                  // Find matching node in demo workflow by actionType
+                  // Find matching node in demo workflow by actionType (must match exactly)
                   const demoNode = demoWorkflow.nodes.find(
                     (node: any) =>
-                      node.data?.config?.actionType === value ||
+                      node.data?.config?.actionType === value &&
                       node.data?.type === "action",
                   );
 
                   if (demoNode?.data?.config) {
-                    // Apply demo config values for fields that are empty
+                    // Apply demo config values for ALL fields (overwrite empty ones)
                     const demoConfig = demoNode.data.config;
+                    const populatedConfig = { ...newConfig };
+                    
+                    // First, apply all demo values that exist
                     for (const field of flatFields) {
-                      if (
-                        demoConfig[field.key] !== undefined &&
-                        (newConfig[field.key] === undefined ||
-                          newConfig[field.key] === "" ||
-                          newConfig[field.key] === null)
-                      ) {
-                        newConfig[field.key] = demoConfig[field.key];
+                      if (demoConfig[field.key] !== undefined) {
+                        // Always populate from demo if available (overwrites empty values)
+                        populatedConfig[field.key] = demoConfig[field.key];
                       }
                     }
-                    // Update node with demo config
+                    
+                    // Then, apply defaults for any fields not in demo but have defaults
+                    for (const field of flatFields) {
+                      if (
+                        field.defaultValue !== undefined &&
+                        populatedConfig[field.key] === undefined &&
+                        populatedConfig[field.key] !== null
+                      ) {
+                        populatedConfig[field.key] = field.defaultValue;
+                      }
+                    }
+                    
+                    // Update node with populated config immediately
                     updateNodeData({
                       id: selectedNode.id,
-                      data: { config: newConfig },
+                      data: { config: populatedConfig },
                     });
                     return;
                   }
                 }
 
-                // Fallback to default values if no demo data found
+                // Fallback to default values if no demo data found for this action type
                 for (const field of flatFields) {
                   if (
                     field.defaultValue !== undefined &&
@@ -569,7 +580,11 @@ export const PanelInner = () => {
         }
       }
 
-      updateNodeData({ id: selectedNode.id, data: { config: newConfig } });
+      // Only update immediately if we're not waiting for demo data
+      // (demo mode updates are handled in the fetch callback above)
+      if (key !== "actionType" || !demoMode) {
+        updateNodeData({ id: selectedNode.id, data: { config: newConfig } });
+      }
 
       // When action type changes, auto-select integration if only one exists
       if (key === "actionType") {
