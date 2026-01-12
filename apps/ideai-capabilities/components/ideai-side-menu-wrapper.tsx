@@ -11,7 +11,7 @@
 "use client";
 
 import { useMemo, useCallback } from "react";
-import { useRouter, usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useAtomValue } from "jotai";
 import { toast } from "sonner";
 import {
@@ -43,7 +43,6 @@ export function IdeAISideMenuWrapper() {
   const { data: session } = useSession();
   const workflowNav = useWorkflowNav();
   const router = useRouter();
-  const pathname = usePathname();
   const currentWorkflowName = useAtomValue(currentWorkflowNameAtom);
   const currentWorkflowId = useAtomValue(currentWorkflowIdAtom);
   const clearWorkflow = useSetAtom(clearWorkflowAtom);
