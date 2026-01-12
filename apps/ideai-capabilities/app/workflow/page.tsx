@@ -11,7 +11,7 @@
 
 import { useAtomValue, useSetAtom } from "jotai";
 import { nanoid } from "nanoid";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useRef } from "react";
 import { toast } from "sonner";
 import { api } from "@/lib/api-client";
@@ -44,6 +44,7 @@ function createDefaultTriggerNode(triggerType: "Manual" | "Webhook" | "Schedule"
 
 export default function WorkflowPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { data: session, isPending } = useSession(); // Use reactive session hook
   const nodes = useAtomValue(nodesAtom);
   const edges = useAtomValue(edgesAtom);
@@ -63,12 +64,23 @@ export default function WorkflowPage() {
     session.user.name === "Anonymous" ||
     session.user.email?.startsWith("temp-");
 
-  // Handler to add the first node (replaces the "add" node)
+  // Handler to add the first node (creates workflow)
   const handleAddNode = useCallback((triggerType: "Manual" | "Webhook" | "Schedule" = "Manual") => {
     const newNode: WorkflowNode = createDefaultTriggerNode(triggerType);
-    // Replace all nodes (removes the "add" node)
+    // Set nodes - this will trigger workflow creation
     setNodes([newNode]);
   }, [setNodes]);
+
+  // Check for trigger type from URL param (from landing page)
+  useEffect(() => {
+    const triggerParam = searchParams?.get("trigger");
+    if (triggerParam && ["Manual", "Webhook", "Schedule"].includes(triggerParam)) {
+      const newNode = createDefaultTriggerNode(triggerParam as "Manual" | "Webhook" | "Schedule");
+      setNodes([newNode]);
+      // Remove trigger param from URL
+      router.replace("/workflow", { scroll: false });
+    }
+  }, [searchParams, setNodes, router]);
 
   // Redirect to landing page if not authenticated
   useEffect(() => {

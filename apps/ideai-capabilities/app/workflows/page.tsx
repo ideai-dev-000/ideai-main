@@ -1,73 +1,41 @@
 /**
- * @fileoverview Workflows page - Shows card for new workflow
+ * @fileoverview Workflows Landing Page - Shows card to start new workflow
  *
- * @module WorkflowsPage
+ * @module WorkflowsLandingPage
  * @description
- * Shows the card directly on /workflows route (same as /workflow)
+ * Landing page for workflows - shows the card centered, user can click to create a new workflow
+ * This is the entry point when clicking "Workflows" in the header
  */
 
 "use client";
 
-import { useAtomValue, useSetAtom } from "jotai";
-import { nanoid } from "nanoid";
+import { useSetAtom } from "jotai";
 import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useRef } from "react";
-import { toast } from "sonner";
-import { api } from "@/lib/api-client";
+import { useEffect } from "react";
 import { useSession } from "@/lib/auth-client";
 import {
+  clearWorkflowAtom,
   currentWorkflowNameAtom,
   edgesAtom,
   hasSidebarBeenShownAtom,
-  isTransitioningFromHomepageAtom,
   nodesAtom,
-  type WorkflowNode,
 } from "@/lib/workflow-store";
 import { AddNode } from "@/components/workflow/nodes/add-node";
 
-// Helper function to create a default trigger node
-function createDefaultTriggerNode(triggerType: "Manual" | "Webhook" | "Schedule" = "Manual") {
-  return {
-    id: nanoid(),
-    type: "trigger" as const,
-    position: { x: 0, y: 0 },
-    data: {
-      label: "",
-      description: "",
-      type: "trigger" as const,
-      config: { triggerType },
-      status: "idle" as const,
-    },
-  };
-}
-
-export default function WorkflowsPage() {
+export default function WorkflowsLandingPage() {
   const router = useRouter();
   const { data: session, isPending } = useSession();
-  const nodes = useAtomValue(nodesAtom);
-  const edges = useAtomValue(edgesAtom);
+  const clearWorkflow = useSetAtom(clearWorkflowAtom);
   const setNodes = useSetAtom(nodesAtom);
   const setEdges = useSetAtom(edgesAtom);
   const setCurrentWorkflowName = useSetAtom(currentWorkflowNameAtom);
   const setHasSidebarBeenShown = useSetAtom(hasSidebarBeenShownAtom);
-  const setIsTransitioningFromHomepage = useSetAtom(
-    isTransitioningFromHomepageAtom,
-  );
-  const hasCreatedWorkflowRef = useRef(false);
-  const currentWorkflowName = useAtomValue(currentWorkflowNameAtom);
 
   // Check if user is authenticated (not anonymous)
   const isAnonymous =
     !session?.user ||
     session.user.name === "Anonymous" ||
     session.user.email?.startsWith("temp-");
-
-  // Handler to add the first node (replaces the "add" node)
-  const handleAddNode = useCallback((triggerType: "Manual" | "Webhook" | "Schedule" = "Manual") => {
-    const newNode: WorkflowNode = createDefaultTriggerNode(triggerType);
-    // Replace all nodes (removes the "add" node)
-    setNodes([newNode]);
-  }, [setNodes]);
 
   // Redirect to landing page if not authenticated
   useEffect(() => {
@@ -76,142 +44,39 @@ export default function WorkflowsPage() {
     }
   }, [isPending, isAnonymous, router]);
 
-  // Reset sidebar animation state when on workflow page
-  useEffect(() => {
-    if (!isAnonymous) {
-      setHasSidebarBeenShown(false);
-    }
-  }, [setHasSidebarBeenShown, isAnonymous]);
-
-  // Update page title when workflow name changes
-  useEffect(() => {
-    if (!isAnonymous) {
-      document.title = `${currentWorkflowName} - IdeaI Capabilities`;
-    }
-  }, [currentWorkflowName, isAnonymous]);
-
-  // Track previous node count to detect when first real node is added
-  const prevNodeCountRef = useRef(0);
-  const hasInitializedRef = useRef(false);
-
-  // Initialize workflow state on mount (only once)
-  useEffect(() => {
-    if (isAnonymous || hasInitializedRef.current) {
-      return;
-    }
-    
-    // Clear any existing nodes/edges and set name
-    setNodes([]);
-    setEdges([]);
-    setCurrentWorkflowName("New Workflow");
-    hasCreatedWorkflowRef.current = false;
-    prevNodeCountRef.current = 0;
-    hasInitializedRef.current = true;
-  }, [isAnonymous, setNodes, setEdges, setCurrentWorkflowName]);
-
-  // Create workflow when first real node is added (only once)
+  // Initialize landing page state
   useEffect(() => {
     if (isAnonymous) {
       return;
     }
 
-    // Filter out the placeholder "add" node
-    const realNodes = nodes.filter((node) => node.type !== "add");
-    const currentNodeCount = realNodes.length;
-    const prevNodeCount = prevNodeCountRef.current;
+    // Clear workflow state and reset sidebar
+    clearWorkflow();
+    setNodes([]);
+    setEdges([]);
+    setCurrentWorkflowName("New Workflow");
+    setHasSidebarBeenShown(false);
+  }, [isAnonymous, clearWorkflow, setNodes, setEdges, setCurrentWorkflowName, setHasSidebarBeenShown]);
 
-    // Update ref for next comparison
-    prevNodeCountRef.current = currentNodeCount;
-
-    // Only create when transitioning from 0 to 1+ nodes AND haven't created yet
-    const shouldCreate =
-      prevNodeCount === 0 &&
-      currentNodeCount > 0 &&
-      !hasCreatedWorkflowRef.current;
-
-    if (!shouldCreate) {
-      return;
-    }
-
-    // Mark as created immediately to prevent race conditions
-    hasCreatedWorkflowRef.current = true;
-
-    const createWorkflowAndRedirect = async () => {
-      try {
-        // Check if user is authenticated (not anonymous)
-        const isAnonymousCheck =
-          !session?.user ||
-          session.user.name === "Anonymous" ||
-          session.user.email?.startsWith("temp-");
-
-        if (isAnonymousCheck) {
-          toast.error("Please sign in to create workflows");
-          // Reset the flag so user can try again after signing in
-          hasCreatedWorkflowRef.current = false;
-          prevNodeCountRef.current = 0;
-          return;
-        }
-
-        // Create workflow with all real nodes
-        const newWorkflow = await api.workflow.create({
-          name: "Untitled Workflow",
-          description: "",
-          nodes: realNodes,
-          edges,
-        });
-
-        // Set flags to indicate we're coming from workflow page (for sidebar animation)
-        sessionStorage.setItem("animate-sidebar", "true");
-        setIsTransitioningFromHomepage(true);
-
-        // Redirect to the workflow detail page
-        console.log("[WorkflowsPage] Navigating to workflow detail page");
-        router.replace(`/workflow/workflows/${newWorkflow.id}`);
-      } catch (error) {
-        console.error("Failed to create workflow:", error);
-        toast.error("Failed to create workflow");
-        // Reset flags on error so user can try again
-        hasCreatedWorkflowRef.current = false;
-        prevNodeCountRef.current = 0;
-      }
-    };
-
-    createWorkflowAndRedirect();
-    // Only depend on node count change, not the full nodes array
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    nodes.length, // Only track length, not full array
-    edges.length, // Only track length, not full array
-    router,
-    setIsTransitioningFromHomepage,
-    session?.user?.id,
-    session?.user?.name,
-    session?.user?.email,
-    isAnonymous,
-  ]);
-
-  // Show card directly when no nodes exist (not as React Flow node)
-  const realNodes = nodes.filter((node) => node.type !== "add");
-  const showCard = realNodes.length === 0;
+  // Handler to navigate to workflow creation page
+  const handleCreateWorkflow = (triggerType?: "Manual" | "Webhook" | "Schedule") => {
+    // Navigate to /workflow which will handle creating the workflow with the trigger type
+    router.push(triggerType ? `/workflow?trigger=${triggerType}` : "/workflow");
+  };
 
   if (isPending || isAnonymous) {
     return null;
   }
 
-  // Render card directly on page when empty (bypasses React Flow)
+  // Render card centered on landing page
   // z-[20] to be above canvas (z-[15]) but below header (z-[60])
-  if (showCard) {
-    return (
-      <div className="pointer-events-auto fixed inset-0 z-[20] flex items-center justify-center">
-        <AddNode
-          data={{
-            onClick: handleAddNode,
-          }}
-        />
-      </div>
-    );
-  }
-
-  // Canvas and toolbar are rendered by PersistentCanvas in the layout
-  return null;
+  return (
+    <div className="pointer-events-auto fixed inset-0 z-[20] flex items-center justify-center">
+      <AddNode
+        data={{
+          onClick: handleCreateWorkflow,
+        }}
+      />
+    </div>
+  );
 }

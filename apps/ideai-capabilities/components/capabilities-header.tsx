@@ -37,7 +37,7 @@ const mainNav: NavItem[] = [
   { label: "Home", href: "/", icon: <Home className="h-4 w-4" /> },
   {
     label: "Workflows",
-    href: "/workflow",
+    href: "/workflows",
     icon: <Workflow className="h-4 w-4" />,
     basePath: "/workflow",
     showMenu: true,
