@@ -99,6 +99,36 @@ interface IdeAISideMenuSectionProps {
 
 
 /**
+ * New Workflow Section - Button to create a new workflow
+ */
+export function IdeAISideMenuNewWorkflow({
+  onCreateWorkflow,
+  className,
+}: {
+  onCreateWorkflow?: () => void | Promise<void>;
+  className?: string;
+}) {
+  if (!onCreateWorkflow) return null;
+
+  return (
+    <div className={cn("ideai-side-menu-section", className)}>
+      <div className="ideai-side-menu-section-content">
+        <div className="ideai-side-menu-new-card">
+          <button
+            type="button"
+            className="ideai-side-menu-new-button"
+            onClick={onCreateWorkflow}
+          >
+            <span className="ideai-side-menu-new-icon">+</span>
+            <span className="ideai-side-menu-new-text">New Workflow</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/**
  * Workflows Section - Shows list of workflows from API
  */
 export function IdeAISideMenuWorkflows({
@@ -192,20 +222,6 @@ export function IdeAISideMenuWorkflows({
       </button>
       {isExpanded && (
         <div className="ideai-side-menu-section-content">
-          {/* New Workflow Card */}
-          {onCreateWorkflow && (
-            <div className="ideai-side-menu-new-card">
-              <button
-                type="button"
-                className="ideai-side-menu-new-button"
-                onClick={onCreateWorkflow}
-              >
-                <span className="ideai-side-menu-new-icon">+</span>
-                <span className="ideai-side-menu-new-text">New Workflow</span>
-              </button>
-            </div>
-          )}
-
           {/* Workflows List */}
           {workflowItems.length === 0 ? (
             <div className="ideai-side-menu-empty">No workflows found</div>

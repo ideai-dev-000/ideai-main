@@ -232,20 +232,16 @@ export function IdeAISideMenuWrapper() {
         onClearWorkflow={handleClearWorkflow}
         workflowsTitle={workflowsTitle}
       >
-            {/* Status card at top - shows workflow status and navigation - sticky */}
-            <div className="sticky top-0 z-10 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700 -mx-0 px-4 py-3">
-              <WorkflowStatusCard />
-            </div>
+        {/* Area 1: Status card at top - shows workflow status - sticky */}
+        <div className="sticky top-0 z-10 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700 -mx-0 px-4 py-3">
+          <WorkflowStatusCard />
+        </div>
 
-        {/* Cards section - ready for custom cards */}
-        <IdeAISideMenuCards title="Quick Actions">
-          {/* Custom cards can be added here */}
-        </IdeAISideMenuCards>
+        {/* Area 2: New Workflow section - above the list */}
+        <IdeAISideMenuNewWorkflow onCreateWorkflow={handleCreateWorkflow} />
 
-        {/* Controls section - ready for customization controls */}
-        <IdeAISideMenuControls title="Controls">
-          {/* Custom controls can be added here */}
-        </IdeAISideMenuControls>
+        {/* Area 3: Workflows list section */}
+        {/* Workflows list is auto-populated by IdeAISideMenu component */}
       </IdeAISideMenu>
     </div>
   );
