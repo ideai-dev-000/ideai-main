@@ -580,9 +580,9 @@ export const PanelInner = () => {
         }
       }
 
-      // Only update immediately if we're not waiting for demo data
-      // (demo mode updates are handled in the fetch callback above)
-      if (key !== "actionType" || !demoMode) {
+      // Update config for non-actionType changes, or when demo mode is OFF
+      // (actionType changes are handled above with immediate update + async demo population)
+      if (key !== "actionType") {
         updateNodeData({ id: selectedNode.id, data: { config: newConfig } });
       }
 
