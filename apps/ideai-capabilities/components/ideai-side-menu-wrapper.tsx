@@ -18,6 +18,7 @@ import {
   IdeAISideMenu,
   IdeAISideMenuCards,
   IdeAISideMenuControls,
+  IdeAISideMenuNewWorkflow,
   type WorkflowItem,
 } from "@repo/ui";
 import { useWorkflowNav } from "@/components/nav/use-workflow-nav";
