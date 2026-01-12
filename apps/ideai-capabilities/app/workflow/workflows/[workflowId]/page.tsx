@@ -32,6 +32,7 @@ import {
   isSidebarCollapsedAtom,
   isWorkflowOwnerAtom,
   nodesAtom,
+  propertiesPanelActiveTabAtom,
   rightPanelWidthAtom,
   selectedExecutionIdAtom,
   selectedNodeAtom,
