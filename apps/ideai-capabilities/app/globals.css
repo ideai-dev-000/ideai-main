@@ -127,30 +127,8 @@
   }
 }
 
-/* Edge styles are handled inline by edge component - no overrides needed */
+/* Edge styles - minimal base, styles handled by edge-styles.ts */
 
-/* Base edge path styles */
 .react-flow__edge-path {
   fill: none !important;
-  stroke-width: 2;
-  stroke: #d0d7de; /* Default gray - no !important so inline styles can override */
-}
-
-.react-flow__edge.selected .react-flow__edge-path {
-  stroke-width: 3;
-  stroke: #8b949e; /* Muted foreground for selected */
-}
-
-/* Green edges in dash preview mode - use !important to override defaults */
-.react-flow__edge-path.edge-dash-mode,
-.react-flow__edge.edge-dash-mode .react-flow__edge-path {
-  stroke: #22c55e !important; /* Green for dash preview */
-  stroke-width: 3.5 !important; /* Thicker for preview */
-}
-
-/* Green edges for successfully traversed paths */
-.react-flow__edge-path.edge-success,
-.react-flow__edge.edge-success .react-flow__edge-path {
-  stroke: #22c55e !important; /* Green for successful traversal */
-  stroke-width: 3.5 !important; /* Thicker for successful */
 }

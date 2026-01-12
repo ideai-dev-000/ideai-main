@@ -1,66 +1,55 @@
 /**
- * @fileoverview Toggle component for switching between edge animation modes
+ * @fileoverview Toggle component for switching between edge style presets
  *
  * @module EdgeAnimationToggle
  * @description
- * 3-button toggle group to switch between different edge animation modes:
- * - Flowing Dots: Animated dots flowing along the edge
- * - Dashed Flow: Animated dashed lines
- * - Solid Pulse: Pulsing solid line
+ * 5-button toggle group to switch between edge style presets.
+ * Each preset has different color, width, and animation combinations.
  */
 
 "use client";
 
 import { useAtom } from "jotai";
-import { Circle, Minus, Zap } from "lucide-react";
+import { Circle, Minus, Zap, TrendingUp, Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { edgeAnimationModeAtom, type EdgeAnimationMode } from "@/lib/workflow-store";
+import {
+  edgeStylePresetAtom,
+  type EdgeStylePreset,
+} from "@/lib/workflow-store";
+import { EDGE_STYLE_PRESETS } from "@/lib/edge-styles";
 
-const animationModes: Array<{
-  mode: EdgeAnimationMode;
-  label: string;
+const stylePresets: Array<{
+  preset: EdgeStylePreset;
   icon: React.ComponentType<{ className?: string }>;
-  description: string;
 }> = [
-  {
-    mode: "flowing-dots",
-    label: "Dots",
-    icon: Circle,
-    description: "Flowing dots animation",
-  },
-  {
-    mode: "dashed-flow",
-    label: "Dash",
-    icon: Minus,
-    description: "Animated dashed flow",
-  },
-  {
-    mode: "solid-pulse",
-    label: "Pulse",
-    icon: Zap,
-    description: "Solid pulsing line",
-  },
+  { preset: "flowing-dots", icon: Circle },
+  { preset: "dashed-flow", icon: Minus },
+  { preset: "solid-pulse", icon: Zap },
+  { preset: "bold-success", icon: TrendingUp },
+  { preset: "subtle-guide", icon: Eye },
 ];
 
 export function EdgeAnimationToggle() {
-  const [animationMode, setAnimationMode] = useAtom(edgeAnimationModeAtom);
+  const [preset, setPreset] = useAtom(edgeStylePresetAtom);
 
   return (
     <div className="flex items-center gap-1 rounded-md border border-slate-200 bg-white p-1 shadow-sm dark:border-slate-700 dark:bg-slate-800">
-      {animationModes.map(({ mode, label, icon: Icon, description }) => (
-        <Button
-          key={mode}
-          variant={animationMode === mode ? "default" : "ghost"}
-          size="sm"
-          className="h-8 px-3 text-xs"
-          onClick={() => setAnimationMode(mode)}
-          title={description}
-          aria-label={description}
-        >
-          <Icon className="mr-1.5 h-3.5 w-3.5" />
-          {label}
-        </Button>
-      ))}
+      {stylePresets.map(({ preset: presetKey, icon: Icon }) => {
+        const config = EDGE_STYLE_PRESETS[presetKey];
+        return (
+          <Button
+            key={presetKey}
+            variant={preset === presetKey ? "default" : "ghost"}
+            size="sm"
+            className="h-8 px-2.5 text-xs"
+            onClick={() => setPreset(presetKey)}
+            title={config.description}
+            aria-label={config.description}
+          >
+            <Icon className="h-3.5 w-3.5" />
+          </Button>
+        );
+      })}
     </div>
   );
 }

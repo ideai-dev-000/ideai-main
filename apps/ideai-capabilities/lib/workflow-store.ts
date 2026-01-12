@@ -45,9 +45,14 @@ export const hasSidebarBeenShownAtom = atom<boolean>(false);
 export const isSidebarCollapsedAtom = atom<boolean>(false);
 export const isTransitioningFromHomepageAtom = atom<boolean>(false);
 
-// Edge animation mode: "flowing-dots" | "dashed-flow" | "solid-pulse"
-export type EdgeAnimationMode = "flowing-dots" | "dashed-flow" | "solid-pulse";
-export const edgeAnimationModeAtom = atom<EdgeAnimationMode>("flowing-dots");
+// Edge style preset (5 distinct combinations)
+import type { EdgeStylePreset } from "./edge-styles";
+export type { EdgeStylePreset };
+export const edgeStylePresetAtom = atom<EdgeStylePreset>("flowing-dots");
+
+// Legacy alias for backwards compatibility
+export type EdgeAnimationMode = EdgeStylePreset;
+export const edgeAnimationModeAtom = edgeStylePresetAtom;
 
 // Tracks nodes that are pending integration auto-select check
 // Don't show "missing integration" warning for these nodes
