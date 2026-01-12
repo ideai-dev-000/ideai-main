@@ -93,21 +93,21 @@ export default function WorkflowPage() {
 
   // Track previous node count to detect when first real node is added
   const prevNodeCountRef = useRef(0);
+  const hasInitializedRef = useRef(false);
 
-  // Initialize workflow state on mount
+  // Initialize workflow state on mount (only once)
   useEffect(() => {
-    if (isAnonymous) {
+    if (isAnonymous || hasInitializedRef.current) {
       return;
     }
     
     // Clear any existing nodes/edges and set name
-    if (nodes.length > 0 || edges.length > 0) {
-      setNodes([]);
-      setEdges([]);
-    }
+    setNodes([]);
+    setEdges([]);
     setCurrentWorkflowName("New Workflow");
     hasCreatedWorkflowRef.current = false;
     prevNodeCountRef.current = 0;
+    hasInitializedRef.current = true;
   }, [isAnonymous, setNodes, setEdges, setCurrentWorkflowName]);
 
   // Create workflow when first real node is added (only once)

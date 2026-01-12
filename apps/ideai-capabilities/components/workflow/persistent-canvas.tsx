@@ -17,7 +17,7 @@ export function PersistentCanvas() {
   // Show canvas on workflow pages, but only if user is authenticated
   const showCanvas =
     !isAnonymous &&
-    (pathname === "/workflow" || pathname.startsWith("/workflow/workflows/"));
+    (pathname === "/workflow" || pathname === "/workflows" || pathname.startsWith("/workflow/workflows/"));
 
   if (!showCanvas) {
     return null;
