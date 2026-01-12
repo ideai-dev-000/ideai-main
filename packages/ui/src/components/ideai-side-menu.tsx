@@ -957,6 +957,9 @@ export function IdeAISideMenu({
         </button>
       </div>
       <div className="ideai-side-menu-body">
+        {/* Custom Sections (Cards, Controls, Blocks, etc.) - render first for status card */}
+        {children}
+
         {/* Content Mode Toggle (Workflows/Vibes) */}
         {showModeToggle && (
           <ContentModeToggle
@@ -970,9 +973,6 @@ export function IdeAISideMenu({
 
         {/* Auto-populated Vibes Section */}
         {vibesContent}
-
-        {/* Custom Sections (Cards, Controls, Blocks, etc.) */}
-        {children}
       </div>
     </div>
   );

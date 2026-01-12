@@ -366,9 +366,9 @@ export function IdeAISideMenuWrapper() {
         onContentModeChange={setContentMode}
       >
         {/* Status card at top - shows workflow status and navigation */}
-        <div className="ideai-side-menu-section">
+        <IdeAISideMenuCards title="">
           <WorkflowStatusCard />
-        </div>
+        </IdeAISideMenuCards>
 
         {/* Cards section - ready for custom cards */}
         <IdeAISideMenuCards title="Quick Actions">
