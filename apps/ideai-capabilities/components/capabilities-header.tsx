@@ -86,7 +86,7 @@ export function CapabilitiesHeader() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 border-b bg-white/95 backdrop-blur-sm transition-all dark:bg-slate-950/95 ${
+      className={`fixed top-0 left-0 right-0 z-[60] border-b bg-white/95 backdrop-blur-sm transition-all dark:bg-slate-950/95 ${
         isScrolled
           ? "border-slate-200 dark:border-slate-800"
           : "border-transparent"
@@ -123,7 +123,7 @@ export function CapabilitiesHeader() {
           </nav>
 
           {/* Right Side */}
-          <div className="relative z-50 flex items-center gap-2">
+          <div className="relative z-[60] flex items-center gap-2">
             {/* Demo Mode Toggle - only show on workflow pages */}
             {isWorkflowPage && (
               <div className="hidden md:flex items-center gap-2 rounded-md border border-slate-200 bg-white px-3 py-1.5 shadow-sm dark:border-slate-700 dark:bg-slate-800">

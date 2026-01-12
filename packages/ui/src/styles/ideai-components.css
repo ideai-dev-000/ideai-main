@@ -1278,7 +1278,7 @@
   @apply bg-white dark:bg-slate-900;
   @apply border border-slate-200 dark:border-slate-700;
   @apply rounded-lg shadow-lg;
-  @apply z-50;
+  z-index: 9999 !important;
   @apply overflow-hidden;
 }
 
