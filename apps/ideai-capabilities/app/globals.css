@@ -79,71 +79,30 @@
 /* Base styles are handled by globals.css from @repo/ui */
 /* Only add app-specific overrides here if needed */
 
+/* Ensure React Flow canvas can receive clicks on workflow pages */
+.react-flow {
+  pointer-events: auto !important;
+}
 
-/* Animated edge styles for workflow connections */
+.react-flow__pane,
+.react-flow__nodes,
+.react-flow__edges,
+.react-flow__node {
+  pointer-events: auto !important;
+}
+
+.react-flow__handle {
+  pointer-events: auto !important;
+}
+
+/* Original dashdraw animation from workflow-builder-hack */
 @keyframes dashdraw {
-  to {
-    stroke-dashoffset: -24;
+  from {
+    stroke-dashoffset: 10;
   }
-}
-
-/* Enhanced edge visibility for better contrast */
-.react-flow__edge-path {
-  transition: stroke 0.2s ease, stroke-width 0.2s ease;
-}
-
-.react-flow__edge.selected .react-flow__edge-path {
-  stroke: hsl(var(--primary)) !important;
-  stroke-width: 3 !important;
-}
-
-/* Ensure edges are visible on all backgrounds - use foreground color with opacity */
-.react-flow__edge:not(.selected) .react-flow__edge-path {
-  stroke: hsl(var(--foreground) / 0.5) !important;
-}
-
-.dark .react-flow__edge:not(.selected) .react-flow__edge-path {
-  stroke: hsl(var(--foreground) / 0.6) !important;
-}
-
-/* Animated edges - apply animation to edges with type="animated" */
-.react-flow__edge[data-type="animated"] .react-flow__edge-path {
-  animation: dashdraw 1s linear infinite;
-  stroke-dasharray: 8 4;
-  stroke-dashoffset: 0;
-}
-
-/* Animated edge styles for workflow connections */
-@keyframes dashdraw {
   to {
-    stroke-dashoffset: -24;
+    stroke-dashoffset: 0;
   }
-}
-
-/* Enhanced edge visibility for better contrast */
-.react-flow__edge-path {
-  transition: stroke 0.2s ease, stroke-width 0.2s ease;
-}
-
-.react-flow__edge.selected .react-flow__edge-path {
-  stroke: var(--primary) !important;
-  stroke-width: 3 !important;
-}
-
-/* Ensure edges are visible on all backgrounds - use foreground color with opacity */
-.react-flow__edge:not(.selected) .react-flow__edge-path {
-  stroke: color-mix(in oklch, var(--foreground) 50%, transparent) !important;
-}
-
-.dark .react-flow__edge:not(.selected) .react-flow__edge-path {
-  stroke: color-mix(in oklch, var(--foreground) 60%, transparent) !important;
-}
-
-/* Animated edges - apply animation to edges with type="animated" */
-.react-flow__edge[data-type="animated"] .react-flow__edge-path {
-  animation: dashdraw 1s linear infinite;
-  stroke-dasharray: 8 4;
-  stroke-dashoffset: 0;
 }
 
 /* Edge animations - three different modes */
@@ -158,53 +117,30 @@
   }
 }
 
-.animated-edge-flowing-dots {
-  stroke-dasharray: 3 9;
-  filter: drop-shadow(0 0 2px currentColor);
-  stroke-dashoffset: 0;
-  animation: flowing-dots 2s linear infinite;
-}
-
-/* Dashed Flow: Animated dashed lines */
-@keyframes dashed-flow {
-  to {
-    stroke-dashoffset: -24;
-  }
-}
-
-.animated-edge-dashed-flow {
-  stroke-dasharray: 8 4;
-  stroke-dashoffset: 0;
-  animation: dashed-flow 1s linear infinite;
-}
-
 /* Solid Pulse: Pulsing solid line */
 @keyframes solid-pulse {
   0%, 100% {
     opacity: 0.5;
-    stroke-width: 2.5;
-  }
-  50% {
-    opacity: 1;
-    stroke-width: 3.5;
-  }
-}
-
-.animated-edge-solid-pulse {
-  stroke-dasharray: none;
-  animation: solid-pulse 1.5s ease-in-out infinite;
-}
-
-/* Temporary edges (being drawn) - vibrant primary color */
-.temporary-edge {
-  animation: temporary-pulse 1s ease-in-out infinite;
-}
-
-@keyframes temporary-pulse {
-  0%, 100% {
-    opacity: 0.6;
   }
   50% {
     opacity: 1;
   }
+}
+
+/* Ensure edges are visible - use simple border color */
+.react-flow__edge-path {
+  stroke: var(--border) !important;
+}
+
+.react-flow__edge.selected .react-flow__edge-path {
+  stroke: var(--muted-foreground) !important;
+  stroke-width: 2.5 !important;
+}
+
+.dark .react-flow__edge-path {
+  stroke: var(--border) !important;
+}
+
+.dark .react-flow__edge.selected .react-flow__edge-path {
+  stroke: var(--muted-foreground) !important;
 }
