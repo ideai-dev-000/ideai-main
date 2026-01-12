@@ -66,9 +66,12 @@ export function isAiGatewayManagedKeysEnabled(): boolean {
   return process.env.ENABLE_AI_GATEWAY_MANAGED_KEYS === "true";
 }
 
-// Build plugins array conditionally
+/**
+ * Build plugins array with type-safe conditional plugins
+ * Uses spread operator pattern to maintain proper TypeScript inference
+ */
 function buildPlugins() {
-  const plugins = [
+  return [
     anonymous({
       async onLinkAccount(data) {
         // When an anonymous user links to a real account, migrate their data
@@ -110,64 +113,122 @@ function buildPlugins() {
         }
       },
     }),
-  ];
+    // Conditionally add Vercel OAuth plugin using spread operator for type safety
+    ...(process.env.VERCEL_CLIENT_ID && process.env.VERCEL_CLIENT_SECRET
+      ? [
+          genericOAuth({
+            config: [
+              {
+                providerId: "vercel",
+                clientId: process.env.VERCEL_CLIENT_ID,
+                clientSecret: process.env.VERCEL_CLIENT_SECRET,
+                authorizationUrl: "https://vercel.com/oauth/authorize",
+                tokenUrl: "https://api.vercel.com/login/oauth/token",
+                userInfoUrl: "https://api.vercel.com/login/oauth/userinfo",
+                // Include read-write:team scope when AI Gateway User Keys is enabled
+                scopes: isAiGatewayManagedKeysEnabled()
+                  ? ["openid", "email", "profile", "read-write:team"]
+                  : ["openid", "email", "profile"],
+                discoveryUrl: undefined,
+                pkce: true,
+                getUserInfo: async (tokens) => {
+                  const response = await fetch(
+                    "https://api.vercel.com/login/oauth/userinfo",
+                    {
+                      headers: {
+                        Authorization: `Bearer ${tokens.accessToken}`,
+                      },
+                    },
+                  );
 
-  // Add Vercel OAuth if configured
-  if (process.env.VERCEL_CLIENT_ID) {
-    plugins.push(
-      genericOAuth({
-        config: [
-          {
-            providerId: "vercel",
-            clientId: process.env.VERCEL_CLIENT_ID,
-            clientSecret: process.env.VERCEL_CLIENT_SECRET || "",
-            authorizationUrl: "https://vercel.com/oauth/authorize",
-            tokenUrl: "https://api.vercel.com/login/oauth/token",
-            userInfoUrl: "https://api.vercel.com/login/oauth/userinfo",
-            // Include read-write:team scope when AI Gateway User Keys is enabled
-            scopes: isAiGatewayManagedKeysEnabled()
-              ? ["openid", "email", "profile", "read-write:team"]
-              : ["openid", "email", "profile"],
-            discoveryUrl: undefined,
-            pkce: true,
-            getUserInfo: async (tokens) => {
-              const response = await fetch(
-                "https://api.vercel.com/login/oauth/userinfo",
-                {
-                  headers: {
-                    Authorization: `Bearer ${tokens.accessToken}`,
-                  },
+                  if (!response.ok) {
+                    throw new Error(
+                      `Vercel OAuth userinfo request failed: ${response.status} ${response.statusText}`,
+                    );
+                  }
+
+                  const profile = await response.json();
+                  console.log("[Vercel OAuth] userinfo response:", profile);
+
+                  // Validate required fields
+                  if (!profile.sub || !profile.email) {
+                    throw new Error(
+                      "Invalid user profile: missing required fields (sub, email)",
+                    );
+                  }
+
+                  return {
+                    id: profile.sub,
+                    email: profile.email,
+                    name: profile.name ?? profile.preferred_username ?? "",
+                    emailVerified: profile.email_verified ?? true,
+                    image: profile.picture ?? null,
+                  };
                 },
-              );
-              const profile = await response.json();
-              console.log("[Vercel OAuth] userinfo response:", profile);
-              return {
-                id: profile.sub,
-                email: profile.email,
-                name: profile.name ?? profile.preferred_username,
-                emailVerified: profile.email_verified ?? true,
-                image: profile.picture,
-              };
-            },
-          },
-        ],
-      }) as any, // Type cast to avoid TypeScript error with better-auth plugin types
+              },
+            ],
+          }),
+        ]
+      : []),
+  ];
+}
+
+/**
+ * Validate required authentication configuration
+ * Throws error if critical security configuration is missing
+ */
+function validateAuthConfig() {
+  const secret = process.env.BETTER_AUTH_SECRET;
+
+  if (!secret) {
+    throw new Error(
+      "BETTER_AUTH_SECRET is required for session encryption. " +
+        "Generate with: openssl rand -base64 32",
     );
   }
 
-  return plugins;
+  if (secret.length < 32) {
+    throw new Error(
+      "BETTER_AUTH_SECRET must be at least 32 characters for security. " +
+        "Generate with: openssl rand -base64 32",
+    );
+  }
+
+  // Validate OAuth configuration if Vercel OAuth is enabled
+  if (process.env.VERCEL_CLIENT_ID && !process.env.VERCEL_CLIENT_SECRET) {
+    throw new Error(
+      "VERCEL_CLIENT_SECRET is required when VERCEL_CLIENT_ID is set",
+    );
+  }
+
+  // Validate social provider configurations
+  if (process.env.GITHUB_CLIENT_ID && !process.env.GITHUB_CLIENT_SECRET) {
+    throw new Error(
+      "GITHUB_CLIENT_SECRET is required when GITHUB_CLIENT_ID is set",
+    );
+  }
+
+  if (process.env.GOOGLE_CLIENT_ID && !process.env.GOOGLE_CLIENT_SECRET) {
+    throw new Error(
+      "GOOGLE_CLIENT_SECRET is required when GOOGLE_CLIENT_ID is set",
+    );
+  }
 }
+
+// Validate configuration before creating auth instance
+validateAuthConfig();
 
 // Create and export the auth instance
 export const auth = betterAuth({
   baseURL: getBaseURL(),
+  secret: process.env.BETTER_AUTH_SECRET, // Required for session encryption and JWT signing
   database: drizzleAdapter(db, {
     provider: "pg",
     schema,
   }),
   emailAndPassword: {
     enabled: true,
-    requireEmailVerification: false,
+    requireEmailVerification: false, // Can be enabled in production for enhanced security
   },
   socialProviders: {
     github: {

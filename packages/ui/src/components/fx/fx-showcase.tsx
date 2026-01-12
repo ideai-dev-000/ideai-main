@@ -543,7 +543,12 @@ export function FXShowcase() {
                     library={example.libraryId as any}
                   />
                 ) : example.type === "drawing" && example.drawingExample ? (
-                  <DrawingCard example={example.drawingExample} />
+                  <DrawingCard
+                    example={{
+                      ...example.drawingExample,
+                      libraryId: example.libraryId,
+                    }}
+                  />
                 ) : null}
               </div>
             ))}
