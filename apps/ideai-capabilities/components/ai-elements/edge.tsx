@@ -37,8 +37,8 @@ const Temporary = ({
       path={edgePath}
       style={{
         stroke: selected 
-          ? "oklch(0.556 0 0)" // var(--muted-foreground) - explicit fallback
-          : "oklch(0.922 0 0)", // var(--border) - explicit fallback for light mode
+          ? "#8b949e" // Muted foreground - visible on dark
+          : "#d0d7de", // Border - visible on dark background
         strokeWidth: 2,
         strokeDasharray: "5, 5",
         fill: "none",
@@ -135,11 +135,11 @@ const Animated = ({ id, source, target, style, selected }: EdgeProps) => {
 
   // Different styles based on animation mode
   const getEdgeStyles = () => {
-    const baseStyle = {
+      const baseStyle = {
       ...style,
       stroke: selected 
-        ? "oklch(0.556 0 0)" // var(--muted-foreground) - explicit fallback
-        : "oklch(0.922 0 0)", // var(--border) - explicit fallback for light mode
+        ? "#8b949e" // Muted foreground - visible on dark
+        : "#d0d7de", // Border - visible on dark background
       strokeWidth: 2,
       fill: "none",
     };
