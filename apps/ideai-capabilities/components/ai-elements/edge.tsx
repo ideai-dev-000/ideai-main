@@ -36,7 +36,7 @@ const Temporary = ({
       id={id}
       path={edgePath}
       style={{
-        stroke: selected ? "var(--muted-foreground)" : "var(--primary)",
+        stroke: selected ? "var(--muted-foreground)" : "var(--border)",
         strokeDasharray: "5, 5",
       }}
     />
@@ -160,7 +160,7 @@ const Animated = ({ id, source, target, style, selected }: EdgeProps) => {
       default:
         return {
           ...baseStyle,
-          strokeDasharray: "5",
+          strokeDasharray: 5,
           animation: "dashdraw 0.5s linear infinite",
         };
     }
