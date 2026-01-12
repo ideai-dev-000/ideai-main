@@ -32,6 +32,7 @@ import {
   hasUnsavedChangesAtom,
 } from "@/lib/workflow-store";
 import { useSetAtom } from "jotai";
+import { WorkflowStatusCard } from "@/components/workflow/workflow-status-card";
 
 /**
  * IdeaI Side Menu Wrapper
