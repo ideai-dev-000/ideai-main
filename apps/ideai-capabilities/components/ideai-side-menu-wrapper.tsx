@@ -366,10 +366,10 @@ export function IdeAISideMenuWrapper() {
         contentMode={contentMode}
         onContentModeChange={setContentMode}
       >
-        {/* Status card at top - shows workflow status and navigation */}
-        <IdeAISideMenuCards title="">
-          <WorkflowStatusCard />
-        </IdeAISideMenuCards>
+            {/* Status card at top - shows workflow status and navigation - sticky */}
+            <div className="sticky top-0 z-10 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700 -mx-0 px-4 py-3">
+              <WorkflowStatusCard />
+            </div>
 
         {/* Cards section - ready for custom cards */}
         <IdeAISideMenuCards title="Quick Actions">

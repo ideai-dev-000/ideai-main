@@ -77,7 +77,7 @@ export function WorkflowStatusCard() {
   const edgeCount = edges.length;
 
   return (
-    <div className="space-y-3 border-b border-slate-200 pb-3 dark:border-slate-700">
+    <div className="space-y-3">
       {/* Header */}
       <div className="flex items-center justify-between px-1">
         <h3 className="font-semibold text-sm">Workflow Status</h3>
