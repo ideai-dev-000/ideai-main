@@ -93,35 +93,21 @@ export default function WorkflowPage() {
   // Track previous node count to detect when first real node is added
   const prevNodeCountRef = useRef(0);
 
-  // Simple: Initialize with "add" node card if no nodes exist (only once on mount)
-  const hasInitializedCardRef = useRef(false);
+  // Initialize workflow state on mount
   useEffect(() => {
-    if (isAnonymous || hasInitializedCardRef.current) {
+    if (isAnonymous) {
       return;
     }
     
-    // Only set add node if we have no nodes at all
-    if (nodes.length === 0) {
-      const addNodePlaceholder: WorkflowNode = {
-        id: "add-node-placeholder",
-        type: "add",
-        position: { x: 0, y: 0 },
-        data: {
-          label: "",
-          type: "add",
-          onClick: handleAddNode,
-        },
-        draggable: false,
-        selectable: false,
-      };
-      setNodes([addNodePlaceholder]);
+    // Clear any existing nodes/edges and set name
+    if (nodes.length > 0 || edges.length > 0) {
+      setNodes([]);
       setEdges([]);
-      setCurrentWorkflowName("New Workflow");
-      hasCreatedWorkflowRef.current = false;
-      prevNodeCountRef.current = 0;
-      hasInitializedCardRef.current = true;
     }
-  }, [isAnonymous, setNodes, setEdges, setCurrentWorkflowName, handleAddNode]);
+    setCurrentWorkflowName("New Workflow");
+    hasCreatedWorkflowRef.current = false;
+    prevNodeCountRef.current = 0;
+  }, [isAnonymous, setNodes, setEdges, setCurrentWorkflowName]);
 
   // Create workflow when first real node is added (only once)
   useEffect(() => {
@@ -204,7 +190,27 @@ export default function WorkflowPage() {
     isAnonymous,
   ]);
 
+  // Show card directly when no nodes exist (not as React Flow node)
+  const realNodes = nodes.filter((node) => node.type !== "add");
+  const showCard = realNodes.length === 0;
+
+  if (isPending || isAnonymous) {
+    return null;
+  }
+
+  // Render card directly on page when empty (bypasses React Flow)
+  if (showCard) {
+    return (
+      <div className="pointer-events-auto absolute inset-0 flex items-center justify-center">
+        <AddNode
+          data={{
+            onClick: handleAddNode,
+          }}
+        />
+      </div>
+    );
+  }
+
   // Canvas and toolbar are rendered by PersistentCanvas in the layout
-  // This page just handles the workflow creation logic
   return null;
 }
