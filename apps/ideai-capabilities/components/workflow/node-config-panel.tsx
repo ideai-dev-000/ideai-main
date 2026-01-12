@@ -489,14 +489,23 @@ export const PanelInner = () => {
               .then((res) => res.json())
               .then((demoWorkflow) => {
                 if (demoWorkflow?.nodes) {
+                  // Normalize the action type value to ensure proper matching
+                  // The value might be the action ID (e.g., "slack/send-message")
+                  const normalizedValue = value;
+                  
                   // Find matching node in demo workflow by actionType (must match exactly)
                   const demoNode = demoWorkflow.nodes.find(
                     (node: any) =>
-                      node.data?.config?.actionType === value &&
+                      node.data?.config?.actionType === normalizedValue &&
                       node.data?.type === "action",
                   );
 
                   if (demoNode?.data?.config) {
+                    console.log("[Demo Mode] Found matching demo node:", {
+                      actionType: normalizedValue,
+                      demoConfig: demoNode.data.config,
+                    });
+                    
                     // Apply demo config values for ALL fields (overwrite empty ones)
                     const demoConfig = demoNode.data.config;
                     const populatedConfig = { ...newConfig };
@@ -506,6 +515,7 @@ export const PanelInner = () => {
                       if (demoConfig[field.key] !== undefined) {
                         // Always populate from demo if available (overwrites empty values)
                         populatedConfig[field.key] = demoConfig[field.key];
+                        console.log(`[Demo Mode] Populated ${field.key}:`, demoConfig[field.key]);
                       }
                     }
                     
@@ -525,7 +535,10 @@ export const PanelInner = () => {
                       id: selectedNode.id,
                       data: { config: populatedConfig },
                     });
+                    console.log("[Demo Mode] Updated node config with demo data");
                     return;
+                  } else {
+                    console.log("[Demo Mode] No matching demo node found for actionType:", normalizedValue, "Available nodes:", demoWorkflow.nodes.map((n: any) => n.data?.config?.actionType));
                   }
                 }
 
