@@ -112,3 +112,36 @@
   stroke-dasharray: 8 4;
   stroke-dashoffset: 0;
 }
+
+/* Animated edge styles for workflow connections */
+@keyframes dashdraw {
+  to {
+    stroke-dashoffset: -12;
+  }
+}
+
+/* Enhanced edge visibility for better contrast */
+.react-flow__edge-path {
+  transition: stroke 0.2s ease, stroke-width 0.2s ease;
+}
+
+.react-flow__edge.selected .react-flow__edge-path {
+  stroke: var(--primary) !important;
+  stroke-width: 3 !important;
+}
+
+/* Ensure edges are visible on all backgrounds - use foreground color with opacity */
+.react-flow__edge:not(.selected) .react-flow__edge-path {
+  stroke: color-mix(in oklch, var(--foreground) 50%, transparent) !important;
+}
+
+.dark .react-flow__edge:not(.selected) .react-flow__edge-path {
+  stroke: color-mix(in oklch, var(--foreground) 60%, transparent) !important;
+}
+
+/* Animated edges - apply animation to edges with type="animated" */
+.react-flow__edge[data-type="animated"] .react-flow__edge-path {
+  animation: dashdraw 1s linear infinite;
+  stroke-dasharray: 8 4;
+  stroke-dashoffset: 0;
+}
