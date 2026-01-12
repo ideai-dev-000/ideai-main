@@ -80,7 +80,7 @@ import { useOverlay } from "../overlays/overlay-provider";
 import { WorkflowIssuesOverlay } from "../overlays/workflow-issues-overlay";
 import { WorkflowIcon } from "../ui/workflow-icon";
 import { UserMenu } from "../workflows/user-menu";
-import { WorkflowStatusPanel } from "./workflow-status-panel";
+// WorkflowStatusPanel removed - now in sidebar as WorkflowStatusCard
 
 type WorkflowToolbarProps = {
   workflowId?: string;
