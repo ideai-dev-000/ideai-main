@@ -62,6 +62,19 @@ export const pendingIntegrationNodesAtom = atom<Set<string>>(new Set<string>());
 // Cleared when the node gets an action type or is deselected
 export const newlyCreatedNodeIdAtom = atom<string | null>(null);
 
+// Demo mode - when enabled, auto-populates fields from .ideai.json demoWorkflow
+// and bypasses required field validation
+export const demoModeAtom = atom<boolean>(() => {
+  // Load from localStorage if available, default to true
+  if (typeof window !== "undefined") {
+    const stored = localStorage.getItem("workflow-demo-mode");
+    if (stored !== null) {
+      return stored === "true";
+    }
+  }
+  return true; // Default to ON
+});
+
 // Trigger execute atom - set to true to trigger workflow execution
 // This allows keyboard shortcuts to trigger the same execute flow as the button
 export const triggerExecuteAtom = atom(false);

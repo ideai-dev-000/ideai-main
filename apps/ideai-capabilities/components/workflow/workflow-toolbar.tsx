@@ -24,6 +24,8 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -43,6 +45,7 @@ import {
   currentWorkflowIdAtom,
   currentWorkflowNameAtom,
   currentWorkflowVisibilityAtom,
+  demoModeAtom,
   deleteEdgeAtom,
   deleteNodeAtom,
   edgesAtom,
@@ -265,7 +268,13 @@ function shouldShowField(
 // Get missing required fields for a single node
 function getNodeMissingFields(
   node: WorkflowNode,
+  demoMode: boolean,
 ): MissingRequiredFieldInfo | null {
+  // Skip validation if demo mode is enabled
+  if (demoMode) {
+    return null;
+  }
+
   if (node.data.enabled === false) {
     return null;
   }
@@ -310,9 +319,10 @@ function getNodeMissingFields(
 // Get missing required fields for workflow nodes
 function getMissingRequiredFields(
   nodes: WorkflowNode[],
+  demoMode: boolean,
 ): MissingRequiredFieldInfo[] {
   return nodes
-    .map(getNodeMissingFields)
+    .map((node) => getNodeMissingFields(node, demoMode))
     .filter((result): result is MissingRequiredFieldInfo => result !== null);
 }
 
@@ -528,6 +538,7 @@ function useWorkflowHandlers({
   userIntegrations,
 }: WorkflowHandlerParams) {
   const { open: openOverlay } = useOverlay();
+  const [demoMode] = useAtom(demoModeAtom);
   const pollingIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
   // Cleanup polling interval on unmount
@@ -607,7 +618,7 @@ function useWorkflowHandlers({
 
     // Collect all workflow issues at once
     const brokenRefs = getBrokenTemplateReferences(nodes);
-    const missingFields = getMissingRequiredFields(nodes);
+    const missingFields = getMissingRequiredFields(nodes, demoMode);
     const missingIntegrations = getMissingIntegrations(nodes, userIntegrations);
 
     // If there are any issues, show the workflow issues overlay
@@ -1508,6 +1519,15 @@ function WorkflowMenuComponent({
 export const WorkflowToolbar = ({ workflowId }: WorkflowToolbarProps) => {
   const state = useWorkflowState();
   const actions = useWorkflowActions(state);
+  const [demoMode, setDemoMode] = useAtom(demoModeAtom);
+
+  const handleDemoModeChange = (checked: boolean) => {
+    setDemoMode(checked);
+    // Save to localStorage
+    if (typeof window !== "undefined") {
+      localStorage.setItem("workflow-demo-mode", String(checked));
+    }
+  };
 
   return (
     <>
@@ -1524,6 +1544,24 @@ export const WorkflowToolbar = ({ workflowId }: WorkflowToolbarProps) => {
           </div>
         </Panel>
       )}
+
+      {/* Demo Mode Toggle - top left */}
+      <Panel
+        className="flex items-center gap-2 rounded-md border border-slate-200 bg-white px-3 py-2 shadow-sm dark:border-slate-700 dark:bg-slate-800"
+        position="top-left"
+      >
+        <Switch
+          checked={demoMode}
+          onCheckedChange={handleDemoModeChange}
+          id="demo-mode-toggle"
+        />
+        <Label
+          htmlFor="demo-mode-toggle"
+          className="text-xs font-medium text-slate-700 dark:text-slate-300 cursor-pointer"
+        >
+          Demo Mode
+        </Label>
+      </Panel>
 
       <div className="pointer-events-auto absolute top-4 right-4 z-10">
         <div className="flex flex-col-reverse items-end gap-2 lg:flex-row lg:items-center">

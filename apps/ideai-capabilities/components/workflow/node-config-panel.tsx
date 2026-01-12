@@ -166,6 +166,7 @@ export const PanelInner = () => {
   const [newlyCreatedNodeId, setNewlyCreatedNodeId] = useAtom(
     newlyCreatedNodeIdAtom,
   );
+  const [demoMode] = useAtom(demoModeAtom);
   const [showDeleteNodeAlert, setShowDeleteNodeAlert] = useState(false);
   const [showDeleteEdgeAlert, setShowDeleteEdgeAlert] = useState(false);
   const [showDeleteRunsAlert, setShowDeleteRunsAlert] = useState(false);
@@ -480,15 +481,89 @@ export const PanelInner = () => {
           // Flatten configFields (they may be grouped) using utility function
           const flatFields = flattenConfigFields(action.configFields);
 
-          // Apply defaults for fields that have defaultValue and aren't already set
-          for (const field of flatFields) {
-            if (
-              field.defaultValue !== undefined &&
-              newConfig[field.key] === undefined &&
-              newConfig[field.key] === null
-            ) {
-              newConfig[field.key] = field.defaultValue;
+          // If demo mode is ON, try to load demo data from .ideai.json
+          if (demoMode) {
+            // Fetch demo workflow data
+            fetch("/api/workflows/demo")
+              .then((res) => res.json())
+              .then((demoWorkflow) => {
+                if (demoWorkflow?.nodes) {
+                  // Find matching node in demo workflow by actionType
+                  const demoNode = demoWorkflow.nodes.find(
+                    (node: any) =>
+                      node.data?.config?.actionType === value ||
+                      node.data?.type === "action",
+                  );
+
+                  if (demoNode?.data?.config) {
+                    // Apply demo config values for fields that are empty
+                    const demoConfig = demoNode.data.config;
+                    for (const field of flatFields) {
+                      if (
+                        demoConfig[field.key] !== undefined &&
+                        (newConfig[field.key] === undefined ||
+                          newConfig[field.key] === "" ||
+                          newConfig[field.key] === null)
+                      ) {
+                        newConfig[field.key] = demoConfig[field.key];
+                      }
+                    }
+                    // Update node with demo config
+                    updateNodeData({
+                      id: selectedNode.id,
+                      data: { config: newConfig },
+                    });
+                    return;
+                  }
+                }
+
+                // Fallback to default values if no demo data found
+                for (const field of flatFields) {
+                  if (
+                    field.defaultValue !== undefined &&
+                    (newConfig[field.key] === undefined ||
+                      newConfig[field.key] === null)
+                  ) {
+                    newConfig[field.key] = field.defaultValue;
+                  }
+                }
+                updateNodeData({
+                  id: selectedNode.id,
+                  data: { config: newConfig },
+                });
+              })
+              .catch((error) => {
+                console.error("Failed to load demo data:", error);
+                // Fallback to default values on error
+                for (const field of flatFields) {
+                  if (
+                    field.defaultValue !== undefined &&
+                    (newConfig[field.key] === undefined ||
+                      newConfig[field.key] === null)
+                  ) {
+                    newConfig[field.key] = field.defaultValue;
+                  }
+                }
+                updateNodeData({
+                  id: selectedNode.id,
+                  data: { config: newConfig },
+                });
+              });
+          } else {
+            // Normal mode: apply defaults only
+            for (const field of flatFields) {
+              if (
+                field.defaultValue !== undefined &&
+                (newConfig[field.key] === undefined ||
+                  newConfig[field.key] === null)
+              ) {
+                newConfig[field.key] = field.defaultValue;
+              }
             }
+            updateNodeData({
+              id: selectedNode.id,
+              data: { config: newConfig },
+            });
           }
         }
       }
