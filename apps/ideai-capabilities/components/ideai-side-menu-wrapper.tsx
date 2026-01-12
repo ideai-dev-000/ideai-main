@@ -237,8 +237,10 @@ export function IdeAISideMenuWrapper() {
           <WorkflowStatusCard />
         </div>
 
-        {/* Area 2: New Workflow section - above the list */}
-        <IdeAISideMenuNewWorkflow onCreateWorkflow={handleCreateWorkflow} />
+        {/* Area 2: New Workflow section - above the list - sticky */}
+        <div className="sticky top-[calc(var(--status-card-height,200px))] z-10 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700 -mx-0">
+          <IdeAISideMenuNewWorkflow onCreateWorkflow={handleCreateWorkflow} />
+        </div>
 
         {/* Area 3: Workflows list section */}
         {/* Workflows list is auto-populated by IdeAISideMenu component */}

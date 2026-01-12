@@ -100,6 +100,7 @@ interface IdeAISideMenuSectionProps {
 
 /**
  * New Workflow Section - Button to create a new workflow
+ * Styled to match the status card UI
  */
 export function IdeAISideMenuNewWorkflow({
   onCreateWorkflow,
@@ -111,18 +112,16 @@ export function IdeAISideMenuNewWorkflow({
   if (!onCreateWorkflow) return null;
 
   return (
-    <div className={cn("ideai-side-menu-section", className)}>
-      <div className="ideai-side-menu-section-content">
-        <div className="ideai-side-menu-new-card">
-          <button
-            type="button"
-            className="ideai-side-menu-new-button"
-            onClick={onCreateWorkflow}
-          >
-            <span className="ideai-side-menu-new-icon">+</span>
-            <span className="ideai-side-menu-new-text">New Workflow</span>
-          </button>
-        </div>
+    <div className={cn("px-4 py-3", className)}>
+      <div className="rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-sm">
+        <button
+          type="button"
+          className="w-full flex items-center justify-center gap-2 px-4 py-3 text-sm font-semibold text-slate-900 dark:text-slate-100 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors rounded-lg"
+          onClick={onCreateWorkflow}
+        >
+          <span className="text-lg leading-none">+</span>
+          <span>New Workflow</span>
+        </button>
       </div>
     </div>
   );
