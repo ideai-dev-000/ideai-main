@@ -67,6 +67,8 @@ const Temporary = ({
       : "#d0d7de"; // Border - visible on dark background
 
   const strokeWidth = isSuccessfullyTraversed ? 3.5 : 2; // Thicker when successfully traversed
+  // Use dashes for successful edges, dots for normal edges
+  const strokeDasharray = isSuccessfullyTraversed ? "8, 4" : "5, 5";
 
   return (
     <BaseEdge
@@ -76,7 +78,7 @@ const Temporary = ({
       style={{
         stroke: strokeColor,
         strokeWidth,
-        strokeDasharray: "5, 5",
+        strokeDasharray,
         fill: "none",
       }}
     />
@@ -214,12 +216,14 @@ const Animated = ({ id, source, target, style, selected }: EdgeProps) => {
 
     switch (animationMode) {
       case "flowing-dots":
+        // Use dashes when successful, dots when normal
         return {
           ...baseStyle,
-          strokeDasharray: "3 9",
+          strokeDasharray: isSuccessfullyTraversed ? "8 4" : "3 9",
           animation: "flowing-dots 2s linear infinite",
         };
       case "dashed-flow":
+        // Always dashes, but thicker when successful
         return {
           ...baseStyle,
           strokeDasharray: "8 4",
@@ -233,9 +237,10 @@ const Animated = ({ id, source, target, style, selected }: EdgeProps) => {
           animation: "solid-pulse 1.5s ease-in-out infinite",
         };
       default:
+        // Use dashes when successful, dots when normal
         return {
           ...baseStyle,
-          strokeDasharray: 5,
+          strokeDasharray: isSuccessfullyTraversed ? "8 4" : 5,
           animation: "dashdraw 0.5s linear infinite",
         };
     }
