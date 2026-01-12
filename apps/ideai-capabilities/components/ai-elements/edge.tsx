@@ -37,6 +37,7 @@ const Temporary = ({
       path={edgePath}
       style={{
         stroke: selected ? "var(--muted-foreground)" : "var(--border)",
+        strokeWidth: 2,
         strokeDasharray: "5, 5",
       }}
     />
