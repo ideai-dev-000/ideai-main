@@ -77,6 +77,7 @@ export function CapabilitiesHeader() {
   }, []);
 
   const handleDemoModeChange = (checked: boolean) => {
+    // Update atom first
     setDemoMode(checked);
     // Save to localStorage
     if (typeof window !== "undefined") {
