@@ -7,6 +7,7 @@ import {
   type Node,
   Position,
   useInternalNode,
+  useNodes,
   useReactFlow,
 } from "@xyflow/react";
 import { useAtomValue } from "jotai";
@@ -34,20 +35,24 @@ const Temporary = ({
   });
 
   // Check if edge has been successfully traversed (temporary edges during execution)
-  // Check both executionLogsAtom and node.data.status for status
+  // Use useNodes hook to get reactive node status updates
   const executionLogs = useAtomValue(executionLogsAtom);
-  const { getNode } = useReactFlow();
-  const sourceNodeData = source ? getNode(source) : undefined;
-  const targetNodeData = target ? getNode(target) : undefined;
+  const nodes = useNodes(); // Get all nodes for reactive status updates
+  
+  // Get current node status from nodes array (most up-to-date)
+  const sourceNodeFromStore = source ? nodes.find((n) => n.id === source) : undefined;
+  const targetNodeFromStore = target ? nodes.find((n) => n.id === target) : undefined;
   
   const sourceLog = source ? executionLogs[source] : undefined;
   const targetLog = target ? executionLogs[target] : undefined;
   
-  // Check both execution logs and node data status
+  // Check both execution logs and node data status (prioritize reactive nodes array)
   const sourceStatus =
-    sourceLog?.status || (sourceNodeData?.data?.status as string | undefined);
+    sourceLog?.status ||
+    (sourceNodeFromStore?.data?.status as string | undefined);
   const targetStatus =
-    targetLog?.status || (targetNodeData?.data?.status as string | undefined);
+    targetLog?.status ||
+    (targetNodeFromStore?.data?.status as string | undefined);
   
   // Edge is successfully traversed when source succeeded and target has started/succeeded
   const isSuccessfullyTraversed =
@@ -146,19 +151,28 @@ const Animated = ({ id, source, target, style, selected }: EdgeProps) => {
   const targetNode = useInternalNode(target);
   const animationMode = useAtomValue(edgeAnimationModeAtom);
   const executionLogs = useAtomValue(executionLogsAtom);
+  const nodes = useNodes(); // Get all nodes for reactive status updates
 
   if (!(sourceNode && targetNode)) {
     return null;
   }
 
+  // Get current node status from nodes array (most up-to-date)
+  const sourceNodeFromStore = nodes.find((n) => n.id === source);
+  const targetNodeFromStore = nodes.find((n) => n.id === target);
+
   // Check if edge has been successfully traversed
-  // Check both executionLogsAtom and node.data.status for status
+  // Check executionLogsAtom first, then node.data.status (from reactive nodes array)
   const sourceLog = executionLogs[source];
   const targetLog = executionLogs[target];
   const sourceStatus =
-    sourceLog?.status || (sourceNode.data?.status as string | undefined);
+    sourceLog?.status ||
+    (sourceNodeFromStore?.data?.status as string | undefined) ||
+    (sourceNode.data?.status as string | undefined);
   const targetStatus =
-    targetLog?.status || (targetNode.data?.status as string | undefined);
+    targetLog?.status ||
+    (targetNodeFromStore?.data?.status as string | undefined) ||
+    (targetNode.data?.status as string | undefined);
 
   // Edge is green when: source node succeeded AND target node has started/completed
   const isSuccessfullyTraversed =
