@@ -3,7 +3,7 @@
  *
  * @module EdgeAnimationToggle
  * @description
- * 5-button toggle group to switch between edge style presets.
+ * 7-button toggle group to switch between edge style presets.
  * Each preset has different color, width, and animation combinations.
  */
 

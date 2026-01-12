@@ -2,7 +2,7 @@
  * @fileoverview Edge style presets for workflow canvas
  * @module EdgeStyles
  * @description
- * Configurable edge style system with 5 distinct presets.
+ * Configurable edge style system with 7 distinct presets.
  * Each preset defines color, width, animation, and dash pattern.
  */
 
@@ -34,7 +34,7 @@ export interface EdgeStyleConfig {
 }
 
 /**
- * Edge style presets - 5 distinct combinations
+ * Edge style presets - 7 distinct combinations
  */
 export const EDGE_STYLE_PRESETS: Record<
   EdgeStylePreset,
