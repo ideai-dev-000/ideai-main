@@ -128,3 +128,13 @@
 }
 
 /* Edge styles are handled inline by edge component - no overrides needed */
+
+/* Ensure edge paths are visible - React Flow base styles */
+.react-flow__edge-path {
+  stroke-width: 2;
+  fill: none;
+}
+
+.react-flow__edge.selected .react-flow__edge-path {
+  stroke-width: 3;
+}
