@@ -63,6 +63,7 @@ const slackPlugin: IntegrationPlugin = {
           rows: 4,
           example: "Hello from my workflow!",
           required: true,
+          defaultValue: "Hello from IdeaI workflow!",
         },
       ],
     },
