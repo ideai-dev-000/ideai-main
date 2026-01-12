@@ -93,9 +93,10 @@ export default function WorkflowPage() {
   // Track previous node count to detect when first real node is added
   const prevNodeCountRef = useRef(0);
 
-  // Simple: Initialize with "add" node card if no nodes exist
+  // Simple: Initialize with "add" node card if no nodes exist (only once on mount)
+  const hasInitializedCardRef = useRef(false);
   useEffect(() => {
-    if (isAnonymous) {
+    if (isAnonymous || hasInitializedCardRef.current) {
       return;
     }
     
@@ -118,8 +119,9 @@ export default function WorkflowPage() {
       setCurrentWorkflowName("New Workflow");
       hasCreatedWorkflowRef.current = false;
       prevNodeCountRef.current = 0;
+      hasInitializedCardRef.current = true;
     }
-  }, [isAnonymous, nodes.length, setNodes, setEdges, setCurrentWorkflowName, handleAddNode]);
+  }, [isAnonymous, setNodes, setEdges, setCurrentWorkflowName, handleAddNode]);
 
   // Create workflow when first real node is added (only once)
   useEffect(() => {
