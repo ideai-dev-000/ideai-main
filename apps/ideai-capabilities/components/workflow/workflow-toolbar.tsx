@@ -1511,23 +1511,19 @@ export const WorkflowToolbar = ({ workflowId }: WorkflowToolbarProps) => {
 
   return (
     <>
-      <Panel
-        className="flex flex-col gap-2 rounded-none border-none bg-transparent p-0 lg:flex-row lg:items-center"
-        position="top-left"
-      >
-        <div className="flex items-center gap-2">
-          <WorkflowStatusPanel
-            actions={actions}
-            state={state}
-            workflowId={workflowId}
-          />
-          {workflowId && !state.isOwner && (
+      {/* Status panel removed - now in sidebar */}
+      {workflowId && !state.isOwner && (
+        <Panel
+          className="flex flex-col gap-2 rounded-none border-none bg-transparent p-0 lg:flex-row lg:items-center"
+          position="top-left"
+        >
+          <div className="flex items-center gap-2">
             <span className="hidden text-muted-foreground text-xs uppercase lg:inline">
               Read-only
             </span>
-          )}
-        </div>
-      </Panel>
+          </div>
+        </Panel>
+      )}
 
       <div className="pointer-events-auto absolute top-4 right-4 z-10">
         <div className="flex flex-col-reverse items-end gap-2 lg:flex-row lg:items-center">
