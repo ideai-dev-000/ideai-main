@@ -15,9 +15,10 @@ export function PersistentCanvas() {
     session.user.email?.startsWith("temp-");
 
   // Show canvas on workflow pages, but only if user is authenticated
+  // Don't show canvas on /workflows (landing page) - just show the card
   const showCanvas =
     !isAnonymous &&
-    (pathname === "/workflow" || pathname === "/workflows" || pathname.startsWith("/workflow/workflows/"));
+    (pathname === "/workflow" || pathname.startsWith("/workflow/workflows/"));
 
   if (!showCanvas) {
     return null;
