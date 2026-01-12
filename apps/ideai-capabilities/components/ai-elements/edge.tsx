@@ -197,15 +197,19 @@ const Animated = ({ id, source, target, style, selected }: EdgeProps) => {
 
   // Different styles based on animation mode
   const getEdgeStyles = () => {
-    // Green color and thicker stroke when successfully traversed
-    const strokeColor = isSuccessfullyTraversed
-      ? "#22c55e" // Green for successful traversal
-      : selected
-        ? "#8b949e" // Muted foreground - visible on dark
-        : "#d0d7de"; // Border - visible on dark background
+    // For dash modes, always show green and wider for preview
+    const isDashMode = animationMode === "dashed-flow";
+    
+    // Green color and thicker stroke when successfully traversed OR in dash preview mode
+    const strokeColor =
+      isSuccessfullyTraversed || isDashMode
+        ? "#22c55e" // Green for successful traversal or dash preview
+        : selected
+          ? "#8b949e" // Muted foreground - visible on dark
+          : "#d0d7de"; // Border - visible on dark background
 
-    // Thicker when successfully traversed
-    const baseStrokeWidth = isSuccessfullyTraversed ? 3.5 : 2;
+    // Thicker when successfully traversed or in dash preview mode
+    const baseStrokeWidth = isSuccessfullyTraversed || isDashMode ? 3.5 : 2;
 
     const baseStyle = {
       ...style,
@@ -223,10 +227,10 @@ const Animated = ({ id, source, target, style, selected }: EdgeProps) => {
           animation: "flowing-dots 2s linear infinite",
         };
       case "dashed-flow":
-        // Always dashes, but longer (10px) when successful
+        // Always green, wider dashes (10px) for preview of successful state
         return {
           ...baseStyle,
-          strokeDasharray: isSuccessfullyTraversed ? "10 4" : "8 4",
+          strokeDasharray: "10 4", // Wider dashes for preview
           animation: "dashdraw 1s linear infinite",
         };
       case "solid-pulse":
