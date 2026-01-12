@@ -140,3 +140,8 @@
   stroke-width: 3 !important;
   stroke: #8b949e !important; /* Muted foreground for selected */
 }
+
+/* Green edges for successfully traversed paths during execution */
+.react-flow__edge[data-success="true"] .react-flow__edge-path {
+  stroke: #22c55e !important; /* Green for successful traversal */
+}

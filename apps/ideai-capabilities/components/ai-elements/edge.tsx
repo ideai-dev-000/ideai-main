@@ -9,7 +9,7 @@ import {
   useInternalNode,
 } from "@xyflow/react";
 import { useAtomValue } from "jotai";
-import { edgeAnimationModeAtom } from "@/lib/workflow-store";
+import { edgeAnimationModeAtom, executionLogsAtom } from "@/lib/workflow-store";
 
 const Temporary = ({
   id,
@@ -30,15 +30,28 @@ const Temporary = ({
     targetPosition,
   });
 
+  // Check if edge has been successfully traversed (temporary edges during execution)
+  const executionLogs = useAtomValue(executionLogsAtom);
+  const sourceLog = executionLogs[source];
+  const targetLog = executionLogs[target];
+  const isSuccessfullyTraversed =
+    sourceLog?.status === "success" &&
+    (targetLog?.status === "running" || targetLog?.status === "success");
+
+  // Green color when successfully traversed, otherwise default
+  const strokeColor = isSuccessfullyTraversed
+    ? "#22c55e" // Green for successful traversal
+    : selected
+      ? "#8b949e" // Muted foreground - visible on dark
+      : "#d0d7de"; // Border - visible on dark background
+
   return (
     <BaseEdge
       className="stroke-1"
       id={id}
       path={edgePath}
       style={{
-        stroke: selected 
-          ? "#8b949e" // Muted foreground - visible on dark
-          : "#d0d7de", // Border - visible on dark background
+        stroke: strokeColor,
         strokeWidth: 2,
         strokeDasharray: "5, 5",
         fill: "none",
@@ -114,10 +127,19 @@ const Animated = ({ id, source, target, style, selected }: EdgeProps) => {
   const sourceNode = useInternalNode(source);
   const targetNode = useInternalNode(target);
   const animationMode = useAtomValue(edgeAnimationModeAtom);
+  const executionLogs = useAtomValue(executionLogsAtom);
 
   if (!(sourceNode && targetNode)) {
     return null;
   }
+
+  // Check if edge has been successfully traversed
+  // Edge is green when: source node succeeded AND target node has started/completed
+  const sourceLog = executionLogs[source];
+  const targetLog = executionLogs[target];
+  const isSuccessfullyTraversed =
+    sourceLog?.status === "success" &&
+    (targetLog?.status === "running" || targetLog?.status === "success");
 
   const { sx, sy, tx, ty, sourcePos, targetPos } = getEdgeParams(
     sourceNode,
@@ -135,11 +157,16 @@ const Animated = ({ id, source, target, style, selected }: EdgeProps) => {
 
   // Different styles based on animation mode
   const getEdgeStyles = () => {
-      const baseStyle = {
-      ...style,
-      stroke: selected 
+    // Green color when successfully traversed, otherwise default
+    const strokeColor = isSuccessfullyTraversed
+      ? "#22c55e" // Green for successful traversal
+      : selected
         ? "#8b949e" // Muted foreground - visible on dark
-        : "#d0d7de", // Border - visible on dark background
+        : "#d0d7de"; // Border - visible on dark background
+
+    const baseStyle = {
+      ...style,
+      stroke: strokeColor,
       strokeWidth: 2,
       fill: "none",
     };
