@@ -9,7 +9,7 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { NodeConfigPanel } from "@/components/workflow/node-config-panel";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { api } from "@/lib/api-client";
+import { api, ApiError } from "@/lib/api-client";
 import { useSession } from "@/lib/auth-client";
 import {
   integrationsAtom,
@@ -454,8 +454,22 @@ const WorkflowEditor = ({ params }: WorkflowPageProps) => {
         setWorkflowNotFound(false);
         return;
       }
+
+      // Handle 404 Not Found gracefully - workflow doesn't exist
+      if (
+        error instanceof ApiError &&
+        (error.status === 404 || error.message.includes("Not found") || error.message.includes("Workflow not found"))
+      ) {
+        setWorkflowNotFound(true);
+        clearWorkflow();
+        setCurrentWorkflowId(null);
+        setCurrentWorkflowName("");
+        return;
+      }
+
       console.error("Failed to load workflow:", error);
       toast.error("Failed to load workflow");
+      setWorkflowNotFound(true);
     }
   }, [
     workflowId,
