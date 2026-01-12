@@ -417,6 +417,38 @@ export const PanelInner = () => {
         newConfig = { ...newConfig, integrationId: undefined };
       }
 
+      // When action type changes, initialize default values from configFields
+      if (key === "actionType") {
+        const action = findActionById(value);
+        if (action?.configFields) {
+          // Flatten configFields (they may be grouped)
+          const flattenFields = (fields: typeof action.configFields): typeof action.configFields => {
+            const flat: typeof action.configFields = [];
+            for (const field of fields) {
+              if ("fields" in field && field.fields) {
+                flat.push(...flattenFields(field.fields));
+              } else {
+                flat.push(field);
+              }
+            }
+            return flat;
+          };
+
+          const flatFields = flattenFields(action.configFields);
+
+          // Apply defaults for fields that have defaultValue and aren't already set
+          for (const field of flatFields) {
+            if (
+              field.defaultValue !== undefined &&
+              newConfig[field.key] === undefined &&
+              newConfig[field.key] === null
+            ) {
+              newConfig[field.key] = field.defaultValue;
+            }
+          }
+        }
+      }
+
       updateNodeData({ id: selectedNode.id, data: { config: newConfig } });
 
       // When action type changes, auto-select integration if only one exists
