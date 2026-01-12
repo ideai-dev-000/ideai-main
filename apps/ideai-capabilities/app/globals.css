@@ -131,24 +131,35 @@
 
 /* Ensure edge paths are visible - React Flow base styles */
 .react-flow__edge-path {
-  stroke-width: 2 !important;
   fill: none !important;
-  stroke: #d0d7de !important; /* Visible gray for dark backgrounds */
 }
 
-.react-flow__edge.selected .react-flow__edge-path {
+/* Default gray only if not green state */
+.react-flow__edge-path:not(.edge-dash-mode):not(.edge-success) {
+  stroke: #d0d7de !important; /* Visible gray for dark backgrounds */
+  stroke-width: 2 !important;
+}
+
+.react-flow__edge.selected .react-flow__edge-path:not(.edge-dash-mode):not(.edge-success) {
   stroke-width: 3 !important;
   stroke: #8b949e !important; /* Muted foreground for selected */
 }
 
-/* Green edges for successfully traversed paths during execution */
-.react-flow__edge.edge-success .react-flow__edge-path {
+/* Green edges in dash preview mode - highest priority, must come after defaults */
+.react-flow__edge-path.edge-dash-mode {
+  stroke: #22c55e !important; /* Green for dash preview */
+  stroke-width: 3.5 !important; /* Thicker for preview */
+}
+
+/* Green edges for successfully traversed paths */
+.react-flow__edge-path.edge-success {
   stroke: #22c55e !important; /* Green for successful traversal */
   stroke-width: 3.5 !important; /* Thicker for successful */
 }
 
-/* Green edges in dash preview mode - override default gray */
+/* Also support wrapper-level classes for BaseEdge className on wrapper */
+.react-flow__edge.edge-success .react-flow__edge-path,
 .react-flow__edge.edge-dash-mode .react-flow__edge-path {
-  stroke: #22c55e !important; /* Green for dash preview */
-  stroke-width: 3.5 !important; /* Thicker for preview */
+  stroke: #22c55e !important;
+  stroke-width: 3.5 !important;
 }
