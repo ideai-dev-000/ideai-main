@@ -131,10 +131,16 @@
 
 /* Ensure edge paths are visible - React Flow base styles */
 .react-flow__edge-path {
-  stroke-width: 2;
-  fill: none;
+  stroke-width: 2 !important;
+  fill: none !important;
+  stroke: oklch(0.922 0 0) !important; /* Light mode border - explicit color */
+}
+
+.dark .react-flow__edge-path {
+  stroke: oklch(0.27 0 0) !important; /* Dark mode border - explicit color */
 }
 
 .react-flow__edge.selected .react-flow__edge-path {
-  stroke-width: 3;
+  stroke-width: 3 !important;
+  stroke: oklch(0.556 0 0) !important; /* Muted foreground for selected */
 }
