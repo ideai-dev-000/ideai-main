@@ -48,7 +48,7 @@ import {
   showDeleteDialogAtom,
   updateNodeDataAtom,
 } from "@/lib/workflow-store";
-import { findActionById } from "@/plugins";
+import { findActionById, flattenConfigFields } from "@/plugins";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import { ActionConfig } from "./config/action-config";
 import { ActionGrid } from "./config/action-grid";
@@ -421,20 +421,8 @@ export const PanelInner = () => {
       if (key === "actionType") {
         const action = findActionById(value);
         if (action?.configFields) {
-          // Flatten configFields (they may be grouped)
-          const flattenFields = (fields: typeof action.configFields): typeof action.configFields => {
-            const flat: typeof action.configFields = [];
-            for (const field of fields) {
-              if ("fields" in field && field.fields) {
-                flat.push(...flattenFields(field.fields));
-              } else {
-                flat.push(field);
-              }
-            }
-            return flat;
-          };
-
-          const flatFields = flattenFields(action.configFields);
+          // Flatten configFields (they may be grouped) using utility function
+          const flatFields = flattenConfigFields(action.configFields);
 
           // Apply defaults for fields that have defaultValue and aren't already set
           for (const field of flatFields) {
