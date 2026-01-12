@@ -174,23 +174,60 @@ function buildPlugins() {
 }
 
 /**
- * Validate required authentication configuration
- * Throws error if critical security configuration is missing
+ * Get the auth secret with validation
+ * Validates at runtime (when auth is actually used), not at module load
+ * This allows builds to succeed even if env vars aren't set locally
+ *
+ * @throws {Error} If secret is missing or invalid in production runtime
  */
-function validateAuthConfig() {
+function getAuthSecret(): string {
   const secret = process.env.BETTER_AUTH_SECRET;
 
   if (!secret) {
-    throw new Error(
-      "BETTER_AUTH_SECRET is required for session encryption. " +
-        "Generate with: openssl rand -base64 32",
-    );
+    // During build time, return a placeholder if not set
+    // This will fail at runtime if actually used, which is the correct behavior
+    if (process.env.NODE_ENV === "production" && !process.env.NEXT_PHASE) {
+      // Runtime in production - this is a real error
+      throw new Error(
+        "BETTER_AUTH_SECRET is required in production. " +
+          "Set it in Vercel environment variables.",
+      );
+    }
+    // For local builds, return a placeholder (will fail at runtime if used)
+    return "PLACEHOLDER_SECRET_FOR_BUILD_ONLY_DO_NOT_USE_IN_RUNTIME";
   }
 
   if (secret.length < 32) {
     throw new Error(
       "BETTER_AUTH_SECRET must be at least 32 characters for security. " +
         "Generate with: openssl rand -base64 32",
+    );
+  }
+
+  return secret;
+}
+
+/**
+ * Validate required authentication configuration
+ * Throws error if critical security configuration is missing
+ * Only validates at runtime, not during build
+ */
+function validateAuthConfig() {
+  // Validate secret
+  const secret = getAuthSecret();
+
+  // If it's the placeholder, validation will fail at runtime (correct behavior)
+  if (secret === "PLACEHOLDER_SECRET_FOR_BUILD_ONLY_DO_NOT_USE_IN_RUNTIME") {
+    // Only warn during build, will fail at runtime when auth is used
+    if (process.env.NEXT_PHASE === "phase-production-build") {
+      console.warn(
+        "[Auth Config] BETTER_AUTH_SECRET not set during build - " +
+          "will be required at runtime. Set it in Vercel environment variables.",
+      );
+      return; // Don't fail build
+    }
+    throw new Error(
+      "BETTER_AUTH_SECRET is required. Generate with: openssl rand -base64 32",
     );
   }
 
@@ -215,13 +252,21 @@ function validateAuthConfig() {
   }
 }
 
-// Validate configuration before creating auth instance
-validateAuthConfig();
+// Validate configuration at module load only if we're not in build mode
+// During builds, env vars may not be available - validation happens at runtime
+if (process.env.NEXT_PHASE !== "phase-production-build") {
+  try {
+    validateAuthConfig();
+  } catch (error) {
+    // In runtime (dev or production), throw immediately
+    throw error;
+  }
+}
 
 // Create and export the auth instance
 export const auth = betterAuth({
   baseURL: getBaseURL(),
-  secret: process.env.BETTER_AUTH_SECRET, // Required for session encryption and JWT signing
+  secret: getAuthSecret(), // Required for session encryption and JWT signing
   database: drizzleAdapter(db, {
     provider: "pg",
     schema,
