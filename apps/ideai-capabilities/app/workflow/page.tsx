@@ -90,31 +90,50 @@ export default function WorkflowPage() {
     }
   }, [currentWorkflowName, isAnonymous]);
 
-  // Initialize with a temporary "add" node on mount
-  useEffect(() => {
-    if (isAnonymous) {
-      return;
-    }
-    const addNodePlaceholder: WorkflowNode = {
-      id: "add-node-placeholder",
-      type: "add",
-      position: { x: 0, y: 0 },
-      data: {
-        label: "",
-        type: "add",
-        onClick: handleAddNode,
-      },
-      draggable: false,
-      selectable: false,
-    };
-    setNodes([addNodePlaceholder]);
-    setEdges([]);
-    setCurrentWorkflowName("New Workflow");
-    hasCreatedWorkflowRef.current = false;
-  }, [setNodes, setEdges, setCurrentWorkflowName, handleAddNode, isAnonymous]);
-
   // Track previous node count to detect when first real node is added
   const prevNodeCountRef = useRef(0);
+  const hasInitializedRef = useRef(false);
+
+  // Initialize with a temporary "add" node on mount (only once)
+  useEffect(() => {
+    if (isAnonymous || hasInitializedRef.current) {
+      return;
+    }
+    
+    // Only initialize if we don't already have nodes (avoid resetting on re-render)
+    const currentNodes = nodes;
+    const hasAddNode = currentNodes.some((n) => n.id === "add-node-placeholder");
+    const hasRealNodes = currentNodes.some((n) => n.type !== "add");
+    
+    if (hasRealNodes) {
+      // Already have real nodes, don't initialize
+      hasInitializedRef.current = true;
+      return;
+    }
+    
+    if (!hasAddNode) {
+      const addNodePlaceholder: WorkflowNode = {
+        id: "add-node-placeholder",
+        type: "add",
+        position: { x: 0, y: 0 },
+        data: {
+          label: "",
+          type: "add",
+          onClick: handleAddNode,
+        },
+        draggable: false,
+        selectable: false,
+      };
+      setNodes([addNodePlaceholder]);
+      setEdges([]);
+      setCurrentWorkflowName("New Workflow");
+      hasCreatedWorkflowRef.current = false;
+      // Initialize prevNodeCount to 0 (only add node exists, no real nodes)
+      prevNodeCountRef.current = 0;
+    }
+    
+    hasInitializedRef.current = true;
+  }, [isAnonymous, nodes, setNodes, setEdges, setCurrentWorkflowName, handleAddNode]);
 
   // Create workflow when first real node is added (only once)
   useEffect(() => {
