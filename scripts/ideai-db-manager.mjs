@@ -282,7 +282,8 @@ function execDbCommand(command, options = {}) {
         
       case "studio":
         log(`Opening Drizzle Studio for ${app}...`, "cyan");
-        log("Studio will open at: http://localhost:4983", "blue");
+        log("Studio will open at: https://local.drizzle.studio", "blue");
+        log("⚠️  Note: Newer versions use https://local.drizzle.studio (not localhost:4983)", "yellow");
         log("Press Ctrl+C to stop", "yellow");
         spawn("pnpm", ["db:studio"], {
           cwd: appDir,

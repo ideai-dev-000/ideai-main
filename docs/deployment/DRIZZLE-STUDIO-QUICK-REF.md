@@ -1,0 +1,110 @@
+# Drizzle Studio Quick Reference
+
+**TL;DR**: How to start and use Drizzle Studio to edit your database.
+
+## Quick Start
+
+```bash
+# 1. Navigate to app directory
+cd apps/ideai-capabilities
+
+# 2. Ensure DATABASE_URL is set in .env.local
+# (Should already be there, but verify with:)
+cat .env.local | grep DATABASE_URL
+
+# 3. Start Drizzle Studio
+pnpm db:studio
+
+# 4. Open in browser: https://local.drizzle.studio
+```
+
+That's it! 🎉
+
+---
+
+## Important Notes
+
+### URL
+
+- **Newer versions** (0.31+): `https://local.drizzle.studio`
+- **Old versions**: `http://localhost:4983` (deprecated)
+- If URL doesn't resolve, add to `/etc/hosts`: `127.0.0.1 local.drizzle.studio`
+
+### Environment Variables
+
+- **Location**: `apps/ideai-capabilities/.env.local`
+- **Required**: `DATABASE_URL="postgresql://user:password@host:port/database"`
+- **Never commit**: `.env.local` is in `.gitignore` for security
+
+### How It Works
+
+- `drizzle.config.ts` automatically loads `.env.local` first
+- Then falls back to `.env` if `.env.local` doesn't exist
+- This ensures your local database URL is always used
+
+---
+
+## Troubleshooting
+
+### "Unexpected error happened"
+
+**Cause**: `DATABASE_URL` not set correctly in `.env.local`
+
+**Fix**:
+
+```bash
+cd apps/ideai-capabilities
+# Check if DATABASE_URL exists
+cat .env.local | grep DATABASE_URL
+
+# If missing, add it:
+echo 'DATABASE_URL="your-connection-string"' >> .env.local
+```
+
+### Port already in use
+
+**Fix**:
+
+```bash
+# Kill existing process
+lsof -ti:4983 | xargs kill -9
+
+# Then restart
+cd apps/ideai-capabilities
+pnpm db:studio
+```
+
+### Can't access https://local.drizzle.studio
+
+**Fix**:
+
+```bash
+# Add to /etc/hosts (requires sudo)
+sudo sh -c 'echo "127.0.0.1 local.drizzle.studio" >> /etc/hosts'
+```
+
+---
+
+## What You Can Do
+
+Once Drizzle Studio is open, you can:
+
+- ✅ Browse all database tables
+- ✅ View table schemas and relationships
+- ✅ Edit records (add, update, delete)
+- ✅ Run SQL queries
+- ✅ Export data
+
+---
+
+## Stop Drizzle Studio
+
+Press `Ctrl+C` in the terminal, or:
+
+```bash
+pkill -f "drizzle-kit studio"
+```
+
+---
+
+**See Also**: [Complete Database Management Guide](./database-management.md)
