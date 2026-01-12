@@ -238,7 +238,7 @@ export function IdeAISideMenuWrapper() {
         </div>
 
         {/* Area 2: New Workflow section - above the list - sticky */}
-        <div className="sticky top-[calc(var(--status-card-height,200px))] z-10 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700 -mx-0">
+        <div className="sticky top-[180px] z-10 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700 -mx-0">
           <IdeAISideMenuNewWorkflow onCreateWorkflow={handleCreateWorkflow} />
         </div>
 
