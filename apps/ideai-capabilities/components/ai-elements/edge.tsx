@@ -142,7 +142,6 @@ const Animated = ({ id, source, target, style, selected }: EdgeProps) => {
         strokeDasharray: "8 4",
         strokeLinecap: "round",
       }}
-      className="react-flow__edge-path animated-edge"
     />
   );
 };
