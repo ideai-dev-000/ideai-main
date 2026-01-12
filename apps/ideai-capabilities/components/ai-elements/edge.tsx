@@ -260,6 +260,11 @@ const Animated = ({ id, source, target, style, selected }: EdgeProps) => {
     .filter(Boolean)
     .join(" ");
   
+  // Debug: Log when in dash mode to verify it's working
+  if (isDashMode && typeof window !== "undefined") {
+    console.log("[Edge] Dash mode active, className:", edgeClassName, "strokeColor:", edgeStyles.stroke);
+  }
+  
   return (
     <BaseEdge
       id={id}
