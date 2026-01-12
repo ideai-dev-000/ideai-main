@@ -132,42 +132,25 @@
 /* Base edge path styles */
 .react-flow__edge-path {
   fill: none !important;
+  stroke-width: 2;
+  stroke: #d0d7de; /* Default gray - no !important so inline styles can override */
 }
 
-/* Green edges in dash preview mode - HIGHEST PRIORITY */
-.react-flow__edge-path.edge-dash-mode {
-  stroke: #22c55e !important; /* Green for dash preview */
-  stroke-width: 3.5 !important; /* Thicker for preview */
+.react-flow__edge.selected .react-flow__edge-path {
+  stroke-width: 3;
+  stroke: #8b949e; /* Muted foreground for selected */
 }
 
+/* Green edges in dash preview mode - use !important to override defaults */
+.react-flow__edge-path.edge-dash-mode,
 .react-flow__edge.edge-dash-mode .react-flow__edge-path {
   stroke: #22c55e !important; /* Green for dash preview */
   stroke-width: 3.5 !important; /* Thicker for preview */
 }
 
 /* Green edges for successfully traversed paths */
-.react-flow__edge-path.edge-success {
-  stroke: #22c55e !important; /* Green for successful traversal */
-  stroke-width: 3.5 !important; /* Thicker for successful */
-}
-
+.react-flow__edge-path.edge-success,
 .react-flow__edge.edge-success .react-flow__edge-path {
   stroke: #22c55e !important; /* Green for successful traversal */
   stroke-width: 3.5 !important; /* Thicker for successful */
-}
-
-/* Default gray - only if NOT in green state (use :not selector) */
-.react-flow__edge-path:not(.edge-dash-mode):not(.edge-success) {
-  stroke: #d0d7de !important; /* Visible gray for dark backgrounds */
-  stroke-width: 2 !important;
-}
-
-.react-flow__edge:not(.edge-dash-mode):not(.edge-success) .react-flow__edge-path {
-  stroke: #d0d7de !important; /* Visible gray for dark backgrounds */
-  stroke-width: 2 !important;
-}
-
-.react-flow__edge.selected .react-flow__edge-path:not(.edge-dash-mode):not(.edge-success) {
-  stroke-width: 3 !important;
-  stroke: #8b949e !important; /* Muted foreground for selected */
 }
