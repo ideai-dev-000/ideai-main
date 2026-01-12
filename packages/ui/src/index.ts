@@ -110,13 +110,11 @@ export { MobileNav } from "./components/mobile-nav";
 export {
   IdeAISideMenu,
   IdeAISideMenuWorkflows,
-  IdeAISideMenuVibes,
+  IdeAISideMenuNewWorkflow,
   IdeAISideMenuCards,
   IdeAISideMenuControls,
   IdeAISideMenuBlocks,
   type WorkflowItem,
-  type VibeItem,
-  type ContentMode,
   type IdeAISideMenuProps,
 } from "./components/ideai-side-menu";
 
