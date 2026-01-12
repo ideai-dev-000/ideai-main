@@ -48,17 +48,13 @@ export function ChatMessages({
     }
   }, [isLoading]);
 
-  if (chatHistory.length === 0) {
-    return (
-      <Conversation>
-        <ConversationContent>
-          <div>
-            {/* Empty conversation - messages will appear here when they load */}
-          </div>
-        </ConversationContent>
-      </Conversation>
-    );
-  }
+  // Show loader if loading and no messages yet, OR if loading and last message isn't streaming yet
+  // This ensures the thinking state is visible while waiting for the stream to start
+  const showLoader =
+    isLoading &&
+    (chatHistory.length === 0 ||
+      (chatHistory.length > 0 &&
+        !chatHistory[chatHistory.length - 1]?.isStreaming));
 
   return (
     <>
@@ -93,7 +89,7 @@ export function ChatMessages({
               )}
             </Message>
           ))}
-          {isLoading && (
+          {showLoader && (
             <div className="flex justify-center py-4">
               <Loader size={16} className="text-gray-500 dark:text-gray-400" />
             </div>

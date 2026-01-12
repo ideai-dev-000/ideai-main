@@ -119,7 +119,7 @@ export function VibeChatDetailClient() {
                 <>
                   <VibeChatMessages
                     chatHistory={chatHistory}
-                    isLoading={isLoading}
+                    isLoading={isLoading || isStreaming}
                     currentChat={currentChat}
                     onStreamingComplete={handleStreamComplete}
                   />

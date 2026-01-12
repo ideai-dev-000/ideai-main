@@ -260,7 +260,11 @@ export function VibeHomeClient() {
                 <div className="flex flex-col h-full">
                   <VibeChatMessages
                     chatHistory={chatHistory}
-                    isLoading={isLoading}
+                    isLoading={
+                      isLoading ||
+                      (chatHistory.length > 0 &&
+                        chatHistory[chatHistory.length - 1]?.isStreaming)
+                    }
                     currentChat={currentChat}
                     onStreamingComplete={handleStreamingComplete}
                   />

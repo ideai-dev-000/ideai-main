@@ -152,6 +152,9 @@ export function useVibeChat({
 
       setIsStreaming(true);
 
+      // Keep isLoading true until stream actually starts
+      // This ensures the thinking/loading indicator shows
+
       // Add placeholder for streaming response
       setChatHistory((prev) => [
         ...prev,
@@ -165,6 +168,7 @@ export function useVibeChat({
 
       // Stream will be handled by the client component
       // This hook just manages state
+      // Note: isLoading will be set to false when stream completes
     } catch (error) {
       console.error("[useVibeChat] Error:", error);
 
