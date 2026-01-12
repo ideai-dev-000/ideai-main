@@ -529,7 +529,7 @@ export function WorkflowCanvas() {
 
   return (
     <div
-      className="relative h-full bg-background"
+      className="relative h-full bg-background pointer-events-auto"
       data-testid="workflow-canvas"
       style={{
         opacity: isCanvasReady ? 1 : 0,
