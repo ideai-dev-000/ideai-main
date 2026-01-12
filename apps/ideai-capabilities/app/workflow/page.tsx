@@ -26,7 +26,7 @@ import {
 } from "@/lib/workflow-store";
 
 // Helper function to create a default trigger node
-function createDefaultTriggerNode() {
+function createDefaultTriggerNode(triggerType: "Manual" | "Webhook" | "Schedule" = "Manual") {
   return {
     id: nanoid(),
     type: "trigger" as const,
@@ -35,7 +35,7 @@ function createDefaultTriggerNode() {
       label: "",
       description: "",
       type: "trigger" as const,
-      config: { triggerType: "Manual" },
+      config: { triggerType },
       status: "idle" as const,
     },
   };
@@ -63,8 +63,8 @@ export default function WorkflowPage() {
     session.user.email?.startsWith("temp-");
 
   // Handler to add the first node (replaces the "add" node)
-  const handleAddNode = useCallback(() => {
-    const newNode: WorkflowNode = createDefaultTriggerNode();
+  const handleAddNode = useCallback((triggerType: "Manual" | "Webhook" | "Schedule" = "Manual") => {
+    const newNode: WorkflowNode = createDefaultTriggerNode(triggerType);
     // Replace all nodes (removes the "add" node)
     setNodes([newNode]);
   }, [setNodes]);
