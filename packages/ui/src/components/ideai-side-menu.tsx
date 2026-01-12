@@ -205,20 +205,24 @@ export function IdeAISideMenuWorkflows({
 
   return (
     <div className={cn("ideai-side-menu-section", className)}>
-      <button
-        type="button"
-        className="ideai-side-menu-section-header"
-        onClick={() => setIsExpanded(!isExpanded)}
-      >
-        <Workflow className="ideai-side-menu-section-icon" />
-        <span className="ideai-side-menu-section-title">{title}</span>
-        <ChevronRight
-          className={cn(
-            "ideai-side-menu-section-chevron",
-            isExpanded && "ideai-side-menu-section-chevron--expanded",
-          )}
-        />
-      </button>
+      <div className="px-4 py-3 border-b border-slate-200 dark:border-slate-700">
+        <button
+          type="button"
+          className="flex items-center gap-2 w-full text-left"
+          onClick={() => setIsExpanded(!isExpanded)}
+        >
+          <Workflow className="h-4 w-4 text-slate-600 dark:text-slate-400" />
+          <span className="text-sm font-semibold text-slate-900 dark:text-slate-100">
+            {title}
+          </span>
+          <ChevronRight
+            className={cn(
+              "h-4 w-4 ml-auto text-slate-600 dark:text-slate-400 transition-transform",
+              isExpanded && "rotate-90",
+            )}
+          />
+        </button>
+      </div>
       {isExpanded && (
         <div className="ideai-side-menu-section-content">
           {/* Workflows List */}
