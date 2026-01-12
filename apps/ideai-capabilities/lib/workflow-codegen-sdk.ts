@@ -254,7 +254,7 @@ export function generateWorkflowSDKCode(
   function buildSlackParams(config: Record<string, unknown>): string[] {
     imports.add("import { WebClient } from '@slack/web-api';");
     return [
-      `slackChannel: \`${convertTemplateToJS((config.slackChannel as string) || "#genrak")}\``,
+      `slackChannel: \`${convertTemplateToJS((config.slackChannel as string) || "#general")}\``,
       `slackMessage: \`${convertTemplateToJS((config.slackMessage as string) || "No message")}\``,
       "apiKey: process.env.SLACK_API_KEY!",
     ];

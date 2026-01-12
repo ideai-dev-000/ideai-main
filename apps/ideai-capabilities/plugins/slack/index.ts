@@ -49,10 +49,10 @@ const slackPlugin: IntegrationPlugin = {
           key: "slackChannel",
           label: "Channel",
           type: "text",
-          placeholder: "#genrak or {{NodeName.channel}}",
-          example: "#genrak",
+          placeholder: "#general or {{NodeName.channel}}",
+          example: "#general",
           required: true,
-          defaultValue: "#genrak",
+          defaultValue: "#general",
         },
         {
           key: "slackMessage",
