@@ -38,15 +38,15 @@ function LayoutContent({ children }: { children: ReactNode }) {
   return (
     <ReactFlowProvider>
       <PersistentCanvas />
+      {/* IdeaI Side Menu - outside z-[1] wrapper so it's above canvas (sidebar has z-30) */}
+      {/* Desktop sidebar is fixed, mobile trigger is part of component */}
+      <div className="pointer-events-auto">
+        <IdeAISideMenuWrapper />
+      </div>
       <div className="pointer-events-none relative z-[1]">
         {/* Header needs pointer events for buttons to work */}
         <div className="pointer-events-auto">
           <CapabilitiesHeader />
-        </div>
-        {/* IdeaI Side Menu - needs pointer events */}
-        {/* Desktop sidebar is fixed, mobile trigger is part of component */}
-        <div className="pointer-events-auto">
-          <IdeAISideMenuWrapper />
         </div>
         {/* Main content - needs pointer events for interactive elements */}
         {/* Add left padding on desktop to account for sidebar */}
