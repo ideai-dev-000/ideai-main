@@ -20,6 +20,8 @@ const Temporary = ({
   sourcePosition,
   targetPosition,
   selected,
+  source,
+  target,
 }: EdgeProps) => {
   const [edgePath] = getSimpleBezierPath({
     sourceX,
@@ -32,8 +34,8 @@ const Temporary = ({
 
   // Check if edge has been successfully traversed (temporary edges during execution)
   const executionLogs = useAtomValue(executionLogsAtom);
-  const sourceLog = executionLogs[source];
-  const targetLog = executionLogs[target];
+  const sourceLog = source ? executionLogs[source] : undefined;
+  const targetLog = target ? executionLogs[target] : undefined;
   const isSuccessfullyTraversed =
     sourceLog?.status === "success" &&
     (targetLog?.status === "running" || targetLog?.status === "success");
