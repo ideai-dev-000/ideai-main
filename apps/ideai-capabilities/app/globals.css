@@ -142,12 +142,13 @@
 }
 
 /* Green edges for successfully traversed paths during execution */
-.react-flow__edge[data-success="true"] .react-flow__edge-path {
+.react-flow__edge.edge-success .react-flow__edge-path {
   stroke: #22c55e !important; /* Green for successful traversal */
+  stroke-width: 3.5 !important; /* Thicker for successful */
 }
 
-/* Green edges in dash preview mode */
-.react-flow__edge[data-dash-mode="true"] .react-flow__edge-path {
+/* Green edges in dash preview mode - override default gray */
+.react-flow__edge.edge-dash-mode .react-flow__edge-path {
   stroke: #22c55e !important; /* Green for dash preview */
   stroke-width: 3.5 !important; /* Thicker for preview */
 }

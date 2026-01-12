@@ -252,13 +252,20 @@ const Animated = ({ id, source, target, style, selected }: EdgeProps) => {
 
   const edgeStyles = getEdgeStyles();
   
+  // Build className for CSS targeting
+  const edgeClassName = [
+    isDashMode && "edge-dash-mode",
+    isSuccessfullyTraversed && "edge-success",
+  ]
+    .filter(Boolean)
+    .join(" ");
+  
   return (
     <BaseEdge
       id={id}
       path={edgePath}
       style={edgeStyles}
-      data-dash-mode={isDashMode ? "true" : undefined}
-      data-success={isSuccessfullyTraversed ? "true" : undefined}
+      className={edgeClassName || undefined}
     />
   );
 };
