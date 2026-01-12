@@ -12,6 +12,8 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useAtom } from "jotai";
 import { IdeAILogo } from "@repo/ui";
 import { ThemeToggle } from "@repo/ui";
 import { IdeAIThemeSelector } from "@repo/ui";
@@ -19,6 +21,9 @@ import { MobileNav } from "@repo/ui";
 import { Workflow, Code, Home } from "lucide-react";
 import { UserMenu } from "@/components/workflow/user-menu";
 import { useSession } from "@/lib/auth-client";
+import { demoModeAtom } from "@/lib/workflow-store";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
 
 interface NavItem {
   label: string;
@@ -56,6 +61,11 @@ const mainNav: NavItem[] = [
 export function CapabilitiesHeader() {
   const [isScrolled, setIsScrolled] = useState(false);
   const { data: session } = useSession();
+  const pathname = usePathname();
+  const [demoMode, setDemoMode] = useAtom(demoModeAtom);
+  
+  // Show demo mode toggle only on workflow pages
+  const isWorkflowPage = pathname === "/workflow" || pathname.startsWith("/workflow/");
 
   useEffect(() => {
     const handleScroll = () => {
@@ -65,6 +75,14 @@ export function CapabilitiesHeader() {
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const handleDemoModeChange = (checked: boolean) => {
+    setDemoMode(checked);
+    // Save to localStorage
+    if (typeof window !== "undefined") {
+      localStorage.setItem("workflow-demo-mode", String(checked));
+    }
+  };
 
   return (
     <header
@@ -106,6 +124,22 @@ export function CapabilitiesHeader() {
 
           {/* Right Side */}
           <div className="relative z-50 flex items-center gap-2">
+            {/* Demo Mode Toggle - only show on workflow pages */}
+            {isWorkflowPage && (
+              <div className="hidden md:flex items-center gap-2 rounded-md border border-slate-200 bg-white px-3 py-1.5 shadow-sm dark:border-slate-700 dark:bg-slate-800">
+                <Switch
+                  checked={demoMode}
+                  onCheckedChange={handleDemoModeChange}
+                  id="demo-mode-toggle"
+                />
+                <Label
+                  htmlFor="demo-mode-toggle"
+                  className="text-xs font-medium text-slate-700 dark:text-slate-300 cursor-pointer"
+                >
+                  Demo Mode
+                </Label>
+              </div>
+            )}
             <UserMenu />
             <IdeAIThemeSelector />
             <ThemeToggle />

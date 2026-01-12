@@ -24,8 +24,6 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
-import { Switch } from "@/components/ui/switch";
-import { Label } from "@/components/ui/label";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -1519,15 +1517,6 @@ function WorkflowMenuComponent({
 export const WorkflowToolbar = ({ workflowId }: WorkflowToolbarProps) => {
   const state = useWorkflowState();
   const actions = useWorkflowActions(state);
-  const [demoMode, setDemoMode] = useAtom(demoModeAtom);
-
-  const handleDemoModeChange = (checked: boolean) => {
-    setDemoMode(checked);
-    // Save to localStorage
-    if (typeof window !== "undefined") {
-      localStorage.setItem("workflow-demo-mode", String(checked));
-    }
-  };
 
   return (
     <>
@@ -1545,23 +1534,7 @@ export const WorkflowToolbar = ({ workflowId }: WorkflowToolbarProps) => {
         </Panel>
       )}
 
-      {/* Demo Mode Toggle - top left */}
-      <Panel
-        className="flex items-center gap-2 rounded-md border border-slate-200 bg-white px-3 py-2 shadow-sm dark:border-slate-700 dark:bg-slate-800"
-        position="top-left"
-      >
-        <Switch
-          checked={demoMode}
-          onCheckedChange={handleDemoModeChange}
-          id="demo-mode-toggle"
-        />
-        <Label
-          htmlFor="demo-mode-toggle"
-          className="text-xs font-medium text-slate-700 dark:text-slate-300 cursor-pointer"
-        >
-          Demo Mode
-        </Label>
-      </Panel>
+      {/* Demo Mode Toggle removed - now in header/nav */}
 
       <div className="pointer-events-auto absolute top-4 right-4 z-10">
         <div className="flex flex-col-reverse items-end gap-2 lg:flex-row lg:items-center">
