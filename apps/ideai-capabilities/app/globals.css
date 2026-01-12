@@ -145,3 +145,73 @@
   stroke-dasharray: 8 4;
   stroke-dashoffset: 0;
 }
+
+/* Edge animations - three different modes */
+
+/* Flowing Dots: Animated dots flowing along the edge */
+@keyframes flowing-dots {
+  0% {
+    stroke-dashoffset: 0;
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    stroke-dashoffset: -12;
+    opacity: 0;
+  }
+}
+
+.animated-edge-flowing-dots {
+  stroke-dasharray: 0 12;
+  stroke-dashoffset: 0;
+  animation: flowing-dots 2s linear infinite;
+}
+
+/* Dashed Flow: Animated dashed lines */
+@keyframes dashed-flow {
+  to {
+    stroke-dashoffset: -12;
+  }
+}
+
+.animated-edge-dashed-flow {
+  stroke-dasharray: 8 4;
+  stroke-dashoffset: 0;
+  animation: dashed-flow 1s linear infinite;
+}
+
+/* Solid Pulse: Pulsing solid line */
+@keyframes solid-pulse {
+  0%, 100% {
+    opacity: 0.5;
+    stroke-width: 2.5;
+  }
+  50% {
+    opacity: 1;
+    stroke-width: 3.5;
+  }
+}
+
+.animated-edge-solid-pulse {
+  stroke-dasharray: none;
+  animation: solid-pulse 1.5s ease-in-out infinite;
+}
+
+/* Temporary edges (being drawn) - vibrant primary color */
+.temporary-edge {
+  animation: temporary-pulse 1s ease-in-out infinite;
+}
+
+@keyframes temporary-pulse {
+  0%, 100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+}

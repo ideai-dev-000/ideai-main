@@ -52,6 +52,7 @@ import {
   useContextMenuHandlers,
   WorkflowContextMenu,
 } from "./workflow-context-menu";
+import { EdgeAnimationToggle } from "./edge-animation-toggle";
 
 const nodeTemplates = [
   {
@@ -574,6 +575,12 @@ export function WorkflowCanvas() {
           position="bottom-left"
         >
           <Controls />
+        </Panel>
+        <Panel
+          className="border-none bg-transparent p-0"
+          position="bottom-right"
+        >
+          <EdgeAnimationToggle />
         </Panel>
         {showMinimap && (
           <MiniMap bgColor="var(--sidebar)" nodeStrokeColor="var(--border)" />

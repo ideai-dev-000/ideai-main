@@ -8,6 +8,8 @@ import {
   Position,
   useInternalNode,
 } from "@xyflow/react";
+import { useAtomValue } from "jotai";
+import { edgeAnimationModeAtom } from "@/lib/workflow-store";
 
 const Temporary = ({
   id,
@@ -28,17 +30,19 @@ const Temporary = ({
     targetPosition,
   });
 
+  // Temporary edges (being drawn) use a more vibrant color
   return (
     <BaseEdge
-      className="stroke-1"
+      className="stroke-1 temporary-edge"
       id={id}
       path={edgePath}
       style={{
         stroke: selected
           ? "var(--primary)"
-          : "color-mix(in oklch, var(--foreground) 40%, transparent)",
+          : "var(--primary)", // Vibrant primary color when drawing
         strokeDasharray: "5, 5",
-        strokeWidth: 2,
+        strokeWidth: 2.5,
+        opacity: 0.8,
       }}
     />
   );
@@ -110,6 +114,7 @@ const getEdgeParams = (
 const Animated = ({ id, source, target, style, selected }: EdgeProps) => {
   const sourceNode = useInternalNode(source);
   const targetNode = useInternalNode(target);
+  const animationMode = useAtomValue(edgeAnimationModeAtom);
 
   if (!(sourceNode && targetNode)) {
     return null;
@@ -129,17 +134,45 @@ const Animated = ({ id, source, target, style, selected }: EdgeProps) => {
     targetPosition: targetPos,
   });
 
+  // Different styles based on animation mode
+  const getAnimationClass = () => {
+    switch (animationMode) {
+      case "flowing-dots":
+        return "animated-edge-flowing-dots";
+      case "dashed-flow":
+        return "animated-edge-dashed-flow";
+      case "solid-pulse":
+        return "animated-edge-solid-pulse";
+      default:
+        return "animated-edge-flowing-dots";
+    }
+  };
+
+  const getStrokeDashArray = () => {
+    switch (animationMode) {
+      case "flowing-dots":
+        return "0 12"; // Space for dots
+      case "dashed-flow":
+        return "8 4";
+      case "solid-pulse":
+        return "none";
+      default:
+        return "8 4";
+    }
+  };
+
   return (
     <BaseEdge
       id={id}
       path={edgePath}
+      className={getAnimationClass()}
       style={{
         ...style,
         stroke: selected
           ? "var(--primary)"
           : "color-mix(in oklch, var(--foreground) 50%, transparent)",
-        strokeWidth: 2.5,
-        strokeDasharray: "8 4",
+        strokeWidth: animationMode === "solid-pulse" ? 3 : 2.5,
+        strokeDasharray: getStrokeDashArray(),
         strokeLinecap: "round",
       }}
     />

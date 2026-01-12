@@ -45,6 +45,10 @@ export const hasSidebarBeenShownAtom = atom<boolean>(false);
 export const isSidebarCollapsedAtom = atom<boolean>(false);
 export const isTransitioningFromHomepageAtom = atom<boolean>(false);
 
+// Edge animation mode: "flowing-dots" | "dashed-flow" | "solid-pulse"
+export type EdgeAnimationMode = "flowing-dots" | "dashed-flow" | "solid-pulse";
+export const edgeAnimationModeAtom = atom<EdgeAnimationMode>("flowing-dots");
+
 // Tracks nodes that are pending integration auto-select check
 // Don't show "missing integration" warning for these nodes
 export const pendingIntegrationNodesAtom = atom<Set<string>>(new Set<string>());
