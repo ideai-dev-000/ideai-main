@@ -515,7 +515,7 @@ export function generateWorkflowCode(
     );
 
     const config = node.data.config || {};
-    const slackChannel = (config.slackChannel as string) || "#general";
+    const slackChannel = (config.slackChannel as string) || "#genrak";
     const slackMessage = (config.slackMessage as string) || "Message content";
 
     const convertedChannel = convertTemplateToJS(slackChannel);
