@@ -17,5 +17,80 @@
     },
     "dev_ready": false,
     "last_full_check": "2026-01-11T15:29:27.867Z"
+  },
+  "demoWorkflow": {
+    "name": "IdeaI Demo Workflow",
+    "description": "Demo workflow showing Slack integration with template data",
+    "nodes": [
+      {
+        "id": "trigger-1",
+        "type": "trigger",
+        "position": {
+          "x": 100,
+          "y": 200
+        },
+        "data": {
+          "label": "Manual Trigger",
+          "description": "Starts the workflow manually",
+          "type": "trigger",
+          "config": {
+            "triggerType": "Manual"
+          },
+          "status": "idle"
+        }
+      },
+      {
+        "id": "data-node-1",
+        "type": "action",
+        "position": {
+          "x": 350,
+          "y": 200
+        },
+        "data": {
+          "label": "Data Node",
+          "description": "A data node that provides information",
+          "type": "action",
+          "config": {
+            "actionType": "HTTP Request",
+            "httpMethod": "GET",
+            "endpoint": "https://api.example.com/data"
+          },
+          "status": "idle"
+        }
+      },
+      {
+        "id": "slack-node-1",
+        "type": "action",
+        "position": {
+          "x": 600,
+          "y": 200
+        },
+        "data": {
+          "label": "Send Slack Message",
+          "description": "Sends a message to Slack with previous node data",
+          "type": "action",
+          "config": {
+            "actionType": "slack/send-message",
+            "slackChannel": "#general",
+            "slackMessage": "This message is from IdeaI. You can daisychain data too, i.e., here is the previous node's data:\n\n{{@dataNode:Data Node.response}}"
+          },
+          "status": "idle"
+        }
+      }
+    ],
+    "edges": [
+      {
+        "id": "edge-1",
+        "source": "trigger-1",
+        "target": "data-node-1",
+        "type": "animated"
+      },
+      {
+        "id": "edge-2",
+        "source": "data-node-1",
+        "target": "slack-node-1",
+        "type": "animated"
+      }
+    ]
   }
 }
