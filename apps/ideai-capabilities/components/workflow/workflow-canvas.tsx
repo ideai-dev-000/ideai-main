@@ -550,6 +550,7 @@ export function WorkflowCanvas() {
         className="bg-background"
         connectionLineComponent={Connection}
         connectionMode={ConnectionMode.Strict}
+        defaultEdgeOptions={{ type: "animated" }}
         edges={edges}
         edgeTypes={edgeTypes}
         elementsSelectable={!isGenerating}

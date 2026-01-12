@@ -465,7 +465,12 @@ export const loadWorkflowAtom = atom(null, async (_get, set) => {
     set(isLoadingAtom, true);
     const workflow = await api.workflow.getCurrent();
     set(nodesAtom, workflow.nodes);
-    set(edgesAtom, workflow.edges);
+    // Ensure all edges have a type (default to "animated" if missing)
+    const edgesWithType = workflow.edges.map((edge: any) => ({
+      ...edge,
+      type: edge.type || "animated",
+    }));
+    set(edgesAtom, edgesWithType);
     if (workflow.id) {
       set(currentWorkflowIdAtom, workflow.id);
     }

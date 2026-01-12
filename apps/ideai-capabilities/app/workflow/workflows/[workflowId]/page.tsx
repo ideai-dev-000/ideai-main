@@ -430,7 +430,12 @@ const WorkflowEditor = ({ params }: WorkflowPageProps) => {
       }));
 
       setNodes(nodesWithIdleStatus);
-      setEdges(workflow.edges);
+      // Ensure all edges have a type (default to "animated" if missing)
+      const edgesWithType = workflow.edges.map((edge: any) => ({
+        ...edge,
+        type: edge.type || "animated",
+      }));
+      setEdges(edgesWithType);
       setCurrentWorkflowId(workflow.id);
       setCurrentWorkflowName(workflow.name);
       setCurrentWorkflowVisibility(
