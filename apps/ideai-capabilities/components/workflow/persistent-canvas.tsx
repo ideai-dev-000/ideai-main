@@ -24,7 +24,7 @@ export function PersistentCanvas() {
   }
 
   return (
-    <div className="fixed inset-0 z-[5] pointer-events-none">
+    <div className="fixed inset-0 z-[15] pointer-events-none">
       <WorkflowCanvas />
     </div>
   );
