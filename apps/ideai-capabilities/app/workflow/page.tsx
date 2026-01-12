@@ -200,9 +200,10 @@ export default function WorkflowPage() {
   }
 
   // Render card directly on page when empty (bypasses React Flow)
+  // z-[20] to be above canvas (z-[15]) but below header (z-[60])
   if (showCard) {
     return (
-      <div className="pointer-events-auto absolute inset-0 flex items-center justify-center">
+      <div className="pointer-events-auto fixed inset-0 z-[20] flex items-center justify-center">
         <AddNode
           data={{
             onClick: handleAddNode,

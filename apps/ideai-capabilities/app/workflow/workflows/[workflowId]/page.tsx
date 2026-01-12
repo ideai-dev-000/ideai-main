@@ -901,8 +901,9 @@ const WorkflowEditor = ({ params }: WorkflowPageProps) => {
       {isMobile && <NodeConfigPanel />}
 
       {/* Show card directly when no nodes exist (not as React Flow node) */}
+      {/* z-[20] to be above canvas (z-[15]) but below header (z-[60]) */}
       {nodes.length === 0 && currentWorkflowId && (
-        <div className="pointer-events-auto absolute inset-0 flex items-center justify-center">
+        <div className="pointer-events-auto fixed inset-0 z-[20] flex items-center justify-center">
           <AddNode
             data={{
               onClick: (triggerType: "Manual" | "Webhook" | "Schedule" = "Manual") => {

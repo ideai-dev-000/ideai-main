@@ -87,28 +87,11 @@ export function IdeAISideMenuWrapper() {
   // and now includes matching console logs for consistency
   const loadWorkflows = workflowNav.loadWorkflows;
 
-  // Handler to create a new workflow
-  const handleCreateWorkflow = useCallback(async () => {
-    try {
-      const newWorkflow = await api.workflow.create({
-        name: "Untitled Workflow",
-        description: "",
-        nodes: [],
-        edges: [],
-      });
-
-      toast.success("Workflow created");
-
-      // Reload workflows list
-      await loadWorkflows();
-
-      // Navigate to the new workflow
-      router.push(`/workflow/workflows/${newWorkflow.id}`);
-    } catch (error) {
-      console.error("Failed to create workflow:", error);
-      toast.error("Failed to create workflow");
-    }
-  }, [loadWorkflows, router]);
+  // Handler to create a new workflow - navigate to /workflow to show card
+  const handleCreateWorkflow = useCallback(() => {
+    // Navigate to /workflow to show the card, workflow will be created when user selects trigger type
+    router.push("/workflow");
+  }, [router]);
 
   // Handler to clone a workflow
   const handleCloneWorkflow = useCallback(
