@@ -261,37 +261,30 @@ const WorkflowEditor = ({ params }: WorkflowPageProps) => {
   }, [setIsPanelAnimating, setPanelCollapsed]);
 
   // Show panel when a node is selected (if not mobile)
+  // Always ensure panel is visible when a node is selected
   useEffect(() => {
     if (!isMobile && selectedNodeId) {
-      console.log(
-        "[WorkflowEditor] Node selected, showing panel:",
-        selectedNodeId,
-        "panelVisible:",
-        panelVisible,
-        "panelCollapsed:",
-        panelCollapsed,
-      );
       // Always show panel when node is selected
-      setPanelVisible(true);
+      if (!panelVisible) {
+        setPanelVisible(true);
+      }
       setHasSidebarBeenShown(true);
       // Always expand if collapsed when node is selected
       if (panelCollapsed) {
-        console.log("[WorkflowEditor] Expanding collapsed panel");
+        setIsPanelAnimating(true);
         setPanelCollapsed(false);
+        setTimeout(() => setIsPanelAnimating(false), 350);
       }
-    } else if (!isMobile && !selectedNodeId) {
-      console.log(
-        "[WorkflowEditor] No node selected, panelVisible:",
-        panelVisible,
-      );
     }
   }, [
     selectedNodeId,
     isMobile,
-    setHasSidebarBeenShown,
-    setPanelCollapsed,
     panelVisible,
     panelCollapsed,
+    setPanelVisible,
+    setHasSidebarBeenShown,
+    setPanelCollapsed,
+    setIsPanelAnimating,
   ]);
 
   // Set right panel width for AI prompt positioning
