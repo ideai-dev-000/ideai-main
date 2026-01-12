@@ -127,20 +127,4 @@
   }
 }
 
-/* Ensure edges are visible - use simple border color */
-.react-flow__edge-path {
-  stroke: var(--border) !important;
-}
-
-.react-flow__edge.selected .react-flow__edge-path {
-  stroke: var(--muted-foreground) !important;
-  stroke-width: 2.5 !important;
-}
-
-.dark .react-flow__edge-path {
-  stroke: var(--border) !important;
-}
-
-.dark .react-flow__edge.selected .react-flow__edge-path {
-  stroke: var(--muted-foreground) !important;
-}
+/* Edge styles are handled inline by edge component - no overrides needed */
