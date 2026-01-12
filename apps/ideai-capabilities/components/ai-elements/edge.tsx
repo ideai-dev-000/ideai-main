@@ -151,7 +151,7 @@ const Animated = ({ id, source, target, style, selected }: EdgeProps) => {
   const getStrokeDashArray = () => {
     switch (animationMode) {
       case "flowing-dots":
-        return "0 12"; // Space for dots
+        return "3 9"; // Dots with spacing
       case "dashed-flow":
         return "8 4";
       case "solid-pulse":
