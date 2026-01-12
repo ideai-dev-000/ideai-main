@@ -264,10 +264,8 @@ const WorkflowEditor = ({ params }: WorkflowPageProps) => {
   // Always ensure panel is visible when a node is selected
   useEffect(() => {
     if (!isMobile && selectedNodeId) {
-      // Always show panel when node is selected
-      if (!panelVisible) {
-        setPanelVisible(true);
-      }
+      // Always show panel when node is selected - set immediately
+      setPanelVisible(true);
       setHasSidebarBeenShown(true);
       // Always expand if collapsed when node is selected
       if (panelCollapsed) {
@@ -279,7 +277,6 @@ const WorkflowEditor = ({ params }: WorkflowPageProps) => {
   }, [
     selectedNodeId,
     isMobile,
-    panelVisible,
     panelCollapsed,
     setPanelVisible,
     setHasSidebarBeenShown,
