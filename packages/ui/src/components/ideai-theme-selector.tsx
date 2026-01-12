@@ -16,6 +16,7 @@
 "use client";
 
 import * as React from "react";
+import { createPortal } from "react-dom";
 import { Palette, Check } from "lucide-react";
 import { useTheme } from "next-themes";
 import { themes, getTheme, type ThemeName } from "../themes";
@@ -158,45 +159,55 @@ export function IdeAIThemeSelector() {
         <Palette className="h-5 w-5" />
       </button>
 
-      {isOpen && (
-        <div
-          ref={popoverRef}
-          className="ideai-theme-selector__popover"
-          role="menu"
-        >
-          <div className="ideai-theme-selector__header">
-            <span className="ideai-theme-selector__title">Select Theme</span>
-          </div>
-          <div className="ideai-theme-selector__list">
-            {/* None option */}
-            <button
-              type="button"
-              className={`ideai-theme-selector__item ${currentTheme === null ? "ideai-theme-selector__item--active" : ""}`}
-              onClick={() => handleThemeSelect(null)}
-              role="menuitem"
+      {isOpen && mounted && buttonRef.current && typeof document !== "undefined"
+        ? createPortal(
+            <div
+              ref={popoverRef}
+              className="ideai-theme-selector__popover"
+              role="menu"
+              style={{
+                position: "fixed",
+                top: buttonRef.current.getBoundingClientRect().bottom + 8,
+                right:
+                  window.innerWidth -
+                  buttonRef.current.getBoundingClientRect().right,
+              }}
             >
-              <span className="ideai-theme-selector__item-name">None</span>
-              {currentTheme === null && <Check className="h-4 w-4" />}
-            </button>
+              <div className="ideai-theme-selector__header">
+                <span className="ideai-theme-selector__title">Select Theme</span>
+              </div>
+              <div className="ideai-theme-selector__list">
+                {/* None option */}
+                <button
+                  type="button"
+                  className={`ideai-theme-selector__item ${currentTheme === null ? "ideai-theme-selector__item--active" : ""}`}
+                  onClick={() => handleThemeSelect(null)}
+                  role="menuitem"
+                >
+                  <span className="ideai-theme-selector__item-name">None</span>
+                  {currentTheme === null && <Check className="h-4 w-4" />}
+                </button>
 
-            {/* Theme options */}
-            {Object.values(themes).map((theme) => (
-              <button
-                key={theme.name}
-                type="button"
-                className={`ideai-theme-selector__item ${currentTheme === theme.name ? "ideai-theme-selector__item--active" : ""}`}
-                onClick={() => handleThemeSelect(theme.name as ThemeName)}
-                role="menuitem"
-              >
-                <span className="ideai-theme-selector__item-name">
-                  {theme.displayName}
-                </span>
-                {currentTheme === theme.name && <Check className="h-4 w-4" />}
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
+                {/* Theme options */}
+                {Object.values(themes).map((theme) => (
+                  <button
+                    key={theme.name}
+                    type="button"
+                    className={`ideai-theme-selector__item ${currentTheme === theme.name ? "ideai-theme-selector__item--active" : ""}`}
+                    onClick={() => handleThemeSelect(theme.name as ThemeName)}
+                    role="menuitem"
+                  >
+                    <span className="ideai-theme-selector__item-name">
+                      {theme.displayName}
+                    </span>
+                    {currentTheme === theme.name && <Check className="h-4 w-4" />}
+                  </button>
+                ))}
+              </div>
+            </div>,
+            document.body,
+          )
+        : null}
     </div>
   );
 }

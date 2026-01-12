@@ -1274,7 +1274,7 @@
 
 /* Theme Selector Popover */
 .ideai-theme-selector__popover {
-  @apply absolute right-0 top-full mt-2 w-48;
+  @apply w-48;
   @apply bg-white dark:bg-slate-900;
   @apply border border-slate-200 dark:border-slate-700;
   @apply rounded-lg shadow-lg;
