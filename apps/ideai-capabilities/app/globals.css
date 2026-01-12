@@ -134,8 +134,13 @@
   fill: none !important;
 }
 
-/* Green edges in dash preview mode - HIGHEST PRIORITY, must come first */
+/* Green edges in dash preview mode - HIGHEST PRIORITY */
 .react-flow__edge-path.edge-dash-mode {
+  stroke: #22c55e !important; /* Green for dash preview */
+  stroke-width: 3.5 !important; /* Thicker for preview */
+}
+
+.react-flow__edge.edge-dash-mode .react-flow__edge-path {
   stroke: #22c55e !important; /* Green for dash preview */
   stroke-width: 3.5 !important; /* Thicker for preview */
 }
@@ -146,15 +151,18 @@
   stroke-width: 3.5 !important; /* Thicker for successful */
 }
 
-/* Wrapper-level classes for BaseEdge className on wrapper */
-.react-flow__edge.edge-success .react-flow__edge-path,
-.react-flow__edge.edge-dash-mode .react-flow__edge-path {
-  stroke: #22c55e !important;
-  stroke-width: 3.5 !important;
+.react-flow__edge.edge-success .react-flow__edge-path {
+  stroke: #22c55e !important; /* Green for successful traversal */
+  stroke-width: 3.5 !important; /* Thicker for successful */
 }
 
-/* Default gray - lower priority, only if not green state */
+/* Default gray - only if NOT in green state (use :not selector) */
 .react-flow__edge-path:not(.edge-dash-mode):not(.edge-success) {
+  stroke: #d0d7de !important; /* Visible gray for dark backgrounds */
+  stroke-width: 2 !important;
+}
+
+.react-flow__edge:not(.edge-dash-mode):not(.edge-success) .react-flow__edge-path {
   stroke: #d0d7de !important; /* Visible gray for dark backgrounds */
   stroke-width: 2 !important;
 }
