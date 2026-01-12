@@ -7,6 +7,7 @@ import {
   type Node,
   Position,
   useInternalNode,
+  useReactFlow,
 } from "@xyflow/react";
 import { useAtomValue } from "jotai";
 import { edgeAnimationModeAtom, executionLogsAtom } from "@/lib/workflow-store";
@@ -33,19 +34,34 @@ const Temporary = ({
   });
 
   // Check if edge has been successfully traversed (temporary edges during execution)
+  // Check both executionLogsAtom and node.data.status for status
   const executionLogs = useAtomValue(executionLogsAtom);
+  const { getNode } = useReactFlow();
+  const sourceNodeData = source ? getNode(source) : undefined;
+  const targetNodeData = target ? getNode(target) : undefined;
+  
   const sourceLog = source ? executionLogs[source] : undefined;
   const targetLog = target ? executionLogs[target] : undefined;
+  
+  // Check both execution logs and node data status
+  const sourceStatus =
+    sourceLog?.status || (sourceNodeData?.data?.status as string | undefined);
+  const targetStatus =
+    targetLog?.status || (targetNodeData?.data?.status as string | undefined);
+  
+  // Edge is successfully traversed when source succeeded and target has started/succeeded
   const isSuccessfullyTraversed =
-    sourceLog?.status === "success" &&
-    (targetLog?.status === "running" || targetLog?.status === "success");
+    sourceStatus === "success" &&
+    (targetStatus === "running" || targetStatus === "success");
 
-  // Green color when successfully traversed, otherwise default
+  // Green color and thicker stroke when successfully traversed
   const strokeColor = isSuccessfullyTraversed
     ? "#22c55e" // Green for successful traversal
     : selected
       ? "#8b949e" // Muted foreground - visible on dark
       : "#d0d7de"; // Border - visible on dark background
+
+  const strokeWidth = isSuccessfullyTraversed ? 3.5 : 2; // Thicker when successfully traversed
 
   return (
     <BaseEdge
@@ -54,7 +70,7 @@ const Temporary = ({
       path={edgePath}
       style={{
         stroke: strokeColor,
-        strokeWidth: 2,
+        strokeWidth,
         strokeDasharray: "5, 5",
         fill: "none",
       }}
@@ -136,12 +152,18 @@ const Animated = ({ id, source, target, style, selected }: EdgeProps) => {
   }
 
   // Check if edge has been successfully traversed
-  // Edge is green when: source node succeeded AND target node has started/completed
+  // Check both executionLogsAtom and node.data.status for status
   const sourceLog = executionLogs[source];
   const targetLog = executionLogs[target];
+  const sourceStatus =
+    sourceLog?.status || (sourceNode.data?.status as string | undefined);
+  const targetStatus =
+    targetLog?.status || (targetNode.data?.status as string | undefined);
+
+  // Edge is green when: source node succeeded AND target node has started/completed
   const isSuccessfullyTraversed =
-    sourceLog?.status === "success" &&
-    (targetLog?.status === "running" || targetLog?.status === "success");
+    sourceStatus === "success" &&
+    (targetStatus === "running" || targetStatus === "success");
 
   const { sx, sy, tx, ty, sourcePos, targetPos } = getEdgeParams(
     sourceNode,
@@ -159,17 +181,20 @@ const Animated = ({ id, source, target, style, selected }: EdgeProps) => {
 
   // Different styles based on animation mode
   const getEdgeStyles = () => {
-    // Green color when successfully traversed, otherwise default
+    // Green color and thicker stroke when successfully traversed
     const strokeColor = isSuccessfullyTraversed
       ? "#22c55e" // Green for successful traversal
       : selected
         ? "#8b949e" // Muted foreground - visible on dark
         : "#d0d7de"; // Border - visible on dark background
 
+    // Thicker when successfully traversed
+    const baseStrokeWidth = isSuccessfullyTraversed ? 3.5 : 2;
+
     const baseStyle = {
       ...style,
       stroke: strokeColor,
-      strokeWidth: 2,
+      strokeWidth: baseStrokeWidth,
       fill: "none",
     };
 
@@ -190,7 +215,7 @@ const Animated = ({ id, source, target, style, selected }: EdgeProps) => {
         return {
           ...baseStyle,
           strokeDasharray: "none",
-          strokeWidth: 2.5,
+          strokeWidth: isSuccessfullyTraversed ? 4 : 2.5, // Thicker when successful
           animation: "solid-pulse 1.5s ease-in-out infinite",
         };
       default:
