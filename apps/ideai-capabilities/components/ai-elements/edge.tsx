@@ -34,8 +34,11 @@ const Temporary = ({
       id={id}
       path={edgePath}
       style={{
-        stroke: selected ? "var(--muted-foreground)" : "var(--border)",
+        stroke: selected
+          ? "hsl(var(--primary))"
+          : "hsl(var(--foreground) / 0.4)",
         strokeDasharray: "5, 5",
+        strokeWidth: 2,
       }}
     />
   );
@@ -132,11 +135,14 @@ const Animated = ({ id, source, target, style, selected }: EdgeProps) => {
       path={edgePath}
       style={{
         ...style,
-        stroke: selected ? "var(--muted-foreground)" : "var(--border)",
-        strokeWidth: 2,
-        animation: "dashdraw 0.5s linear infinite",
-        strokeDasharray: 5,
+        stroke: selected
+          ? "hsl(var(--primary))"
+          : "hsl(var(--foreground) / 0.5)",
+        strokeWidth: 2.5,
+        strokeDasharray: "8 4",
+        strokeLinecap: "round",
       }}
+      className="react-flow__edge-path animated-edge"
     />
   );
 };
