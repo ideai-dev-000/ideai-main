@@ -11,7 +11,7 @@
 "use client";
 
 import { useMemo, useCallback } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { useAtomValue } from "jotai";
 import { toast } from "sonner";
 import {
