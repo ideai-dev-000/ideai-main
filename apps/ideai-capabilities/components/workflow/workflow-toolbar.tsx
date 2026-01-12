@@ -614,6 +614,62 @@ function useWorkflowHandlers({
       return;
     }
 
+    // If demo mode is ON, auto-populate empty fields from demo workflow before validation
+    if (demoMode) {
+      try {
+        const demoResponse = await fetch("/api/workflows/demo");
+        const demoWorkflow = await demoResponse.json();
+        
+        if (demoWorkflow?.nodes) {
+          // For each node with missing fields, try to populate from demo data
+          for (const node of nodes) {
+            if (node.data.type !== "action" || node.data.enabled === false) {
+              continue;
+            }
+            
+            const actionType = node.data.config?.actionType as string | undefined;
+            if (!actionType) continue;
+            
+            // Find matching demo node by actionType
+            const demoNode = demoWorkflow.nodes.find(
+              (dn: any) => dn.data?.config?.actionType === actionType,
+            );
+            
+            if (demoNode?.data?.config) {
+              const action = findActionById(actionType);
+              if (action?.configFields) {
+                const flatFields = flattenConfigFields(action.configFields);
+                const currentConfig = node.data.config || {};
+                let updated = false;
+                const newConfig = { ...currentConfig };
+                
+                // Auto-populate empty required fields from demo config
+                for (const field of flatFields) {
+                  if (
+                    field.required &&
+                    (currentConfig[field.key] === undefined ||
+                      currentConfig[field.key] === "" ||
+                      currentConfig[field.key] === null) &&
+                    demoNode.data.config[field.key] !== undefined
+                  ) {
+                    newConfig[field.key] = demoNode.data.config[field.key];
+                    updated = true;
+                  }
+                }
+                
+                if (updated) {
+                  updateNodeData({ id: node.id, data: { config: newConfig } });
+                }
+              }
+            }
+          }
+        }
+      } catch (error) {
+        console.error("Failed to auto-populate from demo workflow:", error);
+        // Continue with validation even if demo data fails to load
+      }
+    }
+
     // Collect all workflow issues at once
     const brokenRefs = getBrokenTemplateReferences(nodes);
     const missingFields = getMissingRequiredFields(nodes, demoMode);
