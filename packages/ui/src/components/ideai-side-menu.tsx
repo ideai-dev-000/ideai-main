@@ -44,8 +44,6 @@ import {
   ChevronRight,
   Copy,
   Eraser,
-  Code2,
-  MessageSquare,
 } from "lucide-react";
 import { cn } from "../lib/utils";
 import { useRouter } from "next/navigation";
@@ -57,31 +55,9 @@ export interface WorkflowItem {
   updatedAt?: string;
 }
 
-export interface VibeItem {
-  id: string;
-  name?: string;
-  href: string;
-  createdAt?: string;
-  privacy?: string;
-}
-
-export type ContentMode = "workflows" | "vibes";
-
 export interface IdeAISideMenuProps {
   /** Workflow items to display in workflows section */
   workflows?: WorkflowItem[];
-  /** Vibe items (vibe coded chats) to display in vibes section */
-  vibes?: VibeItem[];
-  /** Current content mode (workflows or vibes) */
-  contentMode?: ContentMode;
-  /** Callback when content mode changes */
-  onContentModeChange?: (mode: ContentMode) => void;
-  /** Function to load vibes (chats) */
-  onLoadVibes?: () => Promise<void> | void;
-  /** Current vibe ID */
-  currentVibeId?: string | null;
-  /** Callback to create new vibe */
-  onCreateVibe?: () => void | Promise<void>;
   /** Callback to load workflows (called on mount and when workflows section opens) */
   onLoadWorkflows?: () => Promise<void> | void;
   /** Currently active workflow ID */
@@ -785,72 +761,28 @@ export function IdeAISideMenuBlocks({
 }
 
 /**
- * Content Mode Toggle - Switch between Workflows and Vibes
- */
-function ContentModeToggle({
-  mode,
-  onModeChange,
-}: {
-  mode: ContentMode;
-  onModeChange: (mode: ContentMode) => void;
-}) {
-  return (
-    <div className="ideai-side-menu-mode-toggle">
-      <button
-        type="button"
-        onClick={() => onModeChange("workflows")}
-        className={cn(
-          "ideai-side-menu-mode-button",
-          mode === "workflows" && "ideai-side-menu-mode-button--active",
-        )}
-      >
-        <Workflow className="h-4 w-4" />
-        <span>Workflows</span>
-      </button>
-      <button
-        type="button"
-        onClick={() => onModeChange("vibes")}
-        className={cn(
-          "ideai-side-menu-mode-button",
-          mode === "vibes" && "ideai-side-menu-mode-button--active",
-        )}
-      >
-        <MessageSquare className="h-4 w-4" />
-        <span>Vibes</span>
-      </button>
-    </div>
-  );
-}
 
 /**
  * IdeaI Side Menu Component
  *
- * Composable side menu with workflows/vibes toggle and custom slots for cards,
+ * Composable side menu with workflows and custom slots for cards,
  * controls, and blocks. Persistent sidebar on desktop, drawer on mobile.
  */
 export function IdeAISideMenu({
   workflows = [],
-  vibes = [],
   onLoadWorkflows,
-  onLoadVibes,
   currentWorkflowId,
-  currentVibeId,
   onCreateWorkflow,
-  onCreateVibe,
   onCloneWorkflow,
   onDeleteWorkflow,
   onClearWorkflow,
   workflowsTitle = "Workflows",
-  contentMode: contentModeProp = "workflows",
-  onContentModeChange,
   children,
   className,
   open: openProp,
   onOpenChange: onOpenChangeProp,
 }: IdeAISideMenuProps) {
   const [open, setOpen] = React.useState(false);
-  const [contentMode, setContentMode] =
-    React.useState<ContentMode>(contentModeProp);
 
   // Use controlled state if provided, otherwise use internal state
   const isOpen = openProp !== undefined ? openProp : open;
@@ -858,23 +790,6 @@ export function IdeAISideMenu({
     onOpenChangeProp !== undefined
       ? onOpenChangeProp
       : (newOpen: boolean) => setOpen(newOpen);
-
-  // Sync content mode with prop if provided
-  React.useEffect(() => {
-    if (contentModeProp !== undefined) {
-      setContentMode(contentModeProp);
-    }
-  }, [contentModeProp]);
-
-  const handleContentModeChange = React.useCallback(
-    (newMode: ContentMode) => {
-      setContentMode(newMode);
-      if (onContentModeChange) {
-        onContentModeChange(newMode);
-      }
-    },
-    [onContentModeChange],
-  );
 
   // Memoize children check to prevent unnecessary re-renders
   const hasWorkflowsSection = React.useMemo(() => {
@@ -887,8 +802,6 @@ export function IdeAISideMenu({
   // Memoize workflows content to prevent re-creating component on every render
   const workflowsContent = React.useMemo(() => {
     if (hasWorkflowsSection) return null;
-    // Only show when in workflows mode
-    if (contentMode !== "workflows") return null;
     // Always show workflows section if workflows prop is provided or onLoadWorkflows exists
     // (even if empty - parent manages loading)
     if (!workflows && !onLoadWorkflows) return null;
@@ -914,34 +827,7 @@ export function IdeAISideMenu({
     onCloneWorkflow,
     onClearWorkflow,
     workflowsTitle,
-    contentMode,
   ]);
-
-  // Memoize vibes content
-  const vibesContent = React.useMemo(() => {
-    // Only show when in vibes mode
-    if (contentMode !== "vibes") return null;
-    // Always show vibes section if vibes prop is provided or onLoadVibes exists
-    if (!vibes && !onLoadVibes) return null;
-    return (
-      <IdeAISideMenuVibes
-        vibes={vibes || []}
-        onLoadVibes={onLoadVibes}
-        currentVibeId={currentVibeId}
-        onCreateVibe={onCreateVibe}
-        title="Vibe Coded"
-      />
-    );
-  }, [contentMode, vibes, onLoadVibes, currentVibeId, onCreateVibe]);
-
-  // Show toggle if workflows OR vibes support exists
-  // Show even if arrays are empty (content may load later)
-  const showModeToggle = React.useMemo(() => {
-    const hasWorkflows =
-      workflows !== undefined || onLoadWorkflows !== undefined;
-    const hasVibes = vibes !== undefined || onLoadVibes !== undefined;
-    return hasWorkflows && hasVibes;
-  }, [workflows, onLoadWorkflows, vibes, onLoadVibes]);
 
   const SideMenuContent = () => (
     <div className={cn("ideai-side-menu-content", className)}>
@@ -960,19 +846,8 @@ export function IdeAISideMenu({
         {/* Custom Sections (Cards, Controls, Blocks, etc.) - render first for status card */}
         {children}
 
-        {/* Content Mode Toggle (Workflows/Vibes) */}
-        {showModeToggle && (
-          <ContentModeToggle
-            mode={contentMode}
-            onModeChange={handleContentModeChange}
-          />
-        )}
-
         {/* Auto-populated Workflows Section (if not provided in children) */}
         {workflowsContent}
-
-        {/* Auto-populated Vibes Section */}
-        {vibesContent}
       </div>
     </div>
   );
