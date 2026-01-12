@@ -145,3 +145,9 @@
 .react-flow__edge[data-success="true"] .react-flow__edge-path {
   stroke: #22c55e !important; /* Green for successful traversal */
 }
+
+/* Green edges in dash preview mode */
+.react-flow__edge[data-dash-mode="true"] .react-flow__edge-path {
+  stroke: #22c55e !important; /* Green for dash preview */
+  stroke-width: 3.5 !important; /* Thicker for preview */
+}

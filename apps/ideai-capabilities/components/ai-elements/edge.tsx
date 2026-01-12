@@ -250,11 +250,15 @@ const Animated = ({ id, source, target, style, selected }: EdgeProps) => {
     }
   };
 
+  const edgeStyles = getEdgeStyles();
+  
   return (
     <BaseEdge
       id={id}
       path={edgePath}
-      style={getEdgeStyles()}
+      style={edgeStyles}
+      data-dash-mode={isDashMode ? "true" : undefined}
+      data-success={isSuccessfullyTraversed ? "true" : undefined}
     />
   );
 };
