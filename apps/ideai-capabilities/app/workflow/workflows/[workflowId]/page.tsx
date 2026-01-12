@@ -413,39 +413,9 @@ const WorkflowEditor = ({ params }: WorkflowPageProps) => {
         return;
       }
 
-      // If workflow has no nodes, show the "add" node card
+      // If workflow has no nodes, just clear nodes/edges (card will render directly)
       if (!workflow.nodes || workflow.nodes.length === 0) {
-        const handleAddNode = (triggerType: "Manual" | "Webhook" | "Schedule" = "Manual") => {
-          const newNode: WorkflowNode = {
-            id: nanoid(),
-            type: "trigger" as const,
-            position: { x: 0, y: 0 },
-            data: {
-              label: "",
-              description: "",
-              type: "trigger" as const,
-              config: { triggerType },
-              status: "idle" as const,
-            },
-          };
-          setNodes([newNode]);
-          setSelectedNodeId(newNode.id);
-          setActiveTab("properties");
-        };
-
-        const addNodePlaceholder: WorkflowNode = {
-          id: "add-node-placeholder",
-          type: "add",
-          position: { x: 0, y: 0 },
-          data: {
-            label: "",
-            type: "add",
-            onClick: handleAddNode,
-          },
-          draggable: false,
-          selectable: false,
-        };
-        setNodes([addNodePlaceholder]);
+        setNodes([]);
         setEdges([]);
         setCurrentWorkflowId(workflow.id);
         setCurrentWorkflowName(workflow.name);
@@ -928,6 +898,34 @@ const WorkflowEditor = ({ params }: WorkflowPageProps) => {
 
       {/* Mobile: NodeConfigPanel renders the overlay trigger button */}
       {isMobile && <NodeConfigPanel />}
+
+      {/* Show card directly when no nodes exist (not as React Flow node) */}
+      {nodes.length === 0 && currentWorkflowId && (
+        <div className="pointer-events-auto absolute inset-0 flex items-center justify-center">
+          <AddNode
+            data={{
+              onClick: (triggerType: "Manual" | "Webhook" | "Schedule" = "Manual") => {
+                const newNode: WorkflowNode = {
+                  id: nanoid(),
+                  type: "trigger" as const,
+                  position: { x: 0, y: 0 },
+                  data: {
+                    label: "",
+                    description: "",
+                    type: "trigger" as const,
+                    config: { triggerType },
+                    status: "idle" as const,
+                  },
+                };
+                setNodes([newNode]);
+                setSelectedNodeId(newNode.id);
+                setActiveTab("properties");
+                setPanelVisible(true); // Show panel when node is added
+              },
+            }}
+          />
+        </div>
+      )}
     </div>
   );
 };
