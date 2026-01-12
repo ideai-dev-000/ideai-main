@@ -37,13 +37,16 @@ export function useWorkflowNav() {
   const loadWorkflows = useCallback(async () => {
     // Don't try to load if not authenticated
     if (!isAuthenticated) {
+      console.log("[useWorkflowNav] Not authenticated, skipping workflow load");
       setWorkflows([]);
       return;
     }
 
     setIsLoading(true);
     try {
+      console.log("[useWorkflowNav] Loading workflows...");
       const allWorkflows = await api.workflow.getAll();
+      // Filter out auto-save workflows (same as status panel and sidebar)
       const filtered = allWorkflows
         .filter((w) => w.name !== "__current__" && w.name !== "~~__CURRENT__~~")
         .map((w) => ({
@@ -52,9 +55,12 @@ export function useWorkflowNav() {
           href: `/workflow/workflows/${w.id}`,
           updatedAt: w.updatedAt,
         }));
+      console.log(
+        `[useWorkflowNav] ✅ Loaded ${filtered.length} workflows (filtered from ${allWorkflows.length} total)`,
+      );
       setWorkflows(filtered);
     } catch (error) {
-      console.error("Failed to load workflows:", error);
+      console.error("[useWorkflowNav] Failed to load workflows:", error);
       // Don't clear workflows on error - keep existing ones
       // This prevents clearing the list if API temporarily fails
     } finally {

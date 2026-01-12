@@ -110,8 +110,35 @@ export function IdeAISideMenuWrapper() {
     });
   }, [workflowNav.workflows, currentWorkflowId, currentWorkflowName]);
 
-  // loadWorkflows from hook should already be stable (useCallback), but use it directly
-  const loadWorkflows = workflowNav.loadWorkflows;
+  // Use the same loadWorkflows as status panel - ensure same filtering and logs
+  const loadWorkflows = useCallback(async () => {
+    // Use the same logic as WorkflowStatusPanel - load from API and filter
+    if (!isAuthenticated) {
+      console.log("[IdeAISideMenuWrapper] Not authenticated, skipping workflow load");
+      return;
+    }
+
+    try {
+      console.log("[IdeAISideMenuWrapper] Loading workflows...");
+      const allWorkflows = await api.workflow.getAll();
+      // Filter out auto-save workflows (same as status panel)
+      const filtered = allWorkflows.filter(
+        (w) => w.name !== "__current__" && w.name !== "~~__CURRENT__~~",
+      );
+      console.log(
+        `[IdeAISideMenuWrapper] ✅ Loaded ${filtered.length} workflows (filtered from ${allWorkflows.length} total)`,
+      );
+
+      // Update workflows via hook's loadWorkflows to sync state
+      await workflowNav.loadWorkflows();
+    } catch (error) {
+      console.error("[IdeAISideMenuWrapper] Failed to load workflows:", error);
+      // Fallback to hook's loadWorkflows
+      await workflowNav.loadWorkflows().catch((err) => {
+        console.error("[IdeAISideMenuWrapper] Hook loadWorkflows also failed:", err);
+      });
+    }
+  }, [isAuthenticated, workflowNav]);
 
   // Load vibes (chats) from API
   const loadVibes = useCallback(async () => {
