@@ -153,15 +153,8 @@
   0% {
     stroke-dashoffset: 0;
   }
-  10% {
-    opacity: 1;
-  }
-  90% {
-    opacity: 1;
-  }
   100% {
     stroke-dashoffset: -24;
-    opacity: 0;
   }
 }
 
