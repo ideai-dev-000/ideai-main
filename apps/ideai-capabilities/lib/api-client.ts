@@ -58,14 +58,6 @@ async function apiCall<T>(endpoint: string, options?: RequestInit): Promise<T> {
       throw new ApiError(response.status, error.error || "Unauthorized");
     }
 
-    // Handle 404 Not Found gracefully - workflow doesn't exist
-    if (response.status === 404) {
-      const error = await response
-        .json()
-        .catch(() => ({ error: "Not found" }));
-      throw new ApiError(response.status, error.error || "Not found");
-    }
-
     const error = await response
       .json()
       .catch(() => ({ error: "Unknown error" }));

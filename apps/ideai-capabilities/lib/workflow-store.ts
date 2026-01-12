@@ -64,8 +64,8 @@ export const newlyCreatedNodeIdAtom = atom<string | null>(null);
 
 // Demo mode - when enabled, auto-populates fields from .ideai.json demoWorkflow
 // and bypasses required field validation
-// Initialize from localStorage if available, default to true
-const getInitialDemoMode = (): boolean => {
+export const demoModeAtom = atom<boolean>(() => {
+  // Load from localStorage if available, default to true
   if (typeof window !== "undefined") {
     const stored = localStorage.getItem("workflow-demo-mode");
     if (stored !== null) {
@@ -73,9 +73,7 @@ const getInitialDemoMode = (): boolean => {
     }
   }
   return true; // Default to ON
-};
-
-export const demoModeAtom = atom<boolean>(getInitialDemoMode());
+});
 
 // Trigger execute atom - set to true to trigger workflow execution
 // This allows keyboard shortcuts to trigger the same execute flow as the button

@@ -475,11 +475,6 @@ export const PanelInner = () => {
         newConfig = { ...newConfig, integrationId: undefined };
       }
 
-      // Update actionType immediately so UI reflects the change right away
-      if (key === "actionType") {
-        updateNodeData({ id: selectedNode.id, data: { config: newConfig } });
-      }
-
       // When action type changes, initialize default values from configFields
       if (key === "actionType") {
         const action = findActionById(value);
@@ -489,125 +484,70 @@ export const PanelInner = () => {
 
           // If demo mode is ON, try to load demo data from .ideai.json
           if (demoMode) {
-            // Capture the node ID to check if it still exists when async callback runs
-            const currentNodeId = selectedNode.id;
-            
-            // Fetch demo workflow data and populate immediately
+            // Fetch demo workflow data
             fetch("/api/workflows/demo")
               .then((res) => res.json())
               .then((demoWorkflow) => {
-                // Verify the node still exists before updating
-                const currentNodes = nodes;
-                const nodeStillExists = currentNodes.some((n) => n.id === currentNodeId);
-                if (!nodeStillExists) {
-                  console.log("[Demo Mode] Node no longer exists, skipping update");
-                  return;
-                }
-                
                 if (demoWorkflow?.nodes) {
-                  // Normalize the action type value to ensure proper matching
-                  // The value might be the action ID (e.g., "slack/send-message")
-                  const normalizedValue = value;
-                  
-                  // Find matching node in demo workflow by actionType (must match exactly)
+                  // Find matching node in demo workflow by actionType
                   const demoNode = demoWorkflow.nodes.find(
                     (node: any) =>
-                      node.data?.config?.actionType === normalizedValue &&
+                      node.data?.config?.actionType === value ||
                       node.data?.type === "action",
                   );
 
                   if (demoNode?.data?.config) {
-                    console.log("[Demo Mode] Found matching demo node:", {
-                      actionType: normalizedValue,
-                      demoConfig: demoNode.data.config,
-                    });
-                    
-                    // Get the current node state to ensure we have latest config
-                    const currentNode = currentNodes.find((n) => n.id === currentNodeId);
-                    if (!currentNode) {
-                      console.log("[Demo Mode] Node not found in current nodes");
-                      return;
-                    }
-                    
-                    // Apply demo config values for ALL fields (overwrite empty ones)
+                    // Apply demo config values for fields that are empty
                     const demoConfig = demoNode.data.config;
-                    const populatedConfig = { ...currentNode.data.config };
-                    
-                    // First, apply all demo values that exist
-                    for (const field of flatFields) {
-                      if (demoConfig[field.key] !== undefined) {
-                        // Always populate from demo if available (overwrites empty values)
-                        populatedConfig[field.key] = demoConfig[field.key];
-                        console.log(`[Demo Mode] Populated ${field.key}:`, demoConfig[field.key]);
-                      }
-                    }
-                    
-                    // Then, apply defaults for any fields not in demo but have defaults
                     for (const field of flatFields) {
                       if (
-                        field.defaultValue !== undefined &&
-                        populatedConfig[field.key] === undefined &&
-                        populatedConfig[field.key] !== null
+                        demoConfig[field.key] !== undefined &&
+                        (newConfig[field.key] === undefined ||
+                          newConfig[field.key] === "" ||
+                          newConfig[field.key] === null)
                       ) {
-                        populatedConfig[field.key] = field.defaultValue;
+                        newConfig[field.key] = demoConfig[field.key];
                       }
                     }
-                    
-                    // Update node with populated config immediately
+                    // Update node with demo config
                     updateNodeData({
-                      id: currentNodeId,
-                      data: { config: populatedConfig },
+                      id: selectedNode.id,
+                      data: { config: newConfig },
                     });
-                    console.log("[Demo Mode] Updated node config with demo data");
                     return;
-                  } else {
-                    console.log("[Demo Mode] No matching demo node found for actionType:", normalizedValue, "Available nodes:", demoWorkflow.nodes.map((n: any) => n.data?.config?.actionType));
                   }
                 }
 
-                // Fallback to default values if no demo data found for this action type
-                const currentNode = currentNodes.find((n) => n.id === currentNodeId);
-                if (!currentNode) {
-                  return;
-                }
-                
-                const fallbackConfig = { ...currentNode.data.config };
+                // Fallback to default values if no demo data found
                 for (const field of flatFields) {
                   if (
                     field.defaultValue !== undefined &&
-                    (fallbackConfig[field.key] === undefined ||
-                      fallbackConfig[field.key] === null)
+                    (newConfig[field.key] === undefined ||
+                      newConfig[field.key] === null)
                   ) {
-                    fallbackConfig[field.key] = field.defaultValue;
+                    newConfig[field.key] = field.defaultValue;
                   }
                 }
                 updateNodeData({
-                  id: currentNodeId,
-                  data: { config: fallbackConfig },
+                  id: selectedNode.id,
+                  data: { config: newConfig },
                 });
               })
               .catch((error) => {
                 console.error("Failed to load demo data:", error);
                 // Fallback to default values on error
-                const currentNodes = nodes;
-                const currentNode = currentNodes.find((n) => n.id === currentNodeId);
-                if (!currentNode) {
-                  return;
-                }
-                
-                const fallbackConfig = { ...currentNode.data.config };
                 for (const field of flatFields) {
                   if (
                     field.defaultValue !== undefined &&
-                    (fallbackConfig[field.key] === undefined ||
-                      fallbackConfig[field.key] === null)
+                    (newConfig[field.key] === undefined ||
+                      newConfig[field.key] === null)
                   ) {
-                    fallbackConfig[field.key] = field.defaultValue;
+                    newConfig[field.key] = field.defaultValue;
                   }
                 }
                 updateNodeData({
-                  id: currentNodeId,
-                  data: { config: fallbackConfig },
+                  id: selectedNode.id,
+                  data: { config: newConfig },
                 });
               });
           } else {
@@ -629,11 +569,7 @@ export const PanelInner = () => {
         }
       }
 
-      // Update config for non-actionType changes, or when demo mode is OFF
-      // (actionType changes are handled above with immediate update + async demo population)
-      if (key !== "actionType") {
-        updateNodeData({ id: selectedNode.id, data: { config: newConfig } });
-      }
+      updateNodeData({ id: selectedNode.id, data: { config: newConfig } });
 
       // When action type changes, auto-select integration if only one exists
       if (key === "actionType") {
