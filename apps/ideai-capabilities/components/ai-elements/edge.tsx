@@ -181,6 +181,9 @@ const Animated = ({ id, source, target, style, selected }: EdgeProps) => {
     sourceStatus === "success" &&
     (targetStatus === "running" || targetStatus === "success");
 
+  // For dash modes, always show green and wider for preview
+  const isDashMode = animationMode === "dashed-flow";
+
   const { sx, sy, tx, ty, sourcePos, targetPos } = getEdgeParams(
     sourceNode,
     targetNode,
@@ -197,9 +200,6 @@ const Animated = ({ id, source, target, style, selected }: EdgeProps) => {
 
   // Different styles based on animation mode
   const getEdgeStyles = () => {
-    // For dash modes, always show green and wider for preview
-    const isDashMode = animationMode === "dashed-flow";
-    
     // Green color and thicker stroke when successfully traversed OR in dash preview mode
     const strokeColor =
       isSuccessfullyTraversed || isDashMode
