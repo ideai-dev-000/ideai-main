@@ -489,10 +489,21 @@ export const PanelInner = () => {
 
           // If demo mode is ON, try to load demo data from .ideai.json
           if (demoMode) {
+            // Capture the node ID to check if it still exists when async callback runs
+            const currentNodeId = selectedNode.id;
+            
             // Fetch demo workflow data and populate immediately
             fetch("/api/workflows/demo")
               .then((res) => res.json())
               .then((demoWorkflow) => {
+                // Verify the node still exists before updating
+                const currentNodes = nodes;
+                const nodeStillExists = currentNodes.some((n) => n.id === currentNodeId);
+                if (!nodeStillExists) {
+                  console.log("[Demo Mode] Node no longer exists, skipping update");
+                  return;
+                }
+                
                 if (demoWorkflow?.nodes) {
                   // Normalize the action type value to ensure proper matching
                   // The value might be the action ID (e.g., "slack/send-message")
@@ -511,9 +522,16 @@ export const PanelInner = () => {
                       demoConfig: demoNode.data.config,
                     });
                     
+                    // Get the current node state to ensure we have latest config
+                    const currentNode = currentNodes.find((n) => n.id === currentNodeId);
+                    if (!currentNode) {
+                      console.log("[Demo Mode] Node not found in current nodes");
+                      return;
+                    }
+                    
                     // Apply demo config values for ALL fields (overwrite empty ones)
                     const demoConfig = demoNode.data.config;
-                    const populatedConfig = { ...newConfig };
+                    const populatedConfig = { ...currentNode.data.config };
                     
                     // First, apply all demo values that exist
                     for (const field of flatFields) {
@@ -537,7 +555,7 @@ export const PanelInner = () => {
                     
                     // Update node with populated config immediately
                     updateNodeData({
-                      id: selectedNode.id,
+                      id: currentNodeId,
                       data: { config: populatedConfig },
                     });
                     console.log("[Demo Mode] Updated node config with demo data");
@@ -548,35 +566,48 @@ export const PanelInner = () => {
                 }
 
                 // Fallback to default values if no demo data found for this action type
+                const currentNode = currentNodes.find((n) => n.id === currentNodeId);
+                if (!currentNode) {
+                  return;
+                }
+                
+                const fallbackConfig = { ...currentNode.data.config };
                 for (const field of flatFields) {
                   if (
                     field.defaultValue !== undefined &&
-                    (newConfig[field.key] === undefined ||
-                      newConfig[field.key] === null)
+                    (fallbackConfig[field.key] === undefined ||
+                      fallbackConfig[field.key] === null)
                   ) {
-                    newConfig[field.key] = field.defaultValue;
+                    fallbackConfig[field.key] = field.defaultValue;
                   }
                 }
                 updateNodeData({
-                  id: selectedNode.id,
-                  data: { config: newConfig },
+                  id: currentNodeId,
+                  data: { config: fallbackConfig },
                 });
               })
               .catch((error) => {
                 console.error("Failed to load demo data:", error);
                 // Fallback to default values on error
+                const currentNodes = nodes;
+                const currentNode = currentNodes.find((n) => n.id === currentNodeId);
+                if (!currentNode) {
+                  return;
+                }
+                
+                const fallbackConfig = { ...currentNode.data.config };
                 for (const field of flatFields) {
                   if (
                     field.defaultValue !== undefined &&
-                    (newConfig[field.key] === undefined ||
-                      newConfig[field.key] === null)
+                    (fallbackConfig[field.key] === undefined ||
+                      fallbackConfig[field.key] === null)
                   ) {
-                    newConfig[field.key] = field.defaultValue;
+                    fallbackConfig[field.key] = field.defaultValue;
                   }
                 }
                 updateNodeData({
-                  id: selectedNode.id,
-                  data: { config: newConfig },
+                  id: currentNodeId,
+                  data: { config: fallbackConfig },
                 });
               });
           } else {
