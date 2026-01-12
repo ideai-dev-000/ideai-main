@@ -183,6 +183,13 @@ export const PanelInner = () => {
   const selectedEdges = edges.filter((edge) => edge.selected);
   const hasMultipleSelections = selectedNodes.length + selectedEdges.length > 1;
 
+  // Always switch to Properties tab when node selection changes
+  // This ensures properties panel is visible whenever a node is selected or deselected
+  useEffect(() => {
+    // Reset to properties tab whenever node selection changes
+    setActiveTab("properties");
+  }, [selectedNodeId, setActiveTab]);
+
   // Switch to Properties tab if Code tab is hidden for the selected node
   useEffect(() => {
     if (!selectedNode || activeTab !== "code") {
