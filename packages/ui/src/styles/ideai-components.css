@@ -1851,7 +1851,7 @@
 
 .group:hover .ideai-side-menu-clone-button {
   opacity: 1;
-  pointer-events: auto;
+  pointer-events: auto !important; /* Enable clicks when visible */
 }
 
 .ideai-side-menu-clone-button:hover {
@@ -1930,7 +1930,7 @@
 
 .group:hover .ideai-side-menu-delete-button {
   opacity: 1;
-  pointer-events: auto;
+  pointer-events: auto !important; /* Enable clicks when visible */
 }
 
 .ideai-side-menu-delete-button:hover {
