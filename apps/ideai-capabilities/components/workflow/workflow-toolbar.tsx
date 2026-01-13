@@ -1516,19 +1516,14 @@ export const WorkflowToolbar = ({ workflowId }: WorkflowToolbarProps) => {
             workflowId={workflowId}
           />
           <div className="flex items-center gap-2">
-            {!workflowId && (
-              <>
-                <GitHubStarsButton />
-                <DeployButton />
-              </>
-            )}
+            {!workflowId && <GitHubStarsButton />}
             {workflowId && !state.isOwner && (
               <DuplicateButton
                 isDuplicating={state.isDuplicating}
                 onDuplicate={actions.handleDuplicate}
               />
             )}
-            <UserMenu />
+            {/* UserMenu and DeployButton removed - already in main IdeaI header */}
           </div>
         </div>
       </div>
