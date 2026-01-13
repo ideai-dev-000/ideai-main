@@ -27,6 +27,7 @@ import {
   autosaveAtom,
   currentWorkflowIdAtom,
   edgesAtom,
+  hasMeaningfulInteractionAtom,
   hasUnsavedChangesAtom,
   isGeneratingAtom,
   isPanelAnimatingAtom,
