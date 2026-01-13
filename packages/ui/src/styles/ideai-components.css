@@ -1852,15 +1852,8 @@
 }
 
 .ideai-side-menu-clone-button:hover {
-  background-color: rgb(226 232 240); /* slate-200 */
-  color: rgb(59 130 246); /* blue-600 */
-}
-
-@media (prefers-color-scheme: dark) {
-  .ideai-side-menu-clone-button:hover {
-    background-color: rgb(51 65 85); /* slate-700 */
-    color: rgb(96 165 250); /* blue-400 */
-  }
+  @apply bg-slate-200 dark:bg-slate-700;
+  @apply text-blue-600 dark:text-blue-400;
 }
 
 .ideai-side-menu-clone-button:disabled {
@@ -1938,15 +1931,8 @@
 }
 
 .ideai-side-menu-delete-button:hover {
-  background-color: rgb(226 232 240); /* slate-200 */
-  color: rgb(220 38 38); /* red-600 */
-}
-
-@media (prefers-color-scheme: dark) {
-  .ideai-side-menu-delete-button:hover {
-    background-color: rgb(51 65 85); /* slate-700 */
-    color: rgb(248 113 113); /* red-400 */
-  }
+  @apply bg-slate-200 dark:bg-slate-700;
+  @apply text-red-600 dark:text-red-400;
 }
 
 .ideai-side-menu-delete-button:disabled {
@@ -1968,12 +1954,11 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  color: rgb(148 163 184); /* slate-400 */
+  @apply text-slate-400 dark:text-slate-500;
   opacity: 0;
   pointer-events: none;
   transition: opacity 150ms ease, background-color 150ms ease, color 150ms ease;
 }
-
 
 .group:hover .ideai-side-menu-clear-button {
   opacity: 1;
@@ -1981,15 +1966,8 @@
 }
 
 .ideai-side-menu-clear-button:hover {
-  background-color: rgb(226 232 240); /* slate-200 */
-  color: rgb(234 179 8); /* yellow-600 */
-}
-
-@media (prefers-color-scheme: dark) {
-  .ideai-side-menu-clear-button:hover {
-    background-color: rgb(51 65 85); /* slate-700 */
-    color: rgb(250 204 21); /* yellow-400 */
-  }
+  @apply bg-slate-200 dark:bg-slate-700;
+  @apply text-yellow-600 dark:text-yellow-400;
 }
 
 .ideai-side-menu-clear-button:disabled {
