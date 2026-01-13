@@ -273,6 +273,14 @@ export function WorkflowCanvas() {
 
   const onConnect: OnConnect = useCallback(
     (connection: XYFlowConnection) => {
+      // Check if source node is a trigger node - this indicates meaningful interaction
+      if (connection.source) {
+        const sourceNode = nodes.find((n) => n.id === connection.source);
+        if (sourceNode?.data.type === "trigger") {
+          setHasMeaningfulInteraction(true);
+        }
+      }
+
       const newEdge = {
         id: nanoid(),
         ...connection,
@@ -283,7 +291,14 @@ export function WorkflowCanvas() {
       // Trigger immediate autosave when nodes are connected
       triggerAutosave({ immediate: true });
     },
-    [edges, setEdges, setHasUnsavedChanges, triggerAutosave],
+    [
+      nodes,
+      edges,
+      setEdges,
+      setHasUnsavedChanges,
+      setHasMeaningfulInteraction,
+      triggerAutosave,
+    ],
   );
 
   const onNodeClick: NodeMouseHandler = useCallback(
@@ -445,11 +460,13 @@ export function WorkflowCanvas() {
       screenToFlowPosition,
       addNode,
       edges,
+      nodes,
       setEdges,
       setNodes,
       setSelectedNode,
       setActiveTab,
       setHasUnsavedChanges,
+      setHasMeaningfulInteraction,
       triggerAutosave,
     ],
   );
