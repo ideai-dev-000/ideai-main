@@ -17,6 +17,7 @@ import { useSession } from "@/lib/auth-client";
 import {
   currentWorkflowIdAtom,
   currentWorkflowNameAtom,
+  workflowListReloadTriggerAtom,
 } from "@/lib/workflow-store";
 import type { NavMenuItem } from "./nav-item-with-menu";
 
