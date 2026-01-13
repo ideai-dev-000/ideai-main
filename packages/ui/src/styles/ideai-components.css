@@ -1563,13 +1563,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 1rem 1.5rem;
-  border-bottom: 1px solid rgb(226 232 240);
-}
-
-@media (prefers-color-scheme: dark) {
-  .ideai-mobile-nav-header {
-    border-bottom-color: rgb(51 65 85);
-  }
+  @apply border-b border-slate-200 dark:border-slate-700;
 }
 
 .ideai-mobile-nav-title {
@@ -1644,15 +1638,8 @@
     @apply fixed left-0 bottom-0 z-30 flex;
     top: 64px; /* Below header (header is typically 64px, z-50) */
     width: 280px;
-    background-color: rgb(255 255 255);
-    border-right: 1px solid rgb(226 232 240);
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-  .ideai-side-menu--desktop {
-    background-color: rgb(15 23 42);
-    border-right-color: rgb(51 65 85);
+    @apply bg-slate-50 dark:bg-slate-900;
+    @apply border-r border-slate-200 dark:border-slate-700;
   }
 }
 
@@ -1700,14 +1687,8 @@
 /* Menu Content */
 .ideai-side-menu-content {
   @apply flex flex-col h-full;
-  background-color: rgb(255 255 255);
+  @apply bg-slate-50 dark:bg-slate-900;
   width: 280px;
-}
-
-@media (prefers-color-scheme: dark) {
-  .ideai-side-menu-content {
-    background-color: rgb(15 23 42);
-  }
 }
 
 .ideai-side-menu-content--mobile {
@@ -1723,13 +1704,7 @@
 /* Menu Header */
 .ideai-side-menu-header {
   @apply flex items-center justify-between px-4 py-3;
-  border-bottom: 1px solid rgb(226 232 240);
-}
-
-@media (prefers-color-scheme: dark) {
-  .ideai-side-menu-header {
-    border-bottom-color: rgb(51 65 85);
-  }
+  @apply border-b border-slate-200 dark:border-slate-700;
 }
 
 .ideai-side-menu-title {

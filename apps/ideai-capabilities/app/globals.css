@@ -5,13 +5,14 @@
 @import "@xyflow/react/dist/style.css";
 
 /* App-specific CSS Variables for workflow features */
+/* Subtle shading on white backgrounds - use slate-50 instead of pure white */
 :root {
   --radius: 0.625rem;
-  --background: oklch(1 0 0);
+  --background: oklch(0.98 0 0); /* Subtle slate tint instead of pure white */
   --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
+  --card: oklch(0.99 0 0); /* Slightly lighter than background */
   --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
+  --popover: oklch(0.99 0 0);
   --popover-foreground: oklch(0.145 0 0);
   --primary: oklch(0.205 0 0);
   --primary-foreground: oklch(0.985 0 0);
@@ -31,7 +32,7 @@
   --chart-3: oklch(0.598 0.194 227.392);
   --chart-4: oklch(0.645 0.199 84.429);
   --chart-5: oklch(0.645 0.151 339.574);
-  --sidebar-background: oklch(0.985 0 0);
+  --sidebar-background: oklch(0.98 0 0); /* Subtle slate tint - white with shading */
   --sidebar-foreground: oklch(0.145 0 0);
   --sidebar-primary: oklch(0.205 0 0);
   --sidebar-primary-foreground: oklch(0.985 0 0);
