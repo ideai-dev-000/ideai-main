@@ -49,6 +49,10 @@ export const isTransitioningFromHomepageAtom = atom<boolean>(false);
 // Used to determine if workflow should be kept when user navigates away
 export const hasMeaningfulInteractionAtom = atom<boolean>(false);
 
+// Trigger for reloading workflow lists in side menu
+// Increment this atom to trigger a reload
+export const workflowListReloadTriggerAtom = atom<number>(0);
+
 // Helper to check if a workflow name is a default name
 export function isDefaultWorkflowName(name: string): boolean {
   const defaultNames = [
