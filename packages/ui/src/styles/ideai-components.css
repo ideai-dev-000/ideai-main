@@ -1918,12 +1918,11 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  color: rgb(148 163 184); /* slate-400 */
+  @apply text-slate-400 dark:text-slate-500;
   opacity: 0;
   pointer-events: none;
   transition: opacity 150ms ease, background-color 150ms ease, color 150ms ease;
 }
-
 
 .group:hover .ideai-side-menu-delete-button {
   opacity: 1;
