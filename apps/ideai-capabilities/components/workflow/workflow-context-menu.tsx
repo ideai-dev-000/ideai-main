@@ -49,7 +49,7 @@ export function WorkflowContextMenu({
   const handleDeleteNode = useCallback(() => {
     if (menuState?.nodeId) {
       const nodeId = menuState.nodeId;
-      onClose();
+      // Open overlay first, then close menu (overlay needs to render before menu closes)
       openOverlay(ConfirmOverlay, {
         title: "Delete Step",
         message:
@@ -60,13 +60,17 @@ export function WorkflowContextMenu({
           deleteNode(nodeId);
         },
       });
+      // Close menu after a small delay to ensure overlay renders
+      setTimeout(() => {
+        onClose();
+      }, 0);
     }
   }, [menuState, deleteNode, onClose, openOverlay]);
 
   const handleDeleteEdge = useCallback(() => {
     if (menuState?.edgeId) {
       const edgeId = menuState.edgeId;
-      onClose();
+      // Open overlay first, then close menu (overlay needs to render before menu closes)
       openOverlay(ConfirmOverlay, {
         title: "Delete Connection",
         message:
@@ -77,6 +81,10 @@ export function WorkflowContextMenu({
           deleteEdge(edgeId);
         },
       });
+      // Close menu after a small delay to ensure overlay renders
+      setTimeout(() => {
+        onClose();
+      }, 0);
     }
   }, [menuState, deleteEdge, onClose, openOverlay]);
 
@@ -160,11 +168,17 @@ export function WorkflowContextMenu({
 
   return (
     <div
-      className="fade-in-0 zoom-in-95 fixed z-50 min-w-[8rem] animate-in overflow-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-md"
+      className="pointer-events-auto fade-in-0 zoom-in-95 fixed z-50 min-w-[8rem] animate-in overflow-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-md"
       ref={menuRef}
       style={{
         left: menuState.position.x,
         top: menuState.position.y,
+      }}
+      onMouseDown={(e) => {
+        e.stopPropagation();
+      }}
+      onClick={(e) => {
+        e.stopPropagation();
       }}
     >
       {menuState.type === "node" && (
@@ -212,17 +226,29 @@ function MenuItem({
   variant = "default",
   disabled,
 }: MenuItemProps) {
+  const handleClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (!disabled) {
+      onClick();
+    }
+  };
+
   return (
     <button
       className={cn(
-        "relative flex w-full cursor-default select-none items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-none",
+        "pointer-events-auto relative flex w-full cursor-pointer select-none items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-none",
         "hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
         variant === "destructive" &&
           "text-destructive hover:bg-destructive/10 hover:text-destructive focus:bg-destructive/10 focus:text-destructive",
         disabled && "pointer-events-none opacity-50",
       )}
       disabled={disabled}
-      onClick={onClick}
+      onClick={handleClick}
+      onMouseDown={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+      }}
       type="button"
     >
       {icon}

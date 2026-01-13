@@ -588,11 +588,13 @@ export function WorkflowCanvas() {
       {/* AI Prompt */}
       {currentWorkflowId && <AIPrompt workflowId={currentWorkflowId} />}
 
-      {/* Context Menu */}
-      <WorkflowContextMenu
-        menuState={contextMenuState}
-        onClose={closeContextMenu}
-      />
+      {/* Context Menu - needs pointer-events-auto to be clickable */}
+      <div className="pointer-events-auto">
+        <WorkflowContextMenu
+          menuState={contextMenuState}
+          onClose={closeContextMenu}
+        />
+      </div>
     </div>
   );
 }

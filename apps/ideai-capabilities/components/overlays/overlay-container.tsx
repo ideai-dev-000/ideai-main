@@ -215,7 +215,7 @@ function DesktopOverlayContainer() {
             {/* Backdrop - standalone clickable div */}
             <motion.div
               animate={{ opacity: 1 }}
-              className="fixed inset-0 z-50 bg-black/60"
+              className="fixed inset-0 z-[100] bg-black/60"
               exit={{ opacity: 0 }}
               initial={{ opacity: 0 }}
               onClick={handleBackdropClick}
@@ -225,7 +225,7 @@ function DesktopOverlayContainer() {
             {/* Dialog container */}
             <motion.div
               animate="visible"
-              className="fixed top-1/2 left-1/2 z-50 w-full max-w-lg -translate-x-1/2 -translate-y-1/2 px-4"
+              className="fixed top-1/2 left-1/2 z-[100] w-full max-w-lg -translate-x-1/2 -translate-y-1/2 px-4"
               exit="exit"
               initial="hidden"
               variants={containerVariants}
