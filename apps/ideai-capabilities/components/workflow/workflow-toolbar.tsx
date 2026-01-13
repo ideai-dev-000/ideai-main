@@ -79,8 +79,8 @@ import { MakePublicOverlay } from "../overlays/make-public-overlay";
 import { useOverlay } from "../overlays/overlay-provider";
 import { WorkflowIssuesOverlay } from "../overlays/workflow-issues-overlay";
 import { WorkflowIcon } from "../ui/workflow-icon";
-import { UserMenu } from "../workflows/user-menu";
 // WorkflowStatusPanel removed - now in sidebar as WorkflowStatusCard
+// UserMenu and DeployButton removed - already in main IdeaI header
 
 type WorkflowToolbarProps = {
   workflowId?: string;
