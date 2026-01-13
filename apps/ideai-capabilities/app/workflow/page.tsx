@@ -187,6 +187,7 @@ export default function WorkflowPage() {
           // Reset the flag so user can try again after signing in
           hasCreatedWorkflowRef.current = false;
           prevNodeCountRef.current = 0;
+          prevEdgeCountRef.current = 0;
           return;
         }
 
@@ -214,6 +215,7 @@ export default function WorkflowPage() {
         // Reset flags on error so user can try again
         hasCreatedWorkflowRef.current = false;
         prevNodeCountRef.current = 0;
+        prevEdgeCountRef.current = 0;
       }
     };
 
