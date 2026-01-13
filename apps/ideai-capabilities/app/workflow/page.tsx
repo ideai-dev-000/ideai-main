@@ -117,6 +117,7 @@ export default function WorkflowPage() {
 
   // Track previous node count to detect when first real node is added
   const prevNodeCountRef = useRef(0);
+  // Track previous edge count to detect when first connection is made
   const prevEdgeCountRef = useRef(0);
   const hasInitializedRef = useRef(false);
 
@@ -191,7 +192,10 @@ export default function WorkflowPage() {
           return;
         }
 
-        // Create workflow with all real nodes
+        // Filter out the placeholder "add" node
+        const realNodes = nodes.filter((node) => node.type !== "add");
+
+        // Create workflow with all real nodes and edges
         const newWorkflow = await api.workflow.create({
           name: "Untitled Workflow",
           description: "",
@@ -220,10 +224,9 @@ export default function WorkflowPage() {
     };
 
     createWorkflowAndRedirect();
-    // Only depend on node count change, not the full nodes array
+    // Only depend on edge count change
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
-    nodes.length, // Only track length, not full array
     edges.length, // Only track length, not full array
     router,
     setIsTransitioningFromHomepage,
@@ -231,6 +234,8 @@ export default function WorkflowPage() {
     session?.user?.name,
     session?.user?.email,
     isAnonymous,
+    nodes, // Need nodes to create workflow
+    triggerWorkflowListReload,
   ]);
 
   // Show card directly when no nodes exist (not as React Flow node)
