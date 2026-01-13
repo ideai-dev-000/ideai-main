@@ -56,10 +56,19 @@ export default function WorkflowsLandingPage() {
     setEdges([]);
     setCurrentWorkflowName("New Workflow");
     setHasSidebarBeenShown(false);
-  }, [isAnonymous, clearWorkflow, setNodes, setEdges, setCurrentWorkflowName, setHasSidebarBeenShown]);
+  }, [
+    isAnonymous,
+    clearWorkflow,
+    setNodes,
+    setEdges,
+    setCurrentWorkflowName,
+    setHasSidebarBeenShown,
+  ]);
 
   // Handler to navigate to workflow creation page
-  const handleCreateWorkflow = (triggerType?: "Manual" | "Webhook" | "Schedule") => {
+  const handleCreateWorkflow = (
+    triggerType?: "Manual" | "Webhook" | "Schedule",
+  ) => {
     // Navigate to /workflow which will handle creating the workflow with the trigger type
     router.push(triggerType ? `/workflow?trigger=${triggerType}` : "/workflow");
   };
@@ -69,10 +78,10 @@ export default function WorkflowsLandingPage() {
   }
 
   // Render card centered on landing page
-  // z-[100] to be well above everything (canvas z-[15], header z-[60], sidebar z-30)
+  // z-[50] to be above canvas (z-[15]) and sidebar (z-30) but below header (z-[100])
   // Add bg backdrop to ensure visibility
   return (
-    <div className="pointer-events-auto fixed inset-0 z-[100] flex items-center justify-center bg-background/80 backdrop-blur-sm">
+    <div className="pointer-events-auto fixed inset-0 z-[50] flex items-center justify-center bg-background/80 backdrop-blur-sm">
       <AddNode
         data={{
           onClick: handleCreateWorkflow,
