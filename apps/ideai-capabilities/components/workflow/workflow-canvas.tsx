@@ -519,7 +519,10 @@ export function WorkflowCanvas() {
       if (selectedNodes.length === 0) {
         setSelectedNode(null);
       } else if (selectedNodes.length === 1) {
-        setSelectedNode(selectedNodes[0].id);
+        const firstNode = selectedNodes[0];
+        if (firstNode) {
+          setSelectedNode(firstNode.id);
+        }
       }
     },
     [setSelectedNode],
@@ -527,7 +530,7 @@ export function WorkflowCanvas() {
 
   return (
     <div
-      className="relative h-full bg-background"
+      className="pointer-events-auto relative h-full bg-background"
       data-testid="workflow-canvas"
       style={{
         opacity: isCanvasReady ? 1 : 0,
@@ -588,13 +591,13 @@ export function WorkflowCanvas() {
       {/* AI Prompt */}
       {currentWorkflowId && <AIPrompt workflowId={currentWorkflowId} />}
 
-      {/* Context Menu - needs pointer-events-auto to be clickable */}
-      <div className="pointer-events-auto">
+      {/* Context Menu - only render when menu is open */}
+      {contextMenuState && (
         <WorkflowContextMenu
           menuState={contextMenuState}
           onClose={closeContextMenu}
         />
-      </div>
+      )}
     </div>
   );
 }
