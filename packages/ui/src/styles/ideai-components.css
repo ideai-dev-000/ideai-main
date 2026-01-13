@@ -1804,6 +1804,7 @@
   width: 100%;
   position: relative;
   transition: background-color 150ms ease;
+  pointer-events: auto !important; /* Ensure menu items can receive clicks */
 }
 
 .ideai-side-menu-item:hover {
@@ -1894,6 +1895,7 @@
   @apply transition-colors;
   border: none;
   cursor: pointer;
+  pointer-events: auto !important; /* Ensure new button can receive clicks */
 }
 
 .ideai-side-menu-new-icon {
