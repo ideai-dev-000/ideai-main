@@ -1,10 +1,10 @@
 # Database Management Guide
 
-**Last Updated**: January 8, 2026
+**Last Updated**: January 12, 2026
 
 Complete guide for managing IdeaI databases both locally and in production using PostgreSQL with Drizzle ORM.
 
-**🚀 Quick Start**: Need to edit the database right now? See [Drizzle Studio Quick Reference](/deployment/drizzle-studio-quick-ref)
+**🚀 Quick Start**: Need to edit the database right now? See [Drizzle Studio Quick Reference](./DRIZZLE-STUDIO-QUICK-REF.md)
 
 ## Overview
 
@@ -231,9 +231,11 @@ pnpm db:studio
 **Setup Requirements:**
 
 1. **Environment Variables**: Ensure `DATABASE_URL` is set in `apps/ideai-capabilities/.env.local`:
+
    ```env
    DATABASE_URL="postgresql://user:password@host:port/database"
    ```
+
    - The `drizzle.config.ts` automatically loads `.env.local` first, then falls back to `.env`
    - For local development, use your local PostgreSQL connection string
    - For production database access, use the production connection string
@@ -636,10 +638,12 @@ psql $DATABASE_URL < backup_20260108_120000.sql
 **Solutions:**
 
 1. **Check DATABASE_URL in `.env.local`:**
+
    ```bash
    cd apps/ideai-capabilities
    cat .env.local | grep DATABASE_URL
    ```
+
    - Ensure `DATABASE_URL` is set correctly
    - The `drizzle.config.ts` loads `.env.local` first (then `.env` as fallback)
 
@@ -648,12 +652,13 @@ psql $DATABASE_URL < backup_20260108_120000.sql
    - Kill process if port in use: `lsof -ti:4983 | xargs kill -9`
 
 3. **Verify database connection:**
+
    ```bash
    cd apps/ideai-capabilities
    node -e "require('dotenv').config({ path: '.env.local' }); const postgres = require('postgres'); const sql = postgres(process.env.DATABASE_URL); sql\`SELECT version()\`.then(r => { console.log('✅ Connected'); sql.end(); }).catch(e => { console.error('❌ Error:', e.message); sql.end(); });"
    ```
 
-4. **Access URL**: 
+4. **Access URL**:
    - Newer Drizzle Studio versions use: `https://local.drizzle.studio` (not `http://localhost:4983`)
    - If URL doesn't resolve, add to `/etc/hosts`: `127.0.0.1 local.drizzle.studio`
 
@@ -661,6 +666,7 @@ psql $DATABASE_URL < backup_20260108_120000.sql
    ```bash
    cat apps/ideai-capabilities/drizzle.config.ts
    ```
+
    - Should load `.env.local` first: `config({ path: ".env.local" }); config();`
 
 ### Production Migration Not Running
@@ -727,13 +733,19 @@ psql $DATABASE_URL < backup_20260108_120000.sql
 ### Essential Commands
 
 ```bash
+# Setup: Ensure DATABASE_URL is in .env.local
+cd apps/ideai-capabilities
+# Edit .env.local and add:
+# DATABASE_URL="postgresql://user:password@host:port/database"
+
+# Open Drizzle Studio (most common use case)
+cd apps/ideai-capabilities
+pnpm db:studio
+# Then open: https://local.drizzle.studio
+
 # Connect to production database locally
 vercel env pull .env.production
 export DATABASE_URL=$(grep DATABASE_URL .env.production | cut -d '=' -f2-)
-
-# Open Drizzle Studio
-cd apps/ideai-capabilities
-pnpm db:studio
 
 # Run migrations
 pnpm db:migrate
@@ -770,6 +782,7 @@ pg_dump $DATABASE_URL > backup.sql
 
 ## Related Documentation
 
+- **[Drizzle Studio Quick Reference](./DRIZZLE-STUDIO-QUICK-REF.md)** - Quick start guide for editing database
 - [Unified Auth System](../../architecture/unified-auth-system.md) - How shared database enables unified auth
 - [Environment Variables](../../security/environment-variables.md) - Complete env var guide
 - [DB Manager Package](../../packages/ideai-db-manager/README.md) - Super admin panel documentation

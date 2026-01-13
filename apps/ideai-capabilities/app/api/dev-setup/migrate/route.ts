@@ -166,8 +166,8 @@ export async function POST(request: NextRequest) {
     await updateIdeaiDevJson({ lastStep: "2/5 - Checking connection" });
 
     try {
-      const { db } = await import("../../lib/db/index");
-      await db.query.users.findFirst({ limit: 1 });
+      const { db } = await import("@/lib/db/index");
+      await db.query.users.findFirst();
       logs.push("✅ Database connection verified");
     } catch (dbError) {
       logs.push(
@@ -345,8 +345,8 @@ export async function POST(request: NextRequest) {
     const completionTime = new Date();
 
     try {
-      const { db } = await import("../../lib/db/index");
-      await db.query.userServiceKeys.findFirst({ limit: 1 });
+      const { db } = await import("@/lib/db/index");
+      await db.query.userServiceKeys.findFirst();
       logs.push("✅ user_service_keys table verified - migration successful");
 
       await updateIdeaiDevJson(

@@ -122,7 +122,7 @@ export async function POST(request: NextRequest) {
       });
 
       // Create ownership mapping for new chat (non-blocking)
-      if (session?.user?.id && chat.id) {
+      if (session?.user?.id && "id" in chat && chat.id) {
         await createVibeChatOwnership({
           v0ChatId: chat.id,
           userId: session.user.id,
@@ -132,7 +132,7 @@ export async function POST(request: NextRequest) {
       } else if (!session?.user?.id) {
         // Anonymous user - log for rate limiting
         const clientIP = getVibeClientIP(request.headers);
-        if (chat.id) {
+        if ("id" in chat && chat.id) {
           await createVibeAnonymousChatLog({
             ipAddress: clientIP,
             v0ChatId: chat.id,

@@ -15,7 +15,7 @@
 
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { IdeAIPageTemplate } from "../ideai-page-template";
 import { AnimationCard } from "../animations/ideai-animations/animation-card";
 import { VivusDraw } from "../drawings/vivus-draw";
@@ -196,12 +196,9 @@ export function FXShowcase() {
   const { animationsEnabled } = useIdeAIAnimations();
 
   // Get app name from environment or default to "web"
-  const appName =
-    process.env.NEXT_PUBLIC_VERCEL_PROJECT_NAME ||
-    (typeof window !== "undefined"
-      ? window.location.pathname.split("/")[1]
-      : "web") ||
-    "web";
+  // IMPORTANT: Never read from window.location on initial render to avoid hydration mismatch
+  // Server renders with "web", so client must also use "web" on initial render
+  const appName = process.env.NEXT_PUBLIC_VERCEL_PROJECT_NAME || "web";
 
   // Default to all libraries
   const defaultLibraryIds = [

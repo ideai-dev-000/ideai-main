@@ -113,6 +113,9 @@ export default function ServiceKeysPage() {
       displayName: SERVICE_DISPLAY_NAMES[serviceType],
       configured: false,
       source: "none" as const,
+      hasLocal: false,
+      hasProduction: false,
+      activeEnvironment: "production" as const,
     }));
   });
   const [isLoading, setIsLoading] = useState(true);
@@ -176,13 +179,13 @@ export default function ServiceKeysPage() {
           }),
         ]);
 
-      if (keysResponse.ok) {
+      if (keysResponse.ok && "json" in keysResponse) {
         const keysData = await keysResponse.json();
         setKeys(keysData.keys || []);
       } else {
         console.error(
           "[ServiceKeys] Keys response not ok:",
-          keysResponse.status,
+          "status" in keysResponse ? keysResponse.status : "unknown",
         );
         setKeys([]);
       }

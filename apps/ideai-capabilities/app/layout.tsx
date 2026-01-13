@@ -23,6 +23,8 @@ import { DevSetupModal } from "@/components/dev-setup-modal";
 import { StreamingProvider } from "@/contexts/streaming-context";
 import { SWRProvider } from "@/components/providers/swr-provider";
 import { SessionProvider } from "@/components/providers/session-provider";
+import { LayoutClient } from "@/components/layout-client";
+import { ContentWrapper } from "@/components/content-wrapper";
 import { mono, sans } from "@/lib/fonts";
 import { cn } from "@/lib/utils";
 import "./globals.css";
@@ -39,20 +41,22 @@ function LayoutContent({ children }: { children: ReactNode }) {
     <ReactFlowProvider>
       <PersistentCanvas />
       {/* IdeaI Side Menu - outside z-[1] wrapper so it's above canvas (sidebar has z-30) */}
-      {/* Desktop sidebar is fixed, mobile trigger is part of component */}
-      <div className="pointer-events-auto">
-        <IdeAISideMenuWrapper />
-      </div>
+      {/* Hide on landing page - only show when authenticated and not on homepage */}
+      <LayoutClient>
+        <div className="pointer-events-auto">
+          <IdeAISideMenuWrapper />
+        </div>
+      </LayoutClient>
       <div className="pointer-events-none relative z-[1]">
         {/* Header needs pointer events for buttons to work */}
         <div className="pointer-events-auto">
           <CapabilitiesHeader />
         </div>
         {/* Main content - needs pointer events for interactive elements */}
-        {/* Add left padding on desktop to account for sidebar */}
-        <main className="pointer-events-auto min-h-screen pt-16 md:pl-[280px]">
+        {/* Add left padding on desktop to account for sidebar, but not on landing page */}
+        <ContentWrapper className="pointer-events-auto min-h-screen pt-16 md:pl-[280px]">
           {children}
-        </main>
+        </ContentWrapper>
       </div>
     </ReactFlowProvider>
   );

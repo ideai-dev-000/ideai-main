@@ -243,9 +243,9 @@ export async function POST(request: NextRequest) {
             const tables: string[] = [];
             for (const line of outputLines) {
               const createMatch = line.match(/CREATE TABLE\s+"?(\w+)"?/i);
-              if (createMatch) tables.push(createMatch[1]);
+              if (createMatch?.[1]) tables.push(createMatch[1]);
               const alterMatch = line.match(/ALTER TABLE\s+"?(\w+)"?/i);
-              if (alterMatch) tables.push(alterMatch[1]);
+              if (alterMatch?.[1]) tables.push(alterMatch[1]);
             }
 
             if (tables.length > 0) {

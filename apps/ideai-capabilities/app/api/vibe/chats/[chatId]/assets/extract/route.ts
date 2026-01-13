@@ -115,6 +115,7 @@ export async function POST(
           // Check if it's base64 encoded binary
           if (content.match(/^data:.*;base64,/)) {
             const base64Data = content.split(",")[1];
+            if (!base64Data) continue;
             const buffer = Buffer.from(base64Data, "base64");
             await writeFile(assetPath, buffer);
           } else {

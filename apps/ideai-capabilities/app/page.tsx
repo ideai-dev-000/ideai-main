@@ -11,8 +11,7 @@
 "use client";
 
 import { useSession } from "@/lib/auth-client";
-import { useRouter } from "next/navigation";
-import { useEffect, useState, useCallback, useRef } from "react";
+import { useEffect, useState } from "react";
 import {
   Card,
   CardContent,
@@ -28,138 +27,12 @@ import {
   Shield,
   ArrowRight,
   CheckCircle2,
-  ChevronDown,
-  Check,
 } from "lucide-react";
-import { WorkflowIcon } from "@/components/ui/workflow-icon";
 import { AuthDialog } from "@/components/auth/dialog";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { api } from "@/lib/api-client";
 import { IdeAISystemCards } from "@/components/ideai-system-cards";
-
-// Standalone workflow menu component for landing page
-function LandingWorkflowMenu() {
-  const router = useRouter();
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [allWorkflows, setAllWorkflows] = useState<
-    Array<{
-      id: string;
-      name: string;
-      updatedAt: string;
-    }>
-  >([]);
-  const { data: session } = useSession();
-  const prevSessionRef = useRef(session);
-  const hasAutoOpenedRef = useRef(false);
-
-  // Load workflows
-  const loadWorkflows = useCallback(async () => {
-    try {
-      const workflows = await api.workflow.getAll();
-      setAllWorkflows(workflows);
-    } catch (error) {
-      console.error("Failed to load workflows:", error);
-      setAllWorkflows([]);
-    }
-  }, []);
-
-  // Load workflows on mount and when menu opens
-  useEffect(() => {
-    loadWorkflows();
-  }, [loadWorkflows]);
-
-  // Auto-open menu on login
-  useEffect(() => {
-    const prevSession = prevSessionRef.current;
-    prevSessionRef.current = session;
-
-    const wasAnonymous =
-      !prevSession?.user ||
-      prevSession.user.name === "Anonymous" ||
-      prevSession.user.email?.startsWith("temp-");
-    const isNowAuthenticated =
-      session?.user &&
-      session.user.name !== "Anonymous" &&
-      !session.user.email?.startsWith("temp-");
-
-    if (wasAnonymous && isNowAuthenticated && !hasAutoOpenedRef.current) {
-      hasAutoOpenedRef.current = true;
-      setTimeout(() => {
-        setMenuOpen(true);
-        loadWorkflows();
-      }, 300);
-    }
-
-    if (!isNowAuthenticated) {
-      hasAutoOpenedRef.current = false;
-    }
-  }, [session, loadWorkflows]);
-
-  const handleOpenChange = useCallback(
-    (open: boolean) => {
-      setMenuOpen(open);
-      if (open) {
-        loadWorkflows();
-      } else {
-        hasAutoOpenedRef.current = false;
-      }
-    },
-    [loadWorkflows],
-  );
-
-  return (
-    <div className="flex h-9 max-w-[160px] items-center overflow-hidden rounded-md border bg-secondary text-secondary-foreground sm:max-w-none">
-      <DropdownMenu open={menuOpen} onOpenChange={handleOpenChange}>
-        <DropdownMenuTrigger className="flex h-full cursor-pointer items-center gap-2 px-3 font-medium text-sm transition-all hover:bg-black/5 dark:hover:bg-white/5">
-          <WorkflowIcon className="size-4 shrink-0" />
-          <p className="truncate font-medium text-sm">
-            <span className="sm:hidden">New</span>
-            <span className="hidden sm:inline">New Workflow</span>
-          </p>
-          <ChevronDown className="size-3 shrink-0 opacity-50" />
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="start" className="w-64">
-          <DropdownMenuItem
-            asChild
-            className="flex items-center justify-between"
-          >
-            <a href="/workflow">
-              New Workflow <Check className="size-4 shrink-0" />
-            </a>
-          </DropdownMenuItem>
-          <DropdownMenuSeparator />
-          {allWorkflows.length === 0 ? (
-            <DropdownMenuItem disabled>No workflows found</DropdownMenuItem>
-          ) : (
-            allWorkflows
-              .filter((w) => w.name !== "__current__")
-              .map((workflow) => (
-                <DropdownMenuItem
-                  className="flex items-center justify-between"
-                  key={workflow.id}
-                  onClick={() =>
-                    router.push(`/workflow/workflows/${workflow.id}`)
-                  }
-                >
-                  <span className="truncate">{workflow.name}</span>
-                </DropdownMenuItem>
-              ))
-          )}
-        </DropdownMenuContent>
-      </DropdownMenu>
-    </div>
-  );
-}
 
 export default function CapabilitiesLanding() {
   const { data: session, isPending } = useSession();
-  const router = useRouter();
   const [isMounted, setIsMounted] = useState(false);
 
   // Track client-side mount to prevent hydration mismatch
@@ -398,10 +271,9 @@ export default function CapabilitiesLanding() {
     <div className="pointer-events-auto min-h-screen">
       <div className="container mx-auto px-4 py-16">
         <div className="mx-auto max-w-7xl">
-          {/* Header with workflow menu */}
-          <div className="mb-8 flex items-center justify-between">
+          {/* Header */}
+          <div className="mb-8">
             <h1 className="text-3xl font-bold">IdeaI Dashboard</h1>
-            <LandingWorkflowMenu />
           </div>
 
           {/* Welcome Card */}
@@ -418,8 +290,8 @@ export default function CapabilitiesLanding() {
                 <Workflow className="h-12 w-12 text-slate-400" />
                 <div>
                   <p className="text-slate-600 dark:text-slate-400">
-                    Use the workflow menu above to access your workflows or
-                    create a new one.
+                    Access your workflows from the side menu or navigate using
+                    the header.
                   </p>
                   <p className="mt-2 text-sm text-slate-500 dark:text-slate-500">
                     Explore the IdeaI apps, modules, and packages below.

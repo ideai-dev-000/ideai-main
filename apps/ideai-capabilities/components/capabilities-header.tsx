@@ -63,9 +63,10 @@ export function CapabilitiesHeader() {
   const { data: session } = useSession();
   const pathname = usePathname();
   const [demoMode, setDemoMode] = useAtom(demoModeAtom);
-  
+
   // Show demo mode toggle only on workflow pages
-  const isWorkflowPage = pathname === "/workflow" || pathname.startsWith("/workflow/");
+  const isWorkflowPage =
+    pathname === "/workflow" || pathname.startsWith("/workflow/");
 
   useEffect(() => {
     const handleScroll = () => {
@@ -97,7 +98,10 @@ export function CapabilitiesHeader() {
         <div className="flex h-16 items-center justify-between">
           {/* Logo/Brand */}
           <div className="flex items-center">
-            <Link href="/" className="flex items-center gap-2">
+            <Link
+              href="/"
+              className="flex items-center gap-2 [&_.ideai-logo]:!w-auto [&_.ideai-logo__container]:!gap-2 [&_.ideai-logo__container]:!justify-start [&_.ideai-logo__icon]:!w-7 [&_.ideai-logo__icon]:!h-7 [&_.ideai-logo__text]:!text-lg [&_.ideai-logo__text]:!font-semibold [&_.ideai-logo__text]:!leading-tight [&_.ideai-logo__brand]:!text-lg [&_.ideai-logo__site]:!text-xs"
+            >
               <IdeAILogo siteName="Capabilities" />
             </Link>
           </div>
