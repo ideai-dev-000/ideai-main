@@ -12,9 +12,7 @@
 
 import {
   WebPreview,
-  WebPreviewNavigation,
   WebPreviewNavigationButton,
-  WebPreviewUrl,
   WebPreviewBody,
 } from "@/components/ai-elements/web-preview";
 import {
@@ -193,8 +191,10 @@ export function VibePreviewPanel({
   return (
     <div
       className={cn(
-        "flex flex-col h-full transition-all duration-300",
-        isFullscreen ? "fixed inset-0 z-50 bg-white dark:bg-black" : "flex-1",
+        "flex flex-col h-full transition-all duration-300 relative",
+        isFullscreen
+          ? "fixed inset-0 z-50 bg-white dark:bg-slate-950"
+          : "flex-1",
       )}
     >
       <WebPreview
@@ -203,13 +203,15 @@ export function VibePreviewPanel({
           console.log("Preview URL changed:", url);
         }}
       >
-        <WebPreviewNavigation>
+        {/* Floating button group on the right side */}
+        <div className="absolute top-4 right-4 z-10 flex items-center gap-2 bg-white dark:bg-slate-900 backdrop-blur-md border border-slate-300 dark:border-slate-700 rounded-lg p-1 shadow-xl">
           <WebPreviewNavigationButton
             onClick={() => {
               setRefreshKey((prev) => prev + 1);
             }}
             tooltip="Refresh preview"
             disabled={!currentChat?.demo}
+            className="h-8 w-8"
           >
             <RefreshCw className="h-4 w-4" />
           </WebPreviewNavigationButton>
@@ -222,6 +224,7 @@ export function VibePreviewPanel({
                 : "Download project as ZIP"
             }
             disabled={!currentChat?.id || isDownloading}
+            className="h-8 w-8"
           >
             {isDownloading ? (
               <Loader2 className="h-4 w-4 animate-spin" />
@@ -234,20 +237,16 @@ export function VibePreviewPanel({
             onClick={handleExtractAssets}
             tooltip="Extract assets from project"
             disabled={!currentChat?.id}
+            className="h-8 w-8"
           >
             <Package className="h-4 w-4" />
           </WebPreviewNavigationButton>
-
-          <WebPreviewUrl
-            readOnly
-            placeholder="Your app will appear here..."
-            value={currentChat?.demo || currentChat?.url || ""}
-          />
 
           <WebPreviewNavigationButton
             onClick={() => setIsFullscreen(!isFullscreen)}
             tooltip={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
             disabled={!currentChat?.demo}
+            className="h-8 w-8"
           >
             {isFullscreen ? (
               <Minimize className="h-4 w-4" />
@@ -255,7 +254,7 @@ export function VibePreviewPanel({
               <Maximize className="h-4 w-4" />
             )}
           </WebPreviewNavigationButton>
-        </WebPreviewNavigation>
+        </div>
 
         {currentChat?.demo || currentChat?.url ? (
           <WebPreviewBody
@@ -263,12 +262,12 @@ export function VibePreviewPanel({
             src={currentChat.demo || currentChat.url}
           />
         ) : (
-          <div className="flex-1 flex items-center justify-center bg-gray-50 dark:bg-black">
+          <div className="flex-1 flex items-center justify-center bg-white dark:bg-slate-950">
             <div className="text-center">
-              <p className="text-sm font-medium text-gray-700 dark:text-gray-200">
+              <p className="text-sm font-medium text-slate-700 dark:text-slate-200">
                 No preview available
               </p>
-              <p className="text-xs text-gray-700/50 dark:text-gray-200/50">
+              <p className="text-xs text-slate-700/50 dark:text-slate-200/50">
                 Start a conversation to see your app here
               </p>
             </div>
