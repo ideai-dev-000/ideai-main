@@ -47,17 +47,15 @@ function LayoutContent({ children }: { children: ReactNode }) {
           <IdeAISideMenuWrapper />
         </div>
       </LayoutClient>
-      <div className="pointer-events-none relative z-[1]">
-        {/* Header needs pointer events for buttons to work */}
-        <div className="pointer-events-auto">
-          <CapabilitiesHeader />
-        </div>
-        {/* Main content - needs pointer events for interactive elements */}
-        {/* Add left padding on desktop to account for sidebar, but not on landing page */}
-        <ContentWrapper className="pointer-events-auto min-h-screen pt-16 md:pl-[280px]">
-          {children}
-        </ContentWrapper>
+      {/* Header - fixed positioning, z-[100] ensures it's above everything */}
+      <div className="pointer-events-auto">
+        <CapabilitiesHeader />
       </div>
+      {/* Main content - needs pointer events for interactive elements */}
+      {/* Add left padding on desktop to account for sidebar, but not on landing page */}
+      <ContentWrapper className="pointer-events-auto relative z-[1] min-h-screen pt-16 md:pl-[280px]">
+        {children}
+      </ContentWrapper>
     </ReactFlowProvider>
   );
 }

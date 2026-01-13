@@ -27,7 +27,9 @@ import {
 import { AddNode } from "@/components/workflow/nodes/add-node";
 
 // Helper function to create a default trigger node
-function createDefaultTriggerNode(triggerType: "Manual" | "Webhook" | "Schedule" = "Manual") {
+function createDefaultTriggerNode(
+  triggerType: "Manual" | "Webhook" | "Schedule" = "Manual",
+) {
   return {
     id: nanoid(),
     type: "trigger" as const,
@@ -65,17 +67,25 @@ export default function WorkflowPage() {
     session.user.email?.startsWith("temp-");
 
   // Handler to add the first node (creates workflow)
-  const handleAddNode = useCallback((triggerType: "Manual" | "Webhook" | "Schedule" = "Manual") => {
-    const newNode: WorkflowNode = createDefaultTriggerNode(triggerType);
-    // Set nodes - this will trigger workflow creation
-    setNodes([newNode]);
-  }, [setNodes]);
+  const handleAddNode = useCallback(
+    (triggerType: "Manual" | "Webhook" | "Schedule" = "Manual") => {
+      const newNode: WorkflowNode = createDefaultTriggerNode(triggerType);
+      // Set nodes - this will trigger workflow creation
+      setNodes([newNode]);
+    },
+    [setNodes],
+  );
 
   // Check for trigger type from URL param (from landing page)
   useEffect(() => {
     const triggerParam = searchParams?.get("trigger");
-    if (triggerParam && ["Manual", "Webhook", "Schedule"].includes(triggerParam)) {
-      const newNode = createDefaultTriggerNode(triggerParam as "Manual" | "Webhook" | "Schedule");
+    if (
+      triggerParam &&
+      ["Manual", "Webhook", "Schedule"].includes(triggerParam)
+    ) {
+      const newNode = createDefaultTriggerNode(
+        triggerParam as "Manual" | "Webhook" | "Schedule",
+      );
       setNodes([newNode]);
       // Remove trigger param from URL
       router.replace("/workflow", { scroll: false });
@@ -112,7 +122,7 @@ export default function WorkflowPage() {
     if (isAnonymous || hasInitializedRef.current) {
       return;
     }
-    
+
     // Clear any existing nodes/edges and set name
     setNodes([]);
     setEdges([]);
@@ -212,10 +222,10 @@ export default function WorkflowPage() {
   }
 
   // Render card directly on page when empty (bypasses React Flow)
-  // z-[20] to be above canvas (z-[15]) but below header (z-[60])
+  // z-[10] to be above canvas (z-[0]) but below header (z-[100])
   if (showCard) {
     return (
-      <div className="pointer-events-auto fixed inset-0 z-[20] flex items-center justify-center">
+      <div className="pointer-events-auto fixed inset-0 z-[10] flex items-center justify-center">
         <AddNode
           data={{
             onClick: handleAddNode,
