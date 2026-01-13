@@ -1805,13 +1805,7 @@
 }
 
 .ideai-side-menu-item:hover {
-  background-color: rgb(241 245 249); /* slate-100 */
-}
-
-@media (prefers-color-scheme: dark) {
-  .ideai-side-menu-item:hover {
-    background-color: rgb(30 41 59); /* slate-800 */
-  }
+  @apply bg-slate-100 dark:bg-slate-800;
 }
 
 .ideai-side-menu-item--with-actions {
@@ -1848,10 +1842,8 @@
   transition: opacity 150ms ease, background-color 150ms ease, color 150ms ease;
 }
 
-@media (prefers-color-scheme: dark) {
-  .ideai-side-menu-clone-button {
-    color: rgb(100 116 139); /* slate-500 */
-  }
+.ideai-side-menu-clone-button {
+  @apply text-slate-400 dark:text-slate-500;
 }
 
 .group:hover .ideai-side-menu-clone-button {
@@ -1939,11 +1931,6 @@
   transition: opacity 150ms ease, background-color 150ms ease, color 150ms ease;
 }
 
-@media (prefers-color-scheme: dark) {
-  .ideai-side-menu-delete-button {
-    color: rgb(100 116 139); /* slate-500 */
-  }
-}
 
 .group:hover .ideai-side-menu-delete-button {
   opacity: 1;
@@ -1987,11 +1974,6 @@
   transition: opacity 150ms ease, background-color 150ms ease, color 150ms ease;
 }
 
-@media (prefers-color-scheme: dark) {
-  .ideai-side-menu-clear-button {
-    color: rgb(100 116 139); /* slate-500 */
-  }
-}
 
 .group:hover .ideai-side-menu-clear-button {
   opacity: 1;
