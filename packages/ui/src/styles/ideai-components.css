@@ -1965,7 +1965,7 @@
 
 .group:hover .ideai-side-menu-clear-button {
   opacity: 1;
-  pointer-events: auto;
+  pointer-events: auto !important; /* Enable clicks when visible */
 }
 
 .ideai-side-menu-clear-button:hover {
