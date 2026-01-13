@@ -115,8 +115,8 @@ export default function WorkflowPage() {
     }
   }, [currentWorkflowName, isAnonymous]);
 
-  // Track previous node count to detect when first real node is added
-  const prevNodeCountRef = useRef(0);
+  // Track previous edge count to detect when first connection is made
+  const prevEdgeCountRef = useRef(0);
   const hasInitializedRef = useRef(false);
 
   // Initialize workflow state on mount (only once)
@@ -130,28 +130,26 @@ export default function WorkflowPage() {
     setEdges([]);
     setCurrentWorkflowName("New Workflow");
     hasCreatedWorkflowRef.current = false;
-    prevNodeCountRef.current = 0;
+    prevEdgeCountRef.current = 0;
     hasInitializedRef.current = true;
   }, [isAnonymous, setNodes, setEdges, setCurrentWorkflowName]);
 
-  // Create workflow when first real node is added (only once)
+  // Create workflow when first connection (edge) is made (only once)
   useEffect(() => {
     if (isAnonymous) {
       return;
     }
 
-    // Filter out the placeholder "add" node
-    const realNodes = nodes.filter((node) => node.type !== "add");
-    const currentNodeCount = realNodes.length;
-    const prevNodeCount = prevNodeCountRef.current;
+    const currentEdgeCount = edges.length;
+    const prevEdgeCount = prevEdgeCountRef.current;
 
     // Update ref for next comparison
-    prevNodeCountRef.current = currentNodeCount;
+    prevEdgeCountRef.current = currentEdgeCount;
 
-    // Only create when transitioning from 0 to 1+ nodes AND haven't created yet
+    // Only create when transitioning from 0 to 1+ edges AND haven't created yet
     const shouldCreate =
-      prevNodeCount === 0 &&
-      currentNodeCount > 0 &&
+      prevEdgeCount === 0 &&
+      currentEdgeCount > 0 &&
       !hasCreatedWorkflowRef.current;
 
     if (!shouldCreate) {
@@ -173,11 +171,14 @@ export default function WorkflowPage() {
           toast.error("Please sign in to create workflows");
           // Reset the flag so user can try again after signing in
           hasCreatedWorkflowRef.current = false;
-          prevNodeCountRef.current = 0;
+          prevEdgeCountRef.current = 0;
           return;
         }
 
-        // Create workflow with all real nodes
+        // Filter out the placeholder "add" node
+        const realNodes = nodes.filter((node) => node.type !== "add");
+
+        // Create workflow with all real nodes and edges
         const newWorkflow = await api.workflow.create({
           name: "Untitled Workflow",
           description: "",
@@ -200,15 +201,14 @@ export default function WorkflowPage() {
         toast.error("Failed to create workflow");
         // Reset flags on error so user can try again
         hasCreatedWorkflowRef.current = false;
-        prevNodeCountRef.current = 0;
+        prevEdgeCountRef.current = 0;
       }
     };
 
     createWorkflowAndRedirect();
-    // Only depend on node count change, not the full nodes array
+    // Only depend on edge count change
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
-    nodes.length, // Only track length, not full array
     edges.length, // Only track length, not full array
     router,
     setIsTransitioningFromHomepage,
@@ -216,6 +216,8 @@ export default function WorkflowPage() {
     session?.user?.name,
     session?.user?.email,
     isAnonymous,
+    nodes, // Need nodes to create workflow
+    triggerWorkflowListReload,
   ]);
 
   // Show card directly when no nodes exist (not as React Flow node)
