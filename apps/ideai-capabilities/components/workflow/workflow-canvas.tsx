@@ -436,6 +436,12 @@ export function WorkflowCanvas() {
         );
       }, 50);
 
+      // Check if source node is a trigger node - this indicates meaningful interaction
+      const sourceNode = nodes.find((n) => n.id === sourceNodeId);
+      if (sourceNode?.data.type === "trigger") {
+        setHasMeaningfulInteraction(true);
+      }
+
       // Create connection from the source node to the new node
       const fromSource = connectingHandleType.current === "source";
 
