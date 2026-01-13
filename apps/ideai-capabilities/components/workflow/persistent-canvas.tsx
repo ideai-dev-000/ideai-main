@@ -1,15 +1,3 @@
-/**
- * @fileoverview Persistent Canvas Component
- *
- * @module PersistentCanvas
- * @description
- * Persistent canvas that renders behind all content on workflow pages.
- * Uses standardized IdeaI canvas classes for consistent z-index behavior.
- *
- * Z-Index: Canvas sits at z-[0] (bottom layer), below header (z-[100])
- * and side menu (z-30), ensuring it never overlaps UI elements.
- */
-
 "use client";
 
 import { usePathname } from "next/navigation";
@@ -37,10 +25,8 @@ export function PersistentCanvas() {
   }
 
   return (
-    <div className="ideai-canvas--below-header">
-      <div className="ideai-canvas-content">
-        <WorkflowCanvas />
-      </div>
+    <div className="fixed top-16 inset-x-0 bottom-0 z-[15] pointer-events-none">
+      <WorkflowCanvas />
     </div>
   );
 }

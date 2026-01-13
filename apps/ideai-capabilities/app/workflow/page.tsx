@@ -226,10 +226,7 @@ export default function WorkflowPage() {
   // pointer-events-auto ensures card buttons are clickable
   if (showCard) {
     return (
-      <div
-        className="pointer-events-auto fixed inset-0 z-[10] flex items-center justify-center"
-        style={{ pointerEvents: "auto" }}
-      >
+      <div className="pointer-events-auto fixed inset-0 z-[10] flex items-center justify-center">
         <AddNode
           data={{
             onClick: handleAddNode,

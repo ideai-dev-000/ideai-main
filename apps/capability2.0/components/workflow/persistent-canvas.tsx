@@ -24,10 +24,8 @@ export function PersistentCanvas() {
   }
 
   return (
-    <div className="ideai-canvas">
-      <div className="ideai-canvas-content">
-        <WorkflowCanvas />
-      </div>
+    <div className="fixed inset-0 z-[5]">
+      <WorkflowCanvas />
     </div>
   );
 }
