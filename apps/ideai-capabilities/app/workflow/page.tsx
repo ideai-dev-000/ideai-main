@@ -22,6 +22,7 @@ import {
   hasSidebarBeenShownAtom,
   isTransitioningFromHomepageAtom,
   nodesAtom,
+  workflowListReloadTriggerAtom,
   type WorkflowNode,
 } from "@/lib/workflow-store";
 import { AddNode } from "@/components/workflow/nodes/add-node";
@@ -57,6 +58,7 @@ export default function WorkflowPage() {
   const setIsTransitioningFromHomepage = useSetAtom(
     isTransitioningFromHomepageAtom,
   );
+  const triggerWorkflowListReload = useSetAtom(workflowListReloadTriggerAtom);
   const hasCreatedWorkflowRef = useRef(false);
   const currentWorkflowName = useAtomValue(currentWorkflowNameAtom);
 
@@ -115,7 +117,6 @@ export default function WorkflowPage() {
 
   // Track previous node count to detect when first real node is added
   const prevNodeCountRef = useRef(0);
-  const prevEdgeCountRef = useRef(0);
   const hasInitializedRef = useRef(false);
 
   // Initialize workflow state on mount (only once)
@@ -130,11 +131,10 @@ export default function WorkflowPage() {
     setCurrentWorkflowName("New Workflow");
     hasCreatedWorkflowRef.current = false;
     prevNodeCountRef.current = 0;
-    prevEdgeCountRef.current = 0;
     hasInitializedRef.current = true;
   }, [isAnonymous, setNodes, setEdges, setCurrentWorkflowName]);
 
-  // Create workflow when first real node is added OR when first edge is created from trigger (only once)
+  // Create workflow when first real node is added (only once)
   useEffect(() => {
     if (isAnonymous) {
       return;
@@ -144,26 +144,15 @@ export default function WorkflowPage() {
     const realNodes = nodes.filter((node) => node.type !== "add");
     const currentNodeCount = realNodes.length;
     const prevNodeCount = prevNodeCountRef.current;
-    const currentEdgeCount = edges.length;
-    const prevEdgeCount = prevEdgeCountRef.current;
 
-    // Update refs for next comparison
+    // Update ref for next comparison
     prevNodeCountRef.current = currentNodeCount;
-    prevEdgeCountRef.current = currentEdgeCount;
 
-    // Check if an edge was just added from a trigger node
-    const edgeJustAdded = prevEdgeCount === 0 && currentEdgeCount > 0;
-    const hasTriggerNode = realNodes.some(
-      (node) => node.data.type === "trigger",
-    );
-    const edgeFromTrigger = edgeJustAdded && hasTriggerNode;
-
-    // Create when:
-    // 1. Transitioning from 0 to 1+ nodes, OR
-    // 2. First edge is created from a trigger node (even if workflow wasn't created yet)
+    // Only create when transitioning from 0 to 1+ nodes AND haven't created yet
     const shouldCreate =
-      !hasCreatedWorkflowRef.current &&
-      ((prevNodeCount === 0 && currentNodeCount > 0) || edgeFromTrigger);
+      prevNodeCount === 0 &&
+      currentNodeCount > 0 &&
+      !hasCreatedWorkflowRef.current;
 
     if (!shouldCreate) {
       return;
@@ -185,7 +174,6 @@ export default function WorkflowPage() {
           // Reset the flag so user can try again after signing in
           hasCreatedWorkflowRef.current = false;
           prevNodeCountRef.current = 0;
-          prevEdgeCountRef.current = 0;
           return;
         }
 
@@ -196,6 +184,9 @@ export default function WorkflowPage() {
           nodes: realNodes,
           edges,
         });
+
+        // Trigger workflow list reload in side menu
+        triggerWorkflowListReload((prev) => prev + 1);
 
         // Set flags to indicate we're coming from workflow page (for sidebar animation)
         sessionStorage.setItem("animate-sidebar", "true");
@@ -210,7 +201,6 @@ export default function WorkflowPage() {
         // Reset flags on error so user can try again
         hasCreatedWorkflowRef.current = false;
         prevNodeCountRef.current = 0;
-        prevEdgeCountRef.current = 0;
       }
     };
 

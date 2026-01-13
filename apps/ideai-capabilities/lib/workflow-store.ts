@@ -45,6 +45,25 @@ export const hasSidebarBeenShownAtom = atom<boolean>(false);
 export const isSidebarCollapsedAtom = atom<boolean>(false);
 export const isTransitioningFromHomepageAtom = atom<boolean>(false);
 
+// Track meaningful user interaction (action nodes added, name changed from default)
+// Used to determine if workflow should be kept when user navigates away
+export const hasMeaningfulInteractionAtom = atom<boolean>(false);
+
+// Helper to check if a workflow name is a default name
+export function isDefaultWorkflowName(name: string): boolean {
+  const defaultNames = [
+    "New Workflow",
+    "Untitled Workflow",
+    "AI Generated Workflow",
+  ];
+  // Also check for "Untitled N" pattern
+  return (
+    defaultNames.includes(name) ||
+    /^Untitled \d+$/.test(name) ||
+    name.trim() === ""
+  );
+}
+
 // Edge style preset (5 distinct combinations)
 import type { EdgeStylePreset } from "./edge-styles";
 export type { EdgeStylePreset };
@@ -115,6 +134,8 @@ export const autosaveAtom = atom(
         await api.workflow.update(workflowId, { nodes, edges });
         // Clear the unsaved changes indicator after successful save
         set(hasUnsavedChangesAtom, false);
+        // Trigger workflow list reload in side menu after successful save
+        set(workflowListReloadTriggerAtom, (prev) => prev + 1);
       } catch (error) {
         // Handle 401 Unauthorized gracefully - user signed out, don't spam console
         if (error instanceof Error && error.message.includes("Unauthorized")) {
@@ -251,6 +272,11 @@ export const addNodeAtom = atom(null, (get, set, node: WorkflowNode) => {
   // Track newly created action nodes (for auto-focusing search input)
   if (node.data.type === "action" && !node.data.config?.actionType) {
     set(newlyCreatedNodeIdAtom, node.id);
+  }
+
+  // Mark meaningful interaction if action node is added (not just trigger)
+  if (node.data.type === "action") {
+    set(hasMeaningfulInteractionAtom, true);
   }
 
   // Mark as having unsaved changes
