@@ -13,49 +13,11 @@ export function AddNode({ data }: NodeProps & { data?: AddNodeData }) {
     <div className="flex flex-col items-center justify-center gap-8 rounded-lg border border-border border-dashed bg-background/50 p-8 backdrop-blur-sm">
       <div className="text-center">
         <h1 className="mb-2 text-3xl font-bold">IdeaI Workflow</h1>
-        <p className="text-muted-foreground text-sm">
-          Powered by{" "}
-          <a
-            className="underline underline-offset-2 transition duration-200 ease-out hover:text-foreground"
-            href="https://useworkflow.dev/"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            Workflow
-          </a>
-          ,{" "}
-          <a
-            className="underline underline-offset-2 transition duration-200 ease-out hover:text-foreground"
-            href="https://ai-sdk.dev/"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            AI SDK
-          </a>
-          ,{" "}
-          <a
-            className="underline underline-offset-2 transition duration-200 ease-out hover:text-foreground"
-            href="https://vercel.com/ai-gateway"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            AI Gateway
-          </a>{" "}
-          and{" "}
-          <a
-            className="underline underline-offset-2 transition duration-200 ease-out hover:text-foreground"
-            href="https://ai-sdk.dev/elements"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            AI Elements
-          </a>
-        </p>
       </div>
       <div className="flex flex-col items-center gap-6 w-full max-w-2xl">
         <div className="w-full">
           <p className="text-center text-sm text-muted-foreground mb-4">
-            Start with a trigger:
+            Select your Workflow trigger below
           </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {/* Manual Trigger Card */}

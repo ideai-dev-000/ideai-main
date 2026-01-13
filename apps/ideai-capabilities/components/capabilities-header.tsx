@@ -18,7 +18,7 @@ import { IdeAILogo } from "@repo/ui";
 import { ThemeToggle } from "@repo/ui";
 import { IdeAIThemeSelector } from "@repo/ui";
 import { MobileNav } from "@repo/ui";
-import { Workflow, Code, Home } from "lucide-react";
+import { Workflow, Code, Home, Info } from "lucide-react";
 import { UserMenu } from "@/components/workflow/user-menu";
 import { useSession } from "@/lib/auth-client";
 import { demoModeAtom } from "@/lib/workflow-store";
@@ -56,6 +56,7 @@ const mainNav: NavItem[] = [
     basePath: "/app-builder",
     showMenu: false, // Can be enabled when App Builder has items
   },
+  { label: "About", href: "/about", icon: <Info className="h-4 w-4" /> },
 ];
 
 export function CapabilitiesHeader() {
