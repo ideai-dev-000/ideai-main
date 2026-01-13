@@ -39,8 +39,8 @@ export const IdeAILogo = ({ siteName }: IdeAILogoProps) => {
       <div className="ideai-logo__container">
         <IdeAILogoIcon
           className="ideai-logo__icon"
-          width={64}
-          height={64}
+          width={28}
+          height={28}
           aria-label="IdeaI logo icon"
         />
         <h1 className="ideai-logo__text" itemProp="brand">

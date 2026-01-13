@@ -634,13 +634,15 @@
 }
 
 .ideai-header__brand .ideai-logo__icon {
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
   transition: width 0.3s ease, height 0.3s ease;
 }
 
 .ideai-header__brand .ideai-logo__text {
-  font-size: 1.25rem;
+  font-size: 1.125rem; /* text-lg */
+  font-weight: 600;
+  line-height: 1.5;
   transition: font-size 0.3s ease;
 }
 

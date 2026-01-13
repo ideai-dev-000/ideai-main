@@ -87,7 +87,7 @@ export function CapabilitiesHeader() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-[60] border-b bg-white/95 backdrop-blur-sm transition-all dark:bg-slate-950/95 ${
+      className={`fixed top-0 left-0 right-0 z-[100] border-b bg-white/95 backdrop-blur-sm transition-all dark:bg-slate-950/95 ${
         isScrolled
           ? "border-slate-200 dark:border-slate-800"
           : "border-transparent"
@@ -97,7 +97,7 @@ export function CapabilitiesHeader() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           {/* Logo/Brand */}
-          <div className="flex items-center">
+          <div className="flex items-center ideai-header__brand">
             <Link
               href="/"
               className="flex items-center gap-2 [&_.ideai-logo]:!w-auto [&_.ideai-logo__container]:!gap-2 [&_.ideai-logo__container]:!justify-start [&_.ideai-logo__icon]:!w-7 [&_.ideai-logo__icon]:!h-7 [&_.ideai-logo__text]:!text-lg [&_.ideai-logo__text]:!font-semibold [&_.ideai-logo__text]:!leading-tight [&_.ideai-logo__brand]:!text-lg [&_.ideai-logo__site]:!text-xs"
