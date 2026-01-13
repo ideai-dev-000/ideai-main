@@ -1640,6 +1640,7 @@
     width: 280px;
     @apply bg-slate-50 dark:bg-slate-900;
     @apply border-r border-slate-200 dark:border-slate-700;
+    pointer-events: auto !important; /* Ensure side menu can receive clicks */
   }
 }
 
@@ -1689,6 +1690,7 @@
   @apply flex flex-col h-full;
   @apply bg-slate-50 dark:bg-slate-900;
   width: 280px;
+  pointer-events: auto !important; /* Ensure menu content can receive clicks */
 }
 
 .ideai-side-menu-content--mobile {
@@ -1802,6 +1804,7 @@
   width: 100%;
   position: relative;
   transition: background-color 150ms ease;
+  pointer-events: auto !important; /* Ensure menu items can receive clicks */
 }
 
 .ideai-side-menu-item:hover {
@@ -1892,6 +1895,7 @@
   @apply transition-colors;
   border: none;
   cursor: pointer;
+  pointer-events: auto !important; /* Ensure new button can receive clicks */
 }
 
 .ideai-side-menu-new-icon {

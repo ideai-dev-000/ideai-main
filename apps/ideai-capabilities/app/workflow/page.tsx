@@ -22,6 +22,7 @@ import {
   hasSidebarBeenShownAtom,
   isTransitioningFromHomepageAtom,
   nodesAtom,
+  workflowListReloadTriggerAtom,
   type WorkflowNode,
 } from "@/lib/workflow-store";
 import { AddNode } from "@/components/workflow/nodes/add-node";
@@ -57,6 +58,7 @@ export default function WorkflowPage() {
   const setIsTransitioningFromHomepage = useSetAtom(
     isTransitioningFromHomepageAtom,
   );
+  const triggerWorkflowListReload = useSetAtom(workflowListReloadTriggerAtom);
   const hasCreatedWorkflowRef = useRef(false);
   const currentWorkflowName = useAtomValue(currentWorkflowNameAtom);
 
@@ -182,6 +184,9 @@ export default function WorkflowPage() {
           nodes: realNodes,
           edges,
         });
+
+        // Trigger workflow list reload in side menu
+        triggerWorkflowListReload((prev) => prev + 1);
 
         // Set flags to indicate we're coming from workflow page (for sidebar animation)
         sessionStorage.setItem("animate-sidebar", "true");

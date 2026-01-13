@@ -80,13 +80,17 @@ export default function WorkflowsLandingPage() {
   // Render card centered on landing page
   // z-[50] to be above canvas (z-[15]) and sidebar (z-30) but below header (z-[100])
   // No backdrop blur - clean state from the start
+  // IMPORTANT: Use pointer-events-none on wrapper, then pointer-events-auto on card
+  // This allows side menu (z-30) to receive clicks in the left 280px area
   return (
-    <div className="pointer-events-auto fixed inset-0 z-[50] flex items-center justify-center">
-      <AddNode
-        data={{
-          onClick: handleCreateWorkflow,
-        }}
-      />
+    <div className="pointer-events-none fixed inset-0 z-[50] flex items-center justify-center">
+      <div className="pointer-events-auto">
+        <AddNode
+          data={{
+            onClick: handleCreateWorkflow,
+          }}
+        />
+      </div>
     </div>
   );
 }
