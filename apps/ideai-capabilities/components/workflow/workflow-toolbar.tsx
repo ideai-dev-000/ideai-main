@@ -1088,20 +1088,6 @@ function ToolbarActions({
 
   return (
     <>
-      {/* Add Step - Mobile Vertical */}
-      <ButtonGroup className="flex lg:hidden" orientation="vertical">
-        <Button
-          className="border hover:bg-black/5 disabled:opacity-100 dark:hover:bg-white/5 disabled:[&>svg]:text-muted-foreground"
-          disabled={state.isGenerating}
-          onClick={handleAddStep}
-          size="icon"
-          title="Add Step"
-          variant="secondary"
-        >
-          <Plus className="size-4" />
-        </Button>
-      </ButtonGroup>
-
       {/* Properties - Mobile Vertical (always visible) */}
       <ButtonGroup className="flex lg:hidden" orientation="vertical">
         <Button
@@ -1125,20 +1111,6 @@ function ToolbarActions({
             <Trash2 className="size-4" />
           </Button>
         )}
-      </ButtonGroup>
-
-      {/* Add Step - Desktop Horizontal */}
-      <ButtonGroup className="hidden lg:flex" orientation="horizontal">
-        <Button
-          className="border hover:bg-black/5 disabled:opacity-100 dark:hover:bg-white/5 disabled:[&>svg]:text-muted-foreground"
-          disabled={state.isGenerating}
-          onClick={handleAddStep}
-          size="icon"
-          title="Add Step"
-          variant="secondary"
-        >
-          <Plus className="size-4" />
-        </Button>
       </ButtonGroup>
 
       {/* Undo/Redo - Mobile Vertical */}
