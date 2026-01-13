@@ -519,10 +519,7 @@ export function WorkflowCanvas() {
       if (selectedNodes.length === 0) {
         setSelectedNode(null);
       } else if (selectedNodes.length === 1) {
-        const firstNode = selectedNodes[0];
-        if (firstNode) {
-          setSelectedNode(firstNode.id);
-        }
+        setSelectedNode(selectedNodes[0].id);
       }
     },
     [setSelectedNode],
@@ -530,7 +527,7 @@ export function WorkflowCanvas() {
 
   return (
     <div
-      className="relative h-full bg-background pointer-events-auto"
+      className="relative h-full bg-background"
       data-testid="workflow-canvas"
       style={{
         opacity: isCanvasReady ? 1 : 0,

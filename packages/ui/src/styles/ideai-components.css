@@ -105,20 +105,28 @@
   pointer-events: auto !important;
 }
 
+/* React Flow - let React Flow handle pointer-events with defaults */
+/* Only override cursor styles for UX */
+
 .ideai-canvas-content .react-flow__pane {
-  pointer-events: auto !important;
+  cursor: grab !important;
 }
 
-.ideai-canvas-content .react-flow__nodes {
-  pointer-events: auto !important;
-}
-
-.ideai-canvas-content .react-flow__edges {
-  pointer-events: auto !important;
+.ideai-canvas-content .react-flow__pane:active {
+  cursor: grabbing !important;
 }
 
 .ideai-canvas-content .react-flow__node {
-  pointer-events: auto !important;
+  cursor: pointer !important;
+}
+
+.ideai-canvas-content .react-flow__node.dragging {
+  cursor: grabbing !important;
+}
+
+.ideai-canvas-content .react-flow__node.selected {
+  outline: 2px solid rgb(59 130 246) !important; /* blue-500 */
+  outline-offset: 2px !important;
 }
 
 /* CRITICAL: Handles must be interactive for connections */

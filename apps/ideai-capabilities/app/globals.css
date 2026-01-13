@@ -79,20 +79,27 @@
 /* Base styles are handled by globals.css from @repo/ui */
 /* Only add app-specific overrides here if needed */
 
-/* Ensure React Flow canvas can receive clicks on workflow pages */
-.react-flow {
-  pointer-events: auto !important;
+/* React Flow pane cursor */
+.react-flow__pane {
+  cursor: grab !important;
 }
 
-.react-flow__pane,
-.react-flow__nodes,
-.react-flow__edges,
+.react-flow__pane:active {
+  cursor: grabbing !important;
+}
+
+/* React Flow node and edge cursor */
 .react-flow__node {
-  pointer-events: auto !important;
+  cursor: pointer !important;
 }
 
-.react-flow__handle {
-  pointer-events: auto !important;
+/* When dragging a node, show grabbing cursor */
+.react-flow__node.dragging {
+  cursor: grabbing !important;
+}
+
+.react-flow__edge {
+  cursor: pointer !important;
 }
 
 /* Original dashdraw animation from workflow-builder-hack */
