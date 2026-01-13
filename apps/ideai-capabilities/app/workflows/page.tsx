@@ -79,9 +79,9 @@ export default function WorkflowsLandingPage() {
 
   // Render card centered on landing page
   // z-[50] to be above canvas (z-[15]) and sidebar (z-30) but below header (z-[100])
-  // Add bg backdrop to ensure visibility
+  // No backdrop blur - clean state from the start
   return (
-    <div className="pointer-events-auto fixed inset-0 z-[50] flex items-center justify-center bg-background/80 backdrop-blur-sm">
+    <div className="pointer-events-auto fixed inset-0 z-[50] flex items-center justify-center">
       <AddNode
         data={{
           onClick: handleCreateWorkflow,
