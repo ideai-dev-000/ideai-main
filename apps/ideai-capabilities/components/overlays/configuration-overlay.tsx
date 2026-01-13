@@ -34,6 +34,8 @@ import {
   deleteEdgeAtom,
   deleteNodeAtom,
   edgesAtom,
+  hasMeaningfulInteractionAtom,
+  isDefaultWorkflowName,
   isGeneratingAtom,
   isWorkflowOwnerAtom,
   newlyCreatedNodeIdAtom,
@@ -93,6 +95,7 @@ export function ConfigurationOverlay({ overlayId }: ConfigurationOverlayProps) {
   const [currentWorkflowName, setCurrentWorkflowName] = useAtom(
     currentWorkflowNameAtom,
   );
+  const setHasMeaningfulInteraction = useSetAtom(hasMeaningfulInteractionAtom);
   const isOwner = useAtomValue(isWorkflowOwnerAtom);
   const updateNodeData = useSetAtom(updateNodeDataAtom);
   const deleteNode = useSetAtom(deleteNodeAtom);
@@ -283,7 +286,13 @@ export function ConfigurationOverlay({ overlayId }: ConfigurationOverlayProps) {
 
   // Handle updating workflow name
   const handleUpdateWorkflowName = async (newName: string) => {
+    const oldName = currentWorkflowName;
     setCurrentWorkflowName(newName);
+
+    // Track meaningful interaction if name changed from default
+    if (isDefaultWorkflowName(oldName) && !isDefaultWorkflowName(newName)) {
+      setHasMeaningfulInteraction(true);
+    }
 
     if (currentWorkflowId) {
       try {

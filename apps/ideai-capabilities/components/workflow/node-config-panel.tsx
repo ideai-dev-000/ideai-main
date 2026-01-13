@@ -36,6 +36,8 @@ import {
   deleteNodeAtom,
   deleteSelectedItemsAtom,
   edgesAtom,
+  hasMeaningfulInteractionAtom,
+  isDefaultWorkflowName,
   isGeneratingAtom,
   isWorkflowOwnerAtom,
   newlyCreatedNodeIdAtom,
@@ -163,6 +165,7 @@ export const PanelInner = () => {
   const setShowDeleteDialog = useSetAtom(showDeleteDialogAtom);
   const clearNodeStatuses = useSetAtom(clearNodeStatusesAtom);
   const setPendingIntegrationNodes = useSetAtom(pendingIntegrationNodesAtom);
+  const setHasMeaningfulInteraction = useSetAtom(hasMeaningfulInteractionAtom);
   const [newlyCreatedNodeId, setNewlyCreatedNodeId] = useAtom(
     newlyCreatedNodeIdAtom,
   );
@@ -346,25 +349,29 @@ export const PanelInner = () => {
   const handleUpdateLabel = (label: string) => {
     if (selectedNode) {
       const oldLabel = selectedNode.data.label || "";
-      
+
       // Update the label
-      let newConfig = { ...selectedNode.data.config };
-      
+      const newConfig = { ...selectedNode.data.config };
+
       // Auto-populate template fields if there are upstream nodes
       // Find upstream nodes (nodes that connect to this node)
-      const upstreamEdges = edges.filter((edge) => edge.target === selectedNode.id);
+      const upstreamEdges = edges.filter(
+        (edge) => edge.target === selectedNode.id,
+      );
       const upstreamNodes = upstreamEdges
         .map((edge) => nodes.find((n) => n.id === edge.source))
-        .filter((node): node is typeof nodes[0] => node !== undefined);
-      
+        .filter((node): node is (typeof nodes)[0] => node !== undefined);
+
       if (upstreamNodes.length > 0 && selectedNode.data.type === "action") {
         // Get the action config fields to find template-supporting fields
-        const actionType = selectedNode.data.config?.actionType as string | undefined;
+        const actionType = selectedNode.data.config?.actionType as
+          | string
+          | undefined;
         if (actionType) {
           const action = findActionById(actionType);
           if (action?.configFields) {
             const flatFields = flattenConfigFields(action.configFields);
-            
+
             // Find template fields (typically "template-textarea" or "template-input" types)
             // Also check common field names like "message", "body", "content"
             const templateFields = flatFields.filter(
@@ -377,15 +384,16 @@ export const PanelInner = () => {
                 // Only auto-populate if field is empty or undefined
                 (!newConfig[field.key] || newConfig[field.key] === ""),
             );
-            
+
             // Use the first upstream node for demo template
             const firstUpstream = upstreamNodes[0];
             if (firstUpstream && templateFields.length > 0) {
-              const upstreamLabel = firstUpstream.data.label || firstUpstream.id;
-              
+              const upstreamLabel =
+                firstUpstream.data.label || firstUpstream.id;
+
               // Generate demo template text
               const demoText = `This message is from IdeaI. You can daisychain data too, i.e., here is the previous node's data:\n\n{{@${firstUpstream.id}:${upstreamLabel}}.data}`;
-              
+
               // Auto-populate template fields with demo text
               for (const field of templateFields) {
                 newConfig[field.key] = demoText;
@@ -394,7 +402,7 @@ export const PanelInner = () => {
           }
         }
       }
-      
+
       updateNodeData({
         id: selectedNode.id,
         data: {
@@ -537,7 +545,13 @@ export const PanelInner = () => {
   };
 
   const handleUpdateWorkspaceName = async (newName: string) => {
+    const oldName = currentWorkflowName;
     setCurrentWorkflowName(newName);
+
+    // Track meaningful interaction if name changed from default
+    if (isDefaultWorkflowName(oldName) && !isDefaultWorkflowName(newName)) {
+      setHasMeaningfulInteraction(true);
+    }
 
     // Save to database if workflow exists
     if (currentWorkflowId) {
