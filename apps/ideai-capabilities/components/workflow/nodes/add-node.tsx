@@ -1,8 +1,7 @@
 "use client";
 
 import type { NodeProps } from "@xyflow/react";
-import { Clock, Play, Plus, Webhook } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Clock, Play, Webhook } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 type AddNodeData = {
@@ -54,17 +53,9 @@ export function AddNode({ data }: NodeProps & { data?: AddNodeData }) {
         </p>
       </div>
       <div className="flex flex-col items-center gap-6 w-full max-w-2xl">
-        <Button
-          className="gap-2 shadow-lg"
-          onClick={() => data.onClick?.()}
-          size="default"
-        >
-          <Plus className="size-4" />
-          Add a Step
-        </Button>
         <div className="w-full">
           <p className="text-center text-sm text-muted-foreground mb-4">
-            Or start with a trigger:
+            Start with a trigger:
           </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {/* Manual Trigger Card */}
