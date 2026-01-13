@@ -51,9 +51,9 @@ function LayoutContent({ children }: { children: ReactNode }) {
       <div className="pointer-events-auto">
         <CapabilitiesHeader />
       </div>
-      {/* Main content - needs pointer events for interactive elements */}
+      {/* Main content - ContentWrapper handles pointer-events logic based on route */}
       {/* Add left padding on desktop to account for sidebar, but not on landing page */}
-      <ContentWrapper className="pointer-events-auto relative z-[1] min-h-screen pt-16 md:pl-[280px]">
+      <ContentWrapper className="relative z-[1] min-h-screen pt-16 md:pl-[280px]">
         {children}
       </ContentWrapper>
     </ReactFlowProvider>

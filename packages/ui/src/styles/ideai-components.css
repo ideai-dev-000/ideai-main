@@ -87,6 +87,89 @@
   z-index: 0 !important;
 }
 
+/* Canvas container passes through events to content */
+.ideai-canvas--below-header {
+  pointer-events: none !important;
+}
+
+.ideai-canvas--below-header > .ideai-canvas-content {
+  pointer-events: auto !important;
+}
+
+/* Ensure React Flow elements can receive clicks and interactions */
+.ideai-canvas-content .react-flow {
+  pointer-events: auto !important;
+}
+
+.ideai-canvas-content .react-flow__viewport {
+  pointer-events: auto !important;
+}
+
+.ideai-canvas-content .react-flow__pane {
+  pointer-events: auto !important;
+}
+
+.ideai-canvas-content .react-flow__nodes {
+  pointer-events: auto !important;
+}
+
+.ideai-canvas-content .react-flow__edges {
+  pointer-events: auto !important;
+}
+
+.ideai-canvas-content .react-flow__node {
+  pointer-events: auto !important;
+}
+
+/* CRITICAL: Handles must be interactive for connections */
+.ideai-canvas-content .react-flow__handle {
+  pointer-events: all !important;
+  cursor: crosshair !important;
+}
+
+/* Edges must be interactive for selection and dragging */
+.ideai-canvas-content .react-flow__edge {
+  pointer-events: all !important;
+}
+
+.ideai-canvas-content .react-flow__edge-path {
+  pointer-events: stroke !important;
+  cursor: pointer !important;
+}
+
+/* Connection line during connection creation */
+.ideai-canvas-content .react-flow__connectionline {
+  pointer-events: none !important; /* Connection line is visual only */
+}
+
+/* Edge labels and buttons */
+.ideai-canvas-content .react-flow__edge-text {
+  pointer-events: auto !important;
+}
+
+.ideai-canvas-content .react-flow__edge-button {
+  pointer-events: auto !important;
+  cursor: pointer !important;
+}
+
+/* Selection box */
+.ideai-canvas-content .react-flow__nodesselection {
+  pointer-events: none !important;
+}
+
+.ideai-canvas-content .react-flow__nodesselection-rect {
+  pointer-events: auto !important;
+}
+
+/* Background and minimap - no pointer events */
+.ideai-canvas-content .react-flow__background {
+  pointer-events: none !important;
+}
+
+.ideai-canvas-content .react-flow__minimap {
+  pointer-events: auto !important;
+}
+
 /**
  * IdeaI Logo Styles
  * Shared logo/branding styles for all apps

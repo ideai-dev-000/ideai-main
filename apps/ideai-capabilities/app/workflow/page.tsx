@@ -223,9 +223,13 @@ export default function WorkflowPage() {
 
   // Render card directly on page when empty (bypasses React Flow)
   // z-[10] to be above canvas (z-[0]) but below header (z-[100])
+  // pointer-events-auto ensures card buttons are clickable
   if (showCard) {
     return (
-      <div className="pointer-events-auto fixed inset-0 z-[10] flex items-center justify-center">
+      <div
+        className="pointer-events-auto fixed inset-0 z-[10] flex items-center justify-center"
+        style={{ pointerEvents: "auto" }}
+      >
         <AddNode
           data={{
             onClick: handleAddNode,
@@ -234,6 +238,9 @@ export default function WorkflowPage() {
       </div>
     );
   }
+
+  // When canvas is visible (has nodes), return null - canvas handles all interaction
+  // The ContentWrapper has pointer-events-none so canvas can receive clicks
 
   // Canvas and toolbar are rendered by PersistentCanvas in the layout
   return null;
