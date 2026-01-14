@@ -67,9 +67,7 @@ export function ChatMessages({
                   stream={msg.stream}
                   messageId={`msg-${index}`}
                   role={msg.type}
-                  onComplete={(finalContent: any) => {
-                    onStreamingComplete(finalContent);
-                  }}
+                  onComplete={onStreamingComplete}
                   onChatData={onChatData}
                   onChunk={(chunk) => {
                     // Hide external loader once we start receiving content (only once)

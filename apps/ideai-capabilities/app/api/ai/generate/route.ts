@@ -181,10 +181,6 @@ Node structure:
   }
 }
 
-CRITICAL: Every action node MUST have "actionType" in config!
-CRITICAL: Every trigger node MUST have "triggerType" in config!
-DO NOT create nodes with empty config: {} - this will cause errors!
-
 NODE POSITIONING RULES:
 - Nodes are squares, so use equal spacing in both directions
 - Horizontal spacing between sequential nodes: 250px (e.g., x: 100, then x: 350, then x: 600)
@@ -199,12 +195,10 @@ Trigger types:
 - Webhook: {"triggerType": "Webhook", "webhookPath": "/webhooks/name", ...}
 - Schedule: {"triggerType": "Schedule", "scheduleCron": "0 9 * * *", ...}
 
-System action types (built-in) - REQUIRED: Always set actionType!
+System action types (built-in):
 - Database Query: {"actionType": "Database Query", "dbQuery": "SELECT * FROM table", "dbTable": "table"}
 - HTTP Request: {"actionType": "HTTP Request", "httpMethod": "POST", "endpoint": "https://api.example.com", "httpHeaders": "{}", "httpBody": "{}"}
 - Condition: {"actionType": "Condition", "condition": "{{@nodeId:Label.field}} === 'value'"}
-
-REMEMBER: config.actionType is MANDATORY for all action nodes!
 
 Plugin action types (from integrations):
 ${pluginActionPrompts}
@@ -282,18 +276,10 @@ export async function POST(request: Request) {
     // Check if user has a key configured, otherwise use env vars
     let apiKey = null;
     if (session?.user?.id) {
-      try {
-        const { getUserKey } = await import("@/lib/services/user-keys");
-        apiKey =
-          (await getUserKey(session.user.id, "ai_gateway", "production")) ||
-          (await getUserKey(session.user.id, "openai", "production"));
-      } catch (error) {
-        // If user key lookup fails (e.g., table doesn't exist), log and continue to env vars
-        console.warn(
-          "[AI Generate] Failed to get user keys, using env vars:",
-          error instanceof Error ? error.message : String(error),
-        );
-      }
+      const { getUserKey } = await import("@/lib/services/user-keys");
+      apiKey =
+        (await getUserKey(session.user.id, "ai_gateway", "production")) ||
+        (await getUserKey(session.user.id, "openai", "production"));
     }
 
     apiKey =

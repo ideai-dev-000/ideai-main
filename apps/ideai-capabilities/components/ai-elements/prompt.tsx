@@ -200,32 +200,17 @@ export function AIPrompt({ workflowId, onWorkflowCreated }: AIPromptProps) {
         });
 
         if (incompleteNodes.length > 0) {
-          console.warn(
-            "[AI Prompt] AI generated incomplete nodes, filtering them out:",
-            incompleteNodes.map((n) => ({ id: n.id, label: n.data?.label })),
+          console.error(
+            "[AI Prompt] AI generated incomplete nodes:",
+            incompleteNodes,
           );
-
-          // Filter out incomplete nodes and their edges
-          const incompleteNodeIds = new Set(incompleteNodes.map((n) => n.id));
-          workflowData.nodes = (workflowData.nodes || []).filter(
-            (node) => !incompleteNodeIds.has(node.id),
+          console.error(
+            "[AI Prompt] Full workflow data:",
+            JSON.stringify(workflowData, null, 2),
           );
-          workflowData.edges = (workflowData.edges || []).filter(
-            (edge) =>
-              !incompleteNodeIds.has(edge.source) &&
-              !incompleteNodeIds.has(edge.target),
+          throw new Error(
+            `Cannot create workflow: The AI tried to create ${incompleteNodes.length} incomplete node(s). The requested action type may not be supported. Please try a different description using supported actions: Send Email, Send Slack Message, Create Ticket, Database Query, HTTP Request, Generate Text, Generate Image, Scrape, or Search.`,
           );
-
-          console.log(
-            `[AI Prompt] Filtered workflow: ${workflowData.nodes.length} nodes, ${workflowData.edges.length} edges`,
-          );
-
-          // If no valid nodes remain, throw error
-          if (workflowData.nodes.length === 0) {
-            throw new Error(
-              `Cannot create workflow: All nodes were incomplete. The AI failed to generate valid action types. Please try a different description using supported actions: Send Email, Send Slack Message, Create Ticket, Database Query, HTTP Request, Generate Text, Generate Image, Scrape, or Search.`,
-            );
-          }
         }
 
         // If no workflowId, create a new workflow

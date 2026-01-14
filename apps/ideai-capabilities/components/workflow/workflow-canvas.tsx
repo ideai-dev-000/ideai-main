@@ -27,6 +27,7 @@ import {
   autosaveAtom,
   currentWorkflowIdAtom,
   edgesAtom,
+  hasMeaningfulInteractionAtom,
   hasUnsavedChangesAtom,
   isGeneratingAtom,
   isPanelAnimatingAtom,
@@ -96,6 +97,7 @@ export function WorkflowCanvas() {
   const setSelectedEdge = useSetAtom(selectedEdgeAtom);
   const addNode = useSetAtom(addNodeAtom);
   const setHasUnsavedChanges = useSetAtom(hasUnsavedChangesAtom);
+  const setHasMeaningfulInteraction = useSetAtom(hasMeaningfulInteractionAtom);
   const triggerAutosave = useSetAtom(autosaveAtom);
   const setActiveTab = useSetAtom(propertiesPanelActiveTabAtom);
   const { screenToFlowPosition, fitView, getViewport, setViewport } =
@@ -272,6 +274,14 @@ export function WorkflowCanvas() {
 
   const onConnect: OnConnect = useCallback(
     (connection: XYFlowConnection) => {
+      // Check if source node is a trigger node - this indicates meaningful interaction
+      if (connection.source) {
+        const sourceNode = nodes.find((n) => n.id === connection.source);
+        if (sourceNode?.data.type === "trigger") {
+          setHasMeaningfulInteraction(true);
+        }
+      }
+
       const newEdge = {
         id: nanoid(),
         ...connection,
@@ -282,7 +292,14 @@ export function WorkflowCanvas() {
       // Trigger immediate autosave when nodes are connected
       triggerAutosave({ immediate: true });
     },
-    [edges, setEdges, setHasUnsavedChanges, triggerAutosave],
+    [
+      nodes,
+      edges,
+      setEdges,
+      setHasUnsavedChanges,
+      setHasMeaningfulInteraction,
+      triggerAutosave,
+    ],
   );
 
   const onNodeClick: NodeMouseHandler = useCallback(
@@ -419,6 +436,12 @@ export function WorkflowCanvas() {
         );
       }, 50);
 
+      // Check if source node is a trigger node - this indicates meaningful interaction
+      const sourceNode = nodes.find((n) => n.id === sourceNodeId);
+      if (sourceNode?.data.type === "trigger") {
+        setHasMeaningfulInteraction(true);
+      }
+
       // Create connection from the source node to the new node
       const fromSource = connectingHandleType.current === "source";
 
@@ -444,11 +467,13 @@ export function WorkflowCanvas() {
       screenToFlowPosition,
       addNode,
       edges,
+      nodes,
       setEdges,
       setNodes,
       setSelectedNode,
       setActiveTab,
       setHasUnsavedChanges,
+      setHasMeaningfulInteraction,
       triggerAutosave,
     ],
   );

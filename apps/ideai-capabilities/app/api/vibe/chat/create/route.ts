@@ -28,7 +28,7 @@ import type { VibeChatCreateRequest } from "@/lib/vibe/types/vibe-types";
  */
 export async function POST(request: NextRequest) {
   try {
-    // Get session and check authentication (same pattern as workflow routes)
+    // Get session and check authentication
     const session = await getVibeSession(request.headers);
 
     if (!isVibeAuthenticated(session)) {
