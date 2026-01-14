@@ -172,13 +172,7 @@ export function useVibeChat({
     } catch (error) {
       console.error("[useVibeChat] Error:", error);
 
-      // Remove user message and add error message
-      setChatHistory((prev) => {
-        const newHistory = [...prev];
-        newHistory.pop(); // Remove user message
-        return newHistory;
-      });
-
+      // Keep user message and add error message
       setChatHistory((prev) => [
         ...prev,
         {
@@ -195,11 +189,26 @@ export function useVibeChat({
   /**
    * Handle streaming completion
    */
-  const handleStreamComplete = () => {
+  const handleStreamComplete = (finalContent?: any) => {
     setIsStreaming(false);
     setIsLoading(false);
 
-    // Refresh chat data
+    // Update the last streaming message with final content
+    setChatHistory((prev) => {
+      const updated = [...prev];
+      const lastIndex = updated.length - 1;
+      if (lastIndex >= 0 && updated[lastIndex].isStreaming) {
+        updated[lastIndex] = {
+          ...updated[lastIndex],
+          content: finalContent || updated[lastIndex].content,
+          isStreaming: false,
+          stream: null,
+        };
+      }
+      return updated;
+    });
+
+    // Refresh chat data to get latest from server
     if (chatId) {
       mutate(`/api/vibe/chats/${chatId}`);
     }

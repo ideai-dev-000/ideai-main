@@ -1628,19 +1628,159 @@
  * Composable side menu with workflows, cards, controls, and blocks
  * ======================================== */
 
-/* Desktop Sidebar */
-.ideai-side-menu {
-  @apply hidden;
+/* Desktop Sidebar Container - Handles hover state */
+.ideai-side-menu-container--desktop {
+  position: fixed;
+  left: 0;
+  top: 64px; /* Below header */
+  bottom: 0;
+  width: 312px; /* 32px trigger + 280px sidebar */
+  z-index: 30;
+  pointer-events: none; /* Container doesn't block, but children do */
 }
 
+@media (max-width: 767px) {
+  .ideai-side-menu-container--desktop {
+    display: none; /* Hide on mobile */
+  }
+}
+
+/* Hover/Click Trigger Icon - Always visible on far left edge */
+.ideai-side-menu-hover-trigger {
+  position: fixed !important;
+  left: 0 !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  z-index: 40 !important;
+  width: 32px !important;
+  height: 64px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background-color: rgb(241 245 249) !important; /* slate-100 */
+  border-right: 1px solid rgb(203 213 225) !important; /* slate-300 */
+  border-top-right-radius: 0.5rem !important;
+  border-bottom-right-radius: 0.5rem !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+  transition: all 0.2s ease !important;
+  cursor: pointer !important;
+  pointer-events: auto !important;
+  margin-top: 32px !important; /* Offset for header */
+  user-select: none !important;
+  -webkit-user-select: none !important;
+}
+
+.ideai-side-menu-hover-trigger:active {
+  transform: translateY(-50%) translateX(1px) !important;
+}
+
+.dark .ideai-side-menu-hover-trigger {
+  background-color: rgb(30 41 59) !important; /* slate-800 */
+  border-right-color: rgb(71 85 105) !important; /* slate-600 */
+}
+
+.ideai-side-menu-hover-trigger:hover {
+  background-color: rgb(226 232 240) !important; /* slate-200 */
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1) !important;
+  transform: translateY(-50%) translateX(2px) !important;
+}
+
+.dark .ideai-side-menu-hover-trigger:hover {
+  background-color: rgb(51 65 85) !important; /* slate-700 */
+}
+
+.ideai-side-menu-hover-trigger svg {
+  color: rgb(71 85 105) !important; /* slate-600 */
+  transition: transform 0.2s ease !important;
+}
+
+.dark .ideai-side-menu-hover-trigger svg {
+  color: rgb(148 163 184) !important; /* slate-400 */
+}
+
+.ideai-side-menu-container--desktop:hover .ideai-side-menu-hover-trigger svg {
+  transform: scale(1.1) !important;
+}
+
+@media (max-width: 767px) {
+  .ideai-side-menu-hover-trigger {
+    display: none !important; /* Hide on mobile */
+  }
+}
+
+/* Desktop Sidebar - Hidden by default, shows on hover */
 @media (min-width: 768px) {
-  .ideai-side-menu--desktop {
-    @apply fixed left-0 bottom-0 z-30 flex;
-    top: 64px; /* Below header (header is typically 64px, z-50) */
-    width: 280px;
-    @apply bg-slate-50 dark:bg-slate-900;
-    @apply border-r border-slate-200 dark:border-slate-700;
-    pointer-events: auto !important; /* Ensure side menu can receive clicks */
+  /* Force hide sidebar by default - highest specificity */
+  .ideai-side-menu-container--desktop .ideai-side-menu--desktop {
+    position: fixed !important;
+    left: 0 !important;
+    top: 64px !important; /* Below header */
+    bottom: 0 !important;
+    width: 280px !important;
+    z-index: 30 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    background-color: rgb(248 250 252) !important; /* slate-50 */
+    border-right: 1px solid rgb(226 232 240) !important; /* slate-200 */
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04) !important;
+    pointer-events: none !important; /* Disable pointer events when hidden */
+
+    /* Hidden by default - MUST be hidden */
+    transform: translateX(-100%) !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55),
+                opacity 0.2s ease-in-out,
+                visibility 0s 0.3s !important;
+  }
+  
+  /* Also apply to standalone desktop class for backwards compatibility */
+  .ideai-side-menu--desktop:not(.ideai-side-menu--hovered) {
+    transform: translateX(-100%) !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+  }
+  
+  /* Ensure container allows hover events on trigger and sidebar */
+  .ideai-side-menu-container--desktop:hover {
+    pointer-events: auto !important;
+  }
+
+  .dark .ideai-side-menu-container--desktop .ideai-side-menu--desktop {
+    background-color: rgb(15 23 42) !important; /* slate-900 */
+    border-right-color: rgb(51 65 85) !important; /* slate-700 */
+  }
+
+  /* Show on hover with bounce animation */
+  .ideai-side-menu-container--desktop .ideai-side-menu--desktop.ideai-side-menu--hovered {
+    transform: translateX(0) !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important; /* Enable pointer events when visible */
+    transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55),
+                opacity 0.2s ease-in-out,
+                visibility 0s !important;
+    animation: bounceInLeft 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55) !important;
+  }
+}
+
+/* Bounce in animation */
+@keyframes bounceInLeft {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  60% {
+    transform: translateX(10px);
+    opacity: 1;
+  }
+  80% {
+    transform: translateX(-5px);
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
   }
 }
 
@@ -1845,7 +1985,7 @@
   transition: opacity 150ms ease, background-color 150ms ease, color 150ms ease;
 }
 
-.ideai-side-menu-clone-button {
+  .ideai-side-menu-clone-button {
   @apply text-slate-400 dark:text-slate-500;
 }
 
