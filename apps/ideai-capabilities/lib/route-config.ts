@@ -25,7 +25,7 @@ export interface RouteConfig {
  * Add new routes here to control side menu visibility
  */
 export const ROUTE_CONFIG: Record<string, RouteConfig> = {
-  // Workflow routes - show side menu
+  // Workflow routes - show side menu (ONLY workflows and vibe have sidebar)
   "/workflow": {
     showSideMenu: true,
     toolContext: "workflow",
@@ -37,25 +37,25 @@ export const ROUTE_CONFIG: Record<string, RouteConfig> = {
     description: "Workflows list page",
   },
 
-  // Vibe routes - show side menu (when implemented)
+  // Vibe routes - show side menu (ONLY workflows and vibe have sidebar)
   "/vibe": {
     showSideMenu: true,
     toolContext: "vibe",
     description: "Vibe coding tool",
   },
 
-  // App Builder routes - show side menu (when implemented)
+  // App Builder routes - NO side menu (only vibe and workflows have sidebar)
   "/app-builder": {
-    showSideMenu: true,
+    showSideMenu: false,
     toolContext: "app-builder",
-    description: "App builder tool",
+    description: "App builder tool - no sidebar",
   },
 
-  // Lead Agent routes - show side menu (when implemented)
+  // Lead Agent routes - NO side menu (only vibe and workflows have sidebar)
   "/lead-agent": {
-    showSideMenu: true,
+    showSideMenu: false,
     toolContext: "lead-agent",
-    description: "Lead processing agent",
+    description: "Lead processing agent - no sidebar",
   },
 
   // Landing page - NO side menu
@@ -64,16 +64,16 @@ export const ROUTE_CONFIG: Record<string, RouteConfig> = {
     description: "Landing page - no side menu",
   },
 
-  // Settings pages - NO side menu (or optional, configure as needed)
+  // Settings pages - NO side menu
   "/settings": {
     showSideMenu: false,
-    description: "Settings page",
+    description: "Settings page - no sidebar",
   },
 
   // Dev setup - NO side menu
   "/dev-setup": {
     showSideMenu: false,
-    description: "Developer setup page",
+    description: "Developer setup page - no sidebar",
   },
 };
 

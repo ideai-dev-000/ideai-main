@@ -83,6 +83,15 @@ export function VibeChatDetailClient() {
     return sendMessage(e, attachmentUrls);
   };
 
+  // Handle chat data updates from streaming (includes thinking/status info)
+  const handleChatData = (chatData: any) => {
+    console.log("[VibeChatDetailClient] Chat data update:", chatData);
+    // Chat data updates include chat metadata (id, demo, url, etc.)
+    // The thinking indicators ("Thought for x seconds") are automatically rendered
+    // by the StreamingMessage component using ThinkingSectionWrapper from shared-components
+    // No action needed here - the stream data is processed by StreamingMessage
+  };
+
   // Handle fullscreen keyboard shortcuts
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -122,6 +131,7 @@ export function VibeChatDetailClient() {
                     isLoading={isLoading || isStreaming}
                     currentChat={currentChat}
                     onStreamingComplete={handleStreamComplete}
+                    onChatData={handleChatData}
                   />
                   <VibeChatInput
                     message={message}

@@ -120,31 +120,40 @@ export async function getUserKey(
   environment: Environment = "production",
 ): Promise<string | null> {
   // Try user key first
-  const userKey = await db.query.userServiceKeys.findFirst({
-    where: and(
-      eq(userServiceKeys.userId, userId),
-      eq(userServiceKeys.serviceType, serviceType),
-      eq(userServiceKeys.environment, environment),
-      eq(userServiceKeys.isActive, true),
-    ),
-  });
+  try {
+    const userKey = await db.query.userServiceKeys.findFirst({
+      where: and(
+        eq(userServiceKeys.userId, userId),
+        eq(userServiceKeys.serviceType, serviceType),
+        eq(userServiceKeys.environment, environment),
+        eq(userServiceKeys.isActive, true),
+      ),
+    });
 
-  if (userKey) {
-    try {
-      const decrypted = decrypt(userKey.encryptedKey);
-      // Update last used timestamp
-      await db
-        .update(userServiceKeys)
-        .set({ lastUsedAt: new Date() })
-        .where(eq(userServiceKeys.id, userKey.id));
-      return decrypted;
-    } catch (error) {
-      console.error(
-        `[UserKeys] Failed to decrypt key for ${serviceType}:`,
-        error,
-      );
-      // Continue to fallback
+    if (userKey) {
+      try {
+        const decrypted = decrypt(userKey.encryptedKey);
+        // Update last used timestamp (non-blocking)
+        db.update(userServiceKeys)
+          .set({ lastUsedAt: new Date() })
+          .where(eq(userServiceKeys.id, userKey.id))
+          .catch(() => {
+            // Ignore timestamp update errors
+          });
+        return decrypted;
+      } catch (error) {
+        console.error(
+          `[UserKeys] Failed to decrypt key for ${serviceType}:`,
+          error,
+        );
+      }
     }
+  } catch (error) {
+    // Database query failed - fall back to environment variables
+    console.warn(
+      `[UserKeys] Database query failed for ${serviceType}, using env vars:`,
+      error instanceof Error ? error.message : String(error),
+    );
   }
 
   // Fallback to environment variable

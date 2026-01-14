@@ -53,8 +53,8 @@ function LayoutContent({ children }: { children: ReactNode }) {
           <CapabilitiesHeader />
         </div>
         {/* Main content - needs pointer events for interactive elements */}
-        {/* Add left padding on desktop to account for sidebar, but not on landing page */}
-        <ContentWrapper className="pointer-events-auto min-h-screen pt-16 md:pl-[280px]">
+        {/* No left padding needed - sidebar is now an overlay */}
+        <ContentWrapper className="pointer-events-auto min-h-screen pt-16">
           {children}
         </ContentWrapper>
       </div>

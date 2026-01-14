@@ -375,9 +375,9 @@ export function HomeClient() {
     setChatHistory((prev) => {
       const updated = [...prev];
       const lastIndex = updated.length - 1;
-      if (lastIndex >= 0 && updated[lastIndex].isStreaming) {
+      if (lastIndex >= 0 && updated[lastIndex]?.isStreaming) {
         updated[lastIndex] = {
-          ...updated[lastIndex],
+          type: updated[lastIndex].type,
           content: finalContent,
           isStreaming: false,
           stream: undefined,

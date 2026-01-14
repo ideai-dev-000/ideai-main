@@ -10,13 +10,16 @@
 "use client";
 
 import { type ReactNode } from "react";
+import { usePathname } from "next/navigation";
 import { useSession } from "@/lib/auth-client";
+import { shouldShowSideMenu } from "@/lib/route-config";
 
 interface LayoutClientProps {
   children: ReactNode;
 }
 
 export function LayoutClient({ children }: LayoutClientProps) {
+  const pathname = usePathname();
   const { data: session } = useSession();
 
   // Check if user is authenticated
@@ -25,8 +28,9 @@ export function LayoutClient({ children }: LayoutClientProps) {
     session.user.name !== "Anonymous" &&
     !session.user.email?.startsWith("temp-");
 
-  // Show menu if authenticated (including on landing page for workflow access)
-  const showMenu = isAuthenticated;
+  // Show menu only if authenticated AND route config says to show it
+  // Only vibe and workflow routes should show the sidebar
+  const showMenu = isAuthenticated && shouldShowSideMenu(pathname);
 
   // Conditionally render side menu
   if (!showMenu) {
