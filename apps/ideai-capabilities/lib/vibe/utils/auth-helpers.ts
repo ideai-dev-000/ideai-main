@@ -7,9 +7,11 @@
  * Uses shared IdeaI auth system (@repo/ideai-user/auth).
  */
 
-import { auth } from "@repo/ideai-user/auth";
-import type { Session } from "@repo/ideai-user/auth";
+import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
+
+// Session type from better-auth
+type Session = Awaited<ReturnType<typeof auth.api.getSession>>;
 
 /**
  * Get authenticated session for vibe operations
@@ -37,31 +39,14 @@ export async function getVibeSession(
 
 /**
  * Check if user is authenticated for vibe operations
+ * Uses same pattern as workflow routes - just check if session exists
  *
  * @param session Session object from getVibeSession
  * @returns true if user is authenticated, false otherwise
  */
 export function isVibeAuthenticated(session: Session | null): boolean {
-  if (!session?.user?.id) {
-    return false;
-  }
-
-  // Block anonymous users
-  if (session.user.name === "Anonymous") {
-    return false;
-  }
-
-  // Block temp email users
-  if (session.user.email?.startsWith("temp-")) {
-    return false;
-  }
-
-  // Block explicitly anonymous users
-  if (session.user.isAnonymous) {
-    return false;
-  }
-
-  return true;
+  // Same check as workflow routes - just verify session exists
+  return !!session?.user;
 }
 
 /**
