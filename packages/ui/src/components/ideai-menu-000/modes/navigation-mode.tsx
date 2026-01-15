@@ -75,6 +75,9 @@ export function NavigationMode({
   }
 
   // Default: Our minimal UI (NavigationMenu structure)
+  // Check if className includes overrides for inline/header use
+  const isInline = className?.includes("!relative");
+
   return (
     <IdeAIMenuContext.Provider value={contextValue}>
       <nav
@@ -85,20 +88,29 @@ export function NavigationMode({
           isSticky && "ideai-menu--sticky",
           className,
         )}
-        style={{
-          height: `${size}px`,
-          top: 0,
-          left: 0,
-          right: 0,
-          zIndex: 50,
-        }}
+        style={
+          isInline
+            ? undefined // Let className handle positioning for inline
+            : {
+                height: `${size}px`,
+                top: 0,
+                left: 0,
+                right: 0,
+                zIndex: 50,
+              }
+        }
       >
-        {(headerContent || title) && (
+        {(headerContent || title) && !isInline && (
           <div className="ideai-menu-header">
             {headerContent || <h2 className="ideai-menu-title">{title}</h2>}
           </div>
         )}
-        <div className="ideai-menu-body ideai-menu-body--horizontal">
+        <div
+          className={cn(
+            "ideai-menu-body ideai-menu-body--horizontal",
+            isInline && "!p-0", // Remove padding for inline header use
+          )}
+        >
           {children}
         </div>
       </nav>
