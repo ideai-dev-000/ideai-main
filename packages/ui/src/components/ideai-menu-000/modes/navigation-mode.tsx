@@ -32,6 +32,8 @@ export function NavigationMode({
   trigger = "always",
   className,
   topMenuOptions,
+  animationDuration = 350,
+  easing = "cubic-bezier(0.16, 1, 0.3, 1)",
 }: IdeAIMenuBaseProps) {
   const contextValue = useMenuContextValue();
   const useMenubar = topMenuOptions?.useMenubar ?? false;
@@ -98,6 +100,8 @@ export function NavigationMode({
                 right: 0,
                 zIndex: 50,
                 position: "fixed",
+                "--ideai-menu-transition-duration": `${animationDuration}ms`,
+                "--ideai-menu-easing": easing,
               }
         }
       >

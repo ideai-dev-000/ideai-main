@@ -15,7 +15,11 @@ import { usePathname } from "next/navigation";
 import { IdeAIMenuMain, IdeAIMenuSection } from "@repo/ui";
 import { NAV_CONFIG } from "@/lib/nav-config";
 import { useMenuState } from "@/components/menu-state-provider";
-import { getEffectiveTrigger, MENU_SETTINGS } from "@/lib/menu-settings";
+import {
+  getEffectiveTrigger,
+  getEasingFunction,
+  MENU_SETTINGS,
+} from "@/lib/menu-settings";
 import { cn } from "@/lib/utils";
 import { UserMenuItem } from "@/components/menu-items/user-menu-item";
 import { ThemeMenuItem } from "@/components/menu-items/theme-menu-item";
@@ -136,6 +140,8 @@ export function UnifiedNav({
       onOpenChange={setMenuOpen}
       animationMode={MENU_SETTINGS.animationMode || "overlay"}
       swipeToClose={menuSettings.swipeToClose ?? true}
+      animationDuration={MENU_SETTINGS.transitionDuration || 350}
+      easing={getEasingFunction(MENU_SETTINGS.transitionEasing)}
     >
       {/* Navigation Sections */}
       {NAV_CONFIG.map((section) => (

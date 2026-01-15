@@ -8,9 +8,10 @@
 
 "use client";
 
-import { type ReactNode } from "react";
+import { type ReactNode, useMemo } from "react";
 import { usePathname } from "next/navigation";
 import { useMenuState } from "@/components/menu-state-provider";
+import { MENU_SETTINGS, getEasingFunction } from "@/lib/menu-settings";
 import { cn } from "@/lib/utils";
 
 interface ContentWrapperProps {
@@ -39,43 +40,71 @@ export function ContentWrapper({
   const isWorkflowPage =
     pathname === "/workflow" || pathname?.startsWith("/workflow/workflows/");
 
-  // For push mode, adjust margins based on menu state
-  const pushModeStyles =
-    animationMode === "push"
-      ? {
-          marginLeft: menuState.leftMenuOpen ? `${leftMenuSize}px` : "0",
-          marginRight: menuState.rightMenuOpen ? `${rightMenuSize}px` : "0",
-          marginBottom: menuState.bottomMenuOpen ? "80px" : "0",
-          transition:
-            "margin-left 300ms cubic-bezier(0.4, 0, 0.2, 1), margin-right 300ms cubic-bezier(0.4, 0, 0.2, 1), margin-bottom 300ms cubic-bezier(0.4, 0, 0.2, 1)",
-        }
-      : {};
+  // Get transition settings from menu config
+  const transitionDuration = MENU_SETTINGS.transitionDuration || 350;
+  const transitionEasing = getEasingFunction(MENU_SETTINGS.transitionEasing);
 
-  // For overlay mode, use padding (content doesn't move)
-  const overlayPadding =
-    animationMode === "overlay" &&
-    (menuState.leftMenuOpen || menuState.rightMenuOpen)
-      ? `md:pl-[${leftMenuSize}px] md:pr-[${rightMenuSize}px]`
-      : "";
+  // For push mode, adjust margins based on menu state with smooth transitions
+  const pushModeStyles = useMemo(
+    () =>
+      animationMode === "push"
+        ? {
+            marginLeft: menuState.leftMenuOpen ? `${leftMenuSize}px` : "0",
+            marginRight: menuState.rightMenuOpen ? `${rightMenuSize}px` : "0",
+            marginTop: menuState.topMenuOpen ? "144px" : "64px", // Header (64px) + Top menu (80px) if open
+            marginBottom: menuState.bottomMenuOpen ? "80px" : "0",
+            transition: `margin-left ${transitionDuration}ms ${transitionEasing}, margin-right ${transitionDuration}ms ${transitionEasing}, margin-top ${transitionDuration}ms ${transitionEasing}, margin-bottom ${transitionDuration}ms ${transitionEasing}`,
+          }
+        : {},
+    [
+      animationMode,
+      menuState.leftMenuOpen,
+      menuState.rightMenuOpen,
+      menuState.topMenuOpen,
+      menuState.bottomMenuOpen,
+      leftMenuSize,
+      rightMenuSize,
+      transitionDuration,
+      transitionEasing,
+    ],
+  );
 
-  // Top padding for top menu (always overlay mode, positioned below header)
-  const topPadding = menuState.topMenuOpen ? "pt-[144px]" : ""; // Header (64px) + Top menu (80px)
-
-  // Bottom padding for bottom menu (always overlay mode)
-  const bottomPadding = menuState.bottomMenuOpen ? "pb-20" : "";
+  // For overlay mode, use padding with transitions (content doesn't move but padding animates)
+  const overlayStyles = useMemo(
+    () =>
+      animationMode === "overlay"
+        ? {
+            paddingLeft: menuState.leftMenuOpen ? `${leftMenuSize}px` : "0",
+            paddingRight: menuState.rightMenuOpen ? `${rightMenuSize}px` : "0",
+            paddingTop: menuState.topMenuOpen ? "144px" : "64px", // Header (64px) + Top menu (80px) if open
+            paddingBottom: menuState.bottomMenuOpen ? "80px" : "0",
+            transition: `padding-left ${transitionDuration}ms ${transitionEasing}, padding-right ${transitionDuration}ms ${transitionEasing}, padding-top ${transitionDuration}ms ${transitionEasing}, padding-bottom ${transitionDuration}ms ${transitionEasing}`,
+          }
+        : {},
+    [
+      animationMode,
+      menuState.leftMenuOpen,
+      menuState.rightMenuOpen,
+      menuState.topMenuOpen,
+      menuState.bottomMenuOpen,
+      leftMenuSize,
+      rightMenuSize,
+      transitionDuration,
+      transitionEasing,
+    ],
+  );
 
   return (
-    <div
+    <main
       className={cn(
         className,
-        overlayPadding,
-        topPadding,
-        bottomPadding,
+        "flex-1 min-w-0", // Fill remaining space, allow shrinking
         isWorkflowPage && "pointer-events-none",
       )}
       style={{
         ...(isWorkflowPage ? { pointerEvents: "none" as const } : {}),
         ...pushModeStyles,
+        ...overlayStyles,
       }}
       data-menu-push-mode={
         animationMode === "push"
@@ -99,6 +128,6 @@ export function ContentWrapper({
         // On other pages, wrap in pointer-events-auto
         <div className="pointer-events-auto">{children}</div>
       )}
-    </div>
+    </main>
   );
 }

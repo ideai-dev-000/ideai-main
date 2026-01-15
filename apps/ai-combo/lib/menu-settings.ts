@@ -18,9 +18,37 @@ export type MenuInitialState = "open" | "closed";
 
 export type MenuAnimationMode = "overlay" | "push";
 
+/**
+ * Transition easing functions
+ * - ease: Standard ease (default)
+ * - ease-in: Slow start
+ * - ease-out: Slow end
+ * - ease-in-out: Slow start and end
+ * - bounce: Bouncy animation
+ * - spring: Spring-like animation
+ * - elastic: Elastic/rubber band effect
+ */
+export type MenuEasing =
+  | "ease"
+  | "ease-in"
+  | "ease-out"
+  | "ease-in-out"
+  | "bounce"
+  | "spring"
+  | "elastic";
+
+/**
+ * Transition duration in milliseconds
+ */
+export type MenuDuration = number; // milliseconds
+
 export interface MenuSettings {
   /** Animation mode for all menus */
   animationMode?: MenuAnimationMode;
+  /** Transition duration for all menus (ms) */
+  transitionDuration?: MenuDuration;
+  /** Transition easing function for all menus */
+  transitionEasing?: MenuEasing;
   /** Left menu (Controls) settings */
   leftMenu: {
     /** Trigger mode - how menu is shown */
@@ -81,6 +109,8 @@ export interface MenuSettings {
  */
 export const MENU_SETTINGS: MenuSettings = {
   animationMode: "overlay", // "overlay" (on top) or "push" (moves content)
+  transitionDuration: 350, // milliseconds
+  transitionEasing: "ease-out", // easing function
   leftMenu: {
     trigger: "always",
     initialState: "open",
@@ -148,4 +178,20 @@ export function getInitialOpenState(
     return true; // Fixed open menus are always open
   }
   return settings.initialState === "open";
+}
+
+/**
+ * Convert MenuEasing to CSS easing function
+ */
+export function getEasingFunction(easing: MenuEasing = "ease-out"): string {
+  const easingMap: Record<MenuEasing, string> = {
+    ease: "ease",
+    "ease-in": "ease-in",
+    "ease-out": "ease-out",
+    "ease-in-out": "ease-in-out",
+    bounce: "cubic-bezier(0.68, -0.55, 0.265, 1.55)", // Bouncy
+    spring: "cubic-bezier(0.34, 1.56, 0.64, 1)", // Spring-like
+    elastic: "cubic-bezier(0.68, -0.6, 0.32, 1.6)", // Elastic/rubber band
+  };
+  return easingMap[easing] || easingMap["ease-out"];
 }

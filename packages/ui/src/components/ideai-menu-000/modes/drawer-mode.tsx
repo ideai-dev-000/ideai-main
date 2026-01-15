@@ -29,6 +29,8 @@ export function DrawerMode({
   onOpenChange,
   trigger = "always",
   className,
+  animationDuration = 350,
+  easing = "cubic-bezier(0.16, 1, 0.3, 1)",
 }: IdeAIMenuBaseProps) {
   const contextValue = useMenuContextValue();
 
@@ -56,14 +58,18 @@ export function DrawerMode({
           !isVisible && "ideai-menu--closed",
           className,
         )}
-        style={{
-          height: `${size}px`,
-          bottom: 0,
-          left: 0,
-          right: 0,
-          zIndex: 50,
-          position: "fixed",
-        }}
+        style={
+          {
+            height: `${size}px`,
+            bottom: 0,
+            left: 0,
+            right: 0,
+            zIndex: 50,
+            position: "fixed",
+            "--ideai-menu-transition-duration": `${animationDuration}ms`,
+            "--ideai-menu-easing": easing,
+          } as React.CSSProperties
+        }
       >
         {(headerContent || title) && (
           <div className="ideai-menu-header">

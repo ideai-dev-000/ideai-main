@@ -10,11 +10,11 @@
 "use client";
 
 import * as React from "react";
-import {
-  MENU_SETTINGS,
-  getEffectiveTrigger,
-  getInitialOpenState,
-} from "@/lib/menu-settings";
+import { MENU_SETTINGS, getInitialOpenState } from "@/lib/menu-settings";
+
+// Prevent hydration mismatch by initializing state on client only
+const useIsomorphicLayoutEffect =
+  typeof window !== "undefined" ? React.useLayoutEffect : React.useEffect;
 
 interface MenuStateContextValue {
   leftMenuOpen: boolean;
@@ -44,18 +44,20 @@ export function useMenuState() {
 }
 
 export function MenuStateProvider({ children }: { children: React.ReactNode }) {
-  const [leftMenuOpen, setLeftMenuOpen] = React.useState(() =>
-    getInitialOpenState(MENU_SETTINGS.leftMenu),
-  );
-  const [rightMenuOpen, setRightMenuOpen] = React.useState(() =>
-    getInitialOpenState(MENU_SETTINGS.rightMenu),
-  );
-  const [bottomMenuOpen, setBottomMenuOpen] = React.useState(() =>
-    getInitialOpenState(MENU_SETTINGS.bottomMenu),
-  );
-  const [topMenuOpen, setTopMenuOpen] = React.useState(() =>
-    getInitialOpenState(MENU_SETTINGS.topMenu),
-  );
+  // Initialize state to prevent hydration mismatch
+  // Start with all menus closed, then set to correct state after mount
+  const [leftMenuOpen, setLeftMenuOpen] = React.useState(false);
+  const [rightMenuOpen, setRightMenuOpen] = React.useState(false);
+  const [bottomMenuOpen, setBottomMenuOpen] = React.useState(false);
+  const [topMenuOpen, setTopMenuOpen] = React.useState(false);
+
+  // Set initial state after mount to prevent hydration mismatch
+  useIsomorphicLayoutEffect(() => {
+    setLeftMenuOpen(getInitialOpenState(MENU_SETTINGS.leftMenu));
+    setRightMenuOpen(getInitialOpenState(MENU_SETTINGS.rightMenu));
+    setBottomMenuOpen(getInitialOpenState(MENU_SETTINGS.bottomMenu));
+    setTopMenuOpen(getInitialOpenState(MENU_SETTINGS.topMenu));
+  }, []);
 
   // If menu is fixed open, always keep it open
   const handleSetLeftMenuOpen = React.useCallback((open: boolean) => {

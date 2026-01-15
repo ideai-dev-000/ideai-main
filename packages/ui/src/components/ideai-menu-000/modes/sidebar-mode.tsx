@@ -27,9 +27,10 @@ export function SidebarMode({
   headerContent,
   children,
   open,
-  onOpenChange,
   trigger = "always",
   className,
+  animationDuration = 350,
+  easing = "cubic-bezier(0.16, 1, 0.3, 1)",
 }: IdeAIMenuBaseProps) {
   const contextValue = useMenuContextValue();
 
@@ -60,14 +61,18 @@ export function SidebarMode({
         data-menu-visible={isVisible}
         data-menu-trigger={trigger}
         data-menu-open={open}
-        style={{
-          width: `${size}px`,
-          [position]: 0,
-          top: position === "left" || position === "right" ? 64 : undefined, // Position below header (64px)
-          bottom: position === "left" || position === "right" ? 0 : undefined,
-          zIndex: 50,
-          position: "fixed",
-        }}
+        style={
+          {
+            width: `${size}px`,
+            [position]: 0,
+            top: position === "left" || position === "right" ? 64 : undefined, // Position below header (64px)
+            bottom: position === "left" || position === "right" ? 0 : undefined,
+            zIndex: 50,
+            position: "fixed",
+            "--ideai-menu-transition-duration": `${animationDuration}ms`,
+            "--ideai-menu-easing": easing,
+          } as React.CSSProperties
+        }
       >
         {(headerContent || title) && (
           <div className="ideai-menu-header">

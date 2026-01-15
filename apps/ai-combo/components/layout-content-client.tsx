@@ -62,16 +62,21 @@ export function LayoutContentClient({ children }: { children: ReactNode }) {
         title="Quick Nav"
         useBottomMenuState={true}
       />
-      {/* Main content - needs pointer events for interactive elements */}
-      {/* Adjust padding: header (64px) from top, left menu (280px) from left, right menu (280px) from right */}
-      <ContentWrapper
-        className="pointer-events-auto min-h-screen pt-[64px]"
-        animationMode={MENU_SETTINGS.animationMode || "overlay"}
-        leftMenuSize={280}
-        rightMenuSize={280}
-      >
-        {children}
-      </ContentWrapper>
+
+      {/* Layout container - flexbox to ensure main fills remaining space */}
+      <div className="flex flex-col min-h-screen">
+        {/* Main content - needs pointer events for interactive elements */}
+        {/* ContentWrapper handles all padding/margin adjustments with smooth transitions */}
+        {/* Main fills remaining space and animates when menus open/close */}
+        <ContentWrapper
+          className="pointer-events-auto flex-1 min-w-0"
+          animationMode={MENU_SETTINGS.animationMode || "overlay"}
+          leftMenuSize={280}
+          rightMenuSize={280}
+        >
+          {children}
+        </ContentWrapper>
+      </div>
     </ReactFlowProvider>
   );
 }
