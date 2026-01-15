@@ -129,18 +129,9 @@ export function ContentWrapper({
           : "calc(100vh - 64px)", // Header only
       }}
       data-menu-push-mode={
-        animationMode === "push"
-          ? menuState.leftMenuOpen
-            ? "left"
-            : menuState.rightMenuOpen
-              ? "right"
-              : undefined
-          : undefined
+        animationMode === "push" && menuState.leftMenuOpen ? "left" : undefined
       }
-      data-menu-open={
-        animationMode === "push" &&
-        (menuState.leftMenuOpen || menuState.rightMenuOpen)
-      }
+      data-menu-open={animationMode === "push" && menuState.leftMenuOpen}
     >
       {/* Only re-enable pointer events for actual page content (not on workflow pages with canvas) */}
       {isWorkflowPage ? (
