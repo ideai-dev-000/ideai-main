@@ -35,7 +35,16 @@ export function SidebarMode({
 
   // When trigger is "always", menu should always be visible (open state is ignored)
   // When trigger is "button" or "hover", menu visibility is controlled by open prop
+  // CRITICAL: If trigger is "always", always show menu regardless of open prop
+  // If trigger is "button" or "hover", use open prop (defaults to false if not provided)
   const isVisible = trigger === "always" ? true : (open ?? false);
+
+  // Debug logging
+  if (typeof window !== "undefined" && process.env.NODE_ENV === "development") {
+    console.log(
+      `[SidebarMode] position=${position}, trigger=${trigger}, open=${open}, isVisible=${isVisible}`,
+    );
+  }
 
   // For now, use a simple div structure
   // In production, replace with actual Sidebar components
@@ -45,10 +54,12 @@ export function SidebarMode({
         className={cn(
           "ideai-menu ideai-menu-sidebar",
           `ideai-menu--${position}`,
-          isVisible && "ideai-menu--open",
-          !isVisible && "ideai-menu--closed",
+          isVisible ? "ideai-menu--open" : "ideai-menu--closed",
           className,
         )}
+        data-menu-visible={isVisible}
+        data-menu-trigger={trigger}
+        data-menu-open={open}
         style={{
           width: `${size}px`,
           [position]: 0,
