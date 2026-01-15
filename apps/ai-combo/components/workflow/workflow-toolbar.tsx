@@ -1507,8 +1507,9 @@ export const WorkflowToolbar = ({ workflowId }: WorkflowToolbarProps) => {
 
       {/* Demo Mode Toggle removed - now in header/nav */}
 
-      {/* CRITICAL: Position below header (64px) - use top-20 (80px) to account for header + spacing */}
-      <div className="pointer-events-auto absolute top-20 right-4 z-[85]">
+      {/* CRITICAL: Position below header - canvas starts at top-16 (64px), so top-4 (16px) = 80px from viewport */}
+      {/* z-[85] to be above canvas (z-[15]) but below header/menus (z-[90]/z-[100]) */}
+      <div className="pointer-events-auto absolute top-4 right-4 z-[85]">
         <div className="flex flex-col-reverse items-end gap-2 lg:flex-row lg:items-center">
           <ToolbarActions
             actions={actions}
