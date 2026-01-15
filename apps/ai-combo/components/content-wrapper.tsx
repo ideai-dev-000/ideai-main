@@ -58,8 +58,8 @@ export function ContentWrapper({
         ? {
             marginLeft:
               hasLeftMenu && menuState.leftMenuOpen ? `${leftMenuSize}px` : "0",
-            marginRight: menuState.rightMenuOpen ? `${rightMenuSize}px` : "0",
-            marginTop: menuState.topMenuOpen ? "144px" : "64px", // Always: Header (64px) + Top menu (80px) if open
+            marginRight: "0", // Right menu removed
+            marginTop: "64px", // Always: Header (64px) - top menu removed
             marginBottom: menuState.bottomMenuOpen ? "80px" : "0",
             transition: `margin-left ${transitionDuration}ms ${transitionEasing}, margin-right ${transitionDuration}ms ${transitionEasing}, margin-top ${transitionDuration}ms ${transitionEasing}, margin-bottom ${transitionDuration}ms ${transitionEasing}`,
           }
@@ -123,15 +123,10 @@ export function ContentWrapper({
         ...(isWorkflowPage ? { pointerEvents: "none" as const } : {}),
         ...pushModeStyles,
         ...overlayStyles,
-        // Calculate exact height: viewport - header - top menu - bottom menu
-        height:
-          menuState.topMenuOpen && menuState.bottomMenuOpen
-            ? "calc(100vh - 64px - 80px - 80px)" // Header + top menu + bottom menu
-            : menuState.topMenuOpen
-              ? "calc(100vh - 64px - 80px)" // Header + top menu
-              : menuState.bottomMenuOpen
-                ? "calc(100vh - 64px - 80px)" // Header + bottom menu
-                : "calc(100vh - 64px)", // Header only
+        // Calculate exact height: viewport - header - bottom menu (top menu removed)
+        height: menuState.bottomMenuOpen
+          ? "calc(100vh - 64px - 80px)" // Header + bottom menu
+          : "calc(100vh - 64px)", // Header only
       }}
       data-menu-push-mode={
         animationMode === "push"

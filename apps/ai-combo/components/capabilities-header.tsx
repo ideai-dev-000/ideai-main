@@ -76,8 +76,8 @@ export function CapabilitiesHeader() {
 
           {/* Right Side */}
           <div className="relative z-[60] flex items-center gap-2">
-            {/* Menu Toggle Buttons - Only show for button-triggered menus, never for top menu (it's in header) */}
-            {/* Left Menu Button - Only show if trigger is "button" and not fixed open */}
+            {/* Menu Toggle Buttons - Only show for button-triggered menus */}
+            {/* Left Menu Button - Only show if trigger is "button" and not fixed open (for controls menu) */}
             {menuState.leftMenuSettings.trigger === "button" &&
               menuState.leftMenuSettings.showToggleIcon &&
               !menuState.leftMenuSettings.fixedOpen && (
@@ -104,29 +104,7 @@ export function CapabilitiesHeader() {
                   />
                 </button>
               )}
-            {/* Right Menu Button - Only show if trigger is "button" and not fixed open */}
-            {menuState.rightMenuSettings.trigger === "button" &&
-              menuState.rightMenuSettings.showToggleIcon &&
-              !menuState.rightMenuSettings.fixedOpen && (
-                <button
-                  type="button"
-                  onClick={() =>
-                    menuState.setRightMenuOpen(!menuState.rightMenuOpen)
-                  }
-                  className="flex items-center justify-center p-2 rounded-md bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors border border-slate-300 dark:border-slate-600 shadow-sm min-w-[36px] min-h-[36px]"
-                  aria-label={
-                    menuState.rightMenuOpen
-                      ? "Close right menu"
-                      : "Open right menu"
-                  }
-                  title="Right Menu"
-                >
-                  <PanelRight
-                    className={`h-5 w-5 ${menuState.rightMenuOpen ? "text-slate-900 dark:text-slate-100" : "text-slate-600 dark:text-slate-400"}`}
-                  />
-                </button>
-              )}
-            {/* Bottom Menu Button - Only show if trigger is "button" and not fixed open */}
+            {/* Bottom Menu Button - Only show if trigger is "button" and not fixed open (for footer menu) */}
             {menuState.bottomMenuSettings.trigger === "button" &&
               menuState.bottomMenuSettings.showToggleIcon &&
               !menuState.bottomMenuSettings.fixedOpen && (

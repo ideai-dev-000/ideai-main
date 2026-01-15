@@ -141,23 +141,7 @@ export function LayoutContentClient({ children }: { children: ReactNode }) {
       */}
       {hasIdeaiControls && <IdeAISideMenuWrapper />}
 
-      {/* RIGHT MENU = NAVIGATION (site pages) */}
-      <UnifiedNav
-        variant="standalone"
-        position="right"
-        size={280}
-        title="Navigation"
-      />
-
-      {/* TOP MENU = HORIZONTAL NAV (site pages - for testing) */}
-      <UnifiedNav
-        variant="standalone"
-        position="top"
-        size={80}
-        title="Quick Nav"
-      />
-
-      {/* BOTTOM MENU = HORIZONTAL NAV (site pages - for testing) */}
+      {/* BOTTOM MENU = FOOTER NAV (site pages) */}
       <UnifiedNav
         variant="standalone"
         position="bottom"
