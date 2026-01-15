@@ -13,7 +13,6 @@ import { type ReactNode } from "react";
 import { ReactFlowProvider } from "@xyflow/react";
 import { PersistentCanvas } from "@/components/workflow/persistent-canvas";
 import { CapabilitiesHeader } from "@/components/capabilities-header";
-import { IdeAISideMenuWrapper } from "@/components/ideai-side-menu-wrapper";
 import { LayoutClient } from "@/components/layout-client";
 import { ContentWrapper } from "@/components/content-wrapper";
 import { UnifiedNav } from "@/components/unified-nav";
@@ -25,11 +24,6 @@ export function LayoutContentClient({ children }: { children: ReactNode }) {
     <ReactFlowProvider>
       <ScrollToTop />
       <PersistentCanvas />
-      {/* IdeaI Side Menu - outside z-[1] wrapper so it's above canvas (sidebar has z-30) */}
-      {/* Hide on landing page - only show when authenticated and not on homepage */}
-      <LayoutClient>
-        <IdeAISideMenuWrapper />
-      </LayoutClient>
       {/* Header needs pointer events for buttons to work - z-[100] to be above canvas (z-[15]) */}
       <div className="pointer-events-auto relative z-[100]">
         <CapabilitiesHeader />

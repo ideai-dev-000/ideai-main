@@ -17,13 +17,11 @@ import { useAtom } from "jotai";
 import { IdeAILogo } from "@repo/ui";
 import { ThemeToggle } from "@repo/ui";
 import { IdeAIThemeSelector } from "@repo/ui";
-import { MobileNav } from "@repo/ui";
 import { UserMenu } from "@/components/workflow/user-menu";
 import { useSession } from "@/lib/auth-client";
 import { demoModeAtom } from "@/lib/workflow-store";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
-import { getAllNavItems } from "@/lib/nav-config";
 
 export function CapabilitiesHeader() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -94,7 +92,6 @@ export function CapabilitiesHeader() {
             <UserMenu />
             <IdeAIThemeSelector />
             <ThemeToggle />
-            <MobileNav navItems={getAllNavItems()} />
           </div>
         </div>
       </div>
