@@ -31,10 +31,16 @@ export interface RouteConfig {
 
 /**
  * Route configuration map
- * Add new routes here to control side menu visibility
+ *
+ * AUTOMATIC DETECTION:
+ * - Routes starting with "/workflow" → workflow controls (automatic)
+ * - Routes starting with "/vibe" → vibe controls (automatic)
+ * - All other routes → no left menu (controls only appear for IdeaI modules/services)
+ *
+ * You can override defaults by adding explicit entries below.
  */
 export const ROUTE_CONFIG: Record<string, RouteConfig> = {
-  // Workflow routes - show side menu with IdeaI controls
+  // Workflow routes - automatically detected, but explicit for clarity
   "/workflow": {
     showSideMenu: true,
     ideaiControls: true, // Workflow needs IdeaI-level controls
@@ -48,7 +54,7 @@ export const ROUTE_CONFIG: Record<string, RouteConfig> = {
     description: "Workflows list page",
   },
 
-  // Vibe routes - show side menu with IdeaI controls
+  // Vibe routes - automatically detected, but explicit for clarity
   "/vibe": {
     showSideMenu: true,
     ideaiControls: true, // Vibe needs IdeaI-level controls
@@ -96,19 +102,46 @@ export const ROUTE_CONFIG: Record<string, RouteConfig> = {
 
 /**
  * Get route configuration for a given pathname
- * Matches exact routes first, then checks for route prefixes
+ *
+ * AUTOMATIC DETECTION RULES:
+ * 1. Exact match in ROUTE_CONFIG (highest priority)
+ * 2. Automatic pattern matching:
+ *    - /workflow* → workflow controls
+ *    - /vibe* → vibe controls
+ * 3. Prefix matching from ROUTE_CONFIG
+ * 4. Default: no controls (regular webpage)
  */
 export function getRouteConfig(pathname: string | null): RouteConfig {
   if (!pathname) {
-    return { showSideMenu: false };
+    return { showSideMenu: false, ideaiControls: false };
   }
 
-  // Exact match first
+  // Exact match first (highest priority)
   if (ROUTE_CONFIG[pathname]) {
     return ROUTE_CONFIG[pathname];
   }
 
-  // Check for route prefixes (e.g., /workflow/workflows/123)
+  // AUTOMATIC PATTERN DETECTION (before prefix matching)
+  // These patterns automatically enable IdeaI controls for IdeaI modules/services
+  if (pathname.startsWith("/workflow")) {
+    return {
+      showSideMenu: true,
+      ideaiControls: true,
+      toolContext: "workflow",
+      description: "Workflow module - automatic detection",
+    };
+  }
+
+  if (pathname.startsWith("/vibe")) {
+    return {
+      showSideMenu: true,
+      ideaiControls: true,
+      toolContext: "vibe",
+      description: "Vibe module - automatic detection",
+    };
+  }
+
+  // Check for route prefixes from ROUTE_CONFIG (e.g., /workflow/workflows/123)
   // Sort by length (longest first) to match most specific routes first
   const sortedRoutes = Object.keys(ROUTE_CONFIG).sort(
     (a, b) => b.length - a.length,
@@ -121,7 +154,8 @@ export function getRouteConfig(pathname: string | null): RouteConfig {
     }
   }
 
-  // Default: no side menu, no IdeaI controls
+  // Default: no side menu, no IdeaI controls (regular webpage)
+  // Left menu (controls) only appears for IdeaI modules/services
   return { showSideMenu: false, ideaiControls: false };
 }
 

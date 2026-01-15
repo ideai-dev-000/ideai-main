@@ -10,16 +10,22 @@
 "use client";
 
 import { type ReactNode } from "react";
+import { usePathname } from "next/navigation";
 import { ReactFlowProvider } from "@xyflow/react";
 import { PersistentCanvas } from "@/components/workflow/persistent-canvas";
 import { CapabilitiesHeader } from "@/components/capabilities-header";
 import { LayoutClient } from "@/components/layout-client";
 import { ContentWrapper } from "@/components/content-wrapper";
 import { UnifiedNav } from "@/components/unified-nav";
+import { IdeAISideMenuWrapper } from "@/components/ideai-side-menu-wrapper";
 import { MENU_SETTINGS } from "@/lib/menu-settings";
 import { ScrollToTop } from "@/components/scroll-to-top";
+import { needsIdeaiControls } from "@/lib/route-config";
 
 export function LayoutContentClient({ children }: { children: ReactNode }) {
+  const pathname = usePathname();
+  const hasIdeaiControls = needsIdeaiControls(pathname);
+
   return (
     <ReactFlowProvider>
       <ScrollToTop />
@@ -29,14 +35,13 @@ export function LayoutContentClient({ children }: { children: ReactNode }) {
         <CapabilitiesHeader />
       </div>
 
-      {/* ALL 4 MENUS - Same code, different configs */}
-      {/* LEFT MENU = NAVIGATION (site pages) */}
-      <UnifiedNav
-        variant="standalone"
-        position="left"
-        size={280}
-        title="Navigation"
-      />
+      {/* LEFT MENU = IDEAI CONTROLS (only for IdeaI modules/services) */}
+      {/* Automatically shows:
+          - Workflow controls on /workflow* routes
+          - Vibe controls on /vibe* routes
+          - Hidden on all other routes (regular webpages don't need controls)
+      */}
+      {hasIdeaiControls && <IdeAISideMenuWrapper />}
 
       {/* RIGHT MENU = NAVIGATION (site pages) */}
       <UnifiedNav

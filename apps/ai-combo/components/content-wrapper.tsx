@@ -12,6 +12,7 @@ import { type ReactNode, useMemo } from "react";
 import { usePathname } from "next/navigation";
 import { useMenuState } from "@/components/menu-state-provider";
 import { MENU_SETTINGS, getEasingFunction } from "@/lib/menu-settings";
+import { needsIdeaiControls } from "@/lib/route-config";
 import { cn } from "@/lib/utils";
 
 interface ContentWrapperProps {
@@ -35,6 +36,10 @@ export function ContentWrapper({
   const pathname = usePathname();
   const menuState = useMenuState();
 
+  // Check if left menu (controls) should be visible for this route
+  // Left menu only appears for IdeaI modules/services (workflow, vibe, etc.)
+  const hasLeftMenu = needsIdeaiControls(pathname);
+
   // On workflow pages, we don't want to block canvas clicks
   // The canvas is at z-0, so content wrapper should not interfere
   const isWorkflowPage =
@@ -45,11 +50,13 @@ export function ContentWrapper({
   const transitionEasing = getEasingFunction(MENU_SETTINGS.transitionEasing);
 
   // For push mode, adjust margins based on menu state with smooth transitions
+  // Only apply left menu margin if left menu is actually visible for this route
   const pushModeStyles = useMemo(
     () =>
       animationMode === "push"
         ? {
-            marginLeft: menuState.leftMenuOpen ? `${leftMenuSize}px` : "0",
+            marginLeft:
+              hasLeftMenu && menuState.leftMenuOpen ? `${leftMenuSize}px` : "0",
             marginRight: menuState.rightMenuOpen ? `${rightMenuSize}px` : "0",
             marginTop: menuState.topMenuOpen ? "144px" : "64px", // Header (64px) + Top menu (80px) if open
             marginBottom: menuState.bottomMenuOpen ? "80px" : "0",
@@ -58,6 +65,7 @@ export function ContentWrapper({
         : {},
     [
       animationMode,
+      hasLeftMenu,
       menuState.leftMenuOpen,
       menuState.rightMenuOpen,
       menuState.topMenuOpen,
@@ -74,7 +82,8 @@ export function ContentWrapper({
     () =>
       animationMode === "overlay"
         ? {
-            paddingLeft: menuState.leftMenuOpen ? `${leftMenuSize}px` : "0",
+            paddingLeft:
+              hasLeftMenu && menuState.leftMenuOpen ? `${leftMenuSize}px` : "0",
             paddingRight: menuState.rightMenuOpen ? `${rightMenuSize}px` : "0",
             paddingTop: menuState.topMenuOpen ? "144px" : "64px", // Header (64px) + Top menu (80px) if open
             paddingBottom: menuState.bottomMenuOpen ? "80px" : "0",
@@ -83,6 +92,7 @@ export function ContentWrapper({
         : {},
     [
       animationMode,
+      hasLeftMenu,
       menuState.leftMenuOpen,
       menuState.rightMenuOpen,
       menuState.topMenuOpen,
