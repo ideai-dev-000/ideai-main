@@ -8,6 +8,11 @@
  */
 
 /* ============================================
+   Import new menu system styles (MUST be first)
+   ============================================ */
+@import "../components/ideai-menu-000/styles.css";
+
+/* ============================================
    CSS Variables for Menu Configuration
    ============================================ */
 :root {
@@ -385,10 +390,6 @@
   transition: none !important;
 }
 
-/* ============================================
-   Import new menu system styles
-   ============================================ */
-@import "../components/ideai-menu-000/styles.css";
 
 /* ============================================
    Push Mode - Content Shifts
