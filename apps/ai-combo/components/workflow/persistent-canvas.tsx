@@ -26,7 +26,10 @@ export function PersistentCanvas() {
 
   return (
     <div className="fixed top-16 inset-x-0 bottom-0 z-[15] pointer-events-none">
-      <WorkflowCanvas />
+      {/* Canvas container - toolbar inside uses absolute positioning relative to this */}
+      <div className="relative h-full w-full">
+        <WorkflowCanvas />
+      </div>
     </div>
   );
 }
