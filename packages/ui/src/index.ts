@@ -117,21 +117,21 @@ export {
   type WorkflowItem,
   type IdeAISideMenuProps,
 } from "./components/ideai-side-menu";
-// IdeaI Menu System (new structure - ideai folder)
+// IdeaI Menu System (legacy compatibility - uses ideai-menu-000)
+// @deprecated Use ideai-menu-000 system directly
 export {
-  // Base menu
+  IdeAIMenuControls,
+  IdeAIMenuMain,
   IdeAIMenuSection,
   useIdeAIMenuContext,
+  getMenuPositionStyles,
   type IdeAIMenuPosition,
   type IdeAIMenuTrigger,
   type IdeAIMenuBaseProps,
   type IdeAIMenuSectionProps,
-  // Menu variants
-  IdeAIMenuControls,
-  IdeAIMenuMain,
   type IdeAIMenuControlsProps,
   type IdeAIMenuMainProps,
-} from "./components/ideai";
+} from "./components/ideai-menu-legacy-archive/compatibility-shims";
 
 // IdeaI Menu System (unified - ideai-menu-000)
 export {
