@@ -38,10 +38,18 @@ export function useVibeChat({
   const [isStreaming, setIsStreaming] = useState(false);
   const [chatHistory, setChatHistory] = useState<VibeChatHistoryItem[]>([]);
 
-  // Reset chat history when chatId changes
+  // Reset chat history when chatId changes (only if we don't have local messages)
   useEffect(() => {
     if (chatId) {
-      setChatHistory([]);
+      // Only reset if we don't have any local messages
+      // This prevents clearing chat when we're in the middle of a conversation
+      setChatHistory((prev) => {
+        if (prev.length === 0) {
+          return [];
+        }
+        // Keep existing messages if we have any
+        return prev;
+      });
       setIsStreaming(false);
       setIsLoading(false);
       console.log(
@@ -64,21 +72,37 @@ export function useVibeChat({
       router.push("/vibe");
     },
     onSuccess: (chat) => {
-      // Update chat history with existing messages when chat loads
-      if (chat.messages && Array.isArray(chat.messages)) {
-        console.log(
-          "[useVibeChat] Loading existing chat history:",
-          chat.messages.length,
-          "messages for chat:",
-          chatId,
-        );
-        setChatHistory(
-          chat.messages.map((msg: VibeChatMessage) => ({
+      // Only update chat history from server if:
+      // 1. We don't have any local messages, OR
+      // 2. We're not currently streaming (to avoid overwriting streaming messages)
+      setChatHistory((prev) => {
+        const hasLocalMessages = prev.length > 0;
+        const hasStreamingMessage = prev.some((msg) => msg.isStreaming);
+
+        // Don't overwrite if we have local messages or are streaming
+        if (hasLocalMessages || hasStreamingMessage) {
+          console.log(
+            "[useVibeChat] Keeping local chat history (has messages or streaming), not overwriting with server data",
+          );
+          return prev;
+        }
+
+        // Only load from server if chat history is empty
+        if (chat.messages && Array.isArray(chat.messages)) {
+          console.log(
+            "[useVibeChat] Loading existing chat history from server:",
+            chat.messages.length,
+            "messages for chat:",
+            chatId,
+          );
+          return chat.messages.map((msg: VibeChatMessage) => ({
             type: msg.role,
             content: msg.experimental_content || msg.content,
-          })),
-        );
-      }
+          }));
+        }
+
+        return prev;
+      });
 
       // Update demo URL if available
       if (chat.demo || chat.url || chat.latestVersion?.demoUrl) {
