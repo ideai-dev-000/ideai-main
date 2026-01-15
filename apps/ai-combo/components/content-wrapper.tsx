@@ -51,7 +51,7 @@ export function ContentWrapper({
 
   // For push mode, adjust margins based on menu state with smooth transitions
   // Only apply left menu margin if left menu is actually visible for this route
-  // CRITICAL: Always account for header height (64px) + top menu if open (80px)
+  // CRITICAL: Always account for header height (64px)
   const pushModeStyles = useMemo(
     () =>
       animationMode === "push"
@@ -68,18 +68,15 @@ export function ContentWrapper({
       animationMode,
       hasLeftMenu,
       menuState.leftMenuOpen,
-      menuState.rightMenuOpen,
-      menuState.topMenuOpen,
       menuState.bottomMenuOpen,
       leftMenuSize,
-      rightMenuSize,
       transitionDuration,
       transitionEasing,
     ],
   );
 
   // For overlay mode, use padding with transitions (content doesn't move but padding animates)
-  // CRITICAL: Always account for header height (64px) + top menu if open (80px)
+  // CRITICAL: Always account for header height (64px)
   // This ensures main content is never overlapped by the fixed header
   const overlayStyles = useMemo(
     () =>
@@ -102,11 +99,8 @@ export function ContentWrapper({
       animationMode,
       hasLeftMenu,
       menuState.leftMenuOpen,
-      menuState.rightMenuOpen,
-      menuState.topMenuOpen,
       menuState.bottomMenuOpen,
       leftMenuSize,
-      rightMenuSize,
       transitionDuration,
       transitionEasing,
     ],
