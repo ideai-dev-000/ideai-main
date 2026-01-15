@@ -9,25 +9,29 @@
 
 import type { Metadata } from "next";
 import { ThemeProvider } from "@repo/ui";
-import { ReactFlowProvider } from "@xyflow/react";
 import { Provider } from "jotai";
 import { type ReactNode } from "react";
+import { LayoutContentClient } from "@/components/layout-content-client";
 import { AuthProvider } from "@/components/auth/provider";
 import { GlobalModals } from "@/components/global-modals";
 import { OverlayProvider } from "@/components/overlays/overlay-provider";
 import { Toaster } from "@/components/ui/sonner";
-import { PersistentCanvas } from "@/components/workflow/persistent-canvas";
-import { CapabilitiesHeader } from "@/components/capabilities-header";
-import { IdeAISideMenuWrapper } from "@/components/ideai-side-menu-wrapper";
 import { DevSetupModal } from "@/components/dev-setup-modal";
 import { StreamingProvider } from "@/contexts/streaming-context";
 import { VibeStreamingProvider } from "@/lib/vibe/contexts/streaming-context";
 import { SWRProvider } from "@/components/providers/swr-provider";
 import { SessionProvider } from "@/components/providers/session-provider";
-import { LayoutClient } from "@/components/layout-client";
-import { ContentWrapper } from "@/components/content-wrapper";
-import { mono, sans } from "@/lib/fonts";
+import { MenuStateProvider } from "@/components/menu-state-provider";
+import {
+  geistSans,
+  geistMono,
+  interSans,
+  jetbrainsMono,
+  spaceGroteskSans,
+  spaceMono,
+} from "@/lib/fonts";
 import { cn } from "@/lib/utils";
+import { FontProvider } from "@/components/font-provider";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -36,32 +40,8 @@ export const metadata: Metadata = {
     "Unified platform combining IdeaI UI with workflow automation capabilities. Merged app demonstrating shared codebase architecture.",
 };
 
-// Inner content wrapped by workflow providers
-function LayoutContent({ children }: { children: ReactNode }) {
-  return (
-    <ReactFlowProvider>
-      <PersistentCanvas />
-      {/* IdeaI Side Menu - outside z-[1] wrapper so it's above canvas (sidebar has z-30) */}
-      {/* Hide on landing page - only show when authenticated and not on homepage */}
-      <LayoutClient>
-        <div className="pointer-events-auto">
-          <IdeAISideMenuWrapper />
-        </div>
-      </LayoutClient>
-      <div className="relative z-[100]">
-        {/* Header needs pointer events for buttons to work - z-[100] to be above canvas (z-[15]) */}
-        <div className="pointer-events-auto">
-          <CapabilitiesHeader />
-        </div>
-        {/* Main content - needs pointer events for interactive elements */}
-        {/* No left padding needed - sidebar is now an overlay */}
-        <ContentWrapper className="pointer-events-auto min-h-screen pt-16">
-          {children}
-        </ContentWrapper>
-      </div>
-    </ReactFlowProvider>
-  );
-}
+// Layout content is now a client component (moved to layout-content-client.tsx)
+// to support menu state hooks
 
 export default function RootLayout({
   children,
@@ -70,32 +50,48 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={cn(sans.variable, mono.variable, "antialiased")}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <Provider>
-            <AuthProvider>
-              <SessionProvider>
-                <SWRProvider>
-                  <StreamingProvider>
-                    <VibeStreamingProvider>
-                      <OverlayProvider>
-                        <LayoutContent>{children}</LayoutContent>
-                        <GlobalModals />
-                        <DevSetupModal />
-                        <Toaster />
-                      </OverlayProvider>
-                    </VibeStreamingProvider>
-                  </StreamingProvider>
-                </SWRProvider>
-              </SessionProvider>
-            </AuthProvider>
-          </Provider>
-        </ThemeProvider>
+      <body
+        className={cn(
+          geistSans.variable,
+          geistMono.variable,
+          interSans.variable,
+          jetbrainsMono.variable,
+          spaceGroteskSans.variable,
+          spaceMono.variable,
+          "antialiased",
+        )}
+      >
+        <FontProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <Provider>
+              <AuthProvider>
+                <SessionProvider>
+                  <SWRProvider>
+                    <StreamingProvider>
+                      <VibeStreamingProvider>
+                        <OverlayProvider>
+                          <MenuStateProvider>
+                            <LayoutContentClient>
+                              {children}
+                            </LayoutContentClient>
+                          </MenuStateProvider>
+                          <GlobalModals />
+                          <DevSetupModal />
+                          <Toaster />
+                        </OverlayProvider>
+                      </VibeStreamingProvider>
+                    </StreamingProvider>
+                  </SWRProvider>
+                </SessionProvider>
+              </AuthProvider>
+            </Provider>
+          </ThemeProvider>
+        </FontProvider>
       </body>
     </html>
   );

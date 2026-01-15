@@ -10,7 +10,7 @@
 
 import React from "react";
 import { useRouter } from "next/navigation";
-import { Code, ChevronRight } from "lucide-react";
+import { Code } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useVibeChatsNav, type VibeChatItem } from "./use-vibe-chats-nav";
 
@@ -22,6 +22,7 @@ interface VibeChatsListProps {
 /**
  * Vibe Chats List Component
  * Shows list of user's previous vibe chats in the side menu
+ * Note: This component is now wrapped in IdeAIControlSection, so it only renders the list content
  */
 export function VibeChatsList({
   title = "Vibe Chats",
@@ -29,7 +30,6 @@ export function VibeChatsList({
 }: VibeChatsListProps) {
   const router = useRouter();
   const { chats, isLoading, currentChatId } = useVibeChatsNav();
-  const [isExpanded, setIsExpanded] = React.useState(true);
 
   // Sort chats by updatedAt (newest first) and exclude current chat
   const sortedChats = React.useMemo(() => {
@@ -58,59 +58,42 @@ export function VibeChatsList({
   );
 
   return (
-    <div className={cn("ideai-side-menu-section", className)}>
-      <div className="px-4 py-3 border-b border-slate-200 dark:border-slate-700">
-        <button
-          type="button"
-          className="flex items-center gap-2 w-full text-left"
-          onClick={() => setIsExpanded(!isExpanded)}
-        >
-          <Code className="h-4 w-4 text-slate-600 dark:text-slate-400" />
-          <span className="text-sm font-semibold text-slate-900 dark:text-slate-100">
-            {title}
-          </span>
-          <ChevronRight
-            className={cn(
-              "h-4 w-4 ml-auto text-slate-600 dark:text-slate-400 transition-transform",
-              isExpanded && "rotate-90",
-            )}
-          />
-        </button>
-      </div>
-      {isExpanded && (
-        <div className="ideai-side-menu-section-content">
-          {isLoading ? (
-            <div className="ideai-side-menu-empty">Loading chats...</div>
-          ) : chatItems.length === 0 ? (
-            <div className="ideai-side-menu-empty">No chats found</div>
-          ) : (
-            <ul className="ideai-side-menu-list">
-              {chatItems.map((chat) => (
-                <li key={chat.id}>
-                  <div className="ideai-side-menu-item-wrapper group">
-                    <button
-                      type="button"
-                      onClick={() => handleChatClick(chat)}
-                      className={cn(
-                        "ideai-side-menu-item",
-                        chat.isActive && "ideai-side-menu-item--active",
-                      )}
-                    >
-                      <span className="ideai-side-menu-item-name">
-                        {chat.name}
-                      </span>
-                      {chat.updatedAt && (
-                        <span className="ideai-side-menu-item-meta">
-                          {new Date(chat.updatedAt).toLocaleDateString()}
-                        </span>
-                      )}
-                    </button>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          )}
+    <div className={cn("space-y-1", className)}>
+      {isLoading ? (
+        <div className="text-sm text-slate-500 dark:text-slate-400 py-4">
+          Loading chats...
         </div>
+      ) : chatItems.length === 0 ? (
+        <div className="text-sm text-slate-500 dark:text-slate-400 py-4">
+          No chats found
+        </div>
+      ) : (
+        <ul className="space-y-1">
+          {chatItems.map((chat) => (
+            <li key={chat.id}>
+              <button
+                type="button"
+                onClick={() => handleChatClick(chat)}
+                className={cn(
+                  "w-full text-left px-3 py-2 rounded-md text-sm",
+                  "hover:bg-slate-100 dark:hover:bg-slate-800",
+                  "transition-colors",
+                  chat.isActive && "bg-slate-100 dark:bg-slate-800 font-medium",
+                )}
+              >
+                <div className="flex items-center gap-2">
+                  <Code className="h-4 w-4 text-slate-500 dark:text-slate-400 shrink-0" />
+                  <span className="truncate">{chat.name}</span>
+                </div>
+                {chat.updatedAt && (
+                  <div className="text-xs text-slate-500 dark:text-slate-400 mt-1 ml-6">
+                    {new Date(chat.updatedAt).toLocaleDateString()}
+                  </div>
+                )}
+              </button>
+            </li>
+          ))}
+        </ul>
       )}
     </div>
   );

@@ -740,19 +740,21 @@ export function IdeAISideMenu({
   ]);
 
   const SideMenuContent = () => (
-    <div className={cn("ideai-side-menu-content", className)}>
-      <div className="ideai-side-menu-header">
+    <div
+      className={cn("ideai-side-menu-content pointer-events-auto", className)}
+    >
+      <div className="ideai-side-menu-header pointer-events-auto">
         <h2 className="ideai-side-menu-title">IdeaI Menu</h2>
         <button
           type="button"
-          className="ideai-side-menu-close"
+          className="ideai-side-menu-close pointer-events-auto"
           onClick={() => handleOpenChange(false)}
           aria-label="Close menu"
         >
           <X className="h-5 w-5" />
         </button>
       </div>
-      <div className="ideai-side-menu-body">
+      <div className="ideai-side-menu-body pointer-events-auto">
         {/* Custom Sections (Cards, Controls, Blocks, etc.) - render first for status card */}
         {children}
 
@@ -765,7 +767,7 @@ export function IdeAISideMenu({
   return (
     <>
       {/* Desktop: Persistent Sidebar */}
-      <aside className="ideai-side-menu ideai-side-menu--desktop">
+      <aside className="ideai-side-menu ideai-side-menu--desktop pointer-events-auto">
         <SideMenuContent />
       </aside>
 
