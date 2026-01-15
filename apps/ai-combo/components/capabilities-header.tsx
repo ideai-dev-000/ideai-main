@@ -24,10 +24,8 @@ import { demoModeAtom } from "@/lib/workflow-store";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { IdeAIMenu, IdeAIMenuSection } from "@repo/ui";
-import { NAV_CONFIG } from "@/lib/nav-config";
-import { getAllNavItems } from "@/lib/nav-config";
+import { NAV_CONFIG, getAllNavItems } from "@/lib/nav-config";
 import { cn } from "@/lib/utils";
-import Link from "next/link";
 
 export function CapabilitiesHeader() {
   const [isScrolled, setIsScrolled] = useState(false);
