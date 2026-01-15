@@ -22,12 +22,15 @@ import { useSession } from "@/lib/auth-client";
 import { demoModeAtom } from "@/lib/workflow-store";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
+import { useMenuState } from "@/components/menu-state-provider";
+import { PanelLeft, PanelRight, PanelTop, PanelBottom } from "lucide-react";
 
 export function CapabilitiesHeader() {
   const [isScrolled, setIsScrolled] = useState(false);
   const { data: session } = useSession();
   const pathname = usePathname();
   const [demoMode, setDemoMode] = useAtom(demoModeAtom);
+  const menuState = useMenuState();
 
   // Show demo mode toggle only on workflow pages
   const isWorkflowPage =
@@ -73,6 +76,85 @@ export function CapabilitiesHeader() {
 
           {/* Right Side */}
           <div className="relative z-[60] flex items-center gap-2">
+            {/* Menu Toggle Buttons - All 4 positions */}
+            {menuState.leftMenuSettings.showToggleIcon &&
+              !menuState.leftMenuSettings.fixedOpen && (
+                <button
+                  type="button"
+                  onClick={() =>
+                    menuState.setLeftMenuOpen(!menuState.leftMenuOpen)
+                  }
+                  className="flex items-center justify-center p-2 rounded-md bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors border border-slate-300 dark:border-slate-600 shadow-sm min-w-[36px] min-h-[36px]"
+                  aria-label={
+                    menuState.leftMenuOpen
+                      ? "Close left menu"
+                      : "Open left menu"
+                  }
+                  title="Left Menu"
+                >
+                  <PanelLeft
+                    className={`h-5 w-5 ${menuState.leftMenuOpen ? "text-slate-900 dark:text-slate-100" : "text-slate-600 dark:text-slate-400"}`}
+                  />
+                </button>
+              )}
+            {menuState.rightMenuSettings.showToggleIcon &&
+              !menuState.rightMenuSettings.fixedOpen && (
+                <button
+                  type="button"
+                  onClick={() =>
+                    menuState.setRightMenuOpen(!menuState.rightMenuOpen)
+                  }
+                  className="flex items-center justify-center p-2 rounded-md bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors border border-slate-300 dark:border-slate-600 shadow-sm min-w-[36px] min-h-[36px]"
+                  aria-label={
+                    menuState.rightMenuOpen
+                      ? "Close right menu"
+                      : "Open right menu"
+                  }
+                  title="Right Menu"
+                >
+                  <PanelRight
+                    className={`h-5 w-5 ${menuState.rightMenuOpen ? "text-slate-900 dark:text-slate-100" : "text-slate-600 dark:text-slate-400"}`}
+                  />
+                </button>
+              )}
+            {menuState.topMenuSettings.showToggleIcon &&
+              !menuState.topMenuSettings.fixedOpen && (
+                <button
+                  type="button"
+                  onClick={() =>
+                    menuState.setTopMenuOpen(!menuState.topMenuOpen)
+                  }
+                  className="flex items-center justify-center p-2 rounded-md bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors border border-slate-300 dark:border-slate-600 shadow-sm min-w-[36px] min-h-[36px]"
+                  aria-label={
+                    menuState.topMenuOpen ? "Close top menu" : "Open top menu"
+                  }
+                  title="Top Menu"
+                >
+                  <PanelTop
+                    className={`h-5 w-5 ${menuState.topMenuOpen ? "text-slate-900 dark:text-slate-100" : "text-slate-600 dark:text-slate-400"}`}
+                  />
+                </button>
+              )}
+            {menuState.bottomMenuSettings.showToggleIcon &&
+              !menuState.bottomMenuSettings.fixedOpen && (
+                <button
+                  type="button"
+                  onClick={() =>
+                    menuState.setBottomMenuOpen(!menuState.bottomMenuOpen)
+                  }
+                  className="flex items-center justify-center p-2 rounded-md bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors border border-slate-300 dark:border-slate-600 shadow-sm min-w-[36px] min-h-[36px]"
+                  aria-label={
+                    menuState.bottomMenuOpen
+                      ? "Close bottom menu"
+                      : "Open bottom menu"
+                  }
+                  title="Bottom Menu"
+                >
+                  <PanelBottom
+                    className={`h-5 w-5 ${menuState.bottomMenuOpen ? "text-slate-900 dark:text-slate-100" : "text-slate-600 dark:text-slate-400"}`}
+                  />
+                </button>
+              )}
             {/* Demo Mode Toggle - only show on workflow pages */}
             {isWorkflowPage && (
               <div className="hidden md:flex items-center gap-2 rounded-md border border-slate-200 bg-white px-3 py-1.5 shadow-sm dark:border-slate-700 dark:bg-slate-800">

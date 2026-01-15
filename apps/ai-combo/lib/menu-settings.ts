@@ -60,6 +60,19 @@ export interface MenuSettings {
     /** Enable swipe to close (default: true) */
     swipeToClose?: boolean;
   };
+  /** Top menu (Navigation) settings */
+  topMenu: {
+    /** Trigger mode - how menu is shown */
+    trigger: MenuTriggerMode;
+    /** Initial state when page loads */
+    initialState: MenuInitialState;
+    /** If true, menu is fixed open and cannot be toggled (no icon shown) */
+    fixedOpen: boolean;
+    /** If true, show toggle icon in header */
+    showToggleIcon: boolean;
+    /** Enable swipe to close (default: true) */
+    swipeToClose?: boolean;
+  };
 }
 
 /**
@@ -89,6 +102,13 @@ export const MENU_SETTINGS: MenuSettings = {
     showToggleIcon: true, // Set to false to hide toggle icon
     swipeToClose: true, // Enable swipe to close on mobile
   },
+  topMenu: {
+    trigger: "always",
+    initialState: "open",
+    fixedOpen: false, // Set to true to fix menu open with no toggle icon
+    showToggleIcon: true, // Set to false to hide toggle icon
+    swipeToClose: true, // Enable swipe to close on mobile
+  },
 };
 
 /**
@@ -99,7 +119,8 @@ export function getEffectiveTrigger(
   settings:
     | MenuSettings["leftMenu"]
     | MenuSettings["rightMenu"]
-    | MenuSettings["bottomMenu"],
+    | MenuSettings["bottomMenu"]
+    | MenuSettings["topMenu"],
 ): MenuTriggerMode {
   if (!settings) {
     return "always"; // Default fallback
@@ -117,7 +138,8 @@ export function getInitialOpenState(
   settings:
     | MenuSettings["leftMenu"]
     | MenuSettings["rightMenu"]
-    | MenuSettings["bottomMenu"],
+    | MenuSettings["bottomMenu"]
+    | MenuSettings["topMenu"],
 ): boolean {
   if (!settings) {
     return true; // Default fallback

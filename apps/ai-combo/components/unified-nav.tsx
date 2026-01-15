@@ -49,17 +49,32 @@ export function UnifiedNav({
   const pathname = usePathname();
   const menuState = useMenuState();
 
-  // Determine which menu state to use based on position or useBottomMenuState prop
+  // Determine which menu state to use based on position
   const isBottomMenu = position === "bottom" || useBottomMenuState;
+  const isTopMenu = position === "top";
+  const isLeftMenu = position === "left";
+
   const menuOpen = isBottomMenu
     ? menuState.bottomMenuOpen
-    : menuState.rightMenuOpen;
+    : isTopMenu
+      ? menuState.topMenuOpen
+      : isLeftMenu
+        ? menuState.leftMenuOpen
+        : menuState.rightMenuOpen;
   const setMenuOpen = isBottomMenu
     ? menuState.setBottomMenuOpen
-    : menuState.setRightMenuOpen;
+    : isTopMenu
+      ? menuState.setTopMenuOpen
+      : isLeftMenu
+        ? menuState.setLeftMenuOpen
+        : menuState.setRightMenuOpen;
   const menuSettings = isBottomMenu
     ? menuState.bottomMenuSettings
-    : menuState.rightMenuSettings;
+    : isTopMenu
+      ? menuState.topMenuSettings
+      : isLeftMenu
+        ? menuState.leftMenuSettings
+        : menuState.rightMenuSettings;
   const effectiveTrigger = getEffectiveTrigger(menuSettings);
 
   // For header variant, use horizontal layout

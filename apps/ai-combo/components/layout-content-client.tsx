@@ -28,12 +28,30 @@ export function LayoutContentClient({ children }: { children: ReactNode }) {
       <div className="pointer-events-auto relative z-[100]">
         <CapabilitiesHeader />
       </div>
-      {/* RIGHT MENU = MAIN NAVIGATION (site pages) */}
+
+      {/* ALL 4 MENUS - Same code, different configs */}
+      {/* LEFT MENU = NAVIGATION (site pages) */}
+      <UnifiedNav
+        variant="standalone"
+        position="left"
+        size={280}
+        title="Navigation"
+      />
+
+      {/* RIGHT MENU = NAVIGATION (site pages) */}
       <UnifiedNav
         variant="standalone"
         position="right"
         size={280}
         title="Navigation"
+      />
+
+      {/* TOP MENU = HORIZONTAL NAV (site pages - for testing) */}
+      <UnifiedNav
+        variant="standalone"
+        position="top"
+        size={80}
+        title="Quick Nav"
       />
 
       {/* BOTTOM MENU = HORIZONTAL NAV (site pages - for testing) */}
