@@ -70,8 +70,15 @@ export function SidebarMode({
           {
             width: `${size}px`,
             [position]: 0,
-            top: position === "left" || position === "right" ? 64 : undefined, // Position below header (64px)
+            // CRITICAL: Always position side menus (left/right) below header (64px)
+            // This ensures menus don't overlap the header
+            top:
+              position === "left" || position === "right" ? "64px" : undefined,
             bottom: position === "left" || position === "right" ? 0 : undefined,
+            height:
+              position === "left" || position === "right"
+                ? "calc(100vh - 64px)"
+                : undefined, // Full height minus header
             zIndex: 50,
             position: "fixed",
             "--ideai-menu-transition-duration": `${animationDuration}ms`,
