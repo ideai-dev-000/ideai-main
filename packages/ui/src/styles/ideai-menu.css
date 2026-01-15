@@ -386,67 +386,9 @@
 }
 
 /* ============================================
-   Animations - Smooth Slide In/Out with Scale
+   Import new menu system styles
    ============================================ */
-/* Left Menu */
-.ideai-menu--left {
-  transform: translateX(-100%) translateZ(0) scale(0.95);
-  opacity: 0;
-}
-
-.ideai-menu--left.ideai-menu--visible {
-  transform: translateX(0) translateZ(0) scale(1);
-  opacity: 1;
-  box-shadow: 4px 0 24px rgba(0, 0, 0, 0.12);
-}
-
-/* Right Menu */
-.ideai-menu--right {
-  transform: translateX(100%) translateZ(0) scale(0.95);
-  opacity: 0;
-}
-
-.ideai-menu--right.ideai-menu--visible {
-  transform: translateX(0) translateZ(0) scale(1);
-  opacity: 1;
-  box-shadow: -4px 0 24px rgba(0, 0, 0, 0.12);
-}
-
-/* Top Menu */
-.ideai-menu--top {
-  transform: translateY(-100%) translateZ(0) scaleY(0.95);
-  opacity: 0;
-}
-
-.ideai-menu--top.ideai-menu--visible {
-  transform: translateY(0) translateZ(0) scaleY(1);
-  opacity: 1;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
-}
-
-/* Bottom Menu */
-.ideai-menu--bottom {
-  transform: translateY(100%) translateZ(0) scaleY(0.95);
-  opacity: 0;
-}
-
-.ideai-menu--bottom.ideai-menu--visible {
-  transform: translateY(0) translateZ(0) scaleY(1);
-  opacity: 1;
-  box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.12);
-}
-
-/* Floating Menu */
-.ideai-menu--floating {
-  transform: translateZ(0) scale(0.9);
-  opacity: 0;
-}
-
-.ideai-menu--floating.ideai-menu--visible {
-  transform: translateZ(0) scale(1);
-  opacity: 1;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
-}
+@import "../components/ideai-menu-000/styles.css";
 
 /* ============================================
    Push Mode - Content Shifts
