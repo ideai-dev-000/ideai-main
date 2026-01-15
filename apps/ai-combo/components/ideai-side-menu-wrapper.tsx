@@ -3,31 +3,43 @@
  *
  * @module IdeAISideMenuWrapper
  * @description
- * Wrapper component that integrates IdeAISideMenu with workflow navigation
- * for the capabilities app. Connects to useWorkflowNav hook and provides
- * workflow access in the side menu.
+ * Wrapper component that renders IdeAIMenuControls on the LEFT side.
+ *
+ * **Menu Configuration (Settings)**:
+ * - LEFT MENU = Controls (always visible) - uses IdeAIMenuControls
+ * - RIGHT MENU = Main Menu (always visible) - uses IdeAIMenuMain (in layout.tsx)
+ *
+ * This component uses IdeAIMenuControls to demonstrate pattern inheritance -
+ * both menu variants inherit from the base ideai-menu, ensuring consistent UX
+ * (hover, mobile swipe, pop-out animations) while allowing different styling.
+ *
+ * This component is contextual - it only renders when the route needs
+ * IdeaI-level controls. Controls abstract app functionality into shared UI
+ * that benefits from patterns, composability, and semantic parent-child couplings.
+ *
+ * Controls and functions are decoupled but come together per feature
+ * (e.g., workflow or vibe). Each page has an ideaiControls boolean in
+ * route-config.ts to control visibility.
  */
 
 "use client";
 
-import { useMemo, useCallback } from "react";
+import { useMemo, useCallback, useEffect } from "react";
+import * as React from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { useAtomValue } from "jotai";
 import { toast } from "sonner";
 import {
-  IdeAISideMenu,
-  IdeAISideMenuCards,
-  IdeAISideMenuControls,
-  IdeAISideMenuNewWorkflow,
+  IdeAIMenuControls,
+  IdeAIMenuSection,
   type WorkflowItem,
 } from "@repo/ui";
 import { useWorkflowNav } from "@/components/nav/use-workflow-nav";
 import { VibeChatsList } from "@/components/vibe/vibe-chats-list";
 import { VibePromptInput } from "@/components/vibe/vibe-prompt-input";
 import { VibeChatSideMenuPanel } from "@/components/vibe/vibe-chat-side-menu-panel";
-import { useSession } from "@/lib/auth-client";
 import { api } from "@/lib/api-client";
-import { getToolContext } from "@/lib/route-config";
+import { getToolContext, needsIdeaiControls } from "@/lib/route-config";
 import {
   currentWorkflowNameAtom,
   currentWorkflowIdAtom,
@@ -36,6 +48,10 @@ import {
 } from "@/lib/workflow-store";
 import { useSetAtom } from "jotai";
 import { WorkflowStatusCard } from "@/components/workflow/workflow-status-card";
+import { WorkflowListControl } from "@/components/workflow/workflow-list-control";
+import { IdeAISideMenuNewWorkflow } from "@repo/ui";
+import { useMenuState } from "@/components/menu-state-provider";
+import { getEffectiveTrigger, MENU_SETTINGS } from "@/lib/menu-settings";
 
 /**
  * IdeaI Side Menu Wrapper
@@ -44,7 +60,6 @@ import { WorkflowStatusCard } from "@/components/workflow/workflow-status-card";
  * Shows workflows from API and provides slots for custom cards and controls.
  */
 export function IdeAISideMenuWrapper() {
-  const { data: session } = useSession();
   const workflowNav = useWorkflowNav();
   const router = useRouter();
   const pathname = usePathname();
@@ -56,17 +71,12 @@ export function IdeAISideMenuWrapper() {
   const clearWorkflow = useSetAtom(clearWorkflowAtom);
   const setHasUnsavedChanges = useSetAtom(hasUnsavedChangesAtom);
 
+  // Check if this route needs IdeaI-level controls (contextual menu)
+  // Controls are contextual - only appear when page needs IdeaI-level abstraction
+  const hasIdeaiControls = needsIdeaiControls(pathname);
+
   // Determine menu title
   const workflowsTitle = "Workflows";
-
-  // Check if user is authenticated
-  const isAuthenticated = useMemo(
-    () =>
-      session?.user &&
-      session.user.name !== "Anonymous" &&
-      !session.user.email?.startsWith("temp-"),
-    [session?.user?.name, session?.user?.email],
-  );
 
   // Memoize workflows array, but update current workflow name from atom if it changed
   // Only update the name in the array, don't trigger full refresh to prevent flickering
@@ -209,55 +219,101 @@ export function IdeAISideMenuWrapper() {
     }
   }, [clearWorkflow, currentWorkflowId, setHasUnsavedChanges]);
 
-  // Always render component but hide when not authenticated (prevents remounting)
+  // Load workflows when component mounts (only for workflow tool)
+  // This must be before any conditional returns to follow Rules of Hooks
+  useEffect(() => {
+    if (!isVibeTool) {
+      loadWorkflows();
+    }
+  }, [loadWorkflows, isVibeTool]);
+
+  // If route doesn't need IdeaI controls, don't render menu
+  // Controls are contextual - only appear when page needs IdeaI-level abstraction
+  if (!hasIdeaiControls) {
+    return null;
+  }
+
+  // Get menu state and settings
+  // CRITICAL: This hook ensures menu is ALWAYS connected to state
+  // If MenuStateProvider is missing, this will throw (preventing broken menus)
+  const menuState = useMenuState();
+  const effectiveTrigger = getEffectiveTrigger(menuState.leftMenuSettings);
+
+  // Safety check: Ensure menu state is valid
+  if (!menuState || !menuState.setLeftMenuOpen) {
+    console.error(
+      "MenuStateProvider is missing or invalid! Left menu will not work.",
+    );
+    return null; // Don't render menu if state is broken
+  }
+
+  // Determine menu title based on tool context
+  const menuTitle = isVibeTool ? "Vibe Controls" : "Workflow Controls";
+
+  // LEFT MENU = CONTROLS (settings-controlled)
   if (isVibeTool) {
     return (
-      <div style={{ display: isAuthenticated ? "block" : "none" }}>
-        <IdeAISideMenu workflowsTitle="Vibe Chats">
-          {/* New chat input (vibe home only) */}
-          {isVibeHome && (
-            <div className="sticky top-0 z-10 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700 -mx-0 px-4 py-3">
-              <VibePromptInput compact />
-            </div>
-          )}
+      <IdeAIMenuControls
+        position="left"
+        trigger={effectiveTrigger}
+        size={280}
+        title={menuTitle}
+        open={menuState.leftMenuOpen}
+        onOpenChange={menuState.setLeftMenuOpen}
+        animationMode={MENU_SETTINGS.animationMode || "overlay"}
+        swipeToClose={menuState.leftMenuSettings.swipeToClose ?? true}
+      >
+        {/* New chat input (vibe home only) */}
+        {isVibeHome && (
+          <IdeAIMenuSection id="vibe-prompt" title="New Chat" defaultOpen>
+            <VibePromptInput compact />
+          </IdeAIMenuSection>
+        )}
 
-          {/* Vibe chat list */}
+        {/* Vibe chat list */}
+        <IdeAIMenuSection id="vibe-chats" title="Vibe Chats" defaultOpen>
           <VibeChatsList />
+        </IdeAIMenuSection>
 
-          {/* Chat UI module (detail page only) */}
-          <IdeAISideMenuCards title="Chat" className="pointer-events-auto">
-            <VibeChatSideMenuPanel />
-          </IdeAISideMenuCards>
-        </IdeAISideMenu>
-      </div>
+        {/* Chat UI module (detail page only) */}
+        <IdeAIMenuSection id="vibe-chat" title="Chat" defaultOpen>
+          <VibeChatSideMenuPanel />
+        </IdeAIMenuSection>
+      </IdeAIMenuControls>
     );
   }
 
   return (
-    <div style={{ display: isAuthenticated ? "block" : "none" }}>
-      <IdeAISideMenu
-        workflows={workflows}
-        onLoadWorkflows={loadWorkflows}
-        currentWorkflowId={workflowNav.currentWorkflowId}
-        onCreateWorkflow={handleCreateWorkflow}
-        onCloneWorkflow={handleCloneWorkflow}
-        onDeleteWorkflow={handleDeleteWorkflow}
-        onClearWorkflow={handleClearWorkflow}
-        workflowsTitle={workflowsTitle}
-      >
-        {/* Area 1: Status card at top - shows workflow status - sticky */}
-        <div className="sticky top-0 z-10 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700 -mx-0 px-4 py-3">
-          <WorkflowStatusCard />
-        </div>
+    <IdeAIMenuControls
+      position="left"
+      trigger={effectiveTrigger}
+      size={280}
+      title={menuTitle}
+      open={menuState.leftMenuOpen}
+      onOpenChange={menuState.setLeftMenuOpen}
+      animationMode={MENU_SETTINGS.animationMode || "overlay"}
+      swipeToClose={menuState.leftMenuSettings.swipeToClose ?? true}
+    >
+      {/* Status card section */}
+      <IdeAIMenuSection id="workflow-status" title="Status" defaultOpen>
+        <WorkflowStatusCard />
+      </IdeAIMenuSection>
 
-        {/* Area 2: New Workflow section - above the list - sticky */}
-        <div className="sticky top-[180px] z-10 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700 -mx-0">
-          <IdeAISideMenuNewWorkflow onCreateWorkflow={handleCreateWorkflow} />
-        </div>
+      {/* New Workflow section */}
+      <IdeAIMenuSection id="new-workflow" title="New Workflow" defaultOpen>
+        <IdeAISideMenuNewWorkflow onCreateWorkflow={handleCreateWorkflow} />
+      </IdeAIMenuSection>
 
-        {/* Area 3: Workflows list section */}
-        {/* Workflows list is auto-populated by IdeAISideMenu component */}
-      </IdeAISideMenu>
-    </div>
+      {/* Workflows list section */}
+      <IdeAIMenuSection id="workflows" title={workflowsTitle} defaultOpen>
+        <WorkflowListControl
+          workflows={workflows}
+          currentWorkflowId={workflowNav.currentWorkflowId}
+          onCloneWorkflow={handleCloneWorkflow}
+          onDeleteWorkflow={handleDeleteWorkflow}
+          onClearWorkflow={handleClearWorkflow}
+        />
+      </IdeAIMenuSection>
+    </IdeAIMenuControls>
   );
 }
