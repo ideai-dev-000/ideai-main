@@ -124,7 +124,7 @@ export {
   IdeAIMenuMain,
   IdeAIMenuSection,
   useIdeAIMenuContext,
-  getMenuPositionStyles,
+  // Note: getMenuPositionStyles exported from ideai-menu-000 below to avoid duplicate
   type IdeAIMenuPosition,
   type IdeAIMenuTrigger,
   type IdeAIMenuBaseProps,
