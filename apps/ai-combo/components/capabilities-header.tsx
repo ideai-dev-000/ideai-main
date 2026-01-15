@@ -83,9 +83,14 @@ export function CapabilitiesHeader() {
               !menuState.leftMenuSettings.fixedOpen && (
                 <button
                   type="button"
-                  onClick={() =>
-                    menuState.setLeftMenuOpen(!menuState.leftMenuOpen)
-                  }
+                  onClick={() => {
+                    const newState = !menuState.leftMenuOpen;
+                    menuState.setLeftMenuOpen(newState);
+                    // If user closes menu, mark it as manually closed (prevents auto-open)
+                    if (!newState) {
+                      menuState.markLeftMenuManuallyClosed();
+                    }
+                  }}
                   className="flex items-center justify-center p-2 rounded-md bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors border border-slate-300 dark:border-slate-600 shadow-sm min-w-[36px] min-h-[36px]"
                   aria-label={
                     menuState.leftMenuOpen

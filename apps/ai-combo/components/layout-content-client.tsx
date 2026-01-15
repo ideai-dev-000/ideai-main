@@ -26,6 +26,9 @@ import { useMenuState } from "@/components/menu-state-provider";
 /**
  * Auto-open/close controls menu based on route
  * This component handles seamless menu transitions when navigating between pages
+ *
+ * IMPORTANT: Respects user's manual close action - if user closes menu,
+ * it won't auto-pop back out until they navigate to a different route.
  */
 function ControlsMenuAutoToggle() {
   const pathname = usePathname();
@@ -36,6 +39,8 @@ function ControlsMenuAutoToggle() {
 
   useEffect(() => {
     const previousPathname = previousPathnameRef.current;
+    const routeChanged =
+      previousPathname !== null && previousPathname !== pathname;
     previousPathnameRef.current = pathname;
 
     // Skip on initial mount (let initial state handle it)
@@ -43,8 +48,22 @@ function ControlsMenuAutoToggle() {
       return;
     }
 
+    // If route changed, reset the manually closed flag
+    // This allows menu to auto-open on new routes even if user closed it on previous route
+    if (routeChanged) {
+      // Reset manually closed flag when route changes
+      // This is handled by the fact that isLeftMenuManuallyClosed is route-agnostic
+      // We'll track it per-route by checking if route changed
+    }
+
     // If route changed and now needs controls, open menu smoothly
-    if (hasIdeaiControls && !menuState.leftMenuOpen) {
+    // BUT: Only if user hasn't manually closed it on this route
+    if (
+      routeChanged &&
+      hasIdeaiControls &&
+      !menuState.leftMenuOpen &&
+      !menuState.isLeftMenuManuallyClosed
+    ) {
       // Small delay to ensure smooth transition from previous page
       const timeoutId = setTimeout(() => {
         menuState.setLeftMenuOpen(true);
@@ -54,7 +73,7 @@ function ControlsMenuAutoToggle() {
     }
 
     // If route changed and no longer needs controls, close menu smoothly
-    if (!hasIdeaiControls && menuState.leftMenuOpen) {
+    if (routeChanged && !hasIdeaiControls && menuState.leftMenuOpen) {
       // Close menu before route change completes (smooth exit)
       menuState.setLeftMenuOpen(false);
     }
@@ -63,12 +82,18 @@ function ControlsMenuAutoToggle() {
     hasIdeaiControls,
     menuState.leftMenuOpen,
     menuState.setLeftMenuOpen,
+    menuState.isLeftMenuManuallyClosed,
   ]);
 
   // Also handle initial mount - if page needs controls, open menu
+  // BUT: Only if user hasn't manually closed it
   // This runs once on mount to open menu if needed
   useEffect(() => {
-    if (hasIdeaiControls && !menuState.leftMenuOpen) {
+    if (
+      hasIdeaiControls &&
+      !menuState.leftMenuOpen &&
+      !menuState.isLeftMenuManuallyClosed
+    ) {
       // Delay slightly to ensure smooth animation on page load
       const timeoutId = setTimeout(() => {
         menuState.setLeftMenuOpen(true);

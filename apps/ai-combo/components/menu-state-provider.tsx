@@ -25,6 +25,10 @@ interface MenuStateContextValue {
   setRightMenuOpen: (open: boolean) => void;
   setBottomMenuOpen: (open: boolean) => void;
   setTopMenuOpen: (open: boolean) => void;
+  /** Mark that user manually closed the left menu (prevents auto-open) */
+  markLeftMenuManuallyClosed: () => void;
+  /** Check if user manually closed the left menu */
+  isLeftMenuManuallyClosed: boolean;
   leftMenuSettings: typeof MENU_SETTINGS.leftMenu;
   rightMenuSettings: typeof MENU_SETTINGS.rightMenu;
   bottomMenuSettings: typeof MENU_SETTINGS.bottomMenu;
@@ -50,6 +54,9 @@ export function MenuStateProvider({ children }: { children: React.ReactNode }) {
   const [rightMenuOpen, setRightMenuOpen] = React.useState(false);
   const [bottomMenuOpen, setBottomMenuOpen] = React.useState(false);
   const [topMenuOpen, setTopMenuOpen] = React.useState(false);
+  // Track if user manually closed the left menu (prevents auto-open)
+  const [isLeftMenuManuallyClosed, setIsLeftMenuManuallyClosed] =
+    React.useState(false);
 
   // Set initial state after mount to prevent hydration mismatch
   useIsomorphicLayoutEffect(() => {
@@ -65,6 +72,23 @@ export function MenuStateProvider({ children }: { children: React.ReactNode }) {
       return; // Don't allow changes if fixed open
     }
     setLeftMenuOpen(open);
+    // If user closes menu, mark it as manually closed
+    if (!open) {
+      setIsLeftMenuManuallyClosed(true);
+    } else {
+      // If user opens menu, clear the manually closed flag
+      setIsLeftMenuManuallyClosed(false);
+    }
+  }, []);
+
+  // Mark that user manually closed the menu (prevents auto-open)
+  const markLeftMenuManuallyClosed = React.useCallback(() => {
+    setIsLeftMenuManuallyClosed(true);
+  }, []);
+
+  // Reset manually closed flag (called when route changes)
+  const resetLeftMenuManuallyClosed = React.useCallback(() => {
+    setIsLeftMenuManuallyClosed(false);
   }, []);
 
   const handleSetRightMenuOpen = React.useCallback((open: boolean) => {
@@ -98,6 +122,8 @@ export function MenuStateProvider({ children }: { children: React.ReactNode }) {
       setRightMenuOpen: handleSetRightMenuOpen,
       setBottomMenuOpen: handleSetBottomMenuOpen,
       setTopMenuOpen: handleSetTopMenuOpen,
+      markLeftMenuManuallyClosed,
+      isLeftMenuManuallyClosed,
       leftMenuSettings: MENU_SETTINGS.leftMenu,
       rightMenuSettings: MENU_SETTINGS.rightMenu,
       bottomMenuSettings: MENU_SETTINGS.bottomMenu,
@@ -112,6 +138,8 @@ export function MenuStateProvider({ children }: { children: React.ReactNode }) {
       handleSetRightMenuOpen,
       handleSetBottomMenuOpen,
       handleSetTopMenuOpen,
+      markLeftMenuManuallyClosed,
+      isLeftMenuManuallyClosed,
     ],
   );
 
