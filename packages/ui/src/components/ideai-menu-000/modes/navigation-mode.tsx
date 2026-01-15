@@ -39,9 +39,17 @@ export function NavigationMode({
   const useMenubar = topMenuOptions?.useMenubar ?? false;
   const isSticky = topMenuOptions?.sticky ?? false;
 
-  // When trigger is "always", menu should always be visible (open state is ignored)
-  // When trigger is "button" or "hover", menu visibility is controlled by open prop
-  const isVisible = trigger === "always" ? true : (open ?? true);
+  // Menu visibility logic:
+  // - "always": Always visible (ignore open prop)
+  // - "button": Controlled by open prop (button toggles it)
+  // - "hover": Controlled by open prop (hover toggles it)
+  // For top menu, default to visible if open is undefined
+  const isVisible =
+    trigger === "always"
+      ? true
+      : trigger === "button"
+        ? (open ?? false)
+        : (open ?? false);
 
   // If useMenubar is true, use shadcn Menubar component
   // Otherwise, use our minimal UI (default)

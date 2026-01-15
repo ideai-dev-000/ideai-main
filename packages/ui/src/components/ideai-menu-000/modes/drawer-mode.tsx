@@ -34,9 +34,16 @@ export function DrawerMode({
 }: IdeAIMenuBaseProps) {
   const contextValue = useMenuContextValue();
 
-  // When trigger is "always", menu should always be visible (open state is ignored)
-  // When trigger is "button" or "hover", menu visibility is controlled by open prop
-  const isVisible = trigger === "always" ? true : (open ?? false);
+  // Menu visibility logic:
+  // - "always": Always visible (ignore open prop)
+  // - "button": Controlled by open prop (button toggles it)
+  // - "hover": Controlled by open prop (hover toggles it)
+  const isVisible =
+    trigger === "always"
+      ? true
+      : trigger === "button"
+        ? (open ?? false)
+        : (open ?? false);
 
   // For now, use a simple div structure
   // In production, replace with actual Drawer components

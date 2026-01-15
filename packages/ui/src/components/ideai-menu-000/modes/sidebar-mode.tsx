@@ -34,11 +34,16 @@ export function SidebarMode({
 }: IdeAIMenuBaseProps) {
   const contextValue = useMenuContextValue();
 
-  // When trigger is "always", menu should always be visible (open state is ignored)
-  // When trigger is "button" or "hover", menu visibility is controlled by open prop
-  // CRITICAL: If trigger is "always", always show menu regardless of open prop
-  // If trigger is "button" or "hover", use open prop (defaults to false if not provided)
-  const isVisible = trigger === "always" ? true : (open ?? false);
+  // Menu visibility logic:
+  // - "always": Always visible (ignore open prop)
+  // - "button": Controlled by open prop (button toggles it)
+  // - "hover": Controlled by open prop (hover toggles it)
+  const isVisible =
+    trigger === "always"
+      ? true
+      : trigger === "button"
+        ? (open ?? false)
+        : (open ?? false);
 
   // Debug logging
   if (typeof window !== "undefined" && process.env.NODE_ENV === "development") {

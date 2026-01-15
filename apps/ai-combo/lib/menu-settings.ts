@@ -112,31 +112,31 @@ export const MENU_SETTINGS: MenuSettings = {
   transitionDuration: 350, // milliseconds
   transitionEasing: "ease-out", // easing function
   leftMenu: {
-    trigger: "always",
-    initialState: "open",
+    trigger: "button", // "button" = controlled by toggle button, "always" = always visible, "hover" = hover to show
+    initialState: "closed", // Initial state when page loads
     fixedOpen: false, // Set to true to fix menu open with no toggle icon
-    showToggleIcon: true, // Set to false to hide toggle icon
+    showToggleIcon: true, // Set to false to hide toggle icon (only applies when trigger is "button")
     swipeToClose: true, // Enable swipe to close on mobile
   },
   rightMenu: {
-    trigger: "always",
-    initialState: "open",
+    trigger: "button", // "button" = controlled by toggle button, "always" = always visible, "hover" = hover to show
+    initialState: "closed", // Initial state when page loads
     fixedOpen: false, // Set to true to fix menu open with no toggle icon
-    showToggleIcon: true, // Set to false to hide toggle icon
+    showToggleIcon: true, // Set to false to hide toggle icon (only applies when trigger is "button")
     swipeToClose: true, // Enable swipe to close on mobile
   },
   bottomMenu: {
-    trigger: "always",
-    initialState: "open",
+    trigger: "button", // "button" = controlled by toggle button, "always" = always visible, "hover" = hover to show
+    initialState: "closed", // Initial state when page loads
     fixedOpen: false, // Set to true to fix menu open with no toggle icon
-    showToggleIcon: true, // Set to false to hide toggle icon
+    showToggleIcon: true, // Set to false to hide toggle icon (only applies when trigger is "button")
     swipeToClose: true, // Enable swipe to close on mobile
   },
   topMenu: {
-    trigger: "always",
-    initialState: "open",
-    fixedOpen: false, // Set to true to fix menu open with no toggle icon
-    showToggleIcon: true, // Set to false to hide toggle icon
+    trigger: "always", // Top menu is always visible (it's in the header area, no button needed)
+    initialState: "open", // Always open when trigger is "always"
+    fixedOpen: true, // Top menu is fixed open (it's part of the header)
+    showToggleIcon: false, // Never show toggle icon for top menu (it's in the header, would be weird)
     swipeToClose: true, // Enable swipe to close on mobile
   },
 };
