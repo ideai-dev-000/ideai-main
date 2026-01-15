@@ -223,15 +223,11 @@ function DesktopOverlayContainer() {
             />
 
             {/* Dialog container */}
-            {/* CRITICAL: Position below header (64px) - center vertically in remaining space */}
             <motion.div
               animate="visible"
-              className="fixed left-1/2 z-[100] w-full max-w-lg -translate-x-1/2 -translate-y-1/2 px-4"
+              className="fixed top-1/2 left-1/2 z-[100] w-full max-w-lg -translate-x-1/2 -translate-y-1/2 px-4"
               exit="exit"
               initial="hidden"
-              style={{
-                top: "calc(64px + (100vh - 64px) / 2)", // Center in space below header
-              }}
               variants={containerVariants}
             >
               <LayoutGroup>
