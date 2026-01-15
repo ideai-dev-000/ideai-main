@@ -169,13 +169,15 @@ export const PromptInput = ({
   return (
     <form
       className={cn(
-        "w-full divide-y overflow-hidden rounded-xl border bg-background shadow-sm transition-colors",
+        "w-full divide-y overflow-hidden rounded-xl border bg-background shadow-sm transition-colors pointer-events-auto",
         isDragOver && "border-primary bg-primary/5",
         className,
       )}
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
+      onClick={(e) => e.stopPropagation()}
+      onMouseDown={(e) => e.stopPropagation()}
       {...props}
     />
   );
@@ -218,7 +220,7 @@ export const PromptInputTextarea = ({
   return (
     <Textarea
       className={cn(
-        "w-full resize-none rounded-none border-none p-3 shadow-none outline-none ring-0",
+        "w-full resize-none rounded-none border-none p-3 shadow-none outline-none ring-0 pointer-events-auto",
         "field-sizing-content max-h-[6lh] bg-transparent dark:bg-transparent",
         "focus-visible:ring-0",
         className,
@@ -228,6 +230,8 @@ export const PromptInputTextarea = ({
         onChange?.(e);
       }}
       onKeyDown={handleKeyDown}
+      onClick={(e) => e.stopPropagation()}
+      onFocus={(e) => e.stopPropagation()}
       placeholder={placeholder}
       {...props}
     />

@@ -213,6 +213,52 @@ export const PLUGIN_STEP_IMPORTERS: Record<string, StepImporter> = {
     importer: () => import("@/plugins/webflow/steps/publish-site"),
     stepFunction: "publishSiteStep",
   },
+  // Static Workflows
+  "workflows-static/trigger": {
+    importer: () => import("@/plugins/workflows-static/steps/trigger"),
+    stepFunction: "triggerStep",
+  },
+  "workflows-static/requirement-taker": {
+    importer: () =>
+      import("@/plugins/workflows-static/steps/requirement-taker"),
+    stepFunction: "requirementTakerStep",
+  },
+  "workflows-static/task-generator": {
+    importer: () => import("@/plugins/workflows-static/steps/task-generator"),
+    stepFunction: "taskGeneratorStep",
+  },
+  "workflows-static/development": {
+    importer: () => import("@/plugins/workflows-static/steps/development"),
+    stepFunction: "developmentStep",
+  },
+  "workflows-static/design": {
+    importer: () => import("@/plugins/workflows-static/steps/design"),
+    stepFunction: "designStep",
+  },
+  "workflows-static/data": {
+    importer: () => import("@/plugins/workflows-static/steps/data"),
+    stepFunction: "dataStep",
+  },
+  "workflows-static/build": {
+    importer: () => import("@/plugins/workflows-static/steps/build"),
+    stepFunction: "buildStep",
+  },
+  "workflows-static/qa": {
+    importer: () => import("@/plugins/workflows-static/steps/qa"),
+    stepFunction: "qaStep",
+  },
+  "workflows-static/deploy": {
+    importer: () => import("@/plugins/workflows-static/steps/deploy"),
+    stepFunction: "deployStep",
+  },
+  "workflows-static/maintain": {
+    importer: () => import("@/plugins/workflows-static/steps/maintain"),
+    stepFunction: "maintainStep",
+  },
+  "workflows-static/archive": {
+    importer: () => import("@/plugins/workflows-static/steps/archive"),
+    stepFunction: "archiveStep",
+  },
 };
 
 /**
@@ -256,6 +302,18 @@ export const ACTION_LABELS: Record<string, string> = {
   "webflow/list-sites": "List Sites",
   "webflow/get-site": "Get Site",
   "webflow/publish-site": "Publish Site",
+  // Static Workflows
+  "workflows-static/trigger": "Trigger",
+  "workflows-static/requirement-taker": "Requirement Taker",
+  "workflows-static/task-generator": "Task Generator",
+  "workflows-static/development": "Development",
+  "workflows-static/design": "Design",
+  "workflows-static/data": "Data",
+  "workflows-static/build": "Build",
+  "workflows-static/qa": "QA",
+  "workflows-static/deploy": "Deploy",
+  "workflows-static/maintain": "Maintain",
+  "workflows-static/archive": "Archive",
   Scrape: "Scrape URL",
   Search: "Search Web",
   "Generate Text": "Generate Text",

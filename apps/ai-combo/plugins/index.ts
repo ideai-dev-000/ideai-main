@@ -28,6 +28,7 @@ import "./stripe";
 import "./superagent";
 import "./v0";
 import "./webflow";
+import "./workflows-static";
 
 export type {
   ActionConfigField,
