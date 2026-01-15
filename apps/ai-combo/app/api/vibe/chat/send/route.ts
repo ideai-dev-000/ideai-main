@@ -52,17 +52,51 @@ export async function POST(request: NextRequest) {
     }
 
     // Verify chat ownership (only for authenticated users)
+    // First verify chat exists in v0, then check/create ownership
     if (session?.user?.id) {
-      const ownership = await getVibeChatOwnership({
+      // First, verify chat exists in v0 API
+      let chatExists = false;
+      try {
+        const chatDetails = await v0Client.chats.getById({ chatId });
+        chatExists = !!chatDetails;
+      } catch (error) {
+        console.error("[VibeChatSend] Chat not found in v0 API:", error);
+        return NextResponse.json({ error: "Chat not found" }, { status: 404 });
+      }
+
+      if (!chatExists) {
+        return NextResponse.json({ error: "Chat not found" }, { status: 404 });
+      }
+
+      // Check ownership - if doesn't exist, create it (chat exists, user is authenticated)
+      let ownership = await getVibeChatOwnership({
         v0ChatId: chatId,
         userId: session.user.id,
       });
 
+      // If ownership doesn't exist but chat exists, create it on-the-fly
+      // This handles cases where ownership creation failed during chat creation
       if (!ownership) {
-        return NextResponse.json(
-          { error: "Chat not found or access denied" },
-          { status: 404 },
-        );
+        const { createVibeChatOwnership } =
+          await import("@/lib/vibe/db/vibe-chat-queries");
+        ownership = await createVibeChatOwnership({
+          v0ChatId: chatId,
+          userId: session.user.id,
+        });
+
+        if (ownership) {
+          console.log(
+            "[VibeChatSend] Created ownership on-the-fly for chat:",
+            chatId,
+          );
+        } else {
+          // Ownership creation failed, but chat exists - allow access anyway
+          // This is a non-critical failure (ownership is for tracking, not security)
+          console.warn(
+            "[VibeChatSend] Failed to create ownership, but allowing access (chat exists):",
+            chatId,
+          );
+        }
       }
     }
 

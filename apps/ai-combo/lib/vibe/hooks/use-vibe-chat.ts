@@ -167,6 +167,20 @@ export function useVibeChat({
               "You have exceeded your maximum number of messages for the day. Please try again later.";
           }
         }
+
+        // Handle chat not found or access denied - redirect to home
+        if (
+          response.status === 404 &&
+          (errorMessage.includes("not found") ||
+            errorMessage.includes("access denied"))
+        ) {
+          console.warn(
+            "[useVibeChat] Chat not found or access denied, redirecting to home",
+          );
+          router.push("/vibe");
+          return; // Don't throw error, just redirect
+        }
+
         throw new Error(errorMessage);
       }
 
