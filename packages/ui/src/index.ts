@@ -117,6 +117,44 @@ export {
   type WorkflowItem,
   type IdeAISideMenuProps,
 } from "./components/ideai-side-menu";
+// IdeaI Menu System (new structure - ideai folder)
+export {
+  // Base menu
+  IdeAIMenuSection,
+  useIdeAIMenuContext,
+  type IdeAIMenuPosition,
+  type IdeAIMenuTrigger,
+  type IdeAIMenuBaseProps,
+  type IdeAIMenuSectionProps,
+  // Menu variants
+  IdeAIMenuControls,
+  IdeAIMenuMain,
+  type IdeAIMenuControlsProps,
+  type IdeAIMenuMainProps,
+} from "./components/ideai";
+
+// IdeaI Menu System (unified - ideai-menu-000)
+export {
+  IdeAIMenu,
+  IdeAIMenuSection as IdeAIMenuSectionV2,
+  useIdeAIMenuContext as useIdeAIMenuContextV2,
+  getMenuPositionStyles,
+  getMenuMode,
+  type IdeAIMenuPosition as IdeAIMenuPositionV2,
+  type IdeAIMenuTrigger as IdeAIMenuTriggerV2,
+  type IdeAIMenuMode,
+  type IdeAIMenuAnimationMode,
+  type IdeAIMenuBaseProps as IdeAIMenuBasePropsV2,
+  type IdeAIMenuSectionProps as IdeAIMenuSectionPropsV2,
+  type IdeAIMenuContextValue,
+} from "./components/ideai-menu-000";
+export {
+  ControlMenuModulesProvider,
+  ControlMenuModulesRenderer,
+  useControlMenuModules,
+  useRegisterControlModule,
+  type ControlMenuModule,
+} from "./components/ideai-control-menu/use-control-menu-modules";
 
 // Animation System
 export {

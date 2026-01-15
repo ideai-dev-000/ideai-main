@@ -1,0 +1,778 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "IdeaI Menu Configuration",
+  "description": "Complete configuration options for the IdeaI Menu System",
+  "type": "object",
+  "properties": {
+    "position": {
+      "type": "string",
+      "enum": ["top", "bottom", "left", "right", "floating"],
+      "description": "Menu position on screen",
+      "default": "right",
+      "examples": [
+        {
+          "value": "left",
+          "description": "Left side of screen - typically uses Sidebar component"
+        },
+        {
+          "value": "right",
+          "description": "Right side of screen - typically uses Sidebar component"
+        },
+        {
+          "value": "top",
+          "description": "Top of screen - can use NavigationMenu or Menubar component"
+        },
+        {
+          "value": "bottom",
+          "description": "Bottom of screen - typically uses Drawer component"
+        },
+        {
+          "value": "floating",
+          "description": "Floating position - uses Popover component"
+        }
+      ]
+    },
+    "mode": {
+      "type": "string",
+      "enum": ["auto", "sidebar", "drawer", "navigation", "menubar", "popover"],
+      "description": "Display mode - auto selects based on position, or explicitly set",
+      "default": "auto",
+      "examples": [
+        {
+          "value": "auto",
+          "description": "Automatically select mode based on position"
+        },
+        {
+          "value": "sidebar",
+          "description": "Use shadcn Sidebar component (for left/right positions)"
+        },
+        {
+          "value": "drawer",
+          "description": "Use shadcn Drawer component (for bottom position)"
+        },
+        {
+          "value": "navigation",
+          "description": "Use shadcn NavigationMenu component (for top position) - default"
+        },
+        {
+          "value": "menubar",
+          "description": "Use shadcn Menubar component (for top position) - alternative UI"
+        },
+        {
+          "value": "popover",
+          "description": "Use shadcn Popover component (for floating position)"
+        }
+      ]
+    },
+    "trigger": {
+      "type": "string",
+      "enum": ["always", "button", "hover"],
+      "description": "How the menu is triggered/shown",
+      "default": "always",
+      "examples": [
+        {
+          "value": "always",
+          "description": "Menu is always visible (no toggle needed)"
+        },
+        {
+          "value": "button",
+          "description": "Menu opens/closes via button click"
+        },
+        {
+          "value": "hover",
+          "description": "Menu appears on hover (desktop only)"
+        }
+      ]
+    },
+    "size": {
+      "type": "number",
+      "description": "Menu width (for left/right) or height (for top/bottom) in pixels",
+      "default": 280,
+      "minimum": 100,
+      "maximum": 1000,
+      "examples": [
+        {
+          "value": 280,
+          "description": "Standard sidebar width"
+        },
+        {
+          "value": 320,
+          "description": "Wider sidebar for more content"
+        },
+        {
+          "value": 80,
+          "description": "Compact top/bottom menu height"
+        }
+      ]
+    },
+    "open": {
+      "type": "boolean",
+      "description": "Controlled open state (external control)",
+      "default": null,
+      "examples": [
+        {
+          "value": true,
+          "description": "Menu is open"
+        },
+        {
+          "value": false,
+          "description": "Menu is closed"
+        },
+        {
+          "value": null,
+          "description": "Use internal state management"
+        }
+      ]
+    },
+    "onOpenChange": {
+      "type": "string",
+      "description": "Callback function name for open state changes (React callback)",
+      "pattern": "^[a-zA-Z_$][a-zA-Z0-9_$]*$",
+      "examples": [
+        {
+          "value": "handleMenuToggle",
+          "description": "Custom handler function"
+        }
+      ]
+    },
+    "buttonLabel": {
+      "type": "string",
+      "description": "Button label when trigger is 'button'",
+      "default": "Menu",
+      "examples": [
+        {
+          "value": "Menu",
+          "description": "Default button label"
+        },
+        {
+          "value": "Navigation",
+          "description": "Custom button label"
+        },
+        {
+          "value": "☰",
+          "description": "Hamburger icon"
+        }
+      ]
+    },
+    "floatingPosition": {
+      "type": "object",
+      "description": "Floating position coordinates (only for position='floating')",
+      "properties": {
+        "top": {
+          "type": "number",
+          "description": "Distance from top in pixels"
+        },
+        "right": {
+          "type": "number",
+          "description": "Distance from right in pixels"
+        },
+        "bottom": {
+          "type": "number",
+          "description": "Distance from bottom in pixels"
+        },
+        "left": {
+          "type": "number",
+          "description": "Distance from left in pixels"
+        },
+        "width": {
+          "type": "number",
+          "description": "Custom width for floating menu"
+        }
+      },
+      "examples": [
+        {
+          "value": {
+            "top": 100,
+            "right": 20
+          },
+          "description": "Floating menu 100px from top, 20px from right"
+        }
+      ]
+    },
+    "title": {
+      "type": "string",
+      "description": "Menu title displayed in header",
+      "examples": [
+        {
+          "value": "Navigation",
+          "description": "Standard navigation menu"
+        },
+        {
+          "value": "Controls",
+          "description": "Control panel menu"
+        },
+        {
+          "value": "",
+          "description": "No title (use headerContent instead)"
+        }
+      ]
+    },
+    "headerContent": {
+      "type": "string",
+      "description": "Custom header content (React node) - overrides title",
+      "examples": [
+        {
+          "value": "<Logo />",
+          "description": "Custom logo component"
+        }
+      ]
+    },
+    "animationMode": {
+      "type": "string",
+      "enum": ["overlay", "push"],
+      "description": "How menu interacts with content",
+      "default": "overlay",
+      "examples": [
+        {
+          "value": "overlay",
+          "description": "Menu overlays content (default)"
+        },
+        {
+          "value": "push",
+          "description": "Menu pushes content aside (adjusts padding)"
+        }
+      ]
+    },
+    "swipeToClose": {
+      "type": "boolean",
+      "description": "Enable swipe to close on mobile/touch devices",
+      "default": true,
+      "examples": [
+        {
+          "value": true,
+          "description": "Swipe gestures enabled (default)"
+        },
+        {
+          "value": false,
+          "description": "Disable swipe gestures"
+        }
+      ]
+    },
+    "animationDuration": {
+      "type": "number",
+      "description": "Animation duration in milliseconds",
+      "default": 350,
+      "minimum": 0,
+      "maximum": 2000,
+      "examples": [
+        {
+          "value": 350,
+          "description": "Standard animation (default)"
+        },
+        {
+          "value": 200,
+          "description": "Fast animation"
+        },
+        {
+          "value": 500,
+          "description": "Slow animation"
+        }
+      ]
+    },
+    "easing": {
+      "type": "string",
+      "description": "CSS easing function for animations",
+      "default": "cubic-bezier(0.16, 1, 0.3, 1)",
+      "examples": [
+        {
+          "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+          "description": "Ease-out-expo (default, smooth)"
+        },
+        {
+          "value": "ease-in-out",
+          "description": "Standard ease"
+        },
+        {
+          "value": "cubic-bezier(0.4, 0, 0.2, 1)",
+          "description": "Material Design easing"
+        },
+        {
+          "value": "linear",
+          "description": "Linear animation"
+        }
+      ]
+    },
+    "className": {
+      "type": "string",
+      "description": "Custom CSS classes for menu container",
+      "examples": [
+        {
+          "value": "custom-menu-class",
+          "description": "Additional styling"
+        }
+      ]
+    },
+    "sections": {
+      "type": "array",
+      "description": "Menu sections configuration",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique section ID (required)",
+            "pattern": "^[a-z0-9-]+$",
+            "examples": [
+              {
+                "value": "nav-main",
+                "description": "Main navigation section"
+              },
+              {
+                "value": "user-settings",
+                "description": "User settings section"
+              }
+            ]
+          },
+          "title": {
+            "type": "string",
+            "description": "Section title",
+            "examples": [
+              {
+                "value": "Navigation",
+                "description": "Navigation section"
+              },
+              {
+                "value": "Settings",
+                "description": "Settings section"
+              }
+            ]
+          },
+          "defaultOpen": {
+            "type": "boolean",
+            "description": "Section open by default",
+            "default": false,
+            "examples": [
+              {
+                "value": true,
+                "description": "Section expanded on load"
+              },
+              {
+                "value": false,
+                "description": "Section collapsed on load"
+              }
+            ]
+          },
+          "isCompleted": {
+            "type": "boolean",
+            "description": "Mark section as completed (for step-based progression)",
+            "default": false,
+            "examples": [
+              {
+                "value": true,
+                "description": "Section shows completion indicator"
+              }
+            ]
+          },
+          "autoOpenNext": {
+            "type": "boolean",
+            "description": "Auto-open next section when this one completes",
+            "default": false,
+            "examples": [
+              {
+                "value": true,
+                "description": "Enables step-based workflow progression"
+              }
+            ]
+          },
+          "className": {
+            "type": "string",
+            "description": "Custom CSS classes for section"
+          }
+        },
+        "required": ["id", "title"]
+      },
+      "examples": [
+        {
+          "value": [
+            {
+              "id": "nav-main",
+              "title": "Navigation",
+              "defaultOpen": true
+            },
+            {
+              "id": "user-settings",
+              "title": "User Settings",
+              "defaultOpen": false
+            }
+          ],
+          "description": "Multiple sections configuration"
+        }
+      ]
+    },
+    "topMenuOptions": {
+      "type": "object",
+      "description": "Special options for top-positioned menus",
+      "properties": {
+        "useMenubar": {
+          "type": "boolean",
+          "description": "Use shadcn Menubar component instead of NavigationMenu (top position only)",
+          "default": false,
+          "examples": [
+            {
+              "value": false,
+              "description": "Use NavigationMenu (default, minimal code)"
+            },
+            {
+              "value": true,
+              "description": "Use Menubar component (alternative UI)"
+            }
+          ]
+        },
+        "horizontal": {
+          "type": "boolean",
+          "description": "Layout items horizontally (for top/bottom menus)",
+          "default": true,
+          "examples": [
+            {
+              "value": true,
+              "description": "Items flow horizontally (default for top/bottom)"
+            },
+            {
+              "value": false,
+              "description": "Items flow vertically (unusual for top/bottom)"
+            }
+          ]
+        },
+        "sticky": {
+          "type": "boolean",
+          "description": "Menu sticks to top when scrolling",
+          "default": false,
+          "examples": [
+            {
+              "value": true,
+              "description": "Menu remains visible when scrolling"
+            },
+            {
+              "value": false,
+              "description": "Menu scrolls with page (default)"
+            }
+          ]
+        }
+      }
+    },
+    "sidebarOptions": {
+      "type": "object",
+      "description": "Special options for sidebar mode (left/right)",
+      "properties": {
+        "collapsible": {
+          "type": "string",
+          "enum": ["offcanvas", "icon", "none"],
+          "description": "Sidebar collapse behavior",
+          "default": "offcanvas",
+          "examples": [
+            {
+              "value": "offcanvas",
+              "description": "Sidebar slides off screen when collapsed"
+            },
+            {
+              "value": "icon",
+              "description": "Sidebar collapses to icon-only mode"
+            },
+            {
+              "value": "none",
+              "description": "Sidebar cannot be collapsed"
+            }
+          ]
+        },
+        "variant": {
+          "type": "string",
+          "enum": ["sidebar", "floating", "inset"],
+          "description": "Sidebar visual variant",
+          "default": "sidebar",
+          "examples": [
+            {
+              "value": "sidebar",
+              "description": "Standard sidebar (default)"
+            },
+            {
+              "value": "floating",
+              "description": "Floating sidebar with shadow"
+            },
+            {
+              "value": "inset",
+              "description": "Inset sidebar with margin"
+            }
+          ]
+        }
+      }
+    },
+    "drawerOptions": {
+      "type": "object",
+      "description": "Special options for drawer mode (bottom)",
+      "properties": {
+        "direction": {
+          "type": "string",
+          "enum": ["top", "bottom", "left", "right"],
+          "description": "Drawer slide direction",
+          "default": "bottom",
+          "examples": [
+            {
+              "value": "bottom",
+              "description": "Slide up from bottom (default)"
+            },
+            {
+              "value": "top",
+              "description": "Slide down from top"
+            }
+          ]
+        },
+        "dismissible": {
+          "type": "boolean",
+          "description": "Can be dismissed by clicking outside",
+          "default": true,
+          "examples": [
+            {
+              "value": true,
+              "description": "Click outside to close (default)"
+            },
+            {
+              "value": false,
+              "description": "Must use close button"
+            }
+          ]
+        },
+        "showHandle": {
+          "type": "boolean",
+          "description": "Show drag handle at top",
+          "default": true,
+          "examples": [
+            {
+              "value": true,
+              "description": "Show drag handle (default)"
+            },
+            {
+              "value": false,
+              "description": "Hide drag handle"
+            }
+          ]
+        }
+      }
+    },
+    "popoverOptions": {
+      "type": "object",
+      "description": "Special options for popover mode (floating)",
+      "properties": {
+        "align": {
+          "type": "string",
+          "enum": ["start", "center", "end"],
+          "description": "Alignment relative to trigger",
+          "default": "center",
+          "examples": [
+            {
+              "value": "center",
+              "description": "Centered alignment (default)"
+            },
+            {
+              "value": "start",
+              "description": "Align to start"
+            },
+            {
+              "value": "end",
+              "description": "Align to end"
+            }
+          ]
+        },
+        "side": {
+          "type": "string",
+          "enum": ["top", "bottom", "left", "right"],
+          "description": "Which side of trigger to show popover",
+          "default": "bottom",
+          "examples": [
+            {
+              "value": "bottom",
+              "description": "Below trigger (default)"
+            },
+            {
+              "value": "top",
+              "description": "Above trigger"
+            }
+          ]
+        },
+        "sideOffset": {
+          "type": "number",
+          "description": "Distance from trigger in pixels",
+          "default": 4,
+          "examples": [
+            {
+              "value": 4,
+              "description": "Close to trigger (default)"
+            },
+            {
+              "value": 8,
+              "description": "Further from trigger"
+            }
+          ]
+        }
+      }
+    },
+    "accessibility": {
+      "type": "object",
+      "description": "Accessibility options",
+      "properties": {
+        "ariaLabel": {
+          "type": "string",
+          "description": "ARIA label for menu",
+          "examples": [
+            {
+              "value": "Main navigation menu",
+              "description": "Descriptive label for screen readers"
+            }
+          ]
+        },
+        "ariaLabelledBy": {
+          "type": "string",
+          "description": "ID of element that labels the menu"
+        },
+        "keyboardShortcut": {
+          "type": "string",
+          "description": "Keyboard shortcut to toggle menu (e.g., 'b', 'Meta+b')",
+          "examples": [
+            {
+              "value": "b",
+              "description": "Press 'b' to toggle"
+            },
+            {
+              "value": "Meta+b",
+              "description": "Press Cmd/Ctrl+B to toggle"
+            }
+          ]
+        }
+      }
+    },
+    "responsive": {
+      "type": "object",
+      "description": "Responsive behavior options",
+      "properties": {
+        "mobileBreakpoint": {
+          "type": "number",
+          "description": "Breakpoint in pixels for mobile behavior",
+          "default": 768,
+          "examples": [
+            {
+              "value": 768,
+              "description": "Tablet and below (default)"
+            },
+            {
+              "value": 640,
+              "description": "Mobile only"
+            }
+          ]
+        },
+        "mobileMode": {
+          "type": "string",
+          "enum": ["drawer", "sheet", "modal"],
+          "description": "How menu appears on mobile",
+          "default": "drawer",
+          "examples": [
+            {
+              "value": "drawer",
+              "description": "Slide-in drawer (default)"
+            },
+            {
+              "value": "sheet",
+              "description": "Bottom sheet"
+            },
+            {
+              "value": "modal",
+              "description": "Full-screen modal"
+            }
+          ]
+        },
+        "hideOnMobile": {
+          "type": "boolean",
+          "description": "Hide menu on mobile devices",
+          "default": false,
+          "examples": [
+            {
+              "value": false,
+              "description": "Show on all devices (default)"
+            },
+            {
+              "value": true,
+              "description": "Desktop only"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "required": [],
+  "examples": [
+    {
+      "name": "Standard Left Sidebar",
+      "config": {
+        "position": "left",
+        "trigger": "always",
+        "size": 280,
+        "title": "Navigation",
+        "animationMode": "push",
+        "sections": [
+          {
+            "id": "nav-main",
+            "title": "Navigation",
+            "defaultOpen": true
+          }
+        ]
+      }
+    },
+    {
+      "name": "Top Menubar",
+      "config": {
+        "position": "top",
+        "mode": "menubar",
+        "trigger": "always",
+        "size": 60,
+        "title": "Menu",
+        "topMenuOptions": {
+          "useMenubar": true,
+          "sticky": true
+        }
+      }
+    },
+    {
+      "name": "Bottom Drawer",
+      "config": {
+        "position": "bottom",
+        "trigger": "button",
+        "size": 400,
+        "title": "Quick Actions",
+        "drawerOptions": {
+          "showHandle": true,
+          "dismissible": true
+        }
+      }
+    },
+    {
+      "name": "Floating Popover",
+      "config": {
+        "position": "floating",
+        "mode": "popover",
+        "trigger": "button",
+        "buttonLabel": "Options",
+        "floatingPosition": {
+          "top": 100,
+          "right": 20
+        },
+        "popoverOptions": {
+          "align": "end",
+          "side": "bottom"
+        }
+      }
+    },
+    {
+      "name": "Top Navigation Menu (Default)",
+      "config": {
+        "position": "top",
+        "mode": "navigation",
+        "trigger": "always",
+        "size": 80,
+        "title": "Navigation",
+        "topMenuOptions": {
+          "useMenubar": false,
+          "horizontal": true,
+          "sticky": false
+        }
+      }
+    }
+  ]
+}

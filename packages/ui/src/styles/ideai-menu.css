@@ -1,0 +1,516 @@
+/**
+ * @fileoverview IdeaI Menu Base Styles
+ *
+ * @module IdeAIMenuStyles
+ * @description
+ * Shared styles for all IdeaI menu variants (main, controls, etc.).
+ * Base styles that all menu types inherit from.
+ */
+
+/* ============================================
+   CSS Variables for Menu Configuration
+   ============================================ */
+:root {
+  --ideai-menu-transition-duration: 350ms;
+  --ideai-menu-easing: cubic-bezier(0.16, 1, 0.3, 1); /* Ease-out-expo for smooth, natural feel */
+  --ideai-menu-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
+}
+
+/* ============================================
+   Base Menu Container
+   ============================================ */
+.ideai-menu-content {
+  @apply fixed bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 shadow-lg;
+  @apply flex flex-col pointer-events-auto;
+  /* z-index set inline per menu to allow customization */
+  overflow: hidden;
+  /* CSS variable for width (used in push mode) */
+  --menu-width: 280px;
+}
+
+/* Menu Backdrop Overlay (for overlay mode) */
+.ideai-menu-backdrop {
+  @apply fixed inset-0 bg-black/20 dark:bg-black/40;
+  @apply pointer-events-auto;
+  z-index: 40;
+  opacity: 0;
+  transition: opacity 350ms cubic-bezier(0.16, 1, 0.3, 1);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+}
+
+.ideai-menu-backdrop.ideai-menu-backdrop--visible {
+  opacity: 1;
+}
+
+/* Position-specific styles */
+.ideai-menu--top {
+  @apply border-b;
+  /* Top/bottom menus scale horizontally, not vertically */
+  flex-direction: row;
+  height: auto;
+  min-height: fit-content;
+  max-height: 200px;
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.ideai-menu--bottom {
+  @apply border-t;
+  /* Top/bottom menus scale horizontally, not vertically */
+  flex-direction: row;
+  height: auto;
+  min-height: fit-content;
+  max-height: 200px;
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.ideai-menu--left {
+  @apply border-r;
+}
+
+.ideai-menu--right {
+  @apply border-l;
+}
+
+.ideai-menu--floating {
+  @apply rounded-lg;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* ============================================
+   Menu Header
+   ============================================ */
+.ideai-menu-header {
+  @apply flex items-center justify-between px-4 py-3;
+  @apply border-b border-slate-200 dark:border-slate-700;
+  @apply flex-shrink-0;
+}
+
+.ideai-menu-header-main {
+  @apply bg-slate-50 dark:bg-slate-800;
+}
+
+.ideai-menu-title {
+  @apply text-lg font-semibold text-slate-900 dark:text-slate-100;
+  margin: 0;
+}
+
+.ideai-menu-logo {
+  @apply flex items-center mr-2;
+}
+
+.ideai-menu-close {
+  @apply p-2 rounded-md text-slate-500 dark:text-slate-400;
+  @apply hover:bg-slate-100 dark:hover:bg-slate-800;
+  @apply transition-colors;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ============================================
+   Menu Body - Scrollable Content
+   ============================================ */
+.ideai-menu-body {
+  @apply flex-1 overflow-y-auto overflow-x-hidden;
+  @apply px-4 py-2;
+  /* Smooth scrolling for touch devices */
+  -webkit-overflow-scrolling: touch;
+  /* Custom scrollbar */
+  scrollbar-width: thin;
+  scrollbar-color: rgb(148 163 184) transparent;
+}
+
+/* Horizontal scrolling for top/bottom menus */
+.ideai-menu--top .ideai-menu-body,
+.ideai-menu--bottom .ideai-menu-body {
+  @apply flex flex-row items-center gap-2;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.5rem 1rem;
+  /* Hide scrollbar but keep functionality */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.ideai-menu--top .ideai-menu-body::-webkit-scrollbar,
+.ideai-menu--bottom .ideai-menu-body::-webkit-scrollbar {
+  display: none;
+}
+
+.ideai-menu-body::-webkit-scrollbar {
+  width: 6px;
+}
+
+.ideai-menu-body::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.ideai-menu-body::-webkit-scrollbar-thumb {
+  @apply bg-slate-300 dark:bg-slate-600 rounded-full;
+}
+
+.ideai-menu-body::-webkit-scrollbar-thumb:hover {
+  @apply bg-slate-400 dark:bg-slate-500;
+}
+
+/* ============================================
+   Menu Section (Base)
+   ============================================ */
+.ideai-menu-section {
+  @apply mb-2;
+  flex-shrink: 0;
+}
+
+/* Horizontal sections for top/bottom menus */
+.ideai-menu--top .ideai-menu-section,
+.ideai-menu--bottom .ideai-menu-section {
+  @apply mb-0 mr-2;
+  min-width: fit-content;
+}
+
+.ideai-menu-section-header {
+  @apply flex items-center justify-between w-full px-3 py-2;
+  @apply text-sm font-semibold text-slate-700 dark:text-slate-300;
+  @apply hover:bg-slate-50 dark:hover:bg-slate-800;
+  @apply transition-colors rounded-md;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+}
+
+.ideai-menu-section-title {
+  @apply flex-1;
+}
+
+.ideai-menu-section-actions {
+  @apply flex items-center gap-2;
+}
+
+.ideai-menu-section-completed {
+  @apply text-green-600 dark:text-green-400;
+  font-size: 0.875rem;
+}
+
+.ideai-menu-section-content {
+  @apply px-3 py-2;
+  @apply border-l-2 border-slate-200 dark:border-slate-700 ml-2;
+}
+
+/* ============================================
+   Menu Triggers
+   ============================================ */
+.ideai-menu-trigger {
+  @apply fixed z-40 px-4 py-2;
+  @apply bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700;
+  @apply rounded-md shadow-md;
+  @apply text-sm font-medium text-slate-700 dark:text-slate-300;
+  @apply hover:bg-slate-50 dark:hover:bg-slate-800;
+  @apply transition-colors pointer-events-auto;
+  cursor: pointer;
+}
+
+.ideai-menu-trigger-main {
+  @apply flex items-center gap-2;
+}
+
+.ideai-menu-trigger--top {
+  @apply top-4 left-1/2 -translate-x-1/2;
+}
+
+.ideai-menu-trigger--bottom {
+  @apply bottom-4 left-1/2 -translate-x-1/2;
+}
+
+.ideai-menu-trigger--left {
+  @apply left-4 top-1/2 -translate-y-1/2;
+}
+
+.ideai-menu-trigger--right {
+  @apply right-4 top-1/2 -translate-y-1/2;
+}
+
+/* Hover Trigger Area */
+.ideai-menu-hover-trigger {
+  @apply fixed z-40 pointer-events-auto;
+  /* Thin strip on the edge for hover detection */
+}
+
+.ideai-menu-hover-trigger--top {
+  @apply top-0 left-0 right-0;
+  height: 4px;
+}
+
+.ideai-menu-hover-trigger--bottom {
+  @apply bottom-0 left-0 right-0;
+  height: 4px;
+}
+
+.ideai-menu-hover-trigger--left {
+  @apply top-0 left-0 bottom-0;
+  width: 4px;
+}
+
+.ideai-menu-hover-trigger--right {
+  @apply top-0 right-0 bottom-0;
+  width: 4px;
+}
+
+/* ============================================
+   Variant-Specific Styles
+   ============================================ */
+.ideai-menu-main {
+  /* Main menu specific styles */
+}
+
+.ideai-menu-controls {
+  /* Controls menu specific styles */
+}
+
+/* ============================================
+   Mobile/Touch Optimizations
+   ============================================ */
+@media (max-width: 768px) {
+  .ideai-menu-content {
+    /* Full width/height on mobile for better touch interaction */
+  }
+
+  .ideai-menu--left,
+  .ideai-menu--right {
+    width: 100vw !important;
+    max-width: 320px;
+  }
+
+  .ideai-menu--top,
+  .ideai-menu--bottom {
+    height: 50vh !important;
+    max-height: 400px;
+  }
+}
+
+/* ============================================
+   Menu Items - Flexible Content Types
+   ============================================ */
+.ideai-menu-item {
+  @apply flex-shrink-0;
+}
+
+.ideai-menu-item-card {
+  @apply rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 dark:bg-slate-800;
+  @apply p-3 min-w-[200px] max-w-[300px];
+  @apply shadow-sm hover:shadow-md transition-shadow;
+}
+
+.ideai-menu-item-button {
+  @apply px-4 py-2 rounded-md;
+  @apply bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300;
+  @apply hover:bg-slate-200 dark:hover:bg-slate-700;
+  @apply transition-colors whitespace-nowrap;
+}
+
+.ideai-menu-item-dropdown {
+  @apply relative;
+}
+
+.ideai-menu-item-toggle-group {
+  @apply flex gap-1 p-1 rounded-md bg-slate-100 dark:bg-slate-800;
+}
+
+.ideai-menu-item-toggle {
+  @apply px-3 py-1.5 rounded text-sm font-medium;
+  @apply text-slate-600 dark:text-slate-400;
+  @apply hover:bg-slate-200 dark:hover:bg-slate-700;
+  @apply transition-colors;
+}
+
+.ideai-menu-item-toggle[data-state="on"] {
+  @apply bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100;
+  @apply shadow-sm;
+}
+
+/* Add item button */
+.ideai-menu-add-item {
+  @apply flex items-center justify-center;
+  @apply w-10 h-10 rounded-md;
+  @apply border-2 border-dashed border-slate-300 dark:border-slate-600;
+  @apply text-slate-400 dark:text-slate-500;
+  @apply hover:border-slate-400 dark:hover:border-slate-500;
+  @apply hover:text-slate-600 dark:hover:text-slate-400;
+  @apply transition-colors cursor-pointer;
+  @apply flex-shrink-0;
+}
+
+/* ============================================
+   Swipe/Drag Support
+   ============================================ */
+.ideai-menu-body[data-swipeable="true"] {
+  touch-action: pan-x pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.ideai-menu-body[data-swipeable="true"] .ideai-menu-item {
+  touch-action: none;
+}
+
+/* ============================================
+   Performance Optimizations
+   ============================================ */
+.ideai-menu-content {
+  /* GPU acceleration for smooth animations */
+  will-change: transform, opacity;
+  /* Use transform for better performance */
+  transform: translateZ(0);
+  /* Smooth easing curve - ease-out for opening (feels natural) */
+  transition: transform 350ms cubic-bezier(0.16, 1, 0.3, 1), 
+              opacity 350ms cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 350ms cubic-bezier(0.16, 1, 0.3, 1);
+  /* Backface visibility for smoother animations */
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  /* Initial state - hidden */
+  opacity: 0;
+}
+
+/* Dragging state - disable transitions for smooth drag */
+.ideai-menu-content.ideai-menu--dragging {
+  transition: none !important;
+}
+
+/* ============================================
+   Animations - Smooth Slide In/Out with Scale
+   ============================================ */
+/* Left Menu */
+.ideai-menu--left {
+  transform: translateX(-100%) translateZ(0) scale(0.95);
+  opacity: 0;
+}
+
+.ideai-menu--left.ideai-menu--visible {
+  transform: translateX(0) translateZ(0) scale(1);
+  opacity: 1;
+  box-shadow: 4px 0 24px rgba(0, 0, 0, 0.12);
+}
+
+/* Right Menu */
+.ideai-menu--right {
+  transform: translateX(100%) translateZ(0) scale(0.95);
+  opacity: 0;
+}
+
+.ideai-menu--right.ideai-menu--visible {
+  transform: translateX(0) translateZ(0) scale(1);
+  opacity: 1;
+  box-shadow: -4px 0 24px rgba(0, 0, 0, 0.12);
+}
+
+/* Top Menu */
+.ideai-menu--top {
+  transform: translateY(-100%) translateZ(0) scaleY(0.95);
+  opacity: 0;
+}
+
+.ideai-menu--top.ideai-menu--visible {
+  transform: translateY(0) translateZ(0) scaleY(1);
+  opacity: 1;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
+}
+
+/* Bottom Menu */
+.ideai-menu--bottom {
+  transform: translateY(100%) translateZ(0) scaleY(0.95);
+  opacity: 0;
+}
+
+.ideai-menu--bottom.ideai-menu--visible {
+  transform: translateY(0) translateZ(0) scaleY(1);
+  opacity: 1;
+  box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.12);
+}
+
+/* Floating Menu */
+.ideai-menu--floating {
+  transform: translateZ(0) scale(0.9);
+  opacity: 0;
+}
+
+.ideai-menu--floating.ideai-menu--visible {
+  transform: translateZ(0) scale(1);
+  opacity: 1;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* ============================================
+   Push Mode - Content Shifts
+   ============================================ */
+/* When menu is in push mode and visible, shift content */
+body:has(.ideai-menu-content[data-animation-mode="push"].ideai-menu--visible.ideai-menu--left) {
+  /* Content pushed right when left menu opens */
+}
+
+body:has(.ideai-menu-content[data-animation-mode="push"].ideai-menu--visible.ideai-menu--right) {
+  /* Content pushed left when right menu opens */
+}
+
+/* Push mode - content shifts when menu opens */
+/* Note: Content wrapper should use data attributes to detect push mode */
+[data-menu-push-mode="left"] {
+  margin-left: 0;
+  transition: margin-left var(--ideai-menu-transition-duration) var(--ideai-menu-easing);
+}
+
+[data-menu-push-mode="left"][data-menu-open="true"] {
+  margin-left: var(--menu-width, 280px);
+}
+
+[data-menu-push-mode="right"] {
+  margin-right: 0;
+  transition: margin-right var(--ideai-menu-transition-duration) var(--ideai-menu-easing);
+}
+
+[data-menu-push-mode="right"][data-menu-open="true"] {
+  margin-right: var(--menu-width, 280px);
+}
+
+/* Horizontal slide animations for top/bottom */
+.ideai-menu-item {
+  transition: transform 0.2s ease-in-out, opacity 0.2s ease-in-out;
+}
+
+.ideai-menu-item[data-entering="true"] {
+  animation: slideInHorizontal 0.3s ease-out;
+}
+
+.ideai-menu-item[data-exiting="true"] {
+  animation: slideOutHorizontal 0.3s ease-out;
+}
+
+@keyframes slideInHorizontal {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideOutHorizontal {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+}

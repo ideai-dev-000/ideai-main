@@ -1,0 +1,154 @@
+/**
+ * @fileoverview IdeaI Menu Styles
+ *
+ * @module IdeAIMenuStyles
+ * @description
+ * Base styles for the IdeaI Menu System
+ */
+
+/* CSS Variables */
+:root {
+  --ideai-menu-transition-duration: 350ms;
+  --ideai-menu-easing: cubic-bezier(0.16, 1, 0.3, 1);
+  --menu-width: 280px;
+  --menu-height: 280px;
+}
+
+/* Base Menu Container */
+.ideai-menu {
+  @apply fixed bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700;
+  @apply flex flex-col pointer-events-auto;
+  overflow: hidden;
+  will-change: transform, opacity;
+  transform: translateZ(0);
+  transition: transform var(--ideai-menu-transition-duration) var(--ideai-menu-easing),
+              opacity var(--ideai-menu-transition-duration) var(--ideai-menu-easing);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* Menu Backdrop */
+.ideai-menu-backdrop {
+  @apply fixed inset-0 bg-black/20 dark:bg-black/40;
+  @apply pointer-events-auto;
+  z-index: 40;
+  opacity: 0;
+  transition: opacity var(--ideai-menu-transition-duration) var(--ideai-menu-easing);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+}
+
+.ideai-menu-backdrop.ideai-menu-backdrop--visible {
+  opacity: 1;
+}
+
+/* Menu Header */
+.ideai-menu-header {
+  @apply flex items-center justify-between px-4 py-3;
+  @apply border-b border-slate-200 dark:border-slate-700;
+  @apply flex-shrink-0;
+}
+
+.ideai-menu-title {
+  @apply text-lg font-semibold text-slate-900 dark:text-slate-100;
+  margin: 0;
+}
+
+/* Menu Body */
+.ideai-menu-body {
+  @apply flex-1 overflow-y-auto overflow-x-hidden;
+  @apply px-4 py-2;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: rgb(148 163 184) transparent;
+}
+
+.ideai-menu-body--horizontal {
+  @apply flex flex-row items-center gap-2;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.5rem 1rem;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.ideai-menu-body--horizontal::-webkit-scrollbar {
+  display: none;
+}
+
+/* Menu Section */
+.ideai-menu-section {
+  @apply mb-2;
+  flex-shrink: 0;
+}
+
+.ideai-menu-section-header {
+  @apply flex items-center justify-between w-full px-3 py-2;
+  @apply text-sm font-semibold text-slate-700 dark:text-slate-300;
+  @apply hover:bg-slate-50 dark:hover:bg-slate-800;
+  @apply transition-colors;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+}
+
+.ideai-menu-section-title {
+  @apply flex-1;
+}
+
+.ideai-menu-section-actions {
+  @apply flex items-center gap-2;
+}
+
+.ideai-menu-section-completed {
+  @apply text-green-600 dark:text-green-400;
+  font-size: 0.875rem;
+}
+
+.ideai-menu-section-content {
+  @apply px-3 py-2;
+  @apply border-l-2 border-slate-200 dark:border-slate-700 ml-2;
+}
+
+/* Position-specific styles */
+.ideai-menu--left {
+  @apply border-r;
+  box-shadow: 10px 0 30px -10px rgba(0,0,0,0.15);
+}
+
+.ideai-menu--right {
+  @apply border-l;
+  box-shadow: -10px 0 30px -10px rgba(0,0,0,0.15);
+}
+
+.ideai-menu--top {
+  @apply border-b;
+  box-shadow: 0 10px 30px -10px rgba(0,0,0,0.15);
+}
+
+.ideai-menu--bottom {
+  @apply border-t;
+  box-shadow: 0 -10px 30px -10px rgba(0,0,0,0.15);
+}
+
+/* Menu Trigger */
+.ideai-menu-trigger {
+  @apply px-4 py-2 rounded-md;
+  @apply bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700;
+  @apply text-sm font-medium text-slate-700 dark:text-slate-300;
+  @apply hover:bg-slate-50 dark:hover:bg-slate-800;
+  @apply transition-colors pointer-events-auto;
+  cursor: pointer;
+}
+
+/* Open/Closed States */
+.ideai-menu:not(.ideai-menu--open) {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.ideai-menu--open {
+  opacity: 1;
+  pointer-events: auto;
+}
