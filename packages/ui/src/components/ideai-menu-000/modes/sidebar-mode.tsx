@@ -28,9 +28,14 @@ export function SidebarMode({
   children,
   open,
   onOpenChange,
+  trigger = "always",
   className,
 }: IdeAIMenuBaseProps) {
   const contextValue = useMenuContextValue();
+
+  // When trigger is "always", menu should always be visible (open state is ignored)
+  // When trigger is "button" or "hover", menu visibility is controlled by open prop
+  const isVisible = trigger === "always" ? true : (open ?? false);
 
   // For now, use a simple div structure
   // In production, replace with actual Sidebar components
@@ -40,8 +45,8 @@ export function SidebarMode({
         className={cn(
           "ideai-menu ideai-menu-sidebar",
           `ideai-menu--${position}`,
-          open && "ideai-menu--open",
-          !open && "ideai-menu--closed",
+          isVisible && "ideai-menu--open",
+          !isVisible && "ideai-menu--closed",
           className,
         )}
         style={{

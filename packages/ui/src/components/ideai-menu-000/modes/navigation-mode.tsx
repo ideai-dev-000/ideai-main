@@ -29,12 +29,17 @@ export function NavigationMode({
   headerContent,
   children,
   open = true,
+  trigger = "always",
   className,
   topMenuOptions,
 }: IdeAIMenuBaseProps) {
   const contextValue = useMenuContextValue();
   const useMenubar = topMenuOptions?.useMenubar ?? false;
   const isSticky = topMenuOptions?.sticky ?? false;
+
+  // When trigger is "always", menu should always be visible (open state is ignored)
+  // When trigger is "button" or "hover", menu visibility is controlled by open prop
+  const isVisible = trigger === "always" ? true : (open ?? true);
 
   // If useMenubar is true, use shadcn Menubar component
   // Otherwise, use our minimal UI (default)
@@ -46,7 +51,8 @@ export function NavigationMode({
         <nav
           className={cn(
             "ideai-menu ideai-menu-navigation ideai-menu-menubar",
-            open && "ideai-menu--open",
+            isVisible && "ideai-menu--open",
+            !isVisible && "ideai-menu--closed",
             isSticky && "ideai-menu--sticky",
             className,
           )}
@@ -74,8 +80,8 @@ export function NavigationMode({
       <nav
         className={cn(
           "ideai-menu ideai-menu-navigation ideai-menu--top",
-          open && "ideai-menu--open",
-          !open && "ideai-menu--closed",
+          isVisible && "ideai-menu--open",
+          !isVisible && "ideai-menu--closed",
           isSticky && "ideai-menu--sticky",
           className,
         )}
