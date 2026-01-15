@@ -49,7 +49,7 @@ import {
 import { useSetAtom } from "jotai";
 import { WorkflowStatusCard } from "@/components/workflow/workflow-status-card";
 import { WorkflowListControl } from "@/components/workflow/workflow-list-control";
-import { IdeAISideMenuNewWorkflow } from "@repo/ui";
+// Note: IdeAISideMenuNewWorkflow is a simple component - we can inline it or create a local version
 import { useMenuState } from "@/components/menu-state-provider";
 import { getEffectiveTrigger, MENU_SETTINGS } from "@/lib/menu-settings";
 
@@ -301,7 +301,16 @@ export function IdeAISideMenuWrapper() {
 
       {/* New Workflow section */}
       <IdeAIMenuSection id="new-workflow" title="New Workflow" defaultOpen>
-        <IdeAISideMenuNewWorkflow onCreateWorkflow={handleCreateWorkflow} />
+        <div className="p-2">
+          <button
+            type="button"
+            onClick={handleCreateWorkflow}
+            className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-md bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-900 dark:text-slate-100 font-medium transition-colors"
+          >
+            <span className="text-lg">+</span>
+            <span>New Workflow</span>
+          </button>
+        </div>
       </IdeAIMenuSection>
 
       {/* Workflows list section */}

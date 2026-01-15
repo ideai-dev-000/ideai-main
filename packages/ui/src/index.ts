@@ -110,7 +110,7 @@ export { MobileNav } from "./components/mobile-nav";
 export {
   IdeAISideMenu,
   IdeAISideMenuWorkflows,
-  IdeAISideMenuNewWorkflow,
+  // IdeAISideMenuNewWorkflow - deprecated, use IdeAIMenu with custom content instead
   IdeAISideMenuCards,
   IdeAISideMenuControls,
   IdeAISideMenuBlocks,
