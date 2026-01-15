@@ -1,0 +1,215 @@
+/**
+ * @fileoverview IdeaI Control Menu Styles
+ *
+ * @module IdeAIControlMenuStyles
+ * @description
+ * Styles for the flexible IdeaI Control Menu component.
+ * Supports positioning, sections, scrolling, and touch interactions.
+ */
+
+/* Control Menu Container */
+.ideai-control-menu-content {
+  @apply fixed z-50 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 shadow-lg;
+  @apply flex flex-col pointer-events-auto;
+  overflow: hidden;
+}
+
+/* Position-specific styles */
+.ideai-control-menu--top {
+  @apply border-b;
+}
+
+.ideai-control-menu--bottom {
+  @apply border-t;
+}
+
+.ideai-control-menu--left {
+  @apply border-r;
+}
+
+.ideai-control-menu--right {
+  @apply border-l;
+}
+
+.ideai-control-menu--floating {
+  @apply rounded-lg;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* Menu Header */
+.ideai-control-menu-header {
+  @apply flex items-center justify-between px-4 py-3;
+  @apply border-b border-slate-200 dark:border-slate-700;
+  @apply flex-shrink-0;
+}
+
+.ideai-control-menu-title {
+  @apply text-lg font-semibold text-slate-900 dark:text-slate-100;
+  margin: 0;
+}
+
+.ideai-control-menu-close {
+  @apply p-2 rounded-md text-slate-500 dark:text-slate-400;
+  @apply hover:bg-slate-100 dark:hover:bg-slate-800;
+  @apply transition-colors;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Menu Body - Scrollable Content */
+.ideai-control-menu-body {
+  @apply flex-1 overflow-y-auto overflow-x-hidden;
+  @apply px-4 py-2;
+  /* Smooth scrolling for touch devices */
+  -webkit-overflow-scrolling: touch;
+  /* Custom scrollbar */
+  scrollbar-width: thin;
+  scrollbar-color: rgb(148 163 184) transparent;
+}
+
+.ideai-control-menu-body::-webkit-scrollbar {
+  width: 6px;
+}
+
+.ideai-control-menu-body::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.ideai-control-menu-body::-webkit-scrollbar-thumb {
+  @apply bg-slate-300 dark:bg-slate-600 rounded-full;
+}
+
+.ideai-control-menu-body::-webkit-scrollbar-thumb:hover {
+  @apply bg-slate-400 dark:bg-slate-500;
+}
+
+/* Control Section */
+.ideai-control-section {
+  @apply mb-2;
+}
+
+.ideai-control-section-header {
+  @apply flex items-center justify-between w-full px-3 py-2;
+  @apply text-sm font-semibold text-slate-700 dark:text-slate-300;
+  @apply hover:bg-slate-50 dark:hover:bg-slate-800;
+  @apply transition-colors rounded-md;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+}
+
+.ideai-control-section-title {
+  @apply flex-1;
+}
+
+.ideai-control-section-actions {
+  @apply flex items-center gap-2;
+}
+
+.ideai-control-section-completed {
+  @apply text-green-600 dark:text-green-400;
+  font-size: 0.875rem;
+}
+
+.ideai-control-section-content {
+  @apply px-3 py-2;
+  @apply border-l-2 border-slate-200 dark:border-slate-700 ml-2;
+}
+
+/* Trigger Button */
+.ideai-control-menu-trigger {
+  @apply fixed z-40 px-4 py-2;
+  @apply bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700;
+  @apply rounded-md shadow-md;
+  @apply text-sm font-medium text-slate-700 dark:text-slate-300;
+  @apply hover:bg-slate-50 dark:hover:bg-slate-800;
+  @apply transition-colors pointer-events-auto;
+  cursor: pointer;
+}
+
+.ideai-control-menu-trigger--top {
+  @apply top-4 left-1/2 -translate-x-1/2;
+}
+
+.ideai-control-menu-trigger--bottom {
+  @apply bottom-4 left-1/2 -translate-x-1/2;
+}
+
+.ideai-control-menu-trigger--left {
+  @apply left-4 top-1/2 -translate-y-1/2;
+}
+
+.ideai-control-menu-trigger--right {
+  @apply right-4 top-1/2 -translate-y-1/2;
+}
+
+/* Hover Trigger Area */
+.ideai-control-menu-hover-trigger {
+  @apply fixed z-40 pointer-events-auto;
+  /* Thin strip on the edge for hover detection */
+}
+
+.ideai-control-menu-hover-trigger--top {
+  @apply top-0 left-0 right-0;
+  height: 4px;
+}
+
+.ideai-control-menu-hover-trigger--bottom {
+  @apply bottom-0 left-0 right-0;
+  height: 4px;
+}
+
+.ideai-control-menu-hover-trigger--left {
+  @apply top-0 left-0 bottom-0;
+  width: 4px;
+}
+
+.ideai-control-menu-hover-trigger--right {
+  @apply top-0 right-0 bottom-0;
+  width: 4px;
+}
+
+/* Mobile/Touch Optimizations */
+@media (max-width: 768px) {
+  .ideai-control-menu-content {
+    /* Full width/height on mobile for better touch interaction */
+  }
+
+  .ideai-control-menu--left,
+  .ideai-control-menu--right {
+    width: 100vw !important;
+    max-width: 320px;
+  }
+
+  .ideai-control-menu--top,
+  .ideai-control-menu--bottom {
+    height: 50vh !important;
+    max-height: 400px;
+  }
+}
+
+/* Animation for smooth open/close */
+.ideai-control-menu-content {
+  transition: transform 0.2s ease-in-out, opacity 0.2s ease-in-out;
+}
+
+.ideai-control-menu--left:not(.ideai-control-menu--visible) {
+  transform: translateX(-100%);
+}
+
+.ideai-control-menu--right:not(.ideai-control-menu--visible) {
+  transform: translateX(100%);
+}
+
+.ideai-control-menu--top:not(.ideai-control-menu--visible) {
+  transform: translateY(-100%);
+}
+
+.ideai-control-menu--bottom:not(.ideai-control-menu--visible) {
+  transform: translateY(100%);
+}
