@@ -61,7 +61,7 @@ export function SidebarMode({
           "ideai-menu ideai-menu-sidebar",
           `ideai-menu--${position}`,
           isVisible ? "ideai-menu--open" : "ideai-menu--closed",
-          className,
+          className, // Allows ideai-control, ideai-control-primary, ideai-control-secondary
         )}
         data-menu-visible={isVisible}
         data-menu-trigger={trigger}

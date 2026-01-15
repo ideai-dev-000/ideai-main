@@ -285,6 +285,7 @@ export function IdeAISideMenuWrapper() {
 
   return (
     <IdeAIMenuControls
+      className="ideai-control ideai-control-primary"
       position="left"
       trigger={effectiveTrigger}
       size={280}
