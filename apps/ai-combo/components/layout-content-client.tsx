@@ -18,10 +18,12 @@ import { LayoutClient } from "@/components/layout-client";
 import { ContentWrapper } from "@/components/content-wrapper";
 import { UnifiedNav } from "@/components/unified-nav";
 import { MENU_SETTINGS } from "@/lib/menu-settings";
+import { ScrollToTop } from "@/components/scroll-to-top";
 
 export function LayoutContentClient({ children }: { children: ReactNode }) {
   return (
     <ReactFlowProvider>
+      <ScrollToTop />
       <PersistentCanvas />
       {/* IdeaI Side Menu - outside z-[1] wrapper so it's above canvas (sidebar has z-30) */}
       {/* Hide on landing page - only show when authenticated and not on homepage */}

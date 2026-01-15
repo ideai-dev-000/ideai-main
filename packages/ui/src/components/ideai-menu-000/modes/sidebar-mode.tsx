@@ -41,11 +41,15 @@ export function SidebarMode({
           "ideai-menu ideai-menu-sidebar",
           `ideai-menu--${position}`,
           open && "ideai-menu--open",
+          !open && "ideai-menu--closed",
           className,
         )}
         style={{
           width: `${size}px`,
           [position]: 0,
+          top: position === "left" || position === "right" ? 0 : undefined,
+          bottom: position === "left" || position === "right" ? 0 : undefined,
+          zIndex: 50,
         }}
       >
         {(headerContent || title) && (

@@ -37,19 +37,26 @@ export function DrawerMode({
     <IdeAIMenuContext.Provider value={contextValue}>
       {open && (
         <div
-          className="ideai-menu-backdrop"
+          className={cn(
+            "ideai-menu-backdrop",
+            open && "ideai-menu-backdrop--visible",
+          )}
           onClick={() => onOpenChange?.(false)}
         />
       )}
       <div
         className={cn(
-          "ideai-menu ideai-menu-drawer",
+          "ideai-menu ideai-menu-drawer ideai-menu--bottom",
           open && "ideai-menu--open",
+          !open && "ideai-menu--closed",
           className,
         )}
         style={{
           height: `${size}px`,
           bottom: 0,
+          left: 0,
+          right: 0,
+          zIndex: 50,
         }}
       >
         {(headerContent || title) && (

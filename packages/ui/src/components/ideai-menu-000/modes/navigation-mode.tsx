@@ -73,14 +73,18 @@ export function NavigationMode({
     <IdeAIMenuContext.Provider value={contextValue}>
       <nav
         className={cn(
-          "ideai-menu ideai-menu-navigation",
+          "ideai-menu ideai-menu-navigation ideai-menu--top",
           open && "ideai-menu--open",
+          !open && "ideai-menu--closed",
           isSticky && "ideai-menu--sticky",
           className,
         )}
         style={{
           height: `${size}px`,
           top: 0,
+          left: 0,
+          right: 0,
+          zIndex: 50,
         }}
       >
         {(headerContent || title) && (

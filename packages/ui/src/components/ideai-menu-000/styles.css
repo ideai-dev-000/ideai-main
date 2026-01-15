@@ -146,9 +146,45 @@
 .ideai-menu:not(.ideai-menu--open) {
   opacity: 0;
   pointer-events: none;
+  visibility: hidden;
 }
 
 .ideai-menu--open {
   opacity: 1;
   pointer-events: auto;
+  visibility: visible;
+}
+
+/* Slide animations for left/right menus */
+.ideai-menu--left:not(.ideai-menu--open) {
+  transform: translateX(-100%);
+}
+
+.ideai-menu--left.ideai-menu--open {
+  transform: translateX(0);
+}
+
+.ideai-menu--right:not(.ideai-menu--open) {
+  transform: translateX(100%);
+}
+
+.ideai-menu--right.ideai-menu--open {
+  transform: translateX(0);
+}
+
+/* Slide animations for top/bottom menus */
+.ideai-menu--top:not(.ideai-menu--open) {
+  transform: translateY(-100%);
+}
+
+.ideai-menu--top.ideai-menu--open {
+  transform: translateY(0);
+}
+
+.ideai-menu--bottom:not(.ideai-menu--open) {
+  transform: translateY(100%);
+}
+
+.ideai-menu--bottom.ideai-menu--open {
+  transform: translateY(0);
 }
