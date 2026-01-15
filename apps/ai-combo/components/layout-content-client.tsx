@@ -66,6 +66,7 @@ function ControlsMenuAutoToggle() {
   ]);
 
   // Also handle initial mount - if page needs controls, open menu
+  // This runs once on mount to open menu if needed
   useEffect(() => {
     if (hasIdeaiControls && !menuState.leftMenuOpen) {
       // Delay slightly to ensure smooth animation on page load
@@ -75,7 +76,8 @@ function ControlsMenuAutoToggle() {
 
       return () => clearTimeout(timeoutId);
     }
-  }, []); // Only run on mount
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Only run on mount - we check hasIdeaiControls inside
 
   return null; // This component doesn't render anything
 }
