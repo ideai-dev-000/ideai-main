@@ -51,6 +51,7 @@ export function ContentWrapper({
 
   // For push mode, adjust margins based on menu state with smooth transitions
   // Only apply left menu margin if left menu is actually visible for this route
+  // CRITICAL: Always account for header height (64px) + top menu if open (80px)
   const pushModeStyles = useMemo(
     () =>
       animationMode === "push"
@@ -58,7 +59,7 @@ export function ContentWrapper({
             marginLeft:
               hasLeftMenu && menuState.leftMenuOpen ? `${leftMenuSize}px` : "0",
             marginRight: menuState.rightMenuOpen ? `${rightMenuSize}px` : "0",
-            marginTop: menuState.topMenuOpen ? "144px" : "64px", // Header (64px) + Top menu (80px) if open
+            marginTop: menuState.topMenuOpen ? "144px" : "64px", // Always: Header (64px) + Top menu (80px) if open
             marginBottom: menuState.bottomMenuOpen ? "80px" : "0",
             transition: `margin-left ${transitionDuration}ms ${transitionEasing}, margin-right ${transitionDuration}ms ${transitionEasing}, margin-top ${transitionDuration}ms ${transitionEasing}, margin-bottom ${transitionDuration}ms ${transitionEasing}`,
           }
@@ -78,6 +79,8 @@ export function ContentWrapper({
   );
 
   // For overlay mode, use padding with transitions (content doesn't move but padding animates)
+  // CRITICAL: Always account for header height (64px) + top menu if open (80px)
+  // This ensures main content is never overlapped by the fixed header
   const overlayStyles = useMemo(
     () =>
       animationMode === "overlay"
@@ -85,11 +88,16 @@ export function ContentWrapper({
             paddingLeft:
               hasLeftMenu && menuState.leftMenuOpen ? `${leftMenuSize}px` : "0",
             paddingRight: menuState.rightMenuOpen ? `${rightMenuSize}px` : "0",
-            paddingTop: menuState.topMenuOpen ? "144px" : "64px", // Header (64px) + Top menu (80px) if open
+            paddingTop: menuState.topMenuOpen ? "144px" : "64px", // Always: Header (64px) + Top menu (80px) if open
             paddingBottom: menuState.bottomMenuOpen ? "80px" : "0",
             transition: `padding-left ${transitionDuration}ms ${transitionEasing}, padding-right ${transitionDuration}ms ${transitionEasing}, padding-top ${transitionDuration}ms ${transitionEasing}, padding-bottom ${transitionDuration}ms ${transitionEasing}`,
           }
-        : {},
+        : {
+            // Even in overlay mode, we need top padding for header
+            // This ensures main is never overlapped by fixed header
+            paddingTop: menuState.topMenuOpen ? "144px" : "64px", // Always: Header (64px) + Top menu (80px) if open
+            transition: `padding-top ${transitionDuration}ms ${transitionEasing}`,
+          },
     [
       animationMode,
       hasLeftMenu,
