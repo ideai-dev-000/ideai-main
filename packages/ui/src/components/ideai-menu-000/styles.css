@@ -143,49 +143,49 @@
   cursor: pointer;
 }
 
-/* Open/Closed States */
+/* Open/Closed States - Base visibility */
 .ideai-menu:not(.ideai-menu--open) {
-  opacity: 0;
-  pointer-events: none;
-  visibility: hidden;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
 }
 
 .ideai-menu--open {
-  opacity: 1;
-  pointer-events: auto;
-  visibility: visible;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  visibility: visible !important;
 }
 
 /* Slide animations for left/right menus */
 .ideai-menu--left:not(.ideai-menu--open) {
-  transform: translateX(-100%);
+  transform: translateX(-100%) !important;
 }
 
 .ideai-menu--left.ideai-menu--open {
-  transform: translateX(0);
+  transform: translateX(0) !important;
 }
 
 .ideai-menu--right:not(.ideai-menu--open) {
-  transform: translateX(100%);
+  transform: translateX(100%) !important;
 }
 
 .ideai-menu--right.ideai-menu--open {
-  transform: translateX(0);
+  transform: translateX(0) !important;
 }
 
 /* Slide animations for top/bottom menus */
 .ideai-menu--top:not(.ideai-menu--open) {
-  transform: translateY(-100%);
+  transform: translateY(-100%) !important;
 }
 
 .ideai-menu--top.ideai-menu--open {
-  transform: translateY(0);
+  transform: translateY(0) !important;
 }
 
 .ideai-menu--bottom:not(.ideai-menu--open) {
-  transform: translateY(100%);
+  transform: translateY(100%) !important;
 }
 
 .ideai-menu--bottom.ideai-menu--open {
-  transform: translateY(0);
+  transform: translateY(0) !important;
 }
