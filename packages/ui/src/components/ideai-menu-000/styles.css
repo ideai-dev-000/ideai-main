@@ -195,3 +195,26 @@
 .ideai-menu--bottom.ideai-menu--open {
   transform: translateY(0) !important;
 }
+
+/* IdeaI Control Menus */
+/* Target both primary and secondary control menus */
+.ideai-control {
+  /* Shared styles for all IdeaI control menus */
+  /* Can be used to style both menus together */
+}
+
+/* Primary Control Menu */
+/* Main IdeaI-level controls for modules/services */
+/* Examples: Workflow controls, Vibe controls */
+.ideai-control-primary {
+  /* Primary menu specific styles */
+  /* Currently positioned on left side */
+}
+
+/* Secondary Control Menu */
+/* Additional contextual controls (e.g., actions list, tools) */
+/* Examples: Actions list in workflow app, static workflow controls */
+.ideai-control-secondary {
+  /* Secondary menu specific styles */
+  /* Position to be determined (right side or configurable) */
+}
