@@ -10,43 +10,82 @@
 
 import { type ReactNode } from "react";
 import { usePathname } from "next/navigation";
-import { useSession } from "@/lib/auth-client";
+import { useMenuState } from "@/components/menu-state-provider";
 import { cn } from "@/lib/utils";
-import { shouldShowSideMenu } from "@/lib/route-config";
 
 interface ContentWrapperProps {
   children: ReactNode;
   className?: string;
+  /** Animation mode: overlay (on top) or push (moves content) */
+  animationMode?: "overlay" | "push";
+  /** Left menu size for push mode */
+  leftMenuSize?: number;
+  /** Right menu size for push mode */
+  rightMenuSize?: number;
 }
 
-export function ContentWrapper({ children, className }: ContentWrapperProps) {
+export function ContentWrapper({
+  children,
+  className,
+  animationMode = "overlay",
+  leftMenuSize = 280,
+  rightMenuSize = 280,
+}: ContentWrapperProps) {
   const pathname = usePathname();
-  const { data: session } = useSession();
-
-  // Check if user is authenticated
-  const isAuthenticated =
-    session?.user &&
-    session.user.name !== "Anonymous" &&
-    !session.user.email?.startsWith("temp-");
-
-  // Show menu if authenticated and route config says so
-  const showMenu = shouldShowSideMenu(pathname || "") && isAuthenticated;
+  const menuState = useMenuState();
 
   // On workflow pages, we don't want to block canvas clicks
   // The canvas is at z-0, so content wrapper should not interfere
   const isWorkflowPage =
     pathname === "/workflow" || pathname?.startsWith("/workflow/workflows/");
-  const isVibePage = pathname === "/vibe" || pathname?.startsWith("/vibe/");
+
+  // For push mode, adjust margins based on menu state
+  const pushModeStyles =
+    animationMode === "push"
+      ? {
+          marginLeft: menuState.leftMenuOpen ? `${leftMenuSize}px` : "0",
+          marginRight: menuState.rightMenuOpen ? `${rightMenuSize}px` : "0",
+          marginBottom: menuState.bottomMenuOpen ? "80px" : "0",
+          transition:
+            "margin-left 300ms cubic-bezier(0.4, 0, 0.2, 1), margin-right 300ms cubic-bezier(0.4, 0, 0.2, 1), margin-bottom 300ms cubic-bezier(0.4, 0, 0.2, 1)",
+        }
+      : {};
+
+  // For overlay mode, use padding (content doesn't move)
+  const overlayPadding =
+    animationMode === "overlay" &&
+    (menuState.leftMenuOpen || menuState.rightMenuOpen)
+      ? `md:pl-[${leftMenuSize}px] md:pr-[${rightMenuSize}px]`
+      : "";
+
+  // Bottom padding for bottom menu (always overlay mode)
+  const bottomPadding = menuState.bottomMenuOpen ? "pb-20" : "";
 
   return (
     <div
       className={cn(
         className,
-        !showMenu && "md:pl-0",
-        showMenu && isVibePage && "md:pl-[280px]",
+        overlayPadding,
+        bottomPadding,
         isWorkflowPage && "pointer-events-none",
       )}
-      style={isWorkflowPage ? { pointerEvents: "none" } : undefined}
+      style={{
+        ...(isWorkflowPage ? { pointerEvents: "none" as const } : {}),
+        ...pushModeStyles,
+      }}
+      data-menu-push-mode={
+        animationMode === "push"
+          ? menuState.leftMenuOpen
+            ? "left"
+            : menuState.rightMenuOpen
+              ? "right"
+              : undefined
+          : undefined
+      }
+      data-menu-open={
+        animationMode === "push" &&
+        (menuState.leftMenuOpen || menuState.rightMenuOpen)
+      }
     >
       {/* Only re-enable pointer events for actual page content (not on workflow pages with canvas) */}
       {isWorkflowPage ? (
