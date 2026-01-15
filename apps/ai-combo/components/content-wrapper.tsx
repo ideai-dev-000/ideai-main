@@ -87,15 +87,15 @@ export function ContentWrapper({
         ? {
             paddingLeft:
               hasLeftMenu && menuState.leftMenuOpen ? `${leftMenuSize}px` : "0",
-            paddingRight: menuState.rightMenuOpen ? `${rightMenuSize}px` : "0",
-            paddingTop: menuState.topMenuOpen ? "144px" : "64px", // Always: Header (64px) + Top menu (80px) if open
+            paddingRight: "0", // Right menu removed
+            paddingTop: "64px", // Always: Header (64px) - top menu removed
             paddingBottom: menuState.bottomMenuOpen ? "80px" : "0",
             transition: `padding-left ${transitionDuration}ms ${transitionEasing}, padding-right ${transitionDuration}ms ${transitionEasing}, padding-top ${transitionDuration}ms ${transitionEasing}, padding-bottom ${transitionDuration}ms ${transitionEasing}`,
           }
         : {
             // Even in overlay mode, we need top padding for header
             // This ensures main is never overlapped by fixed header
-            paddingTop: menuState.topMenuOpen ? "144px" : "64px", // Always: Header (64px) + Top menu (80px) if open
+            paddingTop: "64px", // Always: Header (64px) - top menu removed
             transition: `padding-top ${transitionDuration}ms ${transitionEasing}`,
           },
     [
