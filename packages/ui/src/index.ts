@@ -148,13 +148,15 @@ export {
   type IdeAIMenuSectionProps as IdeAIMenuSectionPropsV2,
   type IdeAIMenuContextValue,
 } from "./components/ideai-menu-000";
+// Control Menu Modules (archived - functionality now in ideai-menu-000)
+// @deprecated Use ideai-menu-000 system instead
 export {
   ControlMenuModulesProvider,
   ControlMenuModulesRenderer,
   useControlMenuModules,
   useRegisterControlModule,
   type ControlMenuModule,
-} from "./components/ideai-control-menu/use-control-menu-modules";
+} from "./components/ideai-menu-legacy-archive/ideai-control-menu/use-control-menu-modules";
 
 // Animation System
 export {
