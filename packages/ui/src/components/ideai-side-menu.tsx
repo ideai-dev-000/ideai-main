@@ -686,9 +686,6 @@ export function IdeAISideMenu({
   onOpenChange: onOpenChangeProp,
 }: IdeAISideMenuProps) {
   const [open, setOpen] = React.useState(false);
-  const [isHovered, setIsHovered] = React.useState(false);
-  const [isClicked, setIsClicked] = React.useState(false);
-  const hoverTimeoutRef = React.useRef<NodeJS.Timeout | null>(null);
 
   // Use controlled state if provided, otherwise use internal state
   const isOpen = openProp !== undefined ? openProp : open;
@@ -697,60 +694,12 @@ export function IdeAISideMenu({
       ? onOpenChangeProp
       : (newOpen: boolean) => setOpen(newOpen);
 
-  // Sidebar is visible if clicked open OR hovered (click takes priority)
-  const isSidebarVisible = isClicked || isHovered;
-
-  // Refresh workflows when sidebar expands (on hover or click)
+  // Load workflows on mount for the desktop sidebar
   React.useEffect(() => {
-    if (isSidebarVisible && onLoadWorkflows) {
-      // Small delay to ensure smooth animation
-      const timeout = setTimeout(() => {
-        onLoadWorkflows();
-      }, 100);
-      return () => clearTimeout(timeout);
+    if (onLoadWorkflows) {
+      onLoadWorkflows();
     }
-  }, [isSidebarVisible, onLoadWorkflows]);
-
-  // Handle click to toggle sidebar
-  const handleClick = React.useCallback(() => {
-    setIsClicked((prev) => !prev);
-    // Clear hover timeout when clicking
-    if (hoverTimeoutRef.current) {
-      clearTimeout(hoverTimeoutRef.current);
-      hoverTimeoutRef.current = null;
-    }
-  }, []);
-
-  // Handle hover state with delay to prevent flickering
-  const handleMouseEnter = React.useCallback(() => {
-    if (hoverTimeoutRef.current) {
-      clearTimeout(hoverTimeoutRef.current);
-      hoverTimeoutRef.current = null;
-    }
-    // Only show on hover if not clicked open
-    if (!isClicked) {
-      setIsHovered(true);
-    }
-  }, [isClicked]);
-
-  const handleMouseLeave = React.useCallback(() => {
-    // Only hide on mouse leave if not clicked open
-    if (!isClicked) {
-      // Small delay before hiding to allow moving cursor to menu
-      hoverTimeoutRef.current = setTimeout(() => {
-        setIsHovered(false);
-      }, 200);
-    }
-  }, [isClicked]);
-
-  // Cleanup timeout on unmount
-  React.useEffect(() => {
-    return () => {
-      if (hoverTimeoutRef.current) {
-        clearTimeout(hoverTimeoutRef.current);
-      }
-    };
-  }, []);
+  }, [onLoadWorkflows]);
 
   // Memoize children check to prevent unnecessary re-renders
   const hasWorkflowsSection = React.useMemo(() => {
@@ -815,42 +764,10 @@ export function IdeAISideMenu({
 
   return (
     <>
-      {/* Desktop: Hover-activated Sidebar with Trigger Icon */}
-      <div
-        className="ideai-side-menu-container ideai-side-menu-container--desktop"
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-      >
-        {/* Hover/Click Trigger Icon - Always visible on far left */}
-        <div
-          className="ideai-side-menu-hover-trigger"
-          onMouseEnter={handleMouseEnter}
-          onClick={handleClick}
-          role="button"
-          tabIndex={0}
-          aria-label={isClicked ? "Close sidebar" : "Open sidebar"}
-          onKeyDown={(e) => {
-            if (e.key === "Enter" || e.key === " ") {
-              e.preventDefault();
-              handleClick();
-            }
-          }}
-        >
-          <Menu className="h-5 w-5" />
-        </div>
-
-        {/* Sidebar - Hidden by default, shows on hover or click */}
-        <aside
-          className={cn(
-            "ideai-side-menu ideai-side-menu--desktop",
-            isSidebarVisible && "ideai-side-menu--hovered",
-          )}
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
-        >
-          <SideMenuContent />
-        </aside>
-      </div>
+      {/* Desktop: Persistent Sidebar */}
+      <aside className="ideai-side-menu ideai-side-menu--desktop">
+        <SideMenuContent />
+      </aside>
 
       {/* Mobile: Drawer */}
       <Dialog.Root open={isOpen} onOpenChange={handleOpenChange}>
