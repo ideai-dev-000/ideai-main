@@ -62,6 +62,7 @@ export function DrawerMode({
           left: 0,
           right: 0,
           zIndex: 50,
+          position: "fixed",
         }}
       >
         {(headerContent || title) && (

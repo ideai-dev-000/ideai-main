@@ -22,7 +22,8 @@
   will-change: transform, opacity;
   transform: translateZ(0);
   transition: transform var(--ideai-menu-transition-duration) var(--ideai-menu-easing),
-              opacity var(--ideai-menu-transition-duration) var(--ideai-menu-easing);
+              opacity var(--ideai-menu-transition-duration) var(--ideai-menu-easing),
+              visibility var(--ideai-menu-transition-duration) var(--ideai-menu-easing);
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
 }

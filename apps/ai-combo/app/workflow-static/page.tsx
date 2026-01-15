@@ -99,60 +99,62 @@ export default function StaticWorkflowPage() {
   }, [isAnonymous, setNodes, setEdges, setCurrentWorkflowName, router]);
 
   return (
-    <div className="container mx-auto py-8">
-      <div className="max-w-2xl mx-auto">
-        <h1 className="text-3xl font-bold mb-4">Static Workflows</h1>
-        <p className="text-slate-600 dark:text-slate-400 mb-8">
-          Create a pre-defined static workflow with hardcoded actions that
-          always work. No configuration needed - just run the workflow.
-        </p>
+    <div className="pointer-events-auto min-h-screen">
+      <div className="container mx-auto px-4 py-8">
+        <div className="max-w-2xl mx-auto">
+          <h1 className="text-3xl font-bold mb-4">Static Workflows</h1>
+          <p className="text-slate-600 dark:text-slate-400 mb-8">
+            Create a pre-defined static workflow with hardcoded actions that
+            always work. No configuration needed - just run the workflow.
+          </p>
 
-        <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-6 mb-6">
-          <h2 className="text-xl font-semibold mb-4">Workflow Structure</h2>
-          <div className="space-y-2 text-sm text-slate-600 dark:text-slate-400">
-            <div>
-              1. <strong>Trigger</strong> - Start the workflow
-            </div>
-            <div>
-              2. <strong>Requirement Taker</strong> - Capture requirements
-            </div>
-            <div>
-              3. <strong>Task Generator</strong> - Generate tasks
-            </div>
-            <div>
-              4. <strong>Development, Design, Data</strong> - Parallel phases
-            </div>
-            <div>
-              5. <strong>Build</strong> - Combine all phases
-            </div>
-            <div>
-              6. <strong>QA</strong> - Quality assurance
-            </div>
-            <div>
-              7. <strong>Deploy</strong> - Deploy to production
-            </div>
-            <div>
-              8. <strong>Maintain</strong> - Ongoing maintenance
-            </div>
-            <div>
-              9. <strong>Archive</strong> - Archive completed workflow
+          <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-6 mb-6">
+            <h2 className="text-xl font-semibold mb-4">Workflow Structure</h2>
+            <div className="space-y-2 text-sm text-slate-600 dark:text-slate-400">
+              <div>
+                1. <strong>Trigger</strong> - Start the workflow
+              </div>
+              <div>
+                2. <strong>Requirement Taker</strong> - Capture requirements
+              </div>
+              <div>
+                3. <strong>Task Generator</strong> - Generate tasks
+              </div>
+              <div>
+                4. <strong>Development, Design, Data</strong> - Parallel phases
+              </div>
+              <div>
+                5. <strong>Build</strong> - Combine all phases
+              </div>
+              <div>
+                6. <strong>QA</strong> - Quality assurance
+              </div>
+              <div>
+                7. <strong>Deploy</strong> - Deploy to production
+              </div>
+              <div>
+                8. <strong>Maintain</strong> - Ongoing maintenance
+              </div>
+              <div>
+                9. <strong>Archive</strong> - Archive completed workflow
+              </div>
             </div>
           </div>
+
+          <Button
+            onClick={handleCreateStaticWorkflow}
+            disabled={isAnonymous}
+            className="w-full"
+          >
+            Create Static Workflow
+          </Button>
+
+          {isAnonymous && (
+            <p className="text-sm text-slate-500 dark:text-slate-400 mt-4 text-center">
+              Please sign in to create workflows
+            </p>
+          )}
         </div>
-
-        <Button
-          onClick={handleCreateStaticWorkflow}
-          disabled={isAnonymous}
-          className="w-full"
-        >
-          Create Static Workflow
-        </Button>
-
-        {isAnonymous && (
-          <p className="text-sm text-slate-500 dark:text-slate-400 mt-4 text-center">
-            Please sign in to create workflows
-          </p>
-        )}
       </div>
     </div>
   );

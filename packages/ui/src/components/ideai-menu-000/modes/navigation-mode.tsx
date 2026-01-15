@@ -93,10 +93,11 @@ export function NavigationMode({
             ? undefined // Let className handle positioning for inline
             : {
                 height: `${size}px`,
-                top: 0,
+                top: 64, // Position below header (64px)
                 left: 0,
                 right: 0,
                 zIndex: 50,
+                position: "fixed",
               }
         }
       >

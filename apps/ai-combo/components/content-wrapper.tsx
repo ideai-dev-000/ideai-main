@@ -58,6 +58,9 @@ export function ContentWrapper({
       ? `md:pl-[${leftMenuSize}px] md:pr-[${rightMenuSize}px]`
       : "";
 
+  // Top padding for top menu (always overlay mode, positioned below header)
+  const topPadding = menuState.topMenuOpen ? "pt-[144px]" : ""; // Header (64px) + Top menu (80px)
+
   // Bottom padding for bottom menu (always overlay mode)
   const bottomPadding = menuState.bottomMenuOpen ? "pb-20" : "";
 
@@ -66,6 +69,7 @@ export function ContentWrapper({
       className={cn(
         className,
         overlayPadding,
+        topPadding,
         bottomPadding,
         isWorkflowPage && "pointer-events-none",
       )}

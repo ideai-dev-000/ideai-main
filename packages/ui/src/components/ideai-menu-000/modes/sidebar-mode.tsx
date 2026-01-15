@@ -52,9 +52,10 @@ export function SidebarMode({
         style={{
           width: `${size}px`,
           [position]: 0,
-          top: position === "left" || position === "right" ? 0 : undefined,
+          top: position === "left" || position === "right" ? 64 : undefined, // Position below header (64px)
           bottom: position === "left" || position === "right" ? 0 : undefined,
           zIndex: 50,
+          position: "fixed",
         }}
       >
         {(headerContent || title) && (

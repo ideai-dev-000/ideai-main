@@ -116,10 +116,15 @@ export function UnifiedNav({
     );
   }
 
-  // Standalone variant: use ideai-menu-main
+  // Standalone variant: use IdeAIMenu with appropriate mode
+  // Left/Right = sidebar mode, Top/Bottom = navigation mode
+  const menuMode =
+    position === "left" || position === "right" ? "sidebar" : "navigation";
+
   return (
     <IdeAIMenuMain
       position={position}
+      mode={menuMode}
       trigger={effectiveTrigger}
       size={size}
       title={title}
