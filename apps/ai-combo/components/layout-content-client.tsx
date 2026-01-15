@@ -35,7 +35,13 @@ function ControlsMenuAutoToggle() {
   const menuState = useMenuState();
   const hasIdeaiControls = needsIdeaiControls(pathname);
   const previousPathnameRef = useRef<string | null>(null);
+  // Track which routes user has manually closed menu on
+  const manuallyClosedRoutesRef = useRef<Set<string>>(new Set());
   const transitionDuration = MENU_SETTINGS.transitionDuration || 350;
+
+  // Check if current route has been manually closed
+  const isCurrentRouteManuallyClosed =
+    pathname && manuallyClosedRoutesRef.current.has(pathname);
 
   useEffect(() => {
     const previousPathname = previousPathnameRef.current;
@@ -48,21 +54,13 @@ function ControlsMenuAutoToggle() {
       return;
     }
 
-    // If route changed, reset the manually closed flag
-    // This allows menu to auto-open on new routes even if user closed it on previous route
-    if (routeChanged) {
-      // Reset manually closed flag when route changes
-      // This is handled by the fact that isLeftMenuManuallyClosed is route-agnostic
-      // We'll track it per-route by checking if route changed
-    }
-
     // If route changed and now needs controls, open menu smoothly
-    // BUT: Only if user hasn't manually closed it on this route
+    // BUT: Only if user hasn't manually closed it on this specific route
     if (
       routeChanged &&
       hasIdeaiControls &&
       !menuState.leftMenuOpen &&
-      !menuState.isLeftMenuManuallyClosed
+      !isCurrentRouteManuallyClosed
     ) {
       // Small delay to ensure smooth transition from previous page
       const timeoutId = setTimeout(() => {
@@ -82,17 +80,30 @@ function ControlsMenuAutoToggle() {
     hasIdeaiControls,
     menuState.leftMenuOpen,
     menuState.setLeftMenuOpen,
-    menuState.isLeftMenuManuallyClosed,
+    isCurrentRouteManuallyClosed,
   ]);
 
+  // Track when user manually closes menu - mark this route as manually closed
+  useEffect(() => {
+    if (menuState.isLeftMenuManuallyClosed && pathname) {
+      manuallyClosedRoutesRef.current.add(pathname);
+    }
+    // When user opens menu, remove from manually closed set
+    if (menuState.leftMenuOpen && pathname) {
+      manuallyClosedRoutesRef.current.delete(pathname);
+    }
+  }, [menuState.isLeftMenuManuallyClosed, menuState.leftMenuOpen, pathname]);
+
   // Also handle initial mount - if page needs controls, open menu
-  // BUT: Only if user hasn't manually closed it
+  // BUT: Only if user hasn't manually closed it on this route
   // This runs once on mount to open menu if needed
   useEffect(() => {
+    const isCurrentRouteManuallyClosed =
+      pathname && manuallyClosedRoutesRef.current.has(pathname);
     if (
       hasIdeaiControls &&
       !menuState.leftMenuOpen &&
-      !menuState.isLeftMenuManuallyClosed
+      !isCurrentRouteManuallyClosed
     ) {
       // Delay slightly to ensure smooth animation on page load
       const timeoutId = setTimeout(() => {
