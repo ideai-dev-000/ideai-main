@@ -1,0 +1,25 @@
+{
+  "role": "child",
+  "name": "IdeaI AI Combo",
+  "description": "Lightweight multi-capability app combining workflow and vibe coding with shared auth",
+  "parentApp": "web",
+  "localPort": 3022,
+  "vercelProject": {
+    "projectName": "ideai-ai-combo",
+    "orgId": "team_vhjzlMi6CfNow0IfBXnv2Yn2",
+    "forkToNew": false
+  },
+  "metadata": {
+    "id": "ai-combo",
+    "port": 3022,
+    "css": ["Tailwind CSS", "Shadcn/UI"],
+    "capabilities": [
+      "Workflow Builder",
+      "Vibe Coding (v0 SDK)",
+      "Shared Authentication",
+      "Unified User Account"
+    ],
+    "path": "/apps/ai-combo",
+    "category": "capability"
+  }
+}

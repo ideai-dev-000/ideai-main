@@ -1,0 +1,142 @@
+/* All @import rules must come first (before @tailwind) */
+/* Use same CSS structure as web app for consistency */
+@import "../../../packages/ui/src/styles/globals.css";
+@import "../../../packages/ui/src/styles/ideai.css";
+@import "@xyflow/react/dist/style.css";
+
+/* App-specific CSS Variables for workflow features */
+/* Subtle shading on white backgrounds - use slate-50 instead of pure white */
+:root {
+  --radius: 0.625rem;
+  --background: oklch(0.98 0 0); /* Subtle slate tint instead of pure white */
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(0.99 0 0); /* Slightly lighter than background */
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(0.99 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.985 0 0);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.9 0 0);
+  --ring: oklch(0.205 0 0);
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.598 0.194 227.392);
+  --chart-4: oklch(0.645 0.199 84.429);
+  --chart-5: oklch(0.645 0.151 339.574);
+  --sidebar-background: oklch(0.98 0 0); /* Subtle slate tint - white with shading */
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.9 0 0);
+  --sidebar-ring: oklch(0.205 0 0);
+}
+
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.145 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.145 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.985 0 0);
+  --primary-foreground: oklch(0.145 0 0);
+  --secondary: oklch(0.205 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.205 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.205 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.985 0 0);
+  --border: oklch(0.27 0 0);
+  --input: oklch(0.205 0 0);
+  --ring: oklch(0.83 0 0);
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.598 0.194 227.392);
+  --chart-4: oklch(0.645 0.199 84.429);
+  --chart-5: oklch(0.645 0.151 339.574);
+  --sidebar-background: oklch(0.145 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.985 0 0);
+  --sidebar-primary-foreground: oklch(0.145 0 0);
+  --sidebar-accent: oklch(0.205 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(0.205 0 0);
+  --sidebar-ring: oklch(0.83 0 0);
+}
+
+/* Base styles are handled by globals.css from @repo/ui */
+/* Only add app-specific overrides here if needed */
+
+/* React Flow pane cursor */
+.react-flow__pane {
+  cursor: grab !important;
+}
+
+.react-flow__pane:active {
+  cursor: grabbing !important;
+}
+
+/* React Flow node and edge cursor */
+.react-flow__node {
+  cursor: pointer !important;
+}
+
+/* When dragging a node, show grabbing cursor */
+.react-flow__node.dragging {
+  cursor: grabbing !important;
+}
+
+.react-flow__edge {
+  cursor: pointer !important;
+}
+
+/* Original dashdraw animation from workflow-builder-hack */
+@keyframes dashdraw {
+  from {
+    stroke-dashoffset: 10;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Edge animations - three different modes */
+
+/* Flowing Dots: Animated dots flowing along the edge */
+@keyframes flowing-dots {
+  0% {
+    stroke-dashoffset: 0;
+  }
+  100% {
+    stroke-dashoffset: -24;
+  }
+}
+
+/* Solid Pulse: Pulsing solid line */
+@keyframes solid-pulse {
+  0%, 100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* Edge styles - minimal base, styles handled by edge-styles.ts */
+
+.react-flow__edge-path {
+  fill: none !important;
+}
