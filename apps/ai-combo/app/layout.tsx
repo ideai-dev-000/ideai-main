@@ -48,7 +48,7 @@ function LayoutContent({ children }: { children: ReactNode }) {
           <IdeAISideMenuWrapper />
         </div>
       </LayoutClient>
-      <div className="pointer-events-none relative z-[100]">
+      <div className="relative z-[100]">
         {/* Header needs pointer events for buttons to work - z-[100] to be above canvas (z-[15]) */}
         <div className="pointer-events-auto">
           <CapabilitiesHeader />
