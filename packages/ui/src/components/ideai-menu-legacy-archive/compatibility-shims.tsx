@@ -58,7 +58,8 @@ export type IdeAIMenuControlsProps = IdeAIMenuBaseProps;
 export type IdeAIMenuMainProps = IdeAIMenuBaseProps;
 
 // Re-export section and context (these are compatible)
-export { IdeAIMenuSection, useIdeAIMenuContext, getMenuPositionStyles };
+// Note: getMenuPositionStyles is exported from ideai-menu-000, not here to avoid duplicates
+export { IdeAIMenuSection, useIdeAIMenuContext };
 export type {
   IdeAIMenuPosition,
   IdeAIMenuTrigger,
