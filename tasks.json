@@ -784,6 +784,16 @@
       "category": "Performance",
       "tags": ["vibe", "performance", "optimization"],
       "markdown": "### Performance Issues\n- API calls taking longer\n- Download starting slowly\n\n### Optimization Areas\n- API response caching\n- Download streaming optimization\n- Reduce unnecessary re-renders\n- Optimize chat history loading"
+    },
+    {
+      "id": "gitignore-audit",
+      "title": "Audit and Restore Proper Gitignore Coverage",
+      "description": "Rebuild repo-level .gitignore rules for caches, env files, and artifacts after consolidation to a single file.",
+      "priority": "high",
+      "status": "pending",
+      "category": "Repo Hygiene",
+      "tags": ["gitignore", "cleanup", "dev-experience"],
+      "markdown": "### Goal\nRestore a comprehensive root .gitignore without slowing local development.\n\n### Scope\n- Re-add standard ignores for caches, build artifacts, and local env files\n- Ensure no submodule paths are unintentionally ignored\n- Verify .gitignore does not hide required sources\n\n### Validation\n- `git status` shows only intended changes\n- Build and dev caches remain ignored"
     }
   ]
 }
