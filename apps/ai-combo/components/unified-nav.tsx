@@ -117,9 +117,13 @@ export function UnifiedNav({
   }
 
   // Standalone variant: use IdeAIMenu with appropriate mode
-  // Left/Right = sidebar mode, Top/Bottom = navigation mode
+  // Left/Right = sidebar mode, Top = navigation mode, Bottom = drawer mode
   const menuMode =
-    position === "left" || position === "right" ? "sidebar" : "navigation";
+    position === "left" || position === "right"
+      ? "sidebar"
+      : position === "bottom"
+        ? "drawer"
+        : "navigation";
 
   return (
     <IdeAIMenuMain
