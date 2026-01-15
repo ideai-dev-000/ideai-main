@@ -106,7 +106,9 @@ export function NavigationMode({
                 top: 64, // Position below header (64px)
                 left: 0,
                 right: 0,
-                zIndex: 50,
+                // CRITICAL: z-index must be below header (z-100) but above content
+                // Header is z-[100], so menus use z-[90] to be visible but below header
+                zIndex: 90,
                 position: "fixed",
                 "--ideai-menu-transition-duration": `${animationDuration}ms`,
                 "--ideai-menu-easing": easing,
