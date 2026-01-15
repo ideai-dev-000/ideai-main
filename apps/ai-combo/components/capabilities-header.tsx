@@ -23,9 +23,7 @@ import { useSession } from "@/lib/auth-client";
 import { demoModeAtom } from "@/lib/workflow-store";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
-import { IdeAIMenu, IdeAIMenuSection } from "@repo/ui";
-import { NAV_CONFIG, getAllNavItems } from "@/lib/nav-config";
-import { cn } from "@/lib/utils";
+import { getAllNavItems } from "@/lib/nav-config";
 
 export function CapabilitiesHeader() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -73,54 +71,6 @@ export function CapabilitiesHeader() {
             >
               <IdeAILogo siteName="Capabilities" />
             </Link>
-          </div>
-
-          {/* Navigation - IdeaI Menu in header (minimal styling, supports shadcn) */}
-          <div className="hidden md:flex">
-            <IdeAIMenu
-              position="top"
-              trigger="always"
-              mode="navigation"
-              className="!relative !top-0 !left-0 !right-auto !h-auto !w-auto !border-0 !shadow-none !bg-transparent dark:!bg-transparent !transform-none"
-              topMenuOptions={{
-                horizontal: true,
-                sticky: false,
-                useMenubar: false, // Set to true to use shadcn Menubar component
-              }}
-            >
-              <IdeAIMenuSection id="header-nav" title="" defaultOpen={true}>
-                <nav
-                  className="flex items-center gap-6"
-                  aria-label="Main navigation"
-                >
-                  {NAV_CONFIG.flatMap((section) =>
-                    section.items.map((item) => {
-                      const isActive =
-                        pathname === item.href ||
-                        pathname.startsWith(item.href + "/");
-                      const IconComponent = item.icon;
-                      return (
-                        <Link
-                          key={item.href}
-                          href={item.href}
-                          className={cn(
-                            "flex items-center gap-2 text-sm font-medium transition-colors",
-                            isActive
-                              ? "text-slate-900 dark:text-slate-100"
-                              : "text-slate-700 hover:text-slate-900 dark:text-slate-300 dark:hover:text-slate-100",
-                          )}
-                        >
-                          {IconComponent && (
-                            <IconComponent className="h-4 w-4" />
-                          )}
-                          {item.label}
-                        </Link>
-                      );
-                    }),
-                  )}
-                </nav>
-              </IdeAIMenuSection>
-            </IdeAIMenu>
           </div>
 
           {/* Right Side */}

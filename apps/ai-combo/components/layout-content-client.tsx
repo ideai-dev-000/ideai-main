@@ -34,9 +34,7 @@ export function LayoutContentClient({ children }: { children: ReactNode }) {
       <div className="pointer-events-auto relative z-[100]">
         <CapabilitiesHeader />
       </div>
-      {/* RIGHT MENU = MAIN MENU (settings-controlled)
-          LEFT MENU = CONTROLS (settings-controlled - configured in IdeAISideMenuWrapper)
-          Uses unified nav config - single source of truth */}
+      {/* RIGHT MENU = MAIN NAVIGATION (site pages) */}
       <UnifiedNav
         variant="standalone"
         position="right"
@@ -44,7 +42,7 @@ export function LayoutContentClient({ children }: { children: ReactNode }) {
         title="Navigation"
       />
 
-      {/* BOTTOM MENU = HORIZONTAL NAV (for testing horizontal mode) */}
+      {/* BOTTOM MENU = HORIZONTAL NAV (site pages - for testing) */}
       <UnifiedNav
         variant="standalone"
         position="bottom"
