@@ -166,13 +166,14 @@ export function LayoutContentClient({ children }: { children: ReactNode }) {
         useBottomMenuState={true}
       />
 
-      {/* Layout container - flexbox to ensure main fills remaining space */}
-      <div className="flex flex-col min-h-screen">
+      {/* Layout container - fixed height to prevent page scroll */}
+      {/* Uses h-screen to fill viewport, main content scrolls internally */}
+      <div className="flex flex-col h-screen overflow-hidden">
         {/* Main content - needs pointer events for interactive elements */}
         {/* ContentWrapper handles all padding/margin adjustments with smooth transitions */}
-        {/* Main fills remaining space and animates when menus open/close */}
+        {/* Main fills remaining space, scrolls internally, and animates when menus open/close */}
         <ContentWrapper
-          className="pointer-events-auto flex-1 min-w-0"
+          className="pointer-events-auto flex-1 min-w-0 overflow-y-auto"
           animationMode={MENU_SETTINGS.animationMode || "overlay"}
           leftMenuSize={280}
           rightMenuSize={280}

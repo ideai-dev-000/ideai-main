@@ -116,13 +116,22 @@ export function ContentWrapper({
     <main
       className={cn(
         className,
-        "flex-1 min-w-0", // Fill remaining space, allow shrinking
+        "flex-1 min-w-0 overflow-y-auto", // Fill remaining space, scrollable, allow shrinking
         isWorkflowPage && "pointer-events-none",
       )}
       style={{
         ...(isWorkflowPage ? { pointerEvents: "none" as const } : {}),
         ...pushModeStyles,
         ...overlayStyles,
+        // Calculate exact height: viewport - header - top menu - bottom menu
+        height:
+          menuState.topMenuOpen && menuState.bottomMenuOpen
+            ? "calc(100vh - 64px - 80px - 80px)" // Header + top menu + bottom menu
+            : menuState.topMenuOpen
+              ? "calc(100vh - 64px - 80px)" // Header + top menu
+              : menuState.bottomMenuOpen
+                ? "calc(100vh - 64px - 80px)" // Header + bottom menu
+                : "calc(100vh - 64px)", // Header only
       }}
       data-menu-push-mode={
         animationMode === "push"
