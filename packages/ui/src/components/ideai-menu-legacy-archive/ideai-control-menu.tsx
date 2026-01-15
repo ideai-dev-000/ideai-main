@@ -36,7 +36,8 @@ import {
   ChevronRight,
   X,
 } from "lucide-react";
-import { Button } from "./ui/button";
+// Note: Button import removed - this file is archived and should not be used
+// import { Button } from "./ui/button";
 
 /**
  * Control Menu Context

@@ -11,7 +11,9 @@
 
 import * as React from "react";
 import type { ReactNode } from "react";
-import { IdeAIControlSection } from "../ideai-control-menu";
+// Note: This file is archived and should not be used
+// Import commented out to prevent build errors
+// import { IdeAIControlSection } from "../ideai-control-menu";
 
 export interface ControlMenuModule {
   /** Unique module ID */
@@ -112,19 +114,16 @@ export function ControlMenuModulesProvider({
 export function ControlMenuModulesRenderer() {
   const { modules } = useControlMenuModules();
 
+  // Note: This file is archived - IdeAIControlSection is not available
+  // Functionality should be re-implemented using ideai-menu-000 system
   return (
     <>
       {modules.map((module) => (
-        <IdeAIControlSection
-          key={module.id}
-          id={module.id}
-          title={module.title}
-          defaultOpen={module.defaultOpen}
-          isCompleted={module.isCompleted}
-          autoOpenNext={module.autoOpenNext}
-        >
+        <div key={module.id} data-module-id={module.id}>
+          {/* Archived - use IdeAIMenuSection from ideai-menu-000 instead */}
+          <h3>{module.title}</h3>
           {module.component}
-        </IdeAIControlSection>
+        </div>
       ))}
     </>
   );
