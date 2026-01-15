@@ -23,7 +23,7 @@ import { demoModeAtom } from "@/lib/workflow-store";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { useMenuState } from "@/components/menu-state-provider";
-import { PanelLeft, PanelRight, PanelTop, PanelBottom } from "lucide-react";
+import { PanelLeft, PanelBottom } from "lucide-react";
 
 export function CapabilitiesHeader() {
   const [isScrolled, setIsScrolled] = useState(false);
