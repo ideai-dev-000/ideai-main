@@ -7,7 +7,7 @@
  * This registry enables dynamic step imports that are statically analyzable
  * by the bundler. Each action type maps to its step importer function.
  *
- * Generated entries: 36
+ * Generated entries: 47
  */
 
 import "server-only";
@@ -213,7 +213,6 @@ export const PLUGIN_STEP_IMPORTERS: Record<string, StepImporter> = {
     importer: () => import("@/plugins/webflow/steps/publish-site"),
     stepFunction: "publishSiteStep",
   },
-  // Static Workflows
   "workflows-static/trigger": {
     importer: () => import("@/plugins/workflows-static/steps/trigger"),
     stepFunction: "triggerStep",
@@ -302,7 +301,6 @@ export const ACTION_LABELS: Record<string, string> = {
   "webflow/list-sites": "List Sites",
   "webflow/get-site": "Get Site",
   "webflow/publish-site": "Publish Site",
-  // Static Workflows
   "workflows-static/trigger": "Trigger",
   "workflows-static/requirement-taker": "Requirement Taker",
   "workflows-static/task-generator": "Task Generator",

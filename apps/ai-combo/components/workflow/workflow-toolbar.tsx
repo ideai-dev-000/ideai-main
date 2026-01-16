@@ -566,6 +566,49 @@ function useWorkflowHandlers({
   };
 
   const executeWorkflow = async () => {
+    // Check if this is a static workflow (no workflow ID)
+    const isStaticWorkflow = !currentWorkflowId;
+
+    if (isStaticWorkflow) {
+      // Execute static workflow locally
+      // Switch to Runs tab when starting a test run
+      setActiveTab("runs");
+
+      // Deselect all nodes and edges
+      setNodes(nodes.map((node) => ({ ...node, selected: false })));
+      setEdges(edges.map((edge) => ({ ...edge, selected: false })));
+      setSelectedNodeId(null);
+
+      setIsExecuting(true);
+
+      try {
+        // Import static workflow executor
+        const { executeStaticWorkflow } =
+          await import("@/lib/static-workflow-executor");
+
+        // Execute static workflow
+        await executeStaticWorkflow(nodes, edges, (nodeId, status) => {
+          updateNodeData({
+            id: nodeId,
+            data: { status },
+          });
+        });
+
+        setIsExecuting(false);
+        toast.success("Static workflow executed successfully!");
+      } catch (error) {
+        console.error("Failed to execute static workflow:", error);
+        toast.error(
+          error instanceof Error
+            ? error.message
+            : "Failed to execute static workflow",
+        );
+        setIsExecuting(false);
+      }
+      return;
+    }
+
+    // Regular workflow execution (requires workflow ID)
     if (!currentWorkflowId) {
       toast.error("Please save the workflow before executing");
       return;

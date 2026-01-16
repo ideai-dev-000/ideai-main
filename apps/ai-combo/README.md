@@ -103,6 +103,7 @@ Visit [http://localhost:3022](http://localhost:3022) to get started.
 - **Superagent**: Guard, Redact
 - **v0**: Create Chat, Send Message
 - **Webflow**: List Sites, Get Site, Publish Site
+- **undefined**: Trigger, Requirement Taker, Task Generator, Development, Design, Data, Build, QA, Deploy, Maintain, Archive
 <!-- PLUGINS:END -->
 
 ## Code Generation

@@ -9,7 +9,7 @@
  * 2. Add a system integration to SYSTEM_INTEGRATION_TYPES in discover-plugins.ts
  * 3. Run: pnpm discover-plugins
  *
- * Generated types: ai-gateway, blob, clerk, database, fal, firecrawl, github, linear, perplexity, resend, slack, stripe, superagent, v0, webflow
+ * Generated types: ai-gateway, blob, clerk, database, fal, firecrawl, github, linear, perplexity, resend, slack, stripe, superagent, v0, webflow, workflows-static
  */
 
 // Integration type union - plugins + system integrations
@@ -28,7 +28,8 @@ export type IntegrationType =
   | "stripe"
   | "superagent"
   | "v0"
-  | "webflow";
+  | "webflow"
+  | "workflows-static";
 
 // Generic config type - plugins define their own keys via formFields[].configKey
 export type IntegrationConfig = Record<string, string | undefined>;

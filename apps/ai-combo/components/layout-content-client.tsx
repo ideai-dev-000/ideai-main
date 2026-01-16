@@ -138,11 +138,11 @@ export function LayoutContentClient({ children }: { children: ReactNode }) {
 
       {/* LEFT MENU = IDEAI CONTROLS (only for IdeaI modules/services) */}
       {/* Automatically shows:
-          - Workflow controls on /workflow* routes
+          - Workflow controls on /workflow* routes (including static workflow)
           - Vibe controls on /vibe* routes
           - Hidden on all other routes (regular webpages don't need controls)
       */}
-      {hasIdeaiControls && !isStaticWorkflow && <IdeAISideMenuWrapper />}
+      {hasIdeaiControls && <IdeAISideMenuWrapper />}
 
       {/* RIGHT MENU = STATIC WORKFLOW SECONDARY MENU (only for static workflow) */}
       {isStaticWorkflow && <StaticWorkflowMenu />}
