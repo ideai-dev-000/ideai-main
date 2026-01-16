@@ -3,12 +3,9 @@
  *
  * @module StaticWorkflowCanvas
  * @description
- * Simplified React Flow canvas for static workflows.
- * Reuses existing workflow components but with reduced complexity:
- * - No node/edge editing
- * - No adding nodes
- * - No context menus
- * - Just visualization and code editing per node
+ * React Flow canvas for static workflows - IDENTICAL to regular workflow
+ * but with static workflow definition loaded and no node/edge creation.
+ * Reuses ALL existing workflow components and handlers.
  */
 
 "use client";
@@ -17,9 +14,10 @@ import {
   ConnectionMode,
   MiniMap,
   type OnConnect,
+  type OnSelectionChangeParams,
   useReactFlow,
 } from "@xyflow/react";
-import { useAtom, useAtomValue } from "jotai";
+import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Canvas } from "@/components/ai-elements/canvas";
 import { Connection } from "@/components/ai-elements/connection";
@@ -32,6 +30,9 @@ import {
   currentWorkflowIdAtom,
   edgesAtom,
   nodesAtom,
+  onEdgesChangeAtom,
+  onNodesChangeAtom,
+  selectedEdgeAtom,
   selectedNodeAtom,
   showMinimapAtom,
   type WorkflowNode,
@@ -40,7 +41,6 @@ import { Edge } from "@/components/ai-elements/edge";
 import { ActionNode } from "@/components/workflow/nodes/action-node";
 import { TriggerNode } from "@/components/workflow/nodes/trigger-node";
 import { createStaticWorkflow } from "@/plugins/workflows-static/workflow-definition";
-import { useSetAtom } from "jotai";
 
 const edgeTypes = {
   animated: Edge.Animated,
@@ -54,13 +54,16 @@ const nodeTypes = {
 
 /**
  * Static Workflow Canvas
- * Simplified version of WorkflowCanvas for static workflows
+ * IDENTICAL to WorkflowCanvas but loads static workflow and disables node/edge creation
  */
 export function StaticWorkflowCanvas() {
   const [nodes, setNodes] = useAtom(nodesAtom);
   const [edges, setEdges] = useAtom(edgesAtom);
   const [showMinimap] = useAtom(showMinimapAtom);
+  const onNodesChange = useSetAtom(onNodesChangeAtom);
+  const onEdgesChange = useSetAtom(onEdgesChangeAtom);
   const setSelectedNode = useSetAtom(selectedNodeAtom);
+  const setSelectedEdge = useSetAtom(selectedEdgeAtom);
   const currentWorkflowId = useAtomValue(currentWorkflowIdAtom);
   const { fitView } = useReactFlow();
   const [isCanvasReady, setIsCanvasReady] = useState(false);
@@ -89,7 +92,7 @@ export function StaticWorkflowCanvas() {
     }
   }, [nodes.length, setNodes, setEdges, fitView]);
 
-  // Simplified connection handler (disabled for static workflow)
+  // Connection handler - disabled for static workflow (connections are fixed)
   const onConnect: OnConnect = useCallback(() => {
     // Static workflow: connections are fixed, no editing allowed
     // This is a no-op but required by React Flow
@@ -98,15 +101,42 @@ export function StaticWorkflowCanvas() {
   // Node click handler - select node for code editing
   const onNodeClick = useCallback(
     (_event: React.MouseEvent, node: WorkflowNode) => {
-      setSelectedNode(node);
+      setSelectedNode(node.id);
     },
     [setSelectedNode],
   );
 
-  // Disable pane click (no node creation in static workflow)
+  // Edge click handler
+  const onEdgeClick = useCallback(
+    (_event: React.MouseEvent, edge: { id: string }) => {
+      setSelectedEdge(edge.id);
+    },
+    [setSelectedEdge],
+  );
+
+  // Selection change handler
+  const onSelectionChange = useCallback(
+    (params: OnSelectionChangeParams) => {
+      if (params.nodes.length > 0) {
+        setSelectedNode(params.nodes[0].id);
+      } else if (params.edges.length > 0) {
+        setSelectedEdge(params.edges[0].id);
+      } else {
+        setSelectedNode(null);
+        setSelectedEdge(null);
+      }
+    },
+    [setSelectedNode, setSelectedEdge],
+  );
+
+  // Pane click handler - deselect
   const onPaneClick = useCallback(() => {
     setSelectedNode(null);
-  }, [setSelectedNode]);
+    setSelectedEdge(null);
+  }, [setSelectedNode, setSelectedEdge]);
+
+  // Disable connections in static workflow
+  const isValidConnection = useCallback(() => false, []);
 
   return (
     <div
@@ -122,7 +152,7 @@ export function StaticWorkflowCanvas() {
         <WorkflowToolbar workflowId={currentWorkflowId ?? undefined} />
       </div>
 
-      {/* React Flow Canvas */}
+      {/* React Flow Canvas - IDENTICAL to regular workflow */}
       <Canvas
         className="bg-background"
         connectionLineComponent={Connection}
@@ -131,14 +161,18 @@ export function StaticWorkflowCanvas() {
         edges={edges}
         edgeTypes={edgeTypes}
         elementsSelectable={true}
-        isValidConnection={() => false} // Disable connections in static workflow
+        isValidConnection={isValidConnection} // Disable new connections
         nodes={nodes}
         nodesConnectable={false} // Disable connecting nodes
         nodesDraggable={true} // Allow dragging for layout
         nodeTypes={nodeTypes}
-        onConnect={undefined} // Disable connections
+        onConnect={undefined} // Disable new connections
+        onEdgeClick={onEdgeClick}
+        onEdgesChange={onEdgesChange} // CRITICAL: Required for edges to work
         onNodeClick={onNodeClick}
+        onNodesChange={onNodesChange} // CRITICAL: Required for dragging to work
         onPaneClick={onPaneClick}
+        onSelectionChange={onSelectionChange}
       >
         <Panel
           className="workflow-controls-panel border-none bg-transparent p-0"
