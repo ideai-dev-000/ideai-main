@@ -18,7 +18,7 @@ import {
   useReactFlow,
 } from "@xyflow/react";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Canvas } from "@/components/ai-elements/canvas";
 import { Connection } from "@/components/ai-elements/connection";
 import { Controls } from "@/components/ai-elements/controls";
@@ -41,6 +41,8 @@ import { Edge } from "@/components/ai-elements/edge";
 import { ActionNode } from "@/components/workflow/nodes/action-node";
 import { TriggerNode } from "@/components/workflow/nodes/trigger-node";
 import { createStaticWorkflow } from "@/plugins/workflows-static/workflow-definition";
+import { useOverlay } from "@/components/overlays/overlay-provider";
+import { StaticConfigurationOverlay } from "./static-configuration-overlay";
 
 const edgeTypes = {
   animated: Edge.Animated,
@@ -114,11 +116,19 @@ export function StaticWorkflowCanvas() {
     [setSelectedEdge],
   );
 
-  // Selection change handler
+  // Overlay system for configuration panel
+  const { open: openOverlay } = useOverlay();
+
+  // Selection change handler - open overlay when node is selected
   const onSelectionChange = useCallback(
     (params: OnSelectionChangeParams) => {
       if (params.nodes.length > 0) {
-        setSelectedNode(params.nodes[0].id);
+        const nodeId = params.nodes[0].id;
+        setSelectedNode(nodeId);
+        // Open configuration overlay when node is selected
+        openOverlay("static-configuration", {
+          component: StaticConfigurationOverlay,
+        });
       } else if (params.edges.length > 0) {
         setSelectedEdge(params.edges[0].id);
       } else {
@@ -126,7 +136,7 @@ export function StaticWorkflowCanvas() {
         setSelectedEdge(null);
       }
     },
-    [setSelectedNode, setSelectedEdge],
+    [setSelectedNode, setSelectedEdge, openOverlay],
   );
 
   // Pane click handler - deselect
