@@ -3,23 +3,26 @@
  *
  * @module StaticWorkflowPage
  * @description
- * Page to visualize and edit static workflows with card-based UI.
- * Shows workflow steps as cards in order, with editable action code.
+ * Page to visualize and edit static workflows using React Flow.
+ * Reuses existing workflow components with simplified editing.
  */
 
 "use client";
 
-import { StaticWorkflowStage } from "@/components/workflow-static/static-workflow-stage";
+import { ReactFlowProvider } from "@xyflow/react";
+import { StaticWorkflowCanvas } from "@/components/workflow-static/static-workflow-canvas";
 import { StaticWorkflowMenu } from "@/components/workflow-static/static-workflow-menu";
 
 export default function StaticWorkflowPage() {
   return (
-    <div className="pointer-events-auto w-full h-full">
+    <ReactFlowProvider>
       {/* Secondary Control Menu (Right Side) */}
       <StaticWorkflowMenu />
 
-      {/* Main Stage - Workflow Cards */}
-      <StaticWorkflowStage />
-    </div>
+      {/* React Flow Canvas - Reuses existing workflow components */}
+      <div className="fixed top-16 inset-x-0 bottom-0 z-[15] pointer-events-none">
+        <StaticWorkflowCanvas />
+      </div>
+    </ReactFlowProvider>
   );
 }
