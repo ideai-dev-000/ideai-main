@@ -78,6 +78,14 @@ export const ROUTE_CONFIG: Record<string, RouteConfig> = {
     description: "Lead processing agent - no sidebar",
   },
 
+  // Static Workflow route - needs secondary menu (right side)
+  "/workflow-static": {
+    showSideMenu: true,
+    ideaiControls: true, // Static workflow needs IdeaI controls (secondary menu)
+    toolContext: "workflow",
+    description: "Static workflow visualization and editing",
+  },
+
   // Landing page - NO IdeaI controls
   "/": {
     showSideMenu: false,

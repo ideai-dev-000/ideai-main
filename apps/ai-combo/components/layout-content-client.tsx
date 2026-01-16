@@ -18,9 +18,10 @@ import { LayoutClient } from "@/components/layout-client";
 import { ContentWrapper } from "@/components/content-wrapper";
 import { UnifiedNav } from "@/components/unified-nav";
 import { IdeAISideMenuWrapper } from "@/components/ideai-side-menu-wrapper";
+import { StaticWorkflowMenu } from "@/components/workflow-static/static-workflow-menu";
 import { MENU_SETTINGS } from "@/lib/menu-settings";
 import { ScrollToTop } from "@/components/scroll-to-top";
-import { needsIdeaiControls } from "@/lib/route-config";
+import { needsIdeaiControls, getToolContext } from "@/lib/route-config";
 import { useMenuState } from "@/components/menu-state-provider";
 
 /**
@@ -121,6 +122,8 @@ function ControlsMenuAutoToggle() {
 export function LayoutContentClient({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const hasIdeaiControls = needsIdeaiControls(pathname);
+  const toolContext = getToolContext(pathname);
+  const isStaticWorkflow = pathname === "/workflow-static";
 
   return (
     <ReactFlowProvider>
@@ -139,7 +142,10 @@ export function LayoutContentClient({ children }: { children: ReactNode }) {
           - Vibe controls on /vibe* routes
           - Hidden on all other routes (regular webpages don't need controls)
       */}
-      {hasIdeaiControls && <IdeAISideMenuWrapper />}
+      {hasIdeaiControls && !isStaticWorkflow && <IdeAISideMenuWrapper />}
+
+      {/* RIGHT MENU = STATIC WORKFLOW SECONDARY MENU (only for static workflow) */}
+      {isStaticWorkflow && <StaticWorkflowMenu />}
 
       {/* BOTTOM MENU = FOOTER NAV (site pages) */}
       <UnifiedNav
