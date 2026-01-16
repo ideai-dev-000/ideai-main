@@ -24,6 +24,7 @@ import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { useMenuState } from "@/components/menu-state-provider";
 import { PanelLeft, PanelBottom } from "lucide-react";
+import { needsIdeaiControls } from "@/lib/route-config";
 
 export function CapabilitiesHeader() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -31,6 +32,12 @@ export function CapabilitiesHeader() {
   const pathname = usePathname();
   const [demoMode, setDemoMode] = useAtom(demoModeAtom);
   const menuState = useMenuState();
+
+  // CRITICAL: Only show left menu button on pages that need IdeaI controls
+  // Left menu = IdeaI controls menu (workflow, vibe, etc.)
+  // Home page and other pages don't need it, so don't show the button
+  // This prevents showing a button for a menu that doesn't exist on that page
+  const hasIdeaiControls = needsIdeaiControls(pathname);
 
   // Show demo mode toggle only on workflow pages
   const isWorkflowPage =
@@ -77,8 +84,11 @@ export function CapabilitiesHeader() {
           {/* Right Side */}
           <div className="relative z-[60] flex items-center gap-2">
             {/* Menu Toggle Buttons - Only show for button-triggered menus */}
-            {/* Left Menu Button - Only show if trigger is "button" and not fixed open (for controls menu) */}
-            {menuState.leftMenuSettings.trigger === "button" &&
+            {/* Left Menu Button - CRITICAL: Only show on pages that need IdeaI controls */}
+            {/* Left menu = IdeaI controls menu (workflow, vibe, etc.) */}
+            {/* Home page and other pages don't need it, so button is hidden */}
+            {hasIdeaiControls &&
+              menuState.leftMenuSettings.trigger === "button" &&
               menuState.leftMenuSettings.showToggleIcon &&
               !menuState.leftMenuSettings.fixedOpen && (
                 <button

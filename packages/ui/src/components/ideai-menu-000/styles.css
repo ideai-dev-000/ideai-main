@@ -34,6 +34,19 @@
   -webkit-backface-visibility: hidden;
 }
 
+/* CRITICAL: Bottom menu must always stay fixed at viewport bottom */
+.ideai-menu-drawer.ideai-menu--bottom {
+  /* Override any parent styles that might affect positioning */
+  position: fixed !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  /* Ensure it stays above all content when open */
+  z-index: 9999 !important;
+  /* Prevent scroll from affecting it */
+  contain: layout style paint;
+}
+
 /* Menu Backdrop */
 .ideai-menu-backdrop {
   @apply fixed inset-0 bg-black/20 dark:bg-black/40;
@@ -137,6 +150,17 @@
 .ideai-menu--bottom {
   @apply border-t;
   box-shadow: 0 -10px 30px -10px rgba(0,0,0,0.15);
+  /* CRITICAL: Ensure bottom menu always stays at bottom of viewport */
+  position: fixed !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  /* Very high z-index to stay above all content */
+  z-index: 9999 !important;
+  /* Prevent scroll from affecting position */
+  transform-origin: bottom center;
+  /* Ensure it's always visible when open */
+  contain: layout style paint;
 }
 
 /* Menu Trigger */
@@ -190,10 +214,22 @@
 
 .ideai-menu--bottom:not(.ideai-menu--open) {
   transform: translateY(100%) !important;
+  /* When closed, still keep it fixed but hidden */
+  position: fixed !important;
+  bottom: 0 !important;
 }
 
 .ideai-menu--bottom.ideai-menu--open {
   transform: translateY(0) !important;
+  /* CRITICAL: When open, always stay fixed at bottom of viewport */
+  position: fixed !important;
+  bottom: 0 !important;
+  /* Ensure it never disappears when scrolling */
+  will-change: transform;
+  /* Stay above all content */
+  z-index: 9999 !important;
+  /* Prevent any layout shifts */
+  contain: layout style paint;
 }
 
 /* IdeaI Control Menus */

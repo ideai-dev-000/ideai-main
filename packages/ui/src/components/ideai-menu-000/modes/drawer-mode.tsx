@@ -4,6 +4,12 @@
  * @module DrawerMode
  * @description
  * Adapter for shadcn Drawer component (bottom menus)
+ *
+ * CRITICAL: Bottom menu must always appear above fold
+ * - Fixed to viewport (position: fixed, bottom: 0)
+ * - Very high z-index (9999) to stay above all content
+ * - Never disappears when scrolling - stays at bottom of screen
+ * - Only closes when explicitly closed by user action
  */
 
 "use client";
@@ -35,9 +41,11 @@ export function DrawerMode({
   const contextValue = useMenuContextValue();
 
   // Menu visibility logic:
-  // - "always": Always visible (ignore open prop)
+  // - "always": Always visible (ignore open prop) - STAYS AT BOTTOM OF VIEWPORT
   // - "button": Controlled by open prop (button toggles it)
   // - "hover": Controlled by open prop (hover toggles it)
+  // CRITICAL: When visible, menu must always stay fixed at bottom of viewport
+  // and never disappear when scrolling - only closes when user explicitly closes it
   const isVisible =
     trigger === "always"
       ? true
@@ -71,8 +79,14 @@ export function DrawerMode({
             bottom: 0,
             left: 0,
             right: 0,
-            zIndex: 50,
-            position: "fixed",
+            zIndex: 9999, // CRITICAL: Very high z-index to always stay above everything
+            position: "fixed", // CRITICAL: Fixed to viewport, not document
+            // Ensure it stays in viewport even when scrolling
+            transform: isVisible ? "translateY(0)" : "translateY(100%)",
+            // Prevent any scroll behavior from affecting it
+            willChange: "transform",
+            // Ensure it's always above fold
+            contain: "layout style paint",
             "--ideai-menu-transition-duration": `${animationDuration}ms`,
             "--ideai-menu-easing": easing,
           } as React.CSSProperties

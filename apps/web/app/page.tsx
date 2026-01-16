@@ -16,6 +16,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import { IdeAIPageTemplate } from "@repo/ui/components/ideai-page-template";
 import { IdeAIAppCard, IdeAIDevMenu, type EnhancedAppMetadata } from "@repo/ui";
 import styles from "./page.module.css";
@@ -24,7 +25,11 @@ export default function Home() {
   const [apps, setApps] = useState<EnhancedAppMetadata[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const pathname = usePathname();
   const isDevelopment = process.env.NODE_ENV === "development";
+
+  // Only show dev menu on home page (/) and in development
+  const shouldShowDevMenu = isDevelopment && pathname === "/";
 
   const loadApps = async () => {
     try {
@@ -74,6 +79,11 @@ export default function Home() {
       subtitle="Local Development Environment Overview"
       vercelProjectName={vercelProjectName}
       vercelOrgId={vercelOrgId}
+      headerActions={
+        shouldShowDevMenu ? (
+          <IdeAIDevMenu apps={apps} onRefresh={loadApps} />
+        ) : null
+      }
     >
       <div className={styles.index}>
         <div className={styles.header}>
@@ -83,7 +93,6 @@ export default function Home() {
               Overview of all apps in the IdeaI monorepo. Status updates every 5
               seconds.
             </p>
-            <IdeAIDevMenu apps={apps} onRefresh={loadApps} />
           </div>
         </div>
 
